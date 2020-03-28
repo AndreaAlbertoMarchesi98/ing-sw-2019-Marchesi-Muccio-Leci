@@ -5,6 +5,14 @@ public class Tile {
     private int level;
     private boolean isDome = false;
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setDome(boolean dome) {
+        isDome = dome;
+    }
+
     public Tile[] validMove(){
         return null;
     }
@@ -36,5 +44,6 @@ public class Tile {
     public boolean isDome() {
         return isDome;
     }
+
 
 }
