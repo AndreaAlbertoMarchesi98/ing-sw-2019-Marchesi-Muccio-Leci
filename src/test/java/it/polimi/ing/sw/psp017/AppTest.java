@@ -1,4 +1,4 @@
-package it.polimi.ing.sw.DACAMBIARE;
+package it.polimi.ing.sw.psp017;
 
 import static org.junit.Assert.assertTrue;
 
