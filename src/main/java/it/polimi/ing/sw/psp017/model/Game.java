@@ -1,13 +1,50 @@
 package it.polimi.ing.sw.psp017.model;
 
 import java.util.ArrayList;
+
 public class Game {
-    public static final int SIZE_BOARD = 5;
     private ArrayList<Player> players;
     private int turn;
     private boolean gameOver;
     private Player winner;
-    private static Tile [][] board = new Tile[SIZE_BOARD][SIZE_BOARD];
+    private static Game single_instance = null;
+
+    // private constructor restricted to this class itself
+
+    // static method to create instance of Singleton class
+    public static Game getInstance()
+    {
+        if (single_instance == null) {
+            System.out.println("new game create");
+            single_instance = new Game();
+        }
+        return single_instance;
+    }
+
+
+    private Game() {
+        Tile[][] createdTiles = new Tile[5][5];
+        for (int x = 0; x < Board.size; x++) {
+            for (int y = 0; y < Board.size; y++) {
+                createdTiles[x][y]=new Tile(new Vector2d(x,y));
+            }
+        }
+        Board.setTiles(createdTiles);
+}
+
+
+    public static class Board{
+        private static Tile[][] tiles;
+        public static final int size = 5;
+
+        public static Tile[][] getTiles() {
+            return tiles;
+        }
+
+        public static void setTiles(Tile[][] tiles) {
+            Board.tiles = tiles;
+        }
+    }
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
@@ -25,10 +62,6 @@ public class Game {
         this.winner = winner;
     }
 
-    public static void setTile(BoardPosition boardPosition, Tile tile) {
-        Game.board[boardPosition.x][boardPosition.y] = tile;
-    }
-
     public ArrayList<Player> getPlayers() {
         return players;
     }
@@ -41,15 +74,15 @@ public class Game {
         return gameOver;
     }
 
-    public static Tile[][] getBoard() {
-        return board;
-    }
-
     public Player getWinner() {
         return winner;
     }
-    public void addPlayer (){}
 
-    public void startGame () {}
+    public void addPlayer() {
+    }
+
+    public void startGame() {
+    }
+
 
 }

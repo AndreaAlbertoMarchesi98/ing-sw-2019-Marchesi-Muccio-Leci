@@ -3,7 +3,19 @@ package it.polimi.ing.sw.psp017.model;
 public class Tile {
     private Worker worker;
     private int level;
-    private boolean isDome = false;
+    private boolean isDome;
+    final private Vector2d position;
+
+    public Tile(Vector2d position){
+        this.position=position;
+        this.worker=null;
+        this.level=0;
+        this.isDome=false;
+    }
+
+    public Vector2d getPosition() {
+        return position;
+    }
 
     public void setLevel(int level) {
         this.level = level;

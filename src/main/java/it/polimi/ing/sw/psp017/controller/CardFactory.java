@@ -7,12 +7,11 @@ import it.polimi.ing.sw.psp017.view.GodName;
 public  class CardFactory {
 
 
-    public static Card getCard(GodName godName) {
+    public static Card getCard(GodName godName){
 
-        if (godName == GodName.APOLLO) {
+        if (godName == GodName.APOLLO)
             return new Apollo();
-
-        }
-        return null;
+        else
+            throw new NullPointerException();
     }
 }

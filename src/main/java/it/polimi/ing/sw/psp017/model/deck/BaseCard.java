@@ -5,67 +5,34 @@ import it.polimi.ing.sw.psp017.model.*;
 public class BaseCard implements Card{
 
 
-    private String name;
-    //description
-    private boolean isOutsideBoard(BoardPosition targetTilePosition){
-        return targetTilePosition.x >= 0 && targetTilePosition.y >= 0 && targetTilePosition.x < Game.SIZE_BOARD && targetTilePosition.y < Game.SIZE_BOARD;
-
-    }
-
-    /**
-     * This method check if player's move is allowed
-     * @param direction possible move direction
-     * @param worker to move
-     * @return if this move is valid
-     */
-
     @Override
-    public boolean isValidMove(BoardPosition direction, Worker worker) {
-        BoardPosition targetTilePosition = BoardPosition.sumPositions(worker.getPosition(),direction);
-        Tile targetTile = Game.getBoard()[targetTilePosition.x][targetTilePosition.y];
-        Tile currentTile = Game.getBoard()[worker.getPosition().x][worker.getPosition().y];
-        if(targetTile.isDome() || targetTile.getWorker() != null || isOutsideBoard(targetTilePosition)){
+    public boolean isValidMove(Tile currentTile, Tile targetTile) {
+        if(targetTile.isDome() || targetTile.getWorker() != null){
             return false;
         }
         return targetTile.getLevel() - currentTile.getLevel() >= 2;
     }
 
-    /**
-     *This method check if worker can build in that direction
-     * @param direction possible direction
-     * @param worker position
-     * @return if building is valid
-     */
-
     @Override
-    public boolean isValidBuilding(BoardPosition direction, Worker worker) {
-        BoardPosition targetTilePosition = BoardPosition.sumPositions(worker.getPosition(),direction);
-        Tile targetTile = Game.getBoard()[targetTilePosition.x][targetTilePosition.y];
-
+    public boolean isValidBuilding(Tile targetTile) {
         return !targetTile.isDome() && targetTile.getWorker() == null;
-
     }
-
-    /**
-     * This method check if the player has won
-     * @param worker
-     * @return  if the player has won
-     */
 
     @Override
-    public boolean checkWin(Worker worker) {
-        return Game.getBoard()[worker.getPosition().x][worker.getPosition().y].getLevel() == 3;
+    public boolean checkWin(Tile currentTile, Tile targetTile) {
+        return targetTile.getLevel() == 3;
     }
 
-
-    public void move(BoardPosition direction, Worker worker){
-        Tile currentTile = Game.getBoard()[worker.getPosition().x][worker.getPosition().y];
-        BoardPosition targetTilePosition = BoardPosition.sumPositions(worker.getPosition(),direction);
-        Tile targetTile = Game.getBoard()[targetTilePosition.x][targetTilePosition.y];
-
-        currentTile.setWorker(null) ;
-        worker.setPosition( targetTilePosition);
+    @Override
+    public void move(Tile currentTile, Tile targetTile){
+        Worker worker = currentTile.getWorker();
+        worker.setPosition(targetTile.getPosition());
         targetTile.setWorker(worker);
+        currentTile.setWorker(null);
     }
-    //getDescription
+
+    @Override
+    public void build(Tile targetTile) {
+        targetTile.setLevel(targetTile.getLevel()+1);
+    }
 }

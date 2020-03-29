@@ -2,26 +2,29 @@ package it.polimi.ing.sw.psp017.model;
 
 public class Worker {
     private Player owner;
-    private BoardPosition position;
-    private Card card;
+    private Vector2d position;
 
-    public Worker(Player owner, BoardPosition boardPosition){
+    public Worker(Player owner, Vector2d Vector2d){
         this.owner = owner;
-        this.position = boardPosition;
+        this.position = Vector2d;
     }
 
+    public Tile getCurrentTile() throws NullPointerException{
+        return Game.Board.getTiles()[getPosition().x][getPosition().y];
+    }
+    public Tile getTargetTile(Vector2d direction) throws NullPointerException{
+        Vector2d targetPosition=Vector2d.sumVectors(getPosition(),direction);
+        return Game.Board.getTiles()[targetPosition.x][targetPosition.y];
+    }
 
     public void setOwner(Player owner) {
         this.owner = owner;
     }
 
-    public void setPosition(BoardPosition workerPosition) {
+    public void setPosition(Vector2d workerPosition) {
         this.position = workerPosition;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
-    }
 
 
 
@@ -29,15 +32,7 @@ public class Worker {
         return owner;
     }
 
-    public BoardPosition getPosition() {
+    public Vector2d getPosition() {
         return position;
     }
-
-    public Card getCard() {
-        return card;
-    }
-
-    public void move(BoardPosition direction, Worker worker){
-        card.move( direction,  worker);
-    };
 }

@@ -9,7 +9,7 @@ abstract public class CardDecorator implements Card {
         tempCard = newCard;
     }
 
-
+/*
     @Override
     public void move() {
      tempCard.move();
@@ -24,4 +24,6 @@ abstract public class CardDecorator implements Card {
     public void checkWin() {
 
     }
+
+ */
 }

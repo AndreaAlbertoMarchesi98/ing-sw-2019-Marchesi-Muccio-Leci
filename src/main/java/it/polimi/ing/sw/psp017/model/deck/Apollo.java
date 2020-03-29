@@ -3,38 +3,39 @@ package it.polimi.ing.sw.psp017.model.deck;
 import it.polimi.ing.sw.psp017.model.*;
 
 public class Apollo extends BaseCard {
-    @Override
-    public boolean isValidMove(BoardPosition direction, Worker worker) {
-        BoardPosition targetTilePosition = BoardPosition.sumPositions(worker.getPosition(),direction);
-        Tile targetTile = Game.getBoard()[targetTilePosition.x][targetTilePosition.y];
-        Tile currentTile = Game.getBoard()[worker.getPosition().x][worker.getPosition().y];
-        if(targetTile.isDome() || targetTile.getWorker().getOwner() == worker.getOwner()){
+
+    boolean isEnemyWorker(Worker worker, Worker targetWorker) {
+        if(targetWorker!=null)
+            return targetWorker.getOwner() != worker.getOwner();
+        else
             return false;
-        }
+    }
+
+    @Override
+    public boolean isValidMove(Tile currentTile, Tile targetTile) {
+        Worker targetWorker = targetTile.getWorker();
+        Worker worker=currentTile.getWorker();
+        if (targetTile.isDome() || !isEnemyWorker(worker, targetWorker))
+            return false;
         return targetTile.getLevel() - currentTile.getLevel() >= 2;
     }
 
     @Override
-    public void move(BoardPosition direction, Worker worker){
-        Worker tempWorker ;
-        BoardPosition targetTilePosition = BoardPosition.sumPositions(worker.getPosition(),direction);
-        BoardPosition currentTilePosition = worker.getPosition();
-        Tile targetTile = Game.getBoard()[targetTilePosition.x][targetTilePosition.y];
-        Tile currentTile = Game.getBoard()[worker.getPosition().x][worker.getPosition().y];
-        if(targetTile.getWorker() == null)
-            super.move(direction,worker);
-
-        else {
-            tempWorker= targetTile.getWorker();
-            targetTile.setWorker(worker);
-            currentTile.setWorker(tempWorker);
-            targetTile.getWorker().setPosition(targetTilePosition);
-            currentTile.getWorker().setPosition(currentTilePosition);
-
-        }
-
+    public void move(Tile currentTile, Tile targetTile) {
+        if (targetTile.getWorker() == null)
+            super.move(currentTile, targetTile);
+        else
+            swapWorkers(currentTile,targetTile);
     }
 
+    void swapWorkers(Tile currentTile, Tile targetTile){
+        Worker worker = currentTile.getWorker();
+        Worker enemyWorker = targetTile.getWorker();
 
+        targetTile.setWorker(worker);
+        currentTile.setWorker(enemyWorker);
 
+        worker.setPosition(targetTile.getPosition());
+        enemyWorker.setPosition(currentTile.getPosition());
     }
+}
