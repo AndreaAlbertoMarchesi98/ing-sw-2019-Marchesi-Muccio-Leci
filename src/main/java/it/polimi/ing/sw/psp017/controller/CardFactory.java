@@ -11,6 +11,10 @@ public  class CardFactory {
 
         if (godName == GodName.APOLLO)
             return new Apollo();
+        else if (godName == GodName.ATHENA) {
+
+            return new Athena();
+        }
         else
             throw new NullPointerException();
     }

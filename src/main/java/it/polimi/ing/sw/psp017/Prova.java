@@ -9,8 +9,13 @@ import it.polimi.ing.sw.psp017.view.GodName;
  * Hello world!
  *
  */
-public class App 
+public class Prova
 {
+
+
+
+
+    
     public static void main( String[] args )
     {
         Game game = Game.getInstance();
@@ -23,6 +28,20 @@ public class App
 
         try {
             card=CardFactory.getCard(GodName.APOLLO);
+
+            //controller decorator
+            for (Player player : game.getPlayers()) {
+                if(player.getCard().hasDecorator()){
+                    for (Player otherPlayer : game.getPlayers()) {
+                        if(!player.equals(otherPlayer)){
+                            //addDecorator
+                        }
+                    }
+                }
+            }
+
+
+
             currentTile = pedina.getCurrentTile();
             targetTile = pedina.getTargetTile(new Vector2d(0, 1));
 
@@ -30,7 +49,17 @@ public class App
 
             if(card.checkWin(currentTile,targetTile)) System.out.println("win");
             card.isValidMove(currentTile,targetTile);
-            card.move(currentTile,targetTile);
+
+/*
+            if(card.hasExtraMove)
+            for(int i =0; i<card.extraMoves;i++) {
+                if(targetTile==null)
+                    break;
+                    //input from user
+                else
+                    card.move(currentTile, targetTile);
+            }
+*/
             if(!card.isValidBuilding(targetTile))
                 System.out.println("not valid building");
             card.build(targetTile);
