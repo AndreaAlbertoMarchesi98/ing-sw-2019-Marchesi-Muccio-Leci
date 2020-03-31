@@ -1,14 +1,13 @@
 package it.polimi.ing.sw.psp017.model;
 /*ROBE DA CHIEDERE
-1)worker vuoto o null pointer
-2)board classe statica
-3)azioni multiple
-4)carte con ereditarieta nel model
-5)prometeo model controller, scelat move or build in model o controller
-6)risondanza metodo hasDecorator nei decorators
+1)caso minotar
 */
 public interface Card {
     boolean hasDecorator();
+
+    boolean canMove(int step);
+
+    boolean canBuild(int step);
 
     boolean isValidMove(Tile currentTile, Tile targetTile);
 

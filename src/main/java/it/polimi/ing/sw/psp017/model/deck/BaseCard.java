@@ -4,6 +4,17 @@ import it.polimi.ing.sw.psp017.model.*;
 
 public class BaseCard implements Card{
 
+    public boolean hasDecorator(){
+        return false;
+    }
+
+    public boolean canMove(int step) {
+        return step == 0;
+    }
+
+    public boolean canBuild(int step) {
+        return step == 1;
+    }
 
     public boolean isValidMove(Tile currentTile, Tile targetTile) {
         if(targetTile.isDome() || targetTile.getWorker() != null){
@@ -31,7 +42,4 @@ public class BaseCard implements Card{
         targetTile.setLevel(targetTile.getLevel()+1);
     }
 
-    public boolean hasDecorator(){
-        return false;
-    }
 }
