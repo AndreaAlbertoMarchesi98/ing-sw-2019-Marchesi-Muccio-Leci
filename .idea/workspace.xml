@@ -5,28 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/FirstSocketClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/FirstSocketServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/ClientHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Board.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Step.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/server example/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/ClientHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/ServerState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/Prova.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/Prova.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Tile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Apollo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Apollo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/BaseCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/BaseCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Prometheus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Prometheus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/App.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/controller/CardFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/controller/CardFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/Card.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/Card.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/deck/Athena.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/deck/Athena.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/deck/BaseCard.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/deck/BaseCard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ing/sw/psp017/model/deck/CardDecorator.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -116,6 +99,8 @@
       <workItem from="1585501413619" duration="698000" />
       <workItem from="1585660719999" duration="11348000" />
       <workItem from="1585810835712" duration="5700000" />
+      <workItem from="1585817839591" duration="2085000" />
+      <workItem from="1585823258848" duration="629000" />
     </task>
     <task id="LOCAL-00001" summary="base card implementation, apollo implementation">
       <created>1585491765125</created>
@@ -236,10 +221,11 @@
     </state>
     <state x="277" y="55" key="SettingsEditor/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585408888738" />
     <state x="409" y="72" key="SettingsEditor/76.0.1844.1080@76.0.1844.1080" timestamp="1585492419633" />
-    <state x="412" y="118" key="Vcs.Push.Dialog.v2" timestamp="1585672189271">
-      <screen x="76" y="0" width="1844" height="1080" />
+    <state x="280" y="90" key="Vcs.Push.Dialog.v2" timestamp="1585823289102">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1585385739573" />
+    <state x="280" y="90" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1585823289102" />
     <state x="412" y="118" key="Vcs.Push.Dialog.v2/76.0.1844.1080@76.0.1844.1080" timestamp="1585672189271" />
   </component>
 </project>
