@@ -33,18 +33,7 @@ public class Game {
 }
 
 
-    public static class Board{
-        private static Tile[][] tiles;
-        public static final int size = 5;
 
-        public static Tile[][] getTiles() {
-            return tiles;
-        }
-
-        public static void setTiles(Tile[][] tiles) {
-            Board.tiles = tiles;
-        }
-    }
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;

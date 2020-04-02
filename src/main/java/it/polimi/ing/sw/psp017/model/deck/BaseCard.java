@@ -8,37 +8,48 @@ public class BaseCard implements Card{
         return false;
     }
 
-    public boolean canMove(int step) {
-        return step == 0;
+    public boolean hasChoice(int stepNumber){
+        return false;
     }
 
-    public boolean canBuild(int step) {
-        return step == 1;
+    public boolean canMove(int stepNumber, boolean isPowerActive) {
+        return stepNumber == 0;
     }
 
-    public boolean isValidMove(Tile currentTile, Tile targetTile) {
+    public boolean canBuild(int stepNumber, boolean isPowerActive) {
+        return stepNumber == 1;
+    }
+
+    public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
+        Tile currentTile = currentStep.getCurrentTile();
+        Tile targetTile = currentStep.getTargetTile();
         if(targetTile.isDome() || targetTile.getWorker() != null){
             return false;
         }
         return targetTile.getLevel() - currentTile.getLevel() >= 2;
     }
 
-    public boolean isValidBuilding(Tile targetTile) {
+    public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {
+        Tile targetTile = currentStep.getTargetTile();
         return !targetTile.isDome() && targetTile.getWorker() == null;
     }
 
-    public boolean checkWin(Tile currentTile, Tile targetTile) {
+    public boolean checkWin(Step currentStep, Step previousStep, Board board) {
+        Tile targetTile = currentStep.getTargetTile();
         return targetTile.getLevel() == 3;
     }
 
-    public void move(Tile currentTile, Tile targetTile){
+    public void move(Step currentStep, Step previousStep, Board board){
+        Tile currentTile = currentStep.getCurrentTile();
+        Tile targetTile = currentStep.getTargetTile();
         Worker worker = currentTile.getWorker();
         worker.setPosition(targetTile.getPosition());
         targetTile.setWorker(worker);
         currentTile.setWorker(null);
     }
 
-    public void build(Tile targetTile) {
+    public void build(Step currentStep, Step previousStep, Board board) {
+        Tile targetTile = currentStep.getTargetTile();
         targetTile.setLevel(targetTile.getLevel()+1);
     }
 

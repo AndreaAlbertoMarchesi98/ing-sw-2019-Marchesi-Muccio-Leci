@@ -1,66 +1,52 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
+import it.polimi.ing.sw.psp017.model.Board;
+import it.polimi.ing.sw.psp017.model.Step;
 import it.polimi.ing.sw.psp017.model.Tile;
 
 public class Prometheus extends BaseCard {
 
-    private boolean hasMoved;
-    private boolean canMoveUp;
-    private int stepCounter;
+    @Override
+    public boolean hasChoice(int stepNumber){
+        return stepNumber == 0;
+    }
 
     @Override
-    public boolean canMove(int step) {
-        switch (step) {
+    public boolean canMove(int stepNumber, boolean isPowerActive) {
+        switch (stepNumber) {
             case 0:
-                return true;
+                return !isPowerActive;
             case 1:
-                return !hasMoved;
+                return isPowerActive;
             default:
                 return false;
         }
     }
 
     @Override
-    public boolean canBuild(int step) {
+    public boolean canBuild(int step, boolean isPowerActive) {
         switch (step) {
             case 0:
-                return true;
+                return isPowerActive;
             case 1:
             case 2:
-                return hasMoved;
+                return !isPowerActive;
             default:
                 return false;
         }
     }
 
     @Override
-    public boolean isValidMove(Tile currentTile, Tile targetTile) {
-        if(canMoveUp)
-            return super.isValidMove(currentTile, targetTile);
+    public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
+        Tile currentTile = currentStep.getCurrentTile();
+        Tile targetTile = currentStep.getTargetTile();
+        if(currentStep.isPowerActive())
+            return super.isValidMove(currentStep, previousStep, board);
         else{
             if(targetTile.getLevel()>currentTile.getLevel())
                 return false;
             else
-                return super.isValidMove(currentTile, targetTile);
+                return super.isValidMove(currentStep, previousStep, board);
         }
-    }
-
-    @Override
-    public void move(Tile currentTile, Tile targetTile) {
-        super.move(currentTile, targetTile);
-        canMoveUp = true;
-        hasMoved=true;
-        stepCounter++;
-    }
-
-    @Override
-    public void build(Tile targetTile) {
-        if (stepCounter == 0)
-            canMoveUp = false;
-        else
-            canMoveUp = true;
-        super.build(targetTile);
-        hasMoved=false;
-        stepCounter++;
     }
 }

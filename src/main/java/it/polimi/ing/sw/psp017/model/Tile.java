@@ -6,6 +6,7 @@ public class Tile {
     private boolean isDome;
     final private Vector2d position;
 
+
     public Tile(Vector2d position){
         this.position=position;
         this.worker=null;

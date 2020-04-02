@@ -12,7 +12,9 @@ public class Apollo extends BaseCard {
     }
 
     @Override
-    public boolean isValidMove(Tile currentTile, Tile targetTile) {
+    public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
+        Tile currentTile = currentStep.getCurrentTile();
+        Tile targetTile = currentStep.getTargetTile();
         Worker targetWorker = targetTile.getWorker();
         Worker worker=currentTile.getWorker();
         if (targetTile.isDome() || !isEnemyWorker(worker, targetWorker))
@@ -21,9 +23,11 @@ public class Apollo extends BaseCard {
     }
 
     @Override
-    public void move(Tile currentTile, Tile targetTile) {
+    public void move(Step currentStep, Step previousStep, Board board) {
+        Tile currentTile = currentStep.getCurrentTile();
+        Tile targetTile = currentStep.getTargetTile();
         if (targetTile.getWorker() == null)
-            super.move(currentTile, targetTile);
+            super.move(currentStep, previousStep, board);
         else
             swapWorkers(currentTile,targetTile);
     }

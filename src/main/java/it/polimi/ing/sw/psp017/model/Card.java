@@ -5,17 +5,19 @@ package it.polimi.ing.sw.psp017.model;
 public interface Card {
     boolean hasDecorator();
 
-    boolean canMove(int step);
+    boolean hasChoice(int stepNumber);
 
-    boolean canBuild(int step);
+    boolean canMove(int stepNumber, boolean isPowerActive);
 
-    boolean isValidMove(Tile currentTile, Tile targetTile);
+    boolean canBuild(int stepNumber, boolean isPowerActive);
 
-    boolean isValidBuilding(Tile targetTile);
+    boolean isValidMove(Step currentStep, Step previousStep, Board board);
 
-    boolean checkWin(Tile currentTile, Tile targetTile);
+    boolean isValidBuilding(Step currentStep, Step previousStep, Board board);
 
-    void move(Tile currentTile, Tile targetTile);
+    boolean checkWin(Step currentStep, Step previousStep, Board board);
 
-    void build(Tile targetTile);
+    void move(Step currentStep, Step previousStep, Board board);
+
+    void build(Step currentStep, Step previousStep, Board board);
 }

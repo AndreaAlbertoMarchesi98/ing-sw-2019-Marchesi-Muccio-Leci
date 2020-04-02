@@ -8,7 +8,7 @@ import it.polimi.ing.sw.psp017.view.GodName;
 
 import javax.swing.*;
 import java.util.ArrayList;
-
+/*
 public class Prova
 {
 
@@ -30,11 +30,20 @@ public class Prova
         Tile buildTile;
 
 
+
+
         try {
             card=CardFactory.getCard(GodName.APOLLO);
 
             int turn=0;
+            Player player;
+            boolean isPowerActivated;
             while(card.canMove(turn)||card.canBuild(turn)){
+                Step = new Step(ojjmoolmj,isPowerActivated);
+                if(card.hasChoice(turn))
+                    isPowerActivated=button.value;
+                    //ui stuff button listener
+                    //step.setIsPwerActive(button.toggle)
                 //move or build ui and stuff
                 turn++;
             }
@@ -76,3 +85,4 @@ public class Prova
     }
 
 }
+*/
