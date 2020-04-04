@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
     private String nickname;
     private Color color;
-    private ArrayList<Worker> workers;
+    private ArrayList<Worker> workers =new ArrayList<Worker>();
     private Card card;
 
     public String getNickname() {
@@ -38,5 +38,9 @@ public class Player {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public void addWorker(Worker w){
+        workers.add(w);
     }
 }

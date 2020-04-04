@@ -2,13 +2,13 @@ package it.polimi.ing.sw.psp017.model.deck;
 
 import it.polimi.ing.sw.psp017.model.*;
 
-public class BaseCard implements Card{
+public class BaseCard implements Card {
 
-    public boolean hasDecorator(){
+    public boolean hasDecorator() {
         return false;
     }
 
-    public boolean hasChoice(int stepNumber){
+    public boolean hasChoice(int stepNumber) {
         return false;
     }
 
@@ -23,10 +23,11 @@ public class BaseCard implements Card{
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
         Tile currentTile = currentStep.getCurrentTile();
         Tile targetTile = currentStep.getTargetTile();
-        if(targetTile.isDome() || targetTile.getWorker() != null){
+        if (targetTile.isDome() || targetTile.getWorker() != null) {
             return false;
         }
-        return targetTile.getLevel() - currentTile.getLevel() >= 2;
+        return targetTile.getLevel() - currentTile.getLevel() < 2;
+        //return targetTile.getLevel() - currentTile.getLevel() >= 2;
     }
 
     public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {
@@ -39,7 +40,7 @@ public class BaseCard implements Card{
         return targetTile.getLevel() == 3;
     }
 
-    public void move(Step currentStep, Step previousStep, Board board){
+    public void move(Step currentStep, Step previousStep, Board board) {
         Tile currentTile = currentStep.getCurrentTile();
         Tile targetTile = currentStep.getTargetTile();
         Worker worker = currentTile.getWorker();
@@ -50,7 +51,7 @@ public class BaseCard implements Card{
 
     public void build(Step currentStep, Step previousStep, Board board) {
         Tile targetTile = currentStep.getTargetTile();
-        targetTile.setLevel(targetTile.getLevel()+1);
+        targetTile.setLevel(targetTile.getLevel() + 1);
     }
 
 }

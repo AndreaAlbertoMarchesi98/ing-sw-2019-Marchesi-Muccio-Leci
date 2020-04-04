@@ -10,11 +10,11 @@ public class Worker {
     }
 
     public Tile getCurrentTile() throws NullPointerException{
-        return Game.Board.getTiles()[getPosition().x][getPosition().y];
+        return Board.getTiles()[getPosition().x][getPosition().y];
     }
     public Tile getTargetTile(Vector2d direction) throws NullPointerException{
         Vector2d targetPosition=Vector2d.sumVectors(getPosition(),direction);
-        return Game.Board.getTiles()[targetPosition.x][targetPosition.y];
+        return Board.getTiles()[targetPosition.x][targetPosition.y];
     }
 
     public void setOwner(Player owner) {

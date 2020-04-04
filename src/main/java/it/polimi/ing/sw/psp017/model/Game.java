@@ -30,6 +30,10 @@ public class Game {
             }
         }
         Board.setTiles(createdTiles);
+        players = new ArrayList<Player>();
+        turn = 0;
+        gameOver = false;
+        winner = null;
 }
 
 
@@ -67,7 +71,8 @@ public class Game {
         return winner;
     }
 
-    public void addPlayer() {
+    public void addPlayer(Player p) {
+        players.add(p);
     }
 
     public void startGame() {
