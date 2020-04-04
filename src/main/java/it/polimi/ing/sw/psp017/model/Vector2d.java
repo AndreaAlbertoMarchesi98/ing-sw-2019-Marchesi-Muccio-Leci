@@ -8,11 +8,17 @@ public class Vector2d {
     public int x;
     public int y;
 
-    public static Vector2d sumVectors(Vector2d Vector2d1, Vector2d Vector2d2){
-        Vector2d bp = new Vector2d(0,0);
-        bp.x= Vector2d1.x + Vector2d2.x;
-        bp.y=Vector2d1.y + Vector2d2.y;
-        return bp;
+    public static Vector2d sumVectors(Vector2d vector1, Vector2d vector2){
+        Vector2d vector = new Vector2d(0,0);
+        vector.x= vector1.x + vector2.x;
+        vector.y=vector1.y + vector2.y;
+        return vector;
+}
+    public static Vector2d subtractVectors(Vector2d vector1, Vector2d vector2){
+        Vector2d vector = new Vector2d(0,0);
+        vector.x= vector1.x - vector2.x;
+        vector.y=vector1.y - vector2.y;
+        return vector;
     }
 
 }

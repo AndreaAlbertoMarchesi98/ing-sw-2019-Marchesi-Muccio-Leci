@@ -23,11 +23,10 @@ public class BaseCard implements Card {
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
         Tile currentTile = currentStep.getCurrentTile();
         Tile targetTile = currentStep.getTargetTile();
-        if (targetTile.isDome() || targetTile.getWorker() != null) {
+        if (board.isTileEmpty(targetTile)) {
             return false;
         }
         return targetTile.getLevel() - currentTile.getLevel() < 2;
-        //return targetTile.getLevel() - currentTile.getLevel() >= 2;
     }
 
     public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {
