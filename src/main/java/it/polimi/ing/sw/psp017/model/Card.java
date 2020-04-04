@@ -1,7 +1,5 @@
 package it.polimi.ing.sw.psp017.model;
-/*ROBE DA CHIEDERE
-1)caso minotar
-*/
+
 public interface Card {
     boolean hasDecorator();
 

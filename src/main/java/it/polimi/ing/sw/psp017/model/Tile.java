@@ -19,7 +19,9 @@ public class Tile {
     }
 
     public void setLevel(int level) {
+
         this.level = level;
+        if (level == 4) isDome = true;
     }
 
     public void setDome(boolean dome) {
