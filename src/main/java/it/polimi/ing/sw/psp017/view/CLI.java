@@ -1,12 +1,9 @@
 package it.polimi.ing.sw.psp017.view;
 
-import it.polimi.ing.sw.psp017.model.Board;
-import it.polimi.ing.sw.psp017.model.Game;
-import it.polimi.ing.sw.psp017.model.Tile;
-import it.polimi.ing.sw.psp017.model.Vector2d;
+import it.polimi.ing.sw.psp017.model.*;
 
 public class CLI {
-    void printTile(Tile tile){
+    public static void printTile(Tile tile){
         String worker=null;
         if(tile.getWorker()!=null)
             worker=tile.getWorker().toString();
@@ -25,4 +22,26 @@ public class CLI {
             System.out.println();
         }
     }
+    public static String getNickname(){
+        return "ciao";
+    }
+    public static boolean getChoice(){
+        return true;
+    }
+    public static Tile getTile(Board board){
+        //controllare se è nei bouds
+        return new Tile(new Vector2d(0,0));
+    }
+    public static void printValidTiles(ValidTiles validTiles, Board board){
+        //controllare se è nei bouds
+    }
+    public static Tile getWorkerTile(Board board, Player player){
+        //controllare se è nei bouds
+        return new Tile(new Vector2d(0,0));
+    }
+    public static Tile getTargetTile(Board board, ValidTiles validTiles){
+        //controllare se è una valid tile
+        return new Tile(new Vector2d(0,0));
+    }
+
 }

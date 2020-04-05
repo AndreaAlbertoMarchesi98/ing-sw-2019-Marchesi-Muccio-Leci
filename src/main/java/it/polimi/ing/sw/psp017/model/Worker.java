@@ -4,35 +4,25 @@ public class Worker {
     private Player owner;
     private Vector2d position;
 
-    public Worker(Player owner, Vector2d Vector2d){
+    public Worker(Player owner){
         this.owner = owner;
-        this.position = Vector2d;
+        //this.position = Vector2d;
     }
 
-    public Tile getCurrentTile() throws NullPointerException{
-        return Board.getTiles()[getPosition().x][getPosition().y];
+    public Tile getCurrentTile(Board board) throws NullPointerException{
+        return board.getTile(position);
     }
-    public Tile getTargetTile(Vector2d direction) throws NullPointerException{
-        Vector2d targetPosition=Vector2d.sumVectors(getPosition(),direction);
-        return Board.getTiles()[targetPosition.x][targetPosition.y];
+    public Tile getTargetTile(Board board, Vector2d direction) throws NullPointerException{
+        return board.getTile(Vector2d.sumVectors(position,direction));
     }
 
     public void setOwner(Player owner) {
         this.owner = owner;
     }
-
     public void setPosition(Vector2d workerPosition) {
         this.position = workerPosition;
     }
-
-
-
-
     public Player getOwner() {
         return owner;
-    }
-
-    public Vector2d getPosition() {
-        return position;
     }
 }

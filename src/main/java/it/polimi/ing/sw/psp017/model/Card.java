@@ -1,6 +1,10 @@
 package it.polimi.ing.sw.psp017.model;
 
+import it.polimi.ing.sw.psp017.view.GodName;
+
 public interface Card {
+    GodName getName();
+
     boolean hasDecorator();
 
     boolean hasChoice(int stepNumber);

@@ -8,9 +8,13 @@ public class Game {
     private boolean gameOver;
     private Player winner;
     private static Game single_instance = null;
+    private Board board;
 
     // private constructor restricted to this class itself
 
+    public Board getBoard() {
+        return board;
+    }
     // static method to create instance of Singleton class
     public static Game getInstance()
     {
@@ -23,13 +27,7 @@ public class Game {
 
 
     private Game() {
-        Tile[][] createdTiles = new Tile[5][5];
-        for (int x = 0; x < Board.size; x++) {
-            for (int y = 0; y < Board.size; y++) {
-                createdTiles[x][y]=new Tile(new Vector2d(x,y));
-            }
-        }
-        Board.setTiles(createdTiles);
+        board = new Board();
         players = new ArrayList<Player>();
         turn = 0;
         gameOver = false;

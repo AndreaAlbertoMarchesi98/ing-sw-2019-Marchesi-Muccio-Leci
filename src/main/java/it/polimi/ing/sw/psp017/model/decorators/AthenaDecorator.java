@@ -10,14 +10,12 @@ public class AthenaDecorator extends CardDecorator {
 
     Athena athenaCard;
 
-    public AthenaDecorator(Card newCard, Card referenceCard) {
-        super(newCard, referenceCard);
-        athenaCard = (Athena) referenceCard;
+    public AthenaDecorator(Card newCard) {
+        super(newCard);
     }
 
-    @Override
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
-        if (athenaCard.hasMovedUp()) {
+        if (true) {
             if (currentStep.getTargetTile().getLevel() > currentStep.getCurrentTile().getLevel())
                 return false;
             else

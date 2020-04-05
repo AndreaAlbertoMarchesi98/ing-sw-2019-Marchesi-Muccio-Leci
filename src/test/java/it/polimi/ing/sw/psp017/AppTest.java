@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 
 public class AppTest 
 {
+    /*CODE CEMETERY 2
     Game game = Game.getInstance();
     Card card;
     Step stepcurrent ;
@@ -86,6 +87,6 @@ public class AppTest
    }
 
 
-
+*/
 
 }

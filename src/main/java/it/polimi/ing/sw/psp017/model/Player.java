@@ -8,6 +8,16 @@ public class Player {
     private ArrayList<Worker> workers =new ArrayList<Worker>();
     private Card card;
 
+    public Player(String nickname, Color color){
+        this.nickname = nickname;
+        this.color = color;
+    }
+
+
+    public enum Color {
+        RED, BLUE, GREEN
+    }
+
     public String getNickname() {
         return nickname;
     }

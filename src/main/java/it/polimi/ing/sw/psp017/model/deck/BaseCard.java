@@ -1,8 +1,15 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
 import it.polimi.ing.sw.psp017.model.*;
+import it.polimi.ing.sw.psp017.view.GodName;
 
 public class BaseCard implements Card {
+
+    protected GodName name;
+
+    public GodName getName() {
+        return name;
+    }
 
     public boolean hasDecorator() {
         return false;

@@ -32,7 +32,7 @@ public class Hephaestus extends BaseCard {
 
     @Override
     public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {
-        if (previousStep == null) return super.isValidBuilding(currentStep, previousStep, board);
+        if (!currentStep.isPowerActive()) return super.isValidBuilding(currentStep, previousStep, board);
         else {
             if (currentStep.getTargetTile().getLevel() < 3)
                 return currentStep.getTargetTile() == previousStep.getTargetTile();
