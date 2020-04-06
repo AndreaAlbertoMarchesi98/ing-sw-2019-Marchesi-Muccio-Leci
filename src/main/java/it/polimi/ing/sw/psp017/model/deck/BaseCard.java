@@ -30,10 +30,11 @@ public class BaseCard implements Card {
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
         Tile currentTile = currentStep.getCurrentTile();
         Tile targetTile = currentStep.getTargetTile();
-        if (board.isTileEmpty(targetTile)) {
-            return false;
+        if( targetTile.getLevel() - currentTile.getLevel() < 2) {
+            return (board.isTileEmpty(targetTile));
         }
-        return targetTile.getLevel() - currentTile.getLevel() < 2;
+
+        return false;
     }
 
     public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {

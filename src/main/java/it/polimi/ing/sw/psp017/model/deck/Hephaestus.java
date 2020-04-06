@@ -23,6 +23,7 @@ public class Hephaestus extends BaseCard {
         }
     }
 
+
     @Override
     public void build(Step currentStep, Step previousStep, Board board) {
         Tile targetTile = currentStep.getTargetTile();

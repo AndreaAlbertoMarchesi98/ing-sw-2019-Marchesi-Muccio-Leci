@@ -7,11 +7,11 @@ public class Tile {
     final private Vector2d position;
 
 
-    public Tile(Vector2d position){
-        this.position=position;
-        this.worker=null;
-        this.level=0;
-        this.isDome=false;
+    public Tile(Vector2d position) {
+        this.position = position;
+        this.worker = null;
+        this.level = 0;
+        this.isDome = false;
     }
 
     public Vector2d getPosition() {
@@ -26,22 +26,6 @@ public class Tile {
 
     public void setDome(boolean dome) {
         isDome = dome;
-    }
-
-    public Tile[] validMove(){
-        return null;
-    }
-    public void removeWorker(Worker worker){
-
-    }
-    public void addWorker(Worker worker){
-
-    }
-    public void addLevel(int level){
-
-    }
-    public void addDome(){
-
     }
 
     public Worker getWorker() {

@@ -7,12 +7,12 @@ import it.polimi.ing.sw.psp017.model.Tile;
 
 abstract public class CardDecorator implements Card {
     protected Card tempCard;
-    protected Card referenceCard;
+   // protected Card referenceCard;
 
 
-    public CardDecorator(Card newCard, Card referenceCard) {
+    public CardDecorator(Card newCard) {
         tempCard = newCard;
-        this.referenceCard = referenceCard;
+
     }
 
 

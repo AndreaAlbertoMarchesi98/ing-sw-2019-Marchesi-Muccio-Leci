@@ -3,8 +3,8 @@ package it.polimi.ing.sw.psp017.model.decorators;
 import it.polimi.ing.sw.psp017.model.Board;
 import it.polimi.ing.sw.psp017.model.Card;
 import it.polimi.ing.sw.psp017.model.Step;
-import it.polimi.ing.sw.psp017.model.Tile;
 import it.polimi.ing.sw.psp017.model.deck.Athena;
+import it.polimi.ing.sw.psp017.view.GodName;
 
 public class AthenaDecorator extends CardDecorator {
 
@@ -12,6 +12,11 @@ public class AthenaDecorator extends CardDecorator {
 
     public AthenaDecorator(Card newCard) {
         super(newCard);
+    }
+
+    @Override
+    public GodName getName() {
+        return tempCard.getName();
     }
 
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {

@@ -5,11 +5,12 @@ public class Step {
     Tile targetTile;
     boolean powerActive;
 
-    public Step(Tile currentTile, Tile targetTile, boolean powerActive){
-        this.currentTile= currentTile;
-        this.targetTile=targetTile;
-        this.powerActive=powerActive;
+    public Step(Tile currentTile, Tile targetTile, boolean powerActive) {
+        this.currentTile = currentTile;
+        this.targetTile = targetTile;
+        this.powerActive = powerActive;
     }
+
     public Tile getCurrentTile() {
         return currentTile;
     }

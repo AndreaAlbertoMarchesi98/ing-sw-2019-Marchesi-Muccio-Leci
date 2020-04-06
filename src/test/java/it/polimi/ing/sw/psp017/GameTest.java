@@ -1,13 +1,13 @@
-package it.polimi.ing.sw.psp017.model;
+package it.polimi.ing.sw.psp017;
+import it.polimi.ing.sw.psp017.model.*;
 
 import java.util.ArrayList;
 
-public class Game {
+public class GameTest {
     private ArrayList<Player> players;
     private int turn;
     private boolean gameOver;
     private Player winner;
-    private static Game single_instance = null;
     private Board board;
 
     // private constructor restricted to this class itself
@@ -16,25 +16,16 @@ public class Game {
         return board;
     }
     // static method to create instance of Singleton class
-    public static Game getInstance()
-    {
-        if (single_instance == null) {
-            System.out.println("new game create");
-            single_instance = new Game();
-        }
-        return single_instance;
-    }
 
 
-    private Game() {
+
+    public GameTest() {
         board = new Board();
         players = new ArrayList<Player>();
         turn = 0;
         gameOver = false;
         winner = null;
-}
-
-
+    }
 
 
     public void setTurn(int turn) {
@@ -47,10 +38,6 @@ public class Game {
 
     public void setWinner(Player winner) {
         this.winner = winner;
-    }
-
-    public ArrayList<Player> getPlayers() {
-        return players;
     }
 
     public int getTurn() {
@@ -68,5 +55,7 @@ public class Game {
     public void addPlayer(Player p) {
         players.add(p);
     }
+
+
 
 }

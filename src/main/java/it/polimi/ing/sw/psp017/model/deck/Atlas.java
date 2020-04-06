@@ -1,8 +1,7 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
-import it.polimi.ing.sw.psp017.model.Board;
-import it.polimi.ing.sw.psp017.model.Step;
-import it.polimi.ing.sw.psp017.model.Tile;
+import it.polimi.ing.sw.psp017.model.*;
+
 
 public class Atlas extends BaseCard{
 
