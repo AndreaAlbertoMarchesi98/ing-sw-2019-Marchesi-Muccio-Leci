@@ -4,17 +4,19 @@ import it.polimi.ing.sw.psp017.model.Board;
 import it.polimi.ing.sw.psp017.model.Card;
 import it.polimi.ing.sw.psp017.model.Step;
 import it.polimi.ing.sw.psp017.model.Tile;
+import it.polimi.ing.sw.psp017.view.GodName;
 
 abstract public class CardDecorator implements Card {
     protected Card tempCard;
-    protected Card referenceCard;
 
 
-    public CardDecorator(Card newCard, Card referenceCard) {
+    public CardDecorator(Card newCard) {
         tempCard = newCard;
-        this.referenceCard = referenceCard;
     }
 
+    public GodName getName() {
+        return null;
+    }
 
     public boolean hasChoice(int stepNumber){
         return tempCard.hasChoice(stepNumber);
