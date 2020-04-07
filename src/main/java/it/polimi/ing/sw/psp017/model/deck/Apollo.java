@@ -19,7 +19,7 @@ public class Apollo extends BaseCard {
         Worker worker=currentTile.getWorker();
         if (targetTile.isDome() || !isEnemyWorker(worker, targetWorker))
             return false;
-        return targetTile.getLevel() - currentTile.getLevel() >= 2;
+        return targetTile.getLevel() - currentTile.getLevel() < 2;
     }
 
     @Override

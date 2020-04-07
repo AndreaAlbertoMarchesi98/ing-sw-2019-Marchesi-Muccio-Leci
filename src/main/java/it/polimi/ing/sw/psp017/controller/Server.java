@@ -28,7 +28,7 @@ public class Server {
     }
 
     public static boolean isTurnFinished(Player player, int stepNumber, boolean isPowerActive) {
-        return player.getCard().canMove(stepNumber, isPowerActive) || player.getCard().canBuild(stepNumber, isPowerActive);
+        return !player.getCard().canMove(stepNumber, isPowerActive) && !player.getCard().canBuild(stepNumber, isPowerActive);
     }
 
     public static ValidTiles calculateValidMoves(Step currentStep, Step previousStep, Board board) {

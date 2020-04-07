@@ -27,17 +27,20 @@ public class Client
         System.out.println("Connected");
 
         try {
+
             ObjectOutputStream output = new ObjectOutputStream(server.getOutputStream());
             ObjectInputStream input = new ObjectInputStream(server.getInputStream());
+            String newStr = (String)input.readObject();
+            System.out.println(newStr);
 
             /* write a String to the server, and then get a String back */
-            String str = scanner.nextLine();
+           /* String str = scanner.nextLine();
             while (!"".equals(str)) {
                 output.writeObject(str);
                 String newStr = (String)input.readObject();
                 System.out.println(newStr);
                 str = scanner.nextLine();
-            }
+            }*/
         } catch (IOException e) {
             System.out.println("server has died");
         } catch (ClassCastException | ClassNotFoundException e) {
