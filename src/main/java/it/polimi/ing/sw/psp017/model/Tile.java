@@ -1,5 +1,8 @@
 package it.polimi.ing.sw.psp017.model;
 
+/**
+ * this class is the model of a single cell that make up the game board
+ */
 public class Tile {
     private Worker worker;
     private int level;

@@ -2,6 +2,9 @@ package it.polimi.ing.sw.psp017.model;
 
 import java.util.ArrayList;
 
+/**
+ * this is a Singleton game class
+ */
 public class Game {
     private ArrayList<Player> players;
     private int turn;
@@ -19,7 +22,7 @@ public class Game {
     public static Game getInstance()
     {
         if (single_instance == null) {
-            System.out.println("new game create");
+            System.out.println("new game created");
             single_instance = new Game();
         }
         return single_instance;
@@ -28,7 +31,7 @@ public class Game {
 
     private Game() {
         board = new Board();
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         turn = 0;
         gameOver = false;
         winner = null;

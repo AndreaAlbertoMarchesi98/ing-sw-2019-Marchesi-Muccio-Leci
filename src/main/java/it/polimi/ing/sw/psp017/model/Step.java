@@ -1,5 +1,9 @@
 package it.polimi.ing.sw.psp017.model;
 
+/**
+ * this class is used to remember the previous choice of each player
+ * in order to be used with the various divinity cards
+ */
 public class Step {
     Tile currentTile;
     Tile targetTile;
