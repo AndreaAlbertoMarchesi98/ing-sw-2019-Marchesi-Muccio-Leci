@@ -1,5 +1,8 @@
 package it.polimi.ing.sw.psp017.model;
 
+/**
+ * each player has 2 workers
+ */
 public class Worker {
     private Player owner;
     private Vector2d position;

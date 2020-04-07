@@ -2,6 +2,9 @@ package it.polimi.ing.sw.psp017.model;
 
 import it.polimi.ing.sw.psp017.view.GodName;
 
+/**
+ * this is the interface card which will be implemented by baseCard and extended from each God's card
+ */
 public interface Card {
     GodName getName();
 
