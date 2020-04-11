@@ -50,8 +50,8 @@ abstract public class CardDecorator implements Card {
         tempCard.build(currentStep, previousStep, board);
     }
 
-    public boolean hasDecorator() {
-        return tempCard.hasDecorator();
+    public boolean hasActiveDecorator(Step currentStep, Step previousStep, Board board) {
+        return tempCard.hasActiveDecorator(currentStep,previousStep,board);
     }
 
 }
