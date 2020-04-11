@@ -8,9 +8,9 @@ import it.polimi.ing.sw.psp017.view.GodName;
 public interface Card {
     GodName getName();
 
-    boolean hasDecorator();
-
     boolean hasChoice(int stepNumber);
+
+    boolean hasActiveDecorator(Step currentStep, Step previousStep, Board board);
 
     boolean canMove(int stepNumber, boolean isPowerActive);
 

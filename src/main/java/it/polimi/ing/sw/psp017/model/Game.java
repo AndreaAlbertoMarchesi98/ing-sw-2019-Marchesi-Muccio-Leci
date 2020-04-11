@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * this is a Singleton game class
  */
 public class Game {
+    private int playersCount;
     private ArrayList<Player> players;
     private int turn;
     private boolean gameOver;
@@ -19,26 +20,36 @@ public class Game {
         return board;
     }
     // static method to create instance of Singleton class
-    public static Game getInstance()
+    public static Game getInstance(int playersCount)
     {
         if (single_instance == null) {
             System.out.println("new game created");
-            single_instance = new Game();
+            single_instance = new Game(playersCount);
         }
         return single_instance;
     }
 
 
-    private Game() {
+    private Game(int playersCount) {
         board = new Board();
         players = new ArrayList<>();
         turn = 0;
         gameOver = false;
         winner = null;
+        this.playersCount = playersCount;
 }
 
 
+    public boolean isCreated() {
+        if(single_instance!=null)
+            return true;
+        else
+            return false;
+    }
 
+    public int getPlayersCount() {
+        return playersCount;
+    }
 
     public void setTurn(int turn) {
         this.turn = turn;

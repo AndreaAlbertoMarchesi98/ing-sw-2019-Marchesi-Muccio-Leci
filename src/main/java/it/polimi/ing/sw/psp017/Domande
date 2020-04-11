@@ -6,9 +6,6 @@ cosa abbiamo fatto questa settimana
 
 
 
-domande per 7/04
+domande per 7/03
 IMPORTANTI
--1)implementazione di athenaDecorator ed il suo utilizzo
--2)controllor solo in server o anche in client? se anche in client completo o solo alcune parti?
-CURIOSITA' NON IMPORTANTI
--3)la classe enum Color se chiamata da errore "cannot find symbol", la abbiamo messa dentro la classe player ed ha funzionato
+-1)quando cade connessione la partita continua come prima, un giocatore con stesso nome puo prendere il posto dell ononimo?
