@@ -3,6 +3,7 @@ import it.polimi.ing.sw.psp017.model.*;
 
 import java.util.ArrayList;
 
+//without singleton
 public class GameTest {
     private ArrayList<Player> players;
     private int turn;

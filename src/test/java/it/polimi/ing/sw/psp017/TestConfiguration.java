@@ -6,7 +6,7 @@ import it.polimi.ing.sw.psp017.model.deck.BaseCard;
 import it.polimi.ing.sw.psp017.view.CLI;
 
 public class TestConfiguration {
-      public GameTest game;
+    public GameTest game;
      public Player player1;
      public Player player2;
      public Worker worker1;

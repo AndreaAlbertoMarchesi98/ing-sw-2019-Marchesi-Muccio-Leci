@@ -16,7 +16,7 @@ public class Apollo extends BaseCard {
      *check if the worker selected is an enemy worker
      * @param worker current player's worker
      * @param targetWorker tile of the enemy worker
-     * @return boolean; true if the targetWorker is actually an enemy , otherwise true
+     * @return boolean; true if the targetWorker is actually an enemy , otherwise false
      */
     boolean isEnemyWorker(Worker worker, Worker targetWorker) {
         if(targetWorker!=null)

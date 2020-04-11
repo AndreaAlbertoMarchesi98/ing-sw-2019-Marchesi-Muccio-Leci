@@ -26,16 +26,19 @@ public class ApolloTest {
     @Test
     public void apolloMoveTest() {
         TestConfiguration testConfiguration = new TestConfiguration(card);
-        Tile targetTile = testConfiguration.worker2.getCurrentTile(testConfiguration.game.getBoard());
+        Tile targetTile = testConfiguration.worker2.getCurrentTile(testConfiguration.board);
         Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
-        if (card.isValidMove(currentstep, null, testConfiguration.game.getBoard())) {
-            Tile apollotempworkerTile = testConfiguration.worker1.getCurrentTile(testConfiguration.game.getBoard());
-            Tile enemytempworkertile = testConfiguration.worker2.getCurrentTile(testConfiguration.game.getBoard());
-            card.move(currentstep, null, testConfiguration.game.getBoard());
-            assertSame(apollotempworkerTile, testConfiguration.worker2.getCurrentTile(testConfiguration.game.getBoard()));
-            assertSame(enemytempworkertile, testConfiguration.worker1.getCurrentTile(testConfiguration.game.getBoard()));
+
+        if (card.isValidMove(currentstep, null, testConfiguration.board)) {
+            Tile apollotempworkerTile = testConfiguration.worker1.getCurrentTile(testConfiguration.board);
+            Tile enemytempworkertile = testConfiguration.worker2.getCurrentTile(testConfiguration.board);
+
+            card.move(currentstep, null, testConfiguration.board);
+            assertSame(apollotempworkerTile, testConfiguration.worker2.getCurrentTile(testConfiguration.board));
+            assertSame(enemytempworkertile, testConfiguration.worker1.getCurrentTile(testConfiguration.board));
         }
-        assertTrue("not valid move", card.isValidMove(currentstep, null, testConfiguration.game.getBoard()));
+
+        assertTrue("not valid move", card.isValidMove(currentstep, null, testConfiguration.board));
     }
 }
 
