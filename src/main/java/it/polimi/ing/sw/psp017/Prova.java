@@ -4,6 +4,7 @@ import it.polimi.ing.sw.psp017.controller.CardFactory;
 import it.polimi.ing.sw.psp017.controller.Server;
 import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.CLI;
+import it.polimi.ing.sw.psp017.view.CommandLineInterface;
 import it.polimi.ing.sw.psp017.view.GodName;
 
 import java.io.*;
@@ -104,7 +105,7 @@ public class Prova {
 
                 if (card.hasChoice(stepNumber)) {
                     //CLI GUI
-                    isPowerActive = CLI.getChoice();
+                    isPowerActive = CommandLineInterface.getChoice();
                 }
                 currentStep.setPowerActive(isPowerActive);
                 //CLI GUI stuff

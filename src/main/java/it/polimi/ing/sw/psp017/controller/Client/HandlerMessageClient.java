@@ -36,7 +36,7 @@ public class HandlerMessageClient implements Runnable {
                     String str = scanner.nextLine();
                     while (!"".equals(str)) {
                         output.writeObject(str);
-                        String newStr = (String)input.readObject();
+                         newStr = (String)input.readObject();
                         System.out.println(newStr);
                         str = scanner.nextLine();
                     }
