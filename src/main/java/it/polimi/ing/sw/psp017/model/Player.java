@@ -1,6 +1,7 @@
 package it.polimi.ing.sw.psp017.model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Player {
@@ -10,15 +11,34 @@ public class Player {
     private ArrayList<Worker> workers;
     private Card card;
 
-    public Player(String nickname, Color color) {
+    private Step previousStep;
+
+    public Player(String nickname) {
         this.nickname = nickname;
-        this.color = color;
+        this.color = Color.getRandomColor();
         workers = new ArrayList<Worker>();
     }
 
 
     public enum Color {
-        RED, BLUE, GREEN
+        RED, BLUE, GREEN;
+
+        public static Color getRandomColor() {
+            Random random = new Random();
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Step getPreviousStep() {
+        return previousStep;
+    }
+
+    public void setPreviousStep(Step previousStep) {
+        this.previousStep = previousStep;
     }
 
     public String getNickname() {

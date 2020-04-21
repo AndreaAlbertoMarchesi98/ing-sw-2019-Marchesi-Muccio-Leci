@@ -1,7 +1,7 @@
 package it.polimi.ing.sw.psp017;
 
 import it.polimi.ing.sw.psp017.controller.CardFactory;
-import it.polimi.ing.sw.psp017.controller.Server;
+import it.polimi.ing.sw.psp017.controller.server.Server;
 import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.CLI;
 import it.polimi.ing.sw.psp017.view.CommandLineInterface;
@@ -54,12 +54,12 @@ public class Prova {
         socket.close();
 
 
-        Game game = Game.getInstance(2);
+        Game game = Game.getInstance();
 
         //riempiamo i giocatori
         // System.out.println(CLI.getNickname());
-        Player player1 = new Player("name1", Player.Color.BLUE);
-        Player player2 = new Player("name2", Player.Color.RED);
+        Player player1 = new Player("name1");
+        Player player2 = new Player("name2");
 
         game.addPlayer(player1);
         game.addPlayer(player2);
@@ -95,38 +95,15 @@ public class Prova {
             for (Player otherPlayer : game.getPlayers()) {
                 Card otherCard = otherPlayer.getCard();
                 if (!player.equals(otherPlayer) && otherCard.hasActiveDecorator(currentStep, previousStep, board)) {
-                    card = CardFactory.getDecorator(otherCard.getName(), card);
+
+            //replace   card = CardFactory.getDecorator(otherCard.getName(), card);
+                    //card = otherCard.getDecorator(card);
                 }
             }
 
             boolean isPowerActive = false;
             int stepNumber = 0;
-            while (!Server.isTurnFinished(player, stepNumber, isPowerActive)) {
 
-                if (card.hasChoice(stepNumber)) {
-                    //CLI GUI
-                    isPowerActive = CommandLineInterface.getChoice();
-                }
-                currentStep.setPowerActive(isPowerActive);
-                //CLI GUI stuff
-                if (card.canMove(stepNumber, isPowerActive)) {
-
-                    // ValidTiles validTiles=Server.calculateValidMoves(currentStep,previousStep,board);
-                    //CLI.printValidTiles(validTiles,board);
-                    Tile targetTile = game.getBoard().getTile(new Vector2d(0, 1));
-                    currentStep.setTargetTile(targetTile);
-                    card.move(currentStep, previousStep, board);
-                } else if (card.canBuild(stepNumber, isPowerActive)) {//in futuro da cancellare perche ridondante
-
-
-                    Tile targetTile = game.getBoard().getTile(new Vector2d(1, 1));
-                    currentStep.setTargetTile(targetTile);
-                    card.build(currentStep, previousStep, board);
-                }
-                previousStep = currentStep;
-                currentStep.setCurrentTile(previousStep.getTargetTile());
-                stepNumber++;
-            }
         }
         // }
     }

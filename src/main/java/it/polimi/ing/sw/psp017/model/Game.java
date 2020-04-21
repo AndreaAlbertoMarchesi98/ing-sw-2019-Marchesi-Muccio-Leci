@@ -8,51 +8,55 @@ import java.util.ArrayList;
 public class Game {
     private int playersCount;
     private ArrayList<Player> players;
-    private int turn;
     private boolean gameOver;
     private Player winner;
     private static Game single_instance = null;
     private Board board;
+    private Turn turn;
+
 
     // private constructor restricted to this class itself
 
     public Board getBoard() {
         return board;
     }
+
     // static method to create instance of Singleton class
-    public static Game getInstance(int playersCount)
-    {
+    public static Game getInstance() {
         if (single_instance == null) {
             System.out.println("new game created");
-            single_instance = new Game(playersCount);
+            single_instance = new Game();
         }
         return single_instance;
     }
 
 
-    private Game(int playersCount) {
+    private Game() {
         board = new Board();
         players = new ArrayList<>();
-        turn = 0;
         gameOver = false;
         winner = null;
-        this.playersCount = playersCount;
-}
+    }
 
 
     public boolean isCreated() {
-        if(single_instance!=null)
+        if (single_instance != null)
             return true;
         else
             return false;
     }
 
-    public int getPlayersCount() {
-        return playersCount;
+    public void setUp(int playersCount) {
+        this.playersCount = playersCount;
+        turn = new Turn();
     }
 
-    public void setTurn(int turn) {
-        this.turn = turn;
+    public Turn getTurn() {
+        return turn;
+    }
+
+    public int getPlayersCount() {
+        return playersCount;
     }
 
     public void setGameOver(boolean gameOver) {
@@ -67,10 +71,6 @@ public class Game {
         return players;
     }
 
-    public int getTurn() {
-        return turn;
-    }
-
     public boolean isGameOver() {
         return gameOver;
     }
@@ -81,6 +81,39 @@ public class Game {
 
     public void addPlayer(Player p) {
         players.add(p);
+    }
+
+    public class Turn{
+        int number;
+        int step;
+        int playerIndex;
+        Player player;
+        public Turn(){
+            number = 0;
+            step = 0;
+            playerIndex = 0;
+            Player player = players.get(playerIndex);
+        }
+        public void nextTurn(){
+            number++;
+            step = 0;
+            if(playerIndex == players.size())
+                playerIndex = 0;
+            else
+                playerIndex++;
+            player = players.get(playerIndex);
+        }
+        public boolean isPlayerTurn(Player player) {
+            return this.player.equals(player);
+        }
+
+        public int getNumber() {
+            return number;
+        }
+
+        public int getStep() {
+            return step;
+        }
     }
 
 }

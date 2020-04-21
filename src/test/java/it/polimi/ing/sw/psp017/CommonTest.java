@@ -1,8 +1,7 @@
 package it.polimi.ing.sw.psp017;
 import it.polimi.ing.sw.psp017.controller.CardFactory;
-import it.polimi.ing.sw.psp017.controller.Server;
+import it.polimi.ing.sw.psp017.controller.server.Server1;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.model.deck.BaseCard;
 import it.polimi.ing.sw.psp017.view.GodName;
 
 import static org.junit.Assert.assertEquals;
@@ -49,7 +48,7 @@ public class CommonTest {
 
         boolean isPowerActive = false;
         int stepNumber = 0;
-        while (!Server.isTurnFinished(player, stepNumber, isPowerActive)) {
+        while (!Server1.isTurnFinished(player, stepNumber, isPowerActive)) {
 
             if (card.hasChoice(stepNumber)) {
                 isPowerActive = true;

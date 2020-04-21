@@ -1,0 +1,27 @@
+Mettere nel client il player
+1. deve connettersi
+2. invia il nick
+3. stato di attesa o stato di creazione partita
+4. sceglie carte
+...
+
+ try {
+
+            ObjectOutputStream output = new ObjectOutputStream(server.getOutputStream());
+            ObjectInputStream input = new ObjectInputStream(server.getInputStream());
+            String newStr = (String)input.readObject();
+            System.out.println(newStr);
+
+            /* write a String to the server, and then get a String back */
+           /* String str = scanner.nextLine();
+            while (!"".equals(str)) {
+                output.writeObject(str);
+                String newStr = (String)input.readObject();
+                System.out.println(newStr);
+                str = scanner.nextLine();
+            }*/
+        } catch (IOException e) {
+            System.out.println("server has died");
+        } catch (ClassCastException | ClassNotFoundException e) {
+            System.out.println("protocol violation");
+        }

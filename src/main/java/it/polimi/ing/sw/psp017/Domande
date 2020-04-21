@@ -1,11 +1,10 @@
 cosa abbiamo fatto questa settimana
--1)finito il model con implementazione delle divinitá mancanti
+-1)
 -2)inizio del server
 
 
 
 
 
-domande per 7/03
-IMPORTANTI
--1)quando cade connessione la partita continua come prima, un giocatore con stesso nome puo prendere il posto dell ononimo?
+domande per 28/04
+-1)identificatore univoco per restorare sessione giocatore

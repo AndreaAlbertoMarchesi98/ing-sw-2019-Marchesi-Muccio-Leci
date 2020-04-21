@@ -1,5 +1,6 @@
 package it.polimi.ing.sw.psp017.view;
 
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.ActionMessage;
 import it.polimi.ing.sw.psp017.model.*;
 
 import java.util.Scanner;
@@ -27,7 +28,6 @@ public class CLI {
         }
     }
 
-
     public static Tile getTile(Board board){
         //controllare se è nei bouds
         return new Tile(new Vector2d(0,0));
@@ -43,12 +43,6 @@ public class CLI {
         //controllare se è una valid tile
         return new Tile(new Vector2d(0,0));
     }
-
-
-
-
-
-
 }
 
 

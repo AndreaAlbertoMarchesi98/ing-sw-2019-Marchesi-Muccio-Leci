@@ -1,8 +1,6 @@
 package it.polimi.ing.sw.psp017.model;
 
-/**
- * this is the board game class where the games develops
- */
+
 public class Board {
     private Tile[][] tiles;
     public static final int size = 5;
