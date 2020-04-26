@@ -3,9 +3,10 @@ package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 import it.polimi.ing.sw.psp017.controller.server.Lobby;
 import it.polimi.ing.sw.psp017.view.GodName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LobbyMessage {
+public class LobbyMessage implements Serializable {
     public ArrayList<String> players;
     public ArrayList<GodName> cards;
 

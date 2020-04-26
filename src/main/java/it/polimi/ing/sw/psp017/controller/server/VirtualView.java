@@ -113,7 +113,7 @@ public class VirtualView implements Runnable, View {
 
     @Override
     public void updateGameCreation() {
-
+            sendMessage(new GameCreationMessage());
     }
 
 

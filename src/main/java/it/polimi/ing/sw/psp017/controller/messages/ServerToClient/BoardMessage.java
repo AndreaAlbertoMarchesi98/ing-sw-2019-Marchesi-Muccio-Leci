@@ -2,7 +2,10 @@ package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 
 import it.polimi.ing.sw.psp017.model.*;
 
-public class BoardMessage {
+import java.io.Serializable;
+
+
+public class BoardMessage implements Serializable {
     public  PrintableTile[][] board;
 
     public boolean hasChoice;

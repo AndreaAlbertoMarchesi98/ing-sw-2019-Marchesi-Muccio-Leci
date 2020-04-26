@@ -1,11 +1,12 @@
 package it.polimi.ing.sw.psp017.controller.client;
 
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.DisconnectionMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.GameCreationMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.InvalidNameMessage;
+import it.polimi.ing.sw.psp017.controller.messages.*;
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.controller.server.Server;
 import it.polimi.ing.sw.psp017.view.View;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -23,7 +24,9 @@ public class NetworkHandler implements Runnable{
     public NetworkHandler(View view) {
         this.view = view;
     }
+
     public void startConnection() {
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("IP address of server?");
         String ip = scanner.nextLine();
@@ -60,11 +63,12 @@ public class NetworkHandler implements Runnable{
     public void run() {
         while (isConnected()){
             try {
-                Object message = (Object) input.readObject();
+                Object message =  input.readObject();
                 if(message instanceof InvalidNameMessage){
                     view.updateLoginScreen((InvalidNameMessage)message);
                 }
                 else if(message instanceof GameCreationMessage){
+                    System.out.println("game creation message");
                     view.updateGameCreation();
                 }
 
@@ -85,6 +89,7 @@ public class NetworkHandler implements Runnable{
     public void sendMessage(Object message){
         try{
             output.writeObject(message);
+            System.out.println("wait for Server response");
         } catch (IOException e) {
             e.printStackTrace();
         }

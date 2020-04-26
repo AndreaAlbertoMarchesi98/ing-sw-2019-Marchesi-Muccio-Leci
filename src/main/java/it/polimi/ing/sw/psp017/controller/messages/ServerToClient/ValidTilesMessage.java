@@ -1,6 +1,8 @@
 package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 
-public class ValidTilesMessage {
+import java.io.Serializable;
+
+public class ValidTilesMessage implements Serializable {
     public boolean[][] validTiles;
     public boolean isMove;
 

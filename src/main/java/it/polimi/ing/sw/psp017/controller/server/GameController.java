@@ -6,17 +6,19 @@ import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.CardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.GameSetUpMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.SelectionMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.GameCreationMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.ValidTilesMessage;
 import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.view.ValidTiles;
+import it.polimi.ing.sw.psp017.model.Tile;
 
 import java.util.ArrayList;
 
 public class GameController {
     private enum GameState {
-        GAME_OVER, LOBBY, GAME_RUNNING
+        GAME_OVER, LOBBY, GAME_RUNNING;
     }
 
     private GameState gameState;
@@ -41,6 +43,7 @@ public class GameController {
     }
     public void startGameCreation(VirtualView view) {
         views.add(view);
+        view.updateGameCreation();
         gameRunning = true;
 
     }

@@ -6,13 +6,13 @@ import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 
 
-public class ClientCLI implements View{
-    private  String nickname;
-    private NetworkHandler networkHandler;
+public class CLI implements View{
 
-    public ClientCLI(){
+    private Client client;
+
+    public CLI(Client client){
+        this.client = client;
         printLogo();
-        networkHandler = new NetworkHandler(this);
     }
 
 
@@ -23,7 +23,7 @@ public class ClientCLI implements View{
 
     @Override
     public void notifyNickname(AuthenticationMessage authenticationMessage) {
-        networkHandler.sendMessage(authenticationMessage);
+        client.getNetworkHandler().sendMessage(authenticationMessage);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ClientCLI implements View{
 
     @Override
     public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
-        networkHandler.closeConnection();
+        client.getNetworkHandler().closeConnection();
     }
 
     @Override
@@ -81,7 +81,6 @@ public class ClientCLI implements View{
         if(invalidNameMessage != null){
             System.out.println("Invalid Nickname");
         }
-        System.out.println("gyguygugguu");
         String nickname = CommandLineInterface.getNickname();
         AuthenticationMessage am = new AuthenticationMessage(nickname);
         notifyNickname(am);

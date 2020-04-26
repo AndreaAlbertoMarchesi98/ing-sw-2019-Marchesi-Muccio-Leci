@@ -1,4 +1,6 @@
 package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 
-public class InvalidNameMessage {
+import java.io.Serializable;
+
+public class InvalidNameMessage implements Serializable {
 }

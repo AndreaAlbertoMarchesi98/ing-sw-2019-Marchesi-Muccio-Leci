@@ -1,4 +1,6 @@
 package it.polimi.ing.sw.psp017.controller.messages.ClientToServer;
 
-public class DisconnectionMessage {
+import java.io.Serializable;
+
+public class DisconnectionMessage implements Serializable {
 }
