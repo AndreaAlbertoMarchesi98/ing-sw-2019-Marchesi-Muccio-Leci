@@ -1,10 +1,7 @@
 package it.polimi.ing.sw.psp017.view;
 
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.ValidTilesMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 
 public interface View {
 
@@ -18,7 +15,7 @@ public interface View {
 
     //void updateFrame();
     void updateGameCreation();
-    void updateLoginScreen();
+    void updateLoginScreen(InvalidNameMessage invalidNameMessage);
     void updateLobby(LobbyMessage lobbyMessage);
     void updateWaitingList(WaitMessage waitMessage);
     void updateValidTiles(ValidTilesMessage validTilesMessage);

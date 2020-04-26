@@ -16,5 +16,9 @@ public class Athena extends BaseCard{
         return previousStep.getTargetTile().getLevel()>previousStep.getCurrentTile().getLevel();
     }
 
+    @Override
+    public Card getDecorator(Card cardToDecorate){
+        return new AthenaDecorator(cardToDecorate);
+    }
 
 }

@@ -18,4 +18,6 @@ public class AthenaDecorator extends CardDecorator {
         else
             return super.isValidMove(currentStep, previousStep, board);
     }
+
+
 }

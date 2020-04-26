@@ -1,27 +1,23 @@
 Mettere nel client il player
 1. deve connettersi
 2. invia il nick
-3. stato di attesa o stato di creazione partita
-4. sceglie carte
+3. attende conferma nome
+4. stato di attesa, stato di creazione partita oppure rinvia il nome
+5. sceglie carte
+6.
 ...
 
- try {
 
-            ObjectOutputStream output = new ObjectOutputStream(server.getOutputStream());
-            ObjectInputStream input = new ObjectInputStream(server.getInputStream());
-            String newStr = (String)input.readObject();
-            System.out.println(newStr);
 
-            /* write a String to the server, and then get a String back */
-           /* String str = scanner.nextLine();
-            while (!"".equals(str)) {
-                output.writeObject(str);
-                String newStr = (String)input.readObject();
-                System.out.println(newStr);
-                str = scanner.nextLine();
-            }*/
-        } catch (IOException e) {
-            System.out.println("server has died");
-        } catch (ClassCastException | ClassNotFoundException e) {
-            System.out.println("protocol violation");
-        }
+RICORDA IL PRIMO CHE VIENE AUTENTICATO DEVE DIVENTARE IL PRIMO GIOCATORE --> CHI CREA LA PARTITA
+
+public Object getMessage(Class<?> cls) {
+    for(Object obj : messages){
+        if(cls.isInstance(messages.element()))
+            return messages.poll();
+    }
+    return null;
+}
+
+
+

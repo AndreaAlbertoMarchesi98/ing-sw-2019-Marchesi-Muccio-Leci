@@ -37,7 +37,6 @@ public class Server {
     private void work(){
         while (true) {
             acceptNewConnection();
-
             if (!waitingViews.isEmpty()) {
                 if(!gameController.isGameRunning())
                     gameController.startGameCreation(popWaitingView());

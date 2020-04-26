@@ -34,14 +34,5 @@ public  class CardFactory {
         }
     }
 
-    public static Card getDecorator(GodName godName, Card cardToDecorate){
 
-        switch(godName){
-            case ATHENA:
-                return new AthenaDecorator(cardToDecorate);
-            default:
-                System.out.println("not existing decorator");
-                return null;
-        }
-    }
 }

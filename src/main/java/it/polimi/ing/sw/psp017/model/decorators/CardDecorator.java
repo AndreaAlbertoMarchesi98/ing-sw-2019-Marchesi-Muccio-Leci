@@ -54,4 +54,8 @@ abstract public class CardDecorator implements Card {
         return tempCard.hasActiveDecorator(currentStep,previousStep,board);
     }
 
+    public Card getDecorator(Card cardToDecorate){
+        return tempCard.getDecorator(cardToDecorate);
+    }
+
 }

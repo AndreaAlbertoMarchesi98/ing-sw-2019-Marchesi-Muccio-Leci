@@ -61,4 +61,7 @@ public class BaseCard implements Card {
         targetTile.setLevel(targetTile.getLevel() + 1);
     }
 
+    public Card getDecorator(Card cardToDecorate){
+        return null;
+    }
 }

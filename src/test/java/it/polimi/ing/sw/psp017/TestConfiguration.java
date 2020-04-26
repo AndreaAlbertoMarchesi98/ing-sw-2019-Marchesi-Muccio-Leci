@@ -20,8 +20,8 @@ public class TestConfiguration {
          game =  new GameTest();
 
          //riempiamo i giocator
-       player1 = new Player("name1", Player.Color.BLUE);
-       player2 = new Player("name2", Player.Color.RED);
+       player1 = new Player("name1");
+       player2 = new Player("name2");
 
          game.addPlayer(player1);
          game.addPlayer(player2);

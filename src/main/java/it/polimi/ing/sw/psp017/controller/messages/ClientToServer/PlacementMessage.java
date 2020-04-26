@@ -4,4 +4,8 @@ import it.polimi.ing.sw.psp017.model.Vector2d;
 
 public class PlacementMessage {
     public Vector2d placement;
+
+    public PlacementMessage(Vector2d placement) {
+        this.placement = placement;
+    }
 }

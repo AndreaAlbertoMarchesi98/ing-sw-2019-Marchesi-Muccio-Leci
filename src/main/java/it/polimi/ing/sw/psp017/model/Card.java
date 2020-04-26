@@ -25,4 +25,6 @@ public interface Card {
     void move(Step currentStep, Step previousStep, Board board);
 
     void build(Step currentStep, Step previousStep, Board board);
+
+    Card getDecorator(Card cardToDecorate);
 }

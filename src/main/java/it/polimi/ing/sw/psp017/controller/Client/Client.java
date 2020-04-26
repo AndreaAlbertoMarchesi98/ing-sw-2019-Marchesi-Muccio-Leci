@@ -1,78 +1,48 @@
-package it.polimi.ing.sw.psp017.controller.client;
+package it.polimi.ing.sw.psp017.controller.Client;
+import it.polimi.ing.sw.psp017.controller.server.Server;
+import it.polimi.ing.sw.psp017.controller.server.VirtualView;
+import it.polimi.ing.sw.psp017.view.*;
 
-import it.polimi.ing.sw.psp017.controller.server.Server1;
-
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
-enum clientTask {
-    WAIT, AUTHENTICATE, CREATE_GAME, LOBBY
 
-}
 
-public class Client implements Observers
-{
-    private Socket server;
-    private boolean isClientConnected = false;
-    private Thread threadHandlerMessageClient;
-    private clientTask clientTask;
 
-    public static void main( String[] args )
-    {
-        Client client = new Client();
-        client.startConnection();
-        client.threadHandlerMessageClient = new Thread(new HandlerMessageClient(client, client.server));
-        client.threadHandlerMessageClient.run();
+    public class Client {
+        private  String nickname;
 
-        client.closeConnection();
+        private NetworkHandler networkHandler;
 
-    }
+        private View view;
 
-    private void startConnection(){
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("IP address of server?");
-        String ip = scanner.nextLine();
-
-        /* open a connection to the server */
-        //Socket server;
-        try {
-            server = new Socket(ip, Server1.SOCKET_PORT);
-        } catch (IOException e) {
-            System.out.println("server unreachable");
-            return;
+        public Client (){
+            networkHandler = new NetworkHandler(this);
         }
-        System.out.println("Connected");
-        isClientConnected = true;
-    }
 
-    private void closeConnection() {
-        try {
-            server.close();
-        } catch (IOException e) {
+
+        public static void main(String[] args) {
+            Scanner scanner;
+            System.out.println("CLI or GUI?");
+            scanner = new Scanner(System.in);
+            String choice = scanner.nextLine();
+           // client.startConnection();
+
+            if (choice.equals("C")) {
+               new CLI();
+            }
+            else if(choice.equals("G")){
+                new GUI();
+            }
+
+
+
         }
-        isClientConnected = false;
+
+        public void setView(View v){view = v;}
+        public View getView(){return view;}
+
+
     }
 
-    public boolean isDisconnected(){
-        return !isClientConnected;
-    }
 
-    @Override
-    public void update(Object message) {
-        //in base al messaggio arrivato aggiorna lo stato del client
-        //switch (message){
-                //DECIDERE COME LEGGERE I MESSAGGI E QUALI SCAMBIARE E COME
-      //  }
-        /*
-        * if(Object istanceof TIPO
-        * {
-        *   TIPO t = (TIPO) message;
-        * }
-        * */
-    }
-
-    public clientTask getClientTask(){
-        return clientTask;
-    }
-}
