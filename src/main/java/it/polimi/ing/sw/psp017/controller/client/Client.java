@@ -14,6 +14,7 @@ import java.util.Scanner;
             String choice = scanner.nextLine();
            // client.startConnection();
 
+
             if (choice.equals("C")) {
                new ClientCLI();
             }

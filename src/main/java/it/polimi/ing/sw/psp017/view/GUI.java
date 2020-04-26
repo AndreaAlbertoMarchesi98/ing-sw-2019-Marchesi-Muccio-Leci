@@ -8,7 +8,9 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
 
 import javax.swing.*;
 
-public class GUI extends JFrame implements View{
+public class GUI {
+
+}/*extends JFrame implements View{
 
     private Client client;
 
@@ -94,4 +96,6 @@ public class GUI extends JFrame implements View{
     public void updateBoard(BoardMessage boardMessage) {
 
     }
-}
+
+
+}*/

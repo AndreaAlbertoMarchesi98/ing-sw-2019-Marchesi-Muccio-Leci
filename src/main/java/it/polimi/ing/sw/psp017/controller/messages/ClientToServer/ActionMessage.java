@@ -1,8 +1,9 @@
 package it.polimi.ing.sw.psp017.controller.messages.ClientToServer;
 
 import it.polimi.ing.sw.psp017.model.Vector2d;
+import java.io.Serializable;
 
-public class ActionMessage {
+public class ActionMessage implements Serializable {
     public Vector2d targetTile;
     public Vector2d currentTile;
     public boolean isPowerActive;

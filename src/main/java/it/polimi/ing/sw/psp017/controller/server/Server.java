@@ -1,4 +1,5 @@
 package it.polimi.ing.sw.psp017.controller.server;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.InvalidNameMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
 import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.View;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Server {
@@ -19,6 +21,9 @@ public class Server {
     private ArrayList<VirtualView> viewsInGame;
     private Queue<VirtualView> waitingViews;
 
+    public Server(){
+        waitingViews = new LinkedList<>();
+    }
 
     public static void main(String[] args) {
         Server server = new Server();
@@ -50,7 +55,7 @@ public class Server {
         try {
             Socket client = socket.accept();
 
-            client.setSoTimeout(20);
+            //client.setSoTimeout(20);
             System.out.println("new client connected");
 
             VirtualView virtualView = new VirtualView(client, this);
@@ -81,7 +86,10 @@ public class Server {
             view.setPlayer(player);
             addWaitingView(view);
             return true;
-        } else return false;
+        } else {
+            view.updateLoginScreen(new InvalidNameMessage());
+            return false;
+        }
     }
 
     private boolean isNicknameUnique(String nickname) {

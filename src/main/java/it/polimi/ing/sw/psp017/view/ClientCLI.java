@@ -13,7 +13,6 @@ public class ClientCLI implements View{
     public ClientCLI(){
         printLogo();
         networkHandler = new NetworkHandler(this);
-
     }
 
 
@@ -82,6 +81,7 @@ public class ClientCLI implements View{
         if(invalidNameMessage != null){
             System.out.println("Invalid Nickname");
         }
+        System.out.println("gyguygugguu");
         String nickname = CommandLineInterface.getNickname();
         AuthenticationMessage am = new AuthenticationMessage(nickname);
         notifyNickname(am);

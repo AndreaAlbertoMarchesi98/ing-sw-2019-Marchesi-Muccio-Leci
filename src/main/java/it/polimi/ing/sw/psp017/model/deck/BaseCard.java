@@ -7,6 +7,8 @@ public class BaseCard implements Card {
 
     protected GodName name;
 
+
+
     public GodName getName() {
         return name;
     }

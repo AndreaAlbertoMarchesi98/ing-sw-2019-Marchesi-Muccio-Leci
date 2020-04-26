@@ -22,7 +22,6 @@ public class NetworkHandler implements Runnable{
 
     public NetworkHandler(View view) {
         this.view = view;
-        startConnection();
     }
     public void startConnection() {
         Scanner scanner = new Scanner(System.in);
@@ -31,12 +30,15 @@ public class NetworkHandler implements Runnable{
 
         try {
             this.server = new Socket(ip, Server.SOCKET_PORT);
-            server.setSoTimeout(2000);
+            //server.setSoTimeout(2000);
             this.output = new ObjectOutputStream(server.getOutputStream());
             this.input = new ObjectInputStream(server.getInputStream());
             isConnected = true;
-            this.run();
 
+            Thread thread = new Thread(this);
+            thread.start();
+
+            System.out.println();
             view.updateLoginScreen(null);
         } catch (IOException  e) {
             //displayServerUnreachble();
@@ -67,9 +69,11 @@ public class NetworkHandler implements Runnable{
                 }
 
             } catch (SocketTimeoutException e){
+                e.printStackTrace();
                 view.notifyDisconnection(new DisconnectionMessage());
             }
             catch (SocketException e){
+                e.printStackTrace();
                 view.notifyDisconnection(new DisconnectionMessage());
             }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

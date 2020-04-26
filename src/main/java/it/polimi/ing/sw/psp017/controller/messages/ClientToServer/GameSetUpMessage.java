@@ -7,8 +7,7 @@ import java.util.ArrayList;
 public class GameSetUpMessage {
     public ArrayList<GodName> godNames;
 
-    public GameSetUpMessage(int numPlayers, ArrayList<GodName> godNames) {
-        this.numPlayers = numPlayers;
+    public GameSetUpMessage(ArrayList<GodName> godNames) {
         this.godNames = godNames;
     }
 }

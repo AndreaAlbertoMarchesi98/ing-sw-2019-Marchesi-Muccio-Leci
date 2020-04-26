@@ -6,8 +6,8 @@ public class SelectionMessage {
     public Vector2d workerPosition;
     public boolean isPowerActive;
 
-    public SelectionMessage(Vector2d workerTile, boolean isPowerActive) {
-        this.workerTile = workerTile;
+    public SelectionMessage(Vector2d workerPosition, boolean isPowerActive) {
+        this.workerPosition = workerPosition;
         this.isPowerActive = isPowerActive;
     }
 }

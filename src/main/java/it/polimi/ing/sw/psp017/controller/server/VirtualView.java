@@ -116,12 +116,10 @@ public class VirtualView implements Runnable, View {
 
     }
 
-    @Override
-    public void updateLoginScreen() {
 
+    public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
+        sendMessage(invalidNameMessage);
     }
-
-
     public void updateLobby(LobbyMessage lobbyMessage) {
         sendMessage(lobbyMessage);
     }
