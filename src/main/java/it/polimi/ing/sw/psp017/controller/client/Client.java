@@ -1,25 +1,11 @@
-package it.polimi.ing.sw.psp017.controller.Client;
-import it.polimi.ing.sw.psp017.controller.server.Server;
-import it.polimi.ing.sw.psp017.controller.server.VirtualView;
+package it.polimi.ing.sw.psp017.controller.client;
 import it.polimi.ing.sw.psp017.view.*;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.Scanner;
 
 
 
     public class Client {
-        private  String nickname;
-
-        private NetworkHandler networkHandler;
-
-        private View view;
-
-        public Client (){
-            networkHandler = new NetworkHandler(this);
-        }
-
 
         public static void main(String[] args) {
             Scanner scanner;
@@ -29,18 +15,13 @@ import java.util.Scanner;
            // client.startConnection();
 
             if (choice.equals("C")) {
-               new CLI();
+               new ClientCLI();
             }
             else if(choice.equals("G")){
                 new GUI();
             }
 
-
-
         }
-
-        public void setView(View v){view = v;}
-        public View getView(){return view;}
 
 
     }

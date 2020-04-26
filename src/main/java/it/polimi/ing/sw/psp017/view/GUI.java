@@ -1,21 +1,11 @@
 package it.polimi.ing.sw.psp017.view;
-import it.polimi.ing.sw.psp017.controller.Client.Client;
+import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.ValidTilesMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
-import it.polimi.ing.sw.psp017.model.Vector2d;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GUI extends JFrame implements View{

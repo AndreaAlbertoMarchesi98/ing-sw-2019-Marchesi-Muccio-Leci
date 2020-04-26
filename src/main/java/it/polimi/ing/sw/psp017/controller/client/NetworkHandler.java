@@ -1,11 +1,10 @@
-package it.polimi.ing.sw.psp017.controller.Client;
+package it.polimi.ing.sw.psp017.controller.client;
 
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.AuthenticationMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.DisconnectionMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.GameCreationMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.InvalidNameMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.PingS;
 import it.polimi.ing.sw.psp017.controller.server.Server;
+import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,14 +14,14 @@ import java.util.Scanner;
 
 
 public class NetworkHandler implements Runnable{
-    private Client client;
+    private View view;
     private Socket server;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private boolean isConnected;
 
-    public NetworkHandler(Client client) {
-        this.client = client;
+    public NetworkHandler(View view) {
+        this.view = view;
         startConnection();
     }
     public void startConnection() {
@@ -38,7 +37,7 @@ public class NetworkHandler implements Runnable{
             isConnected = true;
             this.run();
 
-            client.getView().updateLoginScreen(null);
+            view.updateLoginScreen(null);
         } catch (IOException  e) {
             //displayServerUnreachble();
             closeConnection();
@@ -61,17 +60,17 @@ public class NetworkHandler implements Runnable{
             try {
                 Object message = (Object) input.readObject();
                 if(message instanceof InvalidNameMessage){
-                    client.getView().updateLoginScreen((InvalidNameMessage)message);
+                    view.updateLoginScreen((InvalidNameMessage)message);
                 }
                 else if(message instanceof GameCreationMessage){
-                    client.getView().updateGameCreation();
+                    view.updateGameCreation();
                 }
 
             } catch (SocketTimeoutException e){
-                client.getView().notifyDisconnection(new DisconnectionMessage());
+                view.notifyDisconnection(new DisconnectionMessage());
             }
             catch (SocketException e){
-                client.getView().notifyDisconnection(new DisconnectionMessage());
+                view.notifyDisconnection(new DisconnectionMessage());
             }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

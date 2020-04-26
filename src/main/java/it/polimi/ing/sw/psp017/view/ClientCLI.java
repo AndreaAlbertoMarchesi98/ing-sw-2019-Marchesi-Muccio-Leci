@@ -1,22 +1,18 @@
 package it.polimi.ing.sw.psp017.view;
 
-import it.polimi.ing.sw.psp017.controller.Client.Client;
-import it.polimi.ing.sw.psp017.controller.Client.NetworkHandler;
+import it.polimi.ing.sw.psp017.controller.client.Client;
+import it.polimi.ing.sw.psp017.controller.client.NetworkHandler;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
-import it.polimi.ing.sw.psp017.model.Vector2d;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 
-public class CLI implements View{
-    private Client client;
+public class ClientCLI implements View{
+    private  String nickname;
     private NetworkHandler networkHandler;
 
-    public CLI(){
+    public ClientCLI(){
         printLogo();
-        client = new Client();
-        client.setView(this);
+        networkHandler = new NetworkHandler(this);
 
     }
 
