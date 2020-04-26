@@ -2,7 +2,7 @@ package it.polimi.ing.sw.psp017.view;
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
+//import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.ValidTilesMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
 

@@ -5,6 +5,7 @@ import it.polimi.ing.sw.psp017.model.deck.*;
 import it.polimi.ing.sw.psp017.model.decorators.AthenaDecorator;
 import it.polimi.ing.sw.psp017.view.GodName;
 
+
 public  class CardFactory {
 
     public static Card getCard(GodName godName){

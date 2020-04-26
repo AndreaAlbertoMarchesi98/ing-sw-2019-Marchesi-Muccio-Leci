@@ -1,88 +1,188 @@
 package it.polimi.ing.sw.psp017.view;
 
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Game;
 
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
 
-public class CommandLineInterface {
+import java.util.*;
 
-
-    private static Scanner in = new Scanner(System.in);
+public class CommandLineInterface implements  View{
+    public static Scanner in = new Scanner(System.in);
 
 
-    //ANSI COLOR
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String Bright_Black = "\u001b[30;1m";
 
-    //ANSI BACKGROUND
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
-    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
-    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
-    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-
-    //ANSI BRIGHT
-    public static final String ANSI_BRIGHT_BG_BLACK  = "\u001B[100m";
-    public static final String ANSI_BRIGHT_BG_RED    = "\u001B[101m";
-    public static final String ANSI_BRIGHT_BG_GREEN  = "\u001B[102m";
-    public static final String ANSI_BRIGHT_BG_YELLOW = "\u001B[103m";
-    public static final String ANSI_BRIGHT_BG_BLUE   = "\u001B[104m";
-    public static final String ANSI_BRIGHT_BG_PURPLE = "\u001B[105m";
-    public static final String ANSI_BRIGHT_BG_CYAN   = "\u001B[106m";
-    public static final String ANSI_BRIGHT_BG_WHITE  = "\u001B[107m";
-
-    //ANSI
-    public static final String	HIGH_INTENSITY		= "\u001B[1m";
-    public static final String	LOW_INTENSITY		= "\u001B[2m";
-    public static final String	ITALIC				= "\u001B[3m";
-    public static final String	UNDERLINE			= "\u001B[4m";
-    public static final String	BLINK				= "\u001B[5m";
 
 
     public static void main(String[] args) {
 
         ViewTile[][] board = new ViewTile[5][5];
-
-        printLogo();
         Random random = new Random();
-        //System.out.println(getNickname());
-        //System.out.println(getChoice());
-        int answer = getNumberOfPlayers();
+
+
+        //create array from an enum
+        ArrayList<GodName> cards = new ArrayList<>(EnumSet.allOf(GodName.class));
+
+
+
 
 
         for(int i = 0;i <5;i++)
         {
             for(int j = 0;j <5;j++)
             {
-                board[i][j]= new ViewTile(random.nextBoolean(),(int) (Math.random()*3),(int) (Math.random()*3 + 1));
+                board[i][j]= new ViewTile(random.nextBoolean(),(int) (Math.random()*3),(int) (Math.random()*3 ));
 
             }
 
 
         }
+
+
+
+        System.out.println(getChoice());
+        System.out.println(chooseGodCard(cards));
+        startingServerConnection();
+        ViewTile workerPosition = setWorkersPosition(board);
+
+        ViewTile targetTile = getTile(board);
+        System.out.println(getNickname());
+
+        int answer = getNumberOfPlayers();
         printBoard(board);
+
+
 
     }
 
 
+    /**
+     * player choose a card from the deck
+     * @param cards arraylist of card
+     * @return an allowed card
+     */
+    public static GodName chooseGodCard(ArrayList<GodName> cards)
+    {
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Printing Gods card :"+ANSI_RESET);
+
+        printEnumGodName(cards);
+        System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Please select a card :"+ANSI_RESET);
+
+        int answer= 0;
+        do {
+
+            if (answer != 0)
+            {
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please select a valid card" + ANSI_RESET);
+                printEnumGodName(cards);
+            }
+            if (!in.hasNextInt()) {
+
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________this is not a number____________>>>>>>>>>> " + ANSI_RESET);
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please insert a valid card number" + ANSI_RESET);
+                printEnumGodName(cards);
+                try {
+                    answer = in.nextInt();
+                } catch (InputMismatchException e) {
+                    in.nextLine();
+                    answer = 0;
+                }
+            } else {
+                answer = in.nextInt();
+            }
+
+        } while (answer >= cards.size() || answer < 0);
+
+        return cards.get(answer);
+    }
+
+
+    /**
+     * print cards with arrays position
+     * @param cards arraylist of card
+     */
+    public static void printEnumGodName(ArrayList<GodName> cards)
+    {
+        for(int i = 0; i < cards.toArray().length;i++)
+        {
+            System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK +cards.get(i) + "[" +i+ "],  "+ANSI_RESET);
+        }
+        System.out.println();
+    }
+
+    /**
+     * player choose an allowed tile from board when the game start
+     *
+     * @param board board game
+     * @return selected target tile
+     */
+    public static ViewTile setWorkersPosition(ViewTile[][] board) {
+        printBoard(board);
+        int xPosition = -1, yPosition = -1;
+
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Set worker position in an empty tile \n" + ANSI_RESET);
+
+        do {
+            if (xPosition != -1) {
+                if ((board[xPosition][yPosition].dome)) {
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________you have selected a dome____________>>>>>>>>>> " + ANSI_RESET);
+                } else if (board[xPosition][yPosition].player != 0) {
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________this tile is not empty____________>>>>>>>>>> " + ANSI_RESET);
+                }
+
+
+            }
+
+
+            do {
+                if (xPosition != -1)
+                {
+                    printBoard(board);
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________Please try again____________>>>>>>>>>> " + ANSI_RESET);
+                }
+
+
+                try {
+
+                    System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Row : " + ANSI_RESET);
+                    xPosition = in.nextInt();
+
+                    System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Column : " + ANSI_RESET);
+                    yPosition = in.nextInt();
+
+                    System.out.println(xPosition);
+                    System.out.println(yPosition);
+
+
+                } catch (InputMismatchException e) {
+
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________this is not a number____________>>>>>>>>>> " + ANSI_RESET);
+                    in.nextLine();
+                }
+
+
+            } while (!(xPosition > -1 && xPosition < 5 && yPosition > -1 && yPosition < 5));
+
+        } while (board[xPosition][yPosition].dome || board[xPosition][yPosition].player != 0);
 
 
 
+        return board[xPosition][yPosition];
+    }
 
 
+    /**
+     * something to print in users CLI
+     */
+    public static void startingServerConnection(){
+        printLogo();
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Waiting for server connection \n" + ANSI_RESET);
+
+    }
+
+    /**
+     * print logo of the game
+     */
     public static void printLogo() {
         System.out.println(ANSI_CYAN);
         //System.out.println(ANSI_BLACK_BACKGROUND);
@@ -100,8 +200,12 @@ public class CommandLineInterface {
     }
 
 
+    /**
+     * get a valid nickname from the user
+     * @return string name
+     */
     public static String getNickname() {
-        Scanner in = new Scanner(System.in);
+
         System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Please insert your nickname :");
 
         while (!in.hasNext()) {
@@ -110,12 +214,15 @@ public class CommandLineInterface {
         }
         String nickname = in.nextLine();
         System.out.print(ANSI_RESET);
-        //in.close();
         return nickname;
     }
 
+    /**
+     * get players choiche about god power activation
+     * @return boolean choice
+     */
     public static boolean getChoice() {
-        Scanner in = new Scanner(System.in);
+
         System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? ");
         System.out.print("[y/n} :");
         String answer = in.nextLine();
@@ -126,43 +233,65 @@ public class CommandLineInterface {
             answer = in.nextLine();
         }
 
-        in.close();
+
         ansi_reset();
         return !"N".equalsIgnoreCase(answer);
 
     }
 
-    /*
+
+    /**
+     * get a generic tile from the board game
+     * it can be used for move and build
+     * @param board board game
+     * @return a valid target tile
+     */
     public static ViewTile getTile(ViewTile[][] board)
     {
-        int [] positions = {0,0,0}; // x,y,counter
-        printBoard(board);
-        int xPosition,yPosition;
-        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Please enter the target tile coordinates: [x,y]");
-        int answer = -1;
-        do {
-            System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "example : tile [0,3] = 03");
-            String position = in.next();
-            xPosition = position.charAt(0);
-            yPosition = position.charAt(2);
 
-        }while((xPosition < 0 || xPosition > 4)&&(yPosition < 0 || yPosition > 4));
+        printBoard(board);
+
+
+        int xPosition = -1,yPosition = -1;
+
+        System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "Please enter the target tile coordinates: [x,y]"+ ANSI_RESET);
+
+        do {
+            if(xPosition != -1) System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please insert a valid range input____________>>>>>>>>>> " + ANSI_RESET);
+
+
+            try {
+
+                System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK +"Row : " + ANSI_RESET);
+                xPosition = in.nextInt();
+
+                System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK +"Column : " + ANSI_RESET);
+                yPosition = in.nextInt();
+
+            } catch (InputMismatchException e) {
+
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________this is not a number____________>>>>>>>>>> " + ANSI_RESET);
+                in.nextLine();
+            }
+
+
+        }while(!(xPosition>-1 && xPosition < 5 && yPosition>-1 && yPosition < 5));
 
 
         System.out.println();
-        return board;
 
-
-
+        return board[xPosition][yPosition];
 
     }
+
+
+    /**
+     * first player has to choose the number of players
+     * @return a number [1-3]
      */
-
-
-
     public static int getNumberOfPlayers()
     {
-        Scanner in = new Scanner(System.in);
+
         System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "How many players [1-3] ? " + ANSI_RESET);
         int answer = 0;
 
@@ -185,11 +314,15 @@ public class CommandLineInterface {
 
         } while (answer > 3 || answer < 1);
 
-        in.close();
+
         ansi_reset();
         return answer;
     }
 
+    /**
+     * print game board
+     * @param board game board
+     */
     public static void printBoard(ViewTile[][] board) {
 
 
@@ -228,6 +361,9 @@ public class CommandLineInterface {
                     switch (board[i][j].player)
                     {
 
+                        case 0 :
+                            System.out.print(ANSI_BLUE_BACKGROUND + ANSI_BLACK + " ");
+                            break;
                         case 1 :
                             System.out.print(ANSI_BLUE_BACKGROUND + ANSI_BLACK + "♠");
                             break;
@@ -265,6 +401,10 @@ public class CommandLineInterface {
         System.out.print(ANSI_RESET + ANSI_CYAN);
     }
 
+    /**
+     * connected with printBoard for additional information
+     * @param i raw of printboard line
+     */
     public static void option(int i){
 
         System.out.print("                                          ██");
@@ -319,4 +459,105 @@ public class CommandLineInterface {
     }
 
 
+
+
+
+    //ANSI COLOR
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+    public static final String Bright_Black = "\u001b[30;1m";
+
+    //ANSI BACKGROUND
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+
+    //ANSI BRIGHT
+    public static final String ANSI_BRIGHT_BG_BLACK  = "\u001B[100m";
+    public static final String ANSI_BRIGHT_BG_RED    = "\u001B[101m";
+    public static final String ANSI_BRIGHT_BG_GREEN  = "\u001B[102m";
+    public static final String ANSI_BRIGHT_BG_YELLOW = "\u001B[103m";
+    public static final String ANSI_BRIGHT_BG_BLUE   = "\u001B[104m";
+    public static final String ANSI_BRIGHT_BG_PURPLE = "\u001B[105m";
+    public static final String ANSI_BRIGHT_BG_CYAN   = "\u001B[106m";
+    public static final String ANSI_BRIGHT_BG_WHITE  = "\u001B[107m";
+
+    //ANSI
+    public static final String	HIGH_INTENSITY		= "\u001B[1m";
+    public static final String	LOW_INTENSITY		= "\u001B[2m";
+    public static final String	ITALIC				= "\u001B[3m";
+    public static final String	UNDERLINE			= "\u001B[4m";
+    public static final String	BLINK				= "\u001B[5m";
+
+    @Override
+    public void notifyNickname(AuthenticationMessage authenticationMessage) {
+
+    }
+
+    @Override
+    public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage) {
+
+    }
+
+    @Override
+    public void notifyCard(CardMessage cardMessage) {
+
+    }
+
+    @Override
+    public void notifySelection(SelectionMessage selectionMessage) {
+
+    }
+
+    @Override
+    public void notifyAction(ActionMessage actionMessage) {
+
+    }
+
+    @Override
+    public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
+
+    }
+
+    @Override
+    public void updateGameCreation() {
+
+    }
+
+    @Override
+    public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
+
+    }
+
+    @Override
+    public void updateLobby(LobbyMessage lobbyMessage) {
+
+    }
+
+    @Override
+    public void updateWaitingList(WaitMessage waitMessage) {
+
+    }
+
+    @Override
+    public void updateValidTiles(ValidTilesMessage validTilesMessage) {
+
+    }
+
+    @Override
+    public void updateBoard(BoardMessage boardMessage) {
+
+    }
 }

@@ -3,7 +3,7 @@ package it.polimi.ing.sw.psp017;
 import it.polimi.ing.sw.psp017.controller.CardFactory;
 import it.polimi.ing.sw.psp017.controller.server.Server;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.CLI;
+//import it.polimi.ing.sw.psp017.view.CLI;
 import it.polimi.ing.sw.psp017.view.CommandLineInterface;
 import it.polimi.ing.sw.psp017.view.GodName;
 

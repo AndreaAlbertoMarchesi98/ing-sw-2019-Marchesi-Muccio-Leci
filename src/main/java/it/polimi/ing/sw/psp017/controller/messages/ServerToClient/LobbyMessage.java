@@ -1,3 +1,6 @@
+
+
+
 package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 
 import it.polimi.ing.sw.psp017.controller.server.Lobby;
@@ -15,3 +18,5 @@ public class LobbyMessage implements Serializable {
         this.cards = lobby.getRemainingCards();
     }
 }
+
+
