@@ -85,23 +85,29 @@ public class Game {
 
     public class Turn{
         int number;
-        int step;
+        int stepNumber;
         int playerIndex;
         Player player;
         public Turn(){
             number = 0;
-            step = 0;
+            stepNumber = 0;
             playerIndex = 0;
             Player player = players.get(playerIndex);
         }
         public void nextTurn(){
             number++;
-            step = 0;
+            stepNumber = 0;
             if(playerIndex == players.size())
                 playerIndex = 0;
             else
                 playerIndex++;
             player = players.get(playerIndex);
+        }
+        public boolean hasChoice(){
+            return player.getCard().hasChoice(stepNumber);
+        }
+        public Player getActivePlayer(){
+            return  player;
         }
         public boolean isPlayerTurn(Player player) {
             return this.player.equals(player);
@@ -111,8 +117,8 @@ public class Game {
             return number;
         }
 
-        public int getStep() {
-            return step;
+        public int getStepNumber() {
+            return stepNumber;
         }
     }
 

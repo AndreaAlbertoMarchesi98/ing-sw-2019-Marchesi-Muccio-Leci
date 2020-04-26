@@ -16,6 +16,9 @@ public class Prova {
     public static void main(String[] args) throws IOException {
 
 
+
+
+
         //nome
         //dove entra(se entra in lobby in attesa o in create  game)
         //numero giocatori carte

@@ -1,12 +1,13 @@
 package it.polimi.ing.sw.psp017.controller.server;
 
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.RemainingCardsMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Board;
+import it.polimi.ing.sw.psp017.model.Card;
 import it.polimi.ing.sw.psp017.model.Player;
 import it.polimi.ing.sw.psp017.model.Step;
 import it.polimi.ing.sw.psp017.view.GodName;
+import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,7 +17,7 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Queue;
 
-public class VirtualView implements Runnable {
+public class VirtualView implements Runnable, View {
 
     private Player player;
     private boolean isConnected;
@@ -48,8 +49,6 @@ public class VirtualView implements Runnable {
     @Override
     public void run() {
         try {
-            authenticate();
-
             processMessages();
         } catch (SocketTimeoutException e) {
             notifyDisconnection();
@@ -58,40 +57,29 @@ public class VirtualView implements Runnable {
         }
     }
 
-    private void authenticate() throws IOException, ClassNotFoundException {
-        Object obj;
-        while (!isAuthenticated) {
-            obj = input.readObject();
-            if (obj instanceof AuthenticationMessage) {
-                String nickname = ((AuthenticationMessage) obj).nickname;
-                if (server.tryAuthenticatingView(nickname, this)) {
-                    isAuthenticated = true;
-                } else {
-                    //username already taken
-                }
-            }
-        }
-    }
 
     private void processMessages() throws IOException, ClassNotFoundException {
         while (true) {
             Object message = input.readObject();
 
-            if (message instanceof GameSetUpMessage) {
-                GameSetUpMessage gc = ((GameSetUpMessage) message);
-                gameController.createLobby(this, gc.godNames);
-            } else if (message instanceof CardMessage) {
-                CardMessage cc = ((CardMessage) message);
-                gameController.setPlayerCard(cc.godName, this);
-            } else if (message instanceof SelectionMessage) {
-                SelectionMessage sm = ((SelectionMessage) message);
-                gameController.calculateValidTiles(sm.workerTile, sm.isPowerActive, this);
-            } else if (message instanceof ActionMessage) {
-                ActionMessage am = ((ActionMessage) message);
-                //gameController.performAction();
-            } else if (message instanceof DisconnectionMessage) {
+            if (message instanceof AuthenticationMessage)
+                notifyNickname((AuthenticationMessage)message);
+
+            else if (message instanceof GameSetUpMessage)
+                notifyGameSetUp((GameSetUpMessage)message);
+
+            else if (message instanceof CardMessage)
+                notifyCard((CardMessage)message);
+
+            else if (message instanceof SelectionMessage)
+                notifySelection((SelectionMessage)message);
+
+             else if (message instanceof ActionMessage)
+                notifyAction((ActionMessage)message);
+
+            else if (message instanceof DisconnectionMessage)
                 notifyDisconnection();
-            }
+
 
         }
     }
@@ -103,29 +91,54 @@ public class VirtualView implements Runnable {
             server.handleDisconnection(this);
     }
 
-    public void updateLobby(ArrayList<String> players, ArrayList<GodName> cards) {
-        LobbyMessage npm = new LobbyMessage(players, cards);
+    public void notifyNickname(AuthenticationMessage authenticationMessage) {
+        String nickname = authenticationMessage.nickname;
+        server.tryAuthenticatingView(nickname, this);
+    }
+    public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage){
+        gameController.createLobby(gameSetUpMessage,this);
+    }
+    public void notifyCard(CardMessage cardMessage){
+        gameController.setPlayerCard(cardMessage, this);
+    }
+    public void notifySelection(SelectionMessage selectionMessage){
+        gameController.calculateValidTiles(selectionMessage);
+    }
+    public void notifyAction(ActionMessage actionMessage){
+        gameController.performAction(actionMessage, player);
+    }
+    public void notifyDisconnection(DisconnectionMessage disconnectionMessage){
+        //gameController.createLobby(gameSetUpMessage);
+    }
+
+    @Override
+    public void updateGameCreation() {
+
+    }
+
+    @Override
+    public void updateLoginScreen() {
+
+    }
+
+
+    public void updateLobby(LobbyMessage lobbyMessage) {
+        sendMessage(lobbyMessage);
+    }
+    public void updateWaitingList(WaitMessage waitMessage) {
+        sendMessage(waitMessage);
+    }
+    public void updateValidTiles(ValidTilesMessage validTilesMessage) {
+        sendMessage(validTilesMessage);
+    }
+    public void updateBoard(BoardMessage boardMessage) {
+        sendMessage(boardMessage);
+    }
+    private void sendMessage(Object message){
         try {
-            output.writeObject(npm);
+            output.writeObject(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void updateCardChoices(ArrayList<GodName> card) {
-        RemainingCardsMessage ccm = new RemainingCardsMessage(card);
-        try {
-            output.writeObject(ccm);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void updateValidTiles(boolean[][] validTiles) {
-
-    }
-
-    public void updateBoard(Board board) {
-
     }
 }
