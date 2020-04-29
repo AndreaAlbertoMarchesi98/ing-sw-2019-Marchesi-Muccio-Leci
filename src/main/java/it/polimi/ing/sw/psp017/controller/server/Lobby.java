@@ -7,15 +7,17 @@ import java.util.ArrayList;
 
 public class Lobby {
     private ArrayList<Player> players;
-    private ArrayList<GodName> remainingCards;
+    private ArrayList<GodName> availableCards;
+    private ArrayList<GodName> cards;
     private int playersCount;
     private int expectedPlayersCount;
-    private int turnToChoose;
 
-    public Lobby(Player firstPlayer, ArrayList<GodName> godNames){
-        players.add(firstPlayer);
-        this.remainingCards = godNames;
+    public Lobby(ArrayList<GodName> godNames){
         expectedPlayersCount = godNames.size();
+        cards = godNames;
+        availableCards = cards;
+        playersCount = 0;
+        players = new ArrayList<>();
     }
 
     public ArrayList<String> getPlayersNames(){
@@ -36,16 +38,25 @@ public class Lobby {
         return expectedPlayersCount;
     }
 
-    public Player getPlayer(int index) {
-        return players.get(index);
-    }
 
     public void addPlayer(Player player) {
-        this.players.add(player);
+        players.add(player);
         playersCount++;
     }
 
-    public ArrayList<GodName> getRemainingCards() {
-        return remainingCards;
+    public ArrayList<GodName> getAvailableCards() {
+        return availableCards;
+    }
+
+    public ArrayList<GodName> getCards() {
+        return cards;
+    }
+
+    public int getChoosingPlayerIndex(){
+        return availableCards.size() - 1;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

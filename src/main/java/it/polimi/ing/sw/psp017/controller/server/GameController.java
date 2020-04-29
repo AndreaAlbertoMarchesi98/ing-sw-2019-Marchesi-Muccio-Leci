@@ -1,10 +1,7 @@
 package it.polimi.ing.sw.psp017.controller.server;
 
 import it.polimi.ing.sw.psp017.controller.CardFactory;
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.ActionMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.CardMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.GameSetUpMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.SelectionMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.GameCreationMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
@@ -22,46 +19,63 @@ public class GameController {
     }
 
     private GameState gameState;
-    private boolean gameRunning;
     private ArrayList<VirtualView> views;
     private Game game;
     private Lobby lobby;
 
     public GameController() {
+        views = new ArrayList<>();
         game = Game.getInstance();
     }
 
-    public boolean isGameRunning() {
-        return gameRunning;
+    public boolean isGameCreatable() {
+        return views.isEmpty();
     }
 
-    public boolean isLobbyFull() {
-        if (gameState == GameState.LOBBY)
+    public boolean isLobbyJoinable() {
+
+        if (lobby!=null) {
+            System.out.println("joinable: "+(lobby.getPlayerCount() < lobby.getExpectedPlayersCount()));
             return lobby.getPlayerCount() < lobby.getExpectedPlayersCount();
+        }
         else
             return false;
     }
     public void startGameCreation(VirtualView view) {
-        views.add(view);
-        view.updateGameCreation();
-        gameRunning = true;
+        System.out.println("start game creation");
 
+        views.add(view);
+        view.setGameController(this);
+        view.getPlayer().setPlayerIndex(views.size());
+
+        view.updateGameCreation();
     }
     public void addPlayerToLobby(VirtualView view) {
+        System.out.println("addingPlayerToLobby");
         views.add(view);
+        view.setGameController(this);
+        view.getPlayer().setPlayerIndex(views.size());
+
         lobby.addPlayer(view.getPlayer());
-        if (lobby.getExpectedPlayersCount() == views.size())
-            notifyLobby();
+        view.getPlayer().setPlayerIndex(lobby.getPlayerCount());
+
+        notifyLobby();
     }
     public void createLobby(GameSetUpMessage message, VirtualView view) {
-        if (gameState == GameState.GAME_OVER) {
-            lobby = new Lobby(view.getPlayer(), message.godNames);
-            gameState = GameState.LOBBY;
-        }
+        System.out.println("creatingLobby");
+        lobby = new Lobby(message.godNames);
+
+        lobby.addPlayer(view.getPlayer());
+        view.getPlayer().setPlayerIndex(lobby.getPlayerCount());
+
+        gameState = GameState.LOBBY;
+
     }
     private void startGame() {
-        game.setUp(lobby.getExpectedPlayersCount());
+        game.setUp(lobby.getPlayers());
+        notifyBoard();
     }
+
     public void handleDisconnection(VirtualView view) {
 
     }
@@ -71,9 +85,10 @@ public class GameController {
 
     private void notifyLobby() {
         LobbyMessage message = new LobbyMessage(lobby);
-        for (VirtualView view : views) {
-            view.updateLobby(message);
-        }
+        int choosingViewIndex = lobby.getChoosingPlayerIndex();
+        System.out.println("choosing player index: "+choosingViewIndex);
+        VirtualView choosingView = views.get(choosingViewIndex);
+        choosingView.updateLobby(message);
     }
 
     public void notifyValidTiles(boolean[][] validTiles) {
@@ -90,32 +105,42 @@ public class GameController {
         }
     }
 //               view reactions
+    public void placeWorkers(PlacementMessage message){
+        Vector2d worker1Position = message.firstWorker;
+        Vector2d worker2Position = message.secondWorker;
+        Player player = game.getTurn().getPlayer();
+        game.getBoard().getTile(worker1Position).setWorker(new Worker(player));
+        game.getBoard().getTile(worker1Position).setWorker(new Worker(player));
+    }
     public void performAction(ActionMessage message, Player player) {
-        Tile currentTile = game.getBoard().getTile(message.currentTile);
-        Tile targetTile = game.getBoard().getTile(message.targetTile);
-        Step currentStep = new Step(currentTile, targetTile, message.isPowerActive);
-        if (game.getTurn().isPlayerTurn(player)) {
-            Step previousStep = player.getPreviousStep();
-            Card card = player.getCard();
+        if(game.getTurn().getSelectedTile()!=null) {
+            Tile currentTile = game.getTurn().getSelectedTile();
+            Tile targetTile = game.getBoard().getTile(message.targetTile);
+            boolean isPowerActive =game.getTurn().isPowerActive();
+            Step currentStep = new Step(currentTile, targetTile, isPowerActive);
+            if (game.getTurn().isPlayerTurn(player)) {
+                Step previousStep = player.getPreviousStep();
+                Card card = player.getCard();
 
-            if (card.canMove(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
-                card.move(currentStep, previousStep, game.getBoard());
-            else if (!card.canBuild(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
-                card.build(currentStep, previousStep, game.getBoard());
+                if (card.canMove(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
+                    card.move(currentStep, previousStep, game.getBoard());
+                else if (!card.canBuild(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
+                    card.build(currentStep, previousStep, game.getBoard());
 
-            notifyBoard();
+                notifyBoard();
+            }
         }
     }
     public void setPlayerCard(CardMessage message, VirtualView view) {
         GodName godName = message.godName;
         if (gameState == GameState.LOBBY && lobby.isPlayerTurn(view.getPlayer())) {
-            if (lobby.getRemainingCards().contains(godName)) {
-                lobby.getRemainingCards().remove(godName);
+            if (lobby.getAvailableCards().contains(godName)) {
+                lobby.getAvailableCards().remove(godName);
 
                 view.getPlayer().setCard(CardFactory.getCard(godName));
 
-                if (lobby.getRemainingCards().size() == 1) {
-                    Card lastCard = CardFactory.getCard(lobby.getRemainingCards().get(0));
+                if (lobby.getAvailableCards().size() == 1) {
+                    Card lastCard = CardFactory.getCard(lobby.getAvailableCards().get(0));
                     views.get(0).getPlayer().setCard(lastCard);
                     startGame();
                 } else
@@ -126,9 +151,12 @@ public class GameController {
     public void calculateValidTiles(SelectionMessage selectionMessage) {
         boolean isPowerActive = selectionMessage.isPowerActive;
         Vector2d workerPosition = selectionMessage.workerPosition;
-        Tile currentTile = game.getBoard().getTile(workerPosition);
-        Player player = currentTile.getWorker().getOwner();
-        Step currentStep = new Step(currentTile,null,isPowerActive);
+        Tile selectedTile = game.getBoard().getTile(workerPosition);
+        Player player = selectedTile.getWorker().getOwner();
+        Step currentStep = new Step(selectedTile,null,isPowerActive);
+
+        game.getTurn().setSelectedTile(selectedTile);
+        game.getTurn().setPowerActive(isPowerActive);
 
         if(player.getCard().canMove(game.getTurn().getStepNumber(), isPowerActive))
             notifyValidTiles(calculateValidMoves(currentStep, player));

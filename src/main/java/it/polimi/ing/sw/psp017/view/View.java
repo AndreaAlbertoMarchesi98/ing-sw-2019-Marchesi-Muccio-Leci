@@ -7,7 +7,6 @@ public interface View {
 
     //send information to controller
     void notifyNickname(AuthenticationMessage authenticationMessage);
-
     void notifyGameSetUp(GameSetUpMessage gameSetUpMessage);
     void notifyCard(CardMessage cardMessage);
     void notifyPlacement(PlacementMessage placementMessage);  //messaggio poszionamento pedine

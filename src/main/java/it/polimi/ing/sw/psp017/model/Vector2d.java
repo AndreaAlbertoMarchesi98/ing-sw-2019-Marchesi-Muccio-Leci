@@ -1,6 +1,8 @@
 package it.polimi.ing.sw.psp017.model;
 
-public class Vector2d {
+import java.io.Serializable;
+
+public class Vector2d implements Serializable {
     public int x;
     public int y;
 

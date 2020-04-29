@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * this is a Singleton game class
  */
 public class Game {
-    private int playersCount;
     private ArrayList<Player> players;
     private boolean gameOver;
     private Player winner;
@@ -46,17 +45,9 @@ public class Game {
             return false;
     }
 
-    public void setUp(int playersCount) {
-        this.playersCount = playersCount;
-        turn = new Turn();
-    }
 
     public Turn getTurn() {
         return turn;
-    }
-
-    public int getPlayersCount() {
-        return playersCount;
     }
 
     public void setGameOver(boolean gameOver) {
@@ -83,16 +74,23 @@ public class Game {
         players.add(p);
     }
 
+    public void setUp(ArrayList<Player> players) {
+        this.players = players;
+        turn = new Turn();
+    }
+
     public class Turn{
         int number;
         int stepNumber;
         int playerIndex;
         Player player;
+        boolean powerActive;
+        Tile selectedTile;
         public Turn(){
             number = 0;
             stepNumber = 0;
             playerIndex = 0;
-            Player player = players.get(playerIndex);
+            player = players.get(playerIndex);
         }
         public void nextTurn(){
             number++;
@@ -102,6 +100,7 @@ public class Game {
             else
                 playerIndex++;
             player = players.get(playerIndex);
+            selectedTile = null;
         }
         public boolean hasChoice(){
             return player.getCard().hasChoice(stepNumber);
@@ -113,12 +112,32 @@ public class Game {
             return this.player.equals(player);
         }
 
-        public int getNumber() {
-            return number;
+        public int getPlayerIndex() {
+            return playerIndex;
+        }
+
+        public Player getPlayer() {
+            return player;
         }
 
         public int getStepNumber() {
             return stepNumber;
+        }
+
+        public Tile getSelectedTile() {
+            return selectedTile;
+        }
+
+        public void setSelectedTile(Tile selectedTile) {
+            this.selectedTile = selectedTile;
+        }
+
+        public boolean isPowerActive() {
+            return powerActive;
+        }
+
+        public void setPowerActive(boolean powerActive) {
+            this.powerActive = powerActive;
         }
     }
 

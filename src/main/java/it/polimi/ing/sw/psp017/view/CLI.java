@@ -187,7 +187,7 @@ public class CLI implements View {
         printBoard(boardMessage.board);
 
         //se e il suo turno
-        if (boardMessage.activePlayer == 0)//identificatore intero nuova variabile)
+        if (boardMessage.activePlayerIndex == 0)//identificatore intero nuova variabile)
         {
             if(boardMessage.hasChoice)
             {

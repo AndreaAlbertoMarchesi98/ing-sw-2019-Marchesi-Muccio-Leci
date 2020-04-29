@@ -20,15 +20,14 @@ import java.util.Queue;
 public class VirtualView implements Runnable, View {
 
     private Player player;
-    private boolean isConnected;
-    private boolean isAuthenticated;
     private Server server;
-    private Socket client;
     private GameController gameController;
-    private boolean hasJoinedLobby;
-    private Queue<Object> messages;
-    ObjectInputStream input;
-    ObjectOutputStream output;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
 
     public Player getPlayer() {
         return player;
@@ -39,8 +38,6 @@ public class VirtualView implements Runnable, View {
     }
 
     public VirtualView(Socket client, Server server) throws IOException {
-        this.client = client;
-        this.isAuthenticated = false;
         this.server = server;
         input = new ObjectInputStream(client.getInputStream());
         output = new ObjectOutputStream(client.getOutputStream());
@@ -117,12 +114,10 @@ public class VirtualView implements Runnable, View {
         //gameController.createLobby(gameSetUpMessage);
     }
 
-    @Override
     public void updateGameCreation() {
+        System.out.println(getPlayer().getNickname()+": update game creation");
             sendMessage(new GameCreationMessage());
     }
-
-
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
         sendMessage(invalidNameMessage);
     }

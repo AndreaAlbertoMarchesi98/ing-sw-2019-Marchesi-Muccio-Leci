@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 public class LobbyMessage implements Serializable {
     public ArrayList<String> players; //numero di giocatori definitivo
-
     public ArrayList<GodName> availableCards;//carte che puoi scegliere
     public ArrayList<GodName> cards;//carte scelte dal primo player
 
     public LobbyMessage(Lobby lobby) {
         this.players = lobby.getPlayersNames();
-        this.cards = lobby.getRemainingCards();
+        this.availableCards = lobby.getAvailableCards();
+        this.cards = lobby.getCards();
     }
 }
 

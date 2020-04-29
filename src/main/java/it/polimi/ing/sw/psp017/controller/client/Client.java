@@ -1,4 +1,5 @@
 package it.polimi.ing.sw.psp017.controller.client;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.view.*;
 
 import java.util.Scanner;
@@ -20,6 +21,9 @@ import java.util.Scanner;
             System.out.println("CLI or GUI?");
             scanner = new Scanner(System.in);
             String choice = scanner.nextLine();
+
+
+
 
 
 

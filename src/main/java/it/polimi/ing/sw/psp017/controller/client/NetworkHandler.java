@@ -73,6 +73,10 @@ public class NetworkHandler implements Runnable{
                     System.out.println("game creation message");
                     view.updateGameCreation();
                 }
+                else if(message instanceof LobbyMessage){
+                    System.out.println("lobby message");
+                    view.updateLobby((LobbyMessage) message);
+                }
                 else if(message instanceof BoardMessage){
 
 
