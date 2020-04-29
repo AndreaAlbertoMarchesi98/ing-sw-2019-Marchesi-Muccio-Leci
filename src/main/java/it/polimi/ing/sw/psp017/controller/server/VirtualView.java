@@ -101,6 +101,12 @@ public class VirtualView implements Runnable, View {
     public void notifyCard(CardMessage cardMessage){
         gameController.setPlayerCard(cardMessage, this);
     }
+
+    @Override
+    public void notifyPlacement(PlacementMessage placementMessage) {
+
+    }
+
     public void notifySelection(SelectionMessage selectionMessage){
         gameController.calculateValidTiles(selectionMessage);
     }
@@ -123,7 +129,7 @@ public class VirtualView implements Runnable, View {
     public void updateLobby(LobbyMessage lobbyMessage) {
         sendMessage(lobbyMessage);
     }
-    public void updateWaitingList(WaitMessage waitMessage) {
+    public void updateWaitingRoom(WaitMessage waitMessage) {
         sendMessage(waitMessage);
     }
     public void updateValidTiles(ValidTilesMessage validTilesMessage) {

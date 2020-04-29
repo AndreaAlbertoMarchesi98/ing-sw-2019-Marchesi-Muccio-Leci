@@ -7,8 +7,12 @@ import java.util.Scanner;
 
     public class Client {
         private  NetworkHandler networkHandler;
+        private int index;
         private View view;
+        private int playerIndex;
         private String nickname;
+
+
 
         public static void main(String[] args) {
             Client client = new Client();
@@ -33,6 +37,23 @@ import java.util.Scanner;
 
         public NetworkHandler getNetworkHandler(){
             return this.networkHandler;
+        }
+
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setPlayerIndex(int playerIndex) {
+            this.playerIndex = playerIndex;
+        }
+
+        public int getPlayerIndex() {
+            return playerIndex;
         }
 
     }

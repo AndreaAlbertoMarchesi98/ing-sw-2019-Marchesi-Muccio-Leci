@@ -8,9 +8,9 @@ public interface View {
     //send information to controller
     void notifyNickname(AuthenticationMessage authenticationMessage);
 
-    //a
     void notifyGameSetUp(GameSetUpMessage gameSetUpMessage);
     void notifyCard(CardMessage cardMessage);
+    void notifyPlacement(PlacementMessage placementMessage);  //messaggio poszionamento pedine
     void notifySelection(SelectionMessage selectionMessage);
     void notifyAction(ActionMessage actionMessage);
     void notifyDisconnection(DisconnectionMessage disconnectionMessage);
@@ -18,10 +18,10 @@ public interface View {
 
     //get information from controller
     //void updateFrame();
-    void updateGameCreation();
+    void updateGameCreation();  //username valido && primo giocatore
     void updateLoginScreen(InvalidNameMessage invalidNameMessage);
-    void updateLobby(LobbyMessage lobbyMessage);
-    void updateWaitingList(WaitMessage waitMessage);
+    void updateLobby(LobbyMessage lobbyMessage);//1> tutte le carte, other il resto delle carte
+    void updateWaitingRoom(WaitMessage waitMessage);//giocatori in attesa
     void updateValidTiles(ValidTilesMessage validTilesMessage);
     void updateBoard(BoardMessage boardMessage);
 }

@@ -21,6 +21,8 @@ public class NetworkHandler implements Runnable{
     private ObjectOutputStream output;
     private boolean isConnected;
 
+
+
     public NetworkHandler(View view) {
         this.view = view;
     }
@@ -70,6 +72,11 @@ public class NetworkHandler implements Runnable{
                 else if(message instanceof GameCreationMessage){
                     System.out.println("game creation message");
                     view.updateGameCreation();
+                }
+                else if(message instanceof BoardMessage){
+
+
+                    view.updateBoard((BoardMessage) message);
                 }
 
             } catch (SocketTimeoutException e){

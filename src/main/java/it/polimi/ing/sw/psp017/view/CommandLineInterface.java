@@ -7,7 +7,7 @@ import it.polimi.ing.sw.psp017.model.Game;
 
 import java.util.*;
 
-public class CommandLineInterface implements  View{
+public class CommandLineInterface{
     public static Scanner in = new Scanner(System.in);
 
 
@@ -319,6 +319,8 @@ public class CommandLineInterface implements  View{
         return answer;
     }
 
+
+
     /**
      * print game board
      * @param board game board
@@ -501,63 +503,5 @@ public class CommandLineInterface implements  View{
     public static final String	UNDERLINE			= "\u001B[4m";
     public static final String	BLINK				= "\u001B[5m";
 
-    @Override
-    public void notifyNickname(AuthenticationMessage authenticationMessage) {
 
-    }
-
-    @Override
-    public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage) {
-
-    }
-
-    @Override
-    public void notifyCard(CardMessage cardMessage) {
-
-    }
-
-    @Override
-    public void notifySelection(SelectionMessage selectionMessage) {
-
-    }
-
-    @Override
-    public void notifyAction(ActionMessage actionMessage) {
-
-    }
-
-    @Override
-    public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
-
-    }
-
-    @Override
-    public void updateGameCreation() {
-
-    }
-
-    @Override
-    public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
-
-    }
-
-    @Override
-    public void updateLobby(LobbyMessage lobbyMessage) {
-
-    }
-
-    @Override
-    public void updateWaitingList(WaitMessage waitMessage) {
-
-    }
-
-    @Override
-    public void updateValidTiles(ValidTilesMessage validTilesMessage) {
-
-    }
-
-    @Override
-    public void updateBoard(BoardMessage boardMessage) {
-
-    }
 }

@@ -2,7 +2,6 @@ package it.polimi.ing.sw.psp017.controller.server;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.InvalidNameMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -72,11 +71,11 @@ public class Server {
     private VirtualView popWaitingView(){
         VirtualView view = waitingViews.poll();
         for(VirtualView waitingView : waitingViews)
-            waitingView.updateWaitingList(new WaitMessage(waitingViews.size()));
+            waitingView.updateWaitingRoom(new WaitMessage(waitingViews.size()));
         return view;
     }
     private void addWaitingView(VirtualView view){
-        view.updateWaitingList(new WaitMessage(waitingViews.size()));
+        view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
         waitingViews.add(view);
     }
 

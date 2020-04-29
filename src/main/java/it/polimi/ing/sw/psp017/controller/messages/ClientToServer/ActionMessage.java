@@ -5,13 +5,12 @@ import java.io.Serializable;
 
 public class ActionMessage implements Serializable {
     public Vector2d targetTile;
-    public Vector2d currentTile;
-    public boolean isPowerActive;
+    //current tile
+    //ispoweractive
 
-    ActionMessage(Vector2d targetTile, Vector2d currentTile, boolean isPowerActive){
+    public ActionMessage(Vector2d targetTile){
         this.targetTile = targetTile;
-        this.currentTile = currentTile;
-        this.isPowerActive = isPowerActive;
+
     }
 
 }
