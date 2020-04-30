@@ -80,36 +80,36 @@ public class Game {
     }
 
     public class Turn{
-        int number;
         int stepNumber;
         int playerIndex;
-        Player player;
         boolean powerActive;
         Tile selectedTile;
+
         public Turn(){
-            number = 0;
             stepNumber = 0;
             playerIndex = 0;
-            player = players.get(playerIndex);
+        }
+        public void nextStep(){
+            stepNumber++;
+            selectedTile = null;
         }
         public void nextTurn(){
-            number++;
+            powerActive = false;
             stepNumber = 0;
-            if(playerIndex == players.size())
+            if(playerIndex == players.size() - 1)
                 playerIndex = 0;
             else
                 playerIndex++;
-            player = players.get(playerIndex);
             selectedTile = null;
         }
         public boolean hasChoice(){
-            return player.getCard().hasChoice(stepNumber);
+            return players.get(playerIndex).getCard().hasChoice(stepNumber);
         }
         public Player getActivePlayer(){
-            return  player;
+            return  players.get(playerIndex);
         }
         public boolean isPlayerTurn(Player player) {
-            return this.player.equals(player);
+            return players.get(playerIndex).equals(player);
         }
 
         public int getPlayerIndex() {
@@ -117,7 +117,7 @@ public class Game {
         }
 
         public Player getPlayer() {
-            return player;
+            return players.get(playerIndex);
         }
 
         public int getStepNumber() {

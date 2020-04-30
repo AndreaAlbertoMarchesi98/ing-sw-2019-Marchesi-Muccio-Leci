@@ -10,7 +10,7 @@ import java.util.Scanner;
         private  NetworkHandler networkHandler;
         private int index;
         private View view;
-        private int playerIndex;
+        private int playerNumber;
         private String nickname;
 
 
@@ -20,7 +20,7 @@ import java.util.Scanner;
             Scanner scanner;
             System.out.println("CLI or GUI?");
             scanner = new Scanner(System.in);
-            String choice = scanner.nextLine();
+            String choice = "C";//scanner.nextLine();
 
 
 
@@ -52,12 +52,13 @@ import java.util.Scanner;
             return nickname;
         }
 
-        public void setPlayerIndex(int playerIndex) {
-            this.playerIndex = playerIndex;
+        public void setPlayerNumber(int playerNumber) {
+            System.out.println("calling set player number" + playerNumber);
+            this.playerNumber = playerNumber;
         }
 
-        public int getPlayerIndex() {
-            return playerIndex;
+        public int getPlayerNumber() {
+            return playerNumber;
         }
 
     }

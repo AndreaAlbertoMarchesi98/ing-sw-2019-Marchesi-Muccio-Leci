@@ -68,8 +68,14 @@ public class VirtualView implements Runnable, View {
             else if (message instanceof CardMessage)
                 notifyCard((CardMessage)message);
 
+            else if (message instanceof PlacementMessage)
+                notifyPlacement((PlacementMessage)message);
+
             else if (message instanceof SelectionMessage)
                 notifySelection((SelectionMessage)message);
+
+            else if (message instanceof PowerActiveMessage)
+                notifyIsPowerActive((PowerActiveMessage) message);
 
              else if (message instanceof ActionMessage)
                 notifyAction((ActionMessage)message);
@@ -101,11 +107,16 @@ public class VirtualView implements Runnable, View {
 
     @Override
     public void notifyPlacement(PlacementMessage placementMessage) {
-
+        gameController.placeWorkers(placementMessage);
     }
 
-    public void notifySelection(SelectionMessage selectionMessage){
-        gameController.calculateValidTiles(selectionMessage);
+    @Override
+    public void notifySelection(SelectionMessage selectionMessage) {
+        gameController.selectWorker(selectionMessage);
+    }
+
+    public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage){
+        gameController.setPowerActive(powerActiveMessage);
     }
     public void notifyAction(ActionMessage actionMessage){
         gameController.performAction(actionMessage, player);

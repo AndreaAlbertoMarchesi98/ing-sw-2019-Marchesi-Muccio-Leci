@@ -32,7 +32,7 @@ public class NetworkHandler implements Runnable{
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("IP address of server?");
-        String ip = scanner.nextLine();
+        String ip = "127.0.0.1";//scanner.nextLine();
 
         try {
             this.server = new Socket(ip, Server.SOCKET_PORT);

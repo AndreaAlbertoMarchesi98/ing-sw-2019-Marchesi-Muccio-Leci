@@ -7,6 +7,7 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.GameCreationMe
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.ValidTilesMessage;
 import it.polimi.ing.sw.psp017.model.*;
+import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.view.ValidTiles;
 import it.polimi.ing.sw.psp017.model.Tile;
@@ -28,19 +29,23 @@ public class GameController {
         game = Game.getInstance();
     }
 
+    public ArrayList<VirtualView> getViews() {
+        return views;
+    }
+
     public boolean isGameCreatable() {
         return views.isEmpty();
     }
 
     public boolean isLobbyJoinable() {
 
-        if (lobby!=null) {
-            System.out.println("joinable: "+(lobby.getPlayerCount() < lobby.getExpectedPlayersCount()));
+        if (lobby != null) {
+            System.out.println("joinable: " + (lobby.getPlayerCount() < lobby.getExpectedPlayersCount()));
             return lobby.getPlayerCount() < lobby.getExpectedPlayersCount();
-        }
-        else
+        } else
             return false;
     }
+
     public void startGameCreation(VirtualView view) {
         System.out.println("start game creation");
 
@@ -50,6 +55,7 @@ public class GameController {
 
         view.updateGameCreation();
     }
+
     public void addPlayerToLobby(VirtualView view) {
         System.out.println("addingPlayerToLobby");
         views.add(view);
@@ -61,6 +67,7 @@ public class GameController {
 
         notifyLobby();
     }
+
     public void createLobby(GameSetUpMessage message, VirtualView view) {
         System.out.println("creatingLobby");
         lobby = new Lobby(message.godNames);
@@ -71,9 +78,10 @@ public class GameController {
         gameState = GameState.LOBBY;
 
     }
+
     private void startGame() {
         game.setUp(lobby.getPlayers());
-        notifyBoard();
+        notifyBoard(null, ActionNames.PLACE_WORKERS);
     }
 
     public void handleDisconnection(VirtualView view) {
@@ -86,37 +94,40 @@ public class GameController {
     private void notifyLobby() {
         LobbyMessage message = new LobbyMessage(lobby);
         int choosingViewIndex = lobby.getChoosingPlayerIndex();
-        System.out.println("choosing player index: "+choosingViewIndex);
         VirtualView choosingView = views.get(choosingViewIndex);
         choosingView.updateLobby(message);
     }
 
-    public void notifyValidTiles(boolean[][] validTiles) {
-        ValidTilesMessage message= new ValidTilesMessage(validTiles);
-        for (VirtualView view : views) {
-            view.updateValidTiles(message);
-        }
-    }
 
-    public void notifyBoard() {
-        BoardMessage message= new BoardMessage(game.getBoard(),game.getTurn());
+    public void notifyBoard(boolean[][] validTiles, ActionNames action) {
+        System.out.println("activePlayerIndex is: " + game.getTurn().getPlayerIndex());
+        BoardMessage message = new BoardMessage(game, validTiles, action);//da finire
         for (VirtualView view : views) {
             view.updateBoard(message);
         }
     }
-//               view reactions
-    public void placeWorkers(PlacementMessage message){
+
+    //               view reactions
+    public void placeWorkers(PlacementMessage message) {
+        System.out.println("placing workers");
         Vector2d worker1Position = message.firstWorker;
         Vector2d worker2Position = message.secondWorker;
         Player player = game.getTurn().getPlayer();
         game.getBoard().getTile(worker1Position).setWorker(new Worker(player));
-        game.getBoard().getTile(worker1Position).setWorker(new Worker(player));
+        game.getBoard().getTile(worker2Position).setWorker(new Worker(player));
+
+        game.getTurn().nextTurn();
+
+        notifyBoard(null, ActionNames.PLACE_WORKERS);
     }
+
     public void performAction(ActionMessage message, Player player) {
-        if(game.getTurn().getSelectedTile()!=null) {
+        System.out.println("performing action");
+        if (game.getTurn().getSelectedTile() != null) {
             Tile currentTile = game.getTurn().getSelectedTile();
             Tile targetTile = game.getBoard().getTile(message.targetTile);
-            boolean isPowerActive =game.getTurn().isPowerActive();
+            System.out.println("selectedTile is: " + currentTile.getPosition().toString());
+            boolean isPowerActive = game.getTurn().isPowerActive();
             Step currentStep = new Step(currentTile, targetTile, isPowerActive);
             if (game.getTurn().isPlayerTurn(player)) {
                 Step previousStep = player.getPreviousStep();
@@ -124,13 +135,28 @@ public class GameController {
 
                 if (card.canMove(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
                     card.move(currentStep, previousStep, game.getBoard());
-                else if (!card.canBuild(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
+                else if (card.canBuild(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
                     card.build(currentStep, previousStep, game.getBoard());
 
-                notifyBoard();
+                game.getTurn().nextStep();
+                if(isTurnFinished(card,currentStep.isPowerActive()))//da sistemare
+                {
+                    game.getTurn().nextTurn();
+                    notifyBoard(null, ActionNames.SELECT_WORKER);
+                }
+                else{
+                    notifyBoard(calculateValidTiles(), calculateAction());
+                }
+
+
             }
         }
     }
+    private boolean isTurnFinished(Card card, boolean isPowerActive){
+        int stepNumber = game.getTurn().getStepNumber();
+        return !card.canMove(stepNumber, isPowerActive) && !card.canBuild(stepNumber, isPowerActive);
+    }
+
     public void setPlayerCard(CardMessage message, VirtualView view) {
         GodName godName = message.godName;
         if (gameState == GameState.LOBBY && lobby.isPlayerTurn(view.getPlayer())) {
@@ -148,32 +174,58 @@ public class GameController {
             }
         }
     }
-    public void calculateValidTiles(SelectionMessage selectionMessage) {
-        boolean isPowerActive = selectionMessage.isPowerActive;
-        Vector2d workerPosition = selectionMessage.workerPosition;
-        Tile selectedTile = game.getBoard().getTile(workerPosition);
+
+    public void selectWorker(SelectionMessage message){
+        Tile selectedTile = game.getBoard().getTile(message.workerPosition);
+        game.getTurn().setSelectedTile(selectedTile);
+
+        notifyBoard(calculateValidTiles(), calculateAction());
+    }
+
+    public void setPowerActive(PowerActiveMessage message){
+        game.getTurn().setPowerActive(message.isPowerActive);
+        notifyLobby();
+    }
+
+    private ActionNames calculateAction(){
+        Card card = game.getTurn().getActivePlayer().getCard();
+        int stepNumber = game.getTurn().getStepNumber();
+        boolean isPowerActive = game.getTurn().isPowerActive();
+        if (card.canMove(stepNumber, isPowerActive))
+            return ActionNames.MOVE;
+        else if (card.canBuild(stepNumber, isPowerActive))
+            return ActionNames.BUILD;
+        else
+            return ActionNames.NONE;
+    }
+
+    private boolean[][] calculateValidTiles() {
+        System.out.println("calculating validTiles");
+        boolean isPowerActive = game.getTurn().isPowerActive();
+        Tile selectedTile = game.getTurn().getSelectedTile();
         Player player = selectedTile.getWorker().getOwner();
-        Step currentStep = new Step(selectedTile,null,isPowerActive);
+        Step currentStep = new Step(selectedTile, null, isPowerActive);
 
         game.getTurn().setSelectedTile(selectedTile);
         game.getTurn().setPowerActive(isPowerActive);
 
-        if(player.getCard().canMove(game.getTurn().getStepNumber(), isPowerActive))
-            notifyValidTiles(calculateValidMoves(currentStep, player));
-        else if(player.getCard().canBuild(game.getTurn().getStepNumber(), isPowerActive))
-            notifyValidTiles(calculateValidBuilds(currentStep, player));
+        if (player.getCard().canMove(game.getTurn().getStepNumber(), isPowerActive))
+            return calculateValidMoves(currentStep, player);
+        else if (player.getCard().canBuild(game.getTurn().getStepNumber(), isPowerActive))
+            return calculateValidBuilds(currentStep, player);
         else
-            notifyValidTiles(new boolean[3][3]);
+            return new boolean[5][5];
     }
+
     private boolean[][] calculateValidMoves(Step currentStep, Player player) {
         Vector2d workerPosition = currentStep.getCurrentTile().getPosition();
         Card card = player.getCard();
         Step previousStep = player.getPreviousStep();
-        boolean [][] validTiles = new boolean[3][3];
-        for (int x = workerPosition.x - 1; x < ValidTiles.size; x++) {
-            for (int y = workerPosition.y - 1; y < ValidTiles.size; y++) {
-                if (x != workerPosition.x && y != workerPosition.y) {
-                    Vector2d position = new Vector2d(x,y);
+        boolean[][] validTiles = new boolean[5][5];
+        for (int x = workerPosition.x - 1; x <= workerPosition.x + 1; x++) {
+            for (int y = workerPosition.y - 1; y <= workerPosition.y + 1; y++) {
+                Vector2d position = new Vector2d(x, y);
+                if (Board.isInsideBounds(position) && !position.equals(workerPosition)) {
                     currentStep.setTargetTile(game.getBoard().getTile(position));
                     validTiles[x][y] = card.isValidMove(currentStep, previousStep, game.getBoard());
                 }
@@ -181,15 +233,16 @@ public class GameController {
         }
         return validTiles;
     }
+
     private boolean[][] calculateValidBuilds(Step currentStep, Player player) {
         Vector2d workerPosition = currentStep.getCurrentTile().getPosition();
         Card card = player.getCard();
         Step previousStep = player.getPreviousStep();
-        boolean [][] validTiles = new boolean[3][3];
-        for (int x = workerPosition.x - 1; x < ValidTiles.size; x++) {
-            for (int y = workerPosition.y - 1; y < ValidTiles.size; y++) {
-                if (x != workerPosition.x && y != workerPosition.y) {
-                    Vector2d position = new Vector2d(x,y);
+        boolean[][] validTiles = new boolean[5][5];
+        for (int x = workerPosition.x - 1; x <= workerPosition.x + 1; x++) {
+            for (int y = workerPosition.y - 1; y <= workerPosition.y + 1; y++) {
+                Vector2d position = new Vector2d(x, y);
+                if (Board.isInsideBounds(position) && !position.equals(workerPosition)) {
                     currentStep.setTargetTile(game.getBoard().getTile(position));
                     validTiles[x][y] = card.isValidBuilding(currentStep, previousStep, game.getBoard());
                 }

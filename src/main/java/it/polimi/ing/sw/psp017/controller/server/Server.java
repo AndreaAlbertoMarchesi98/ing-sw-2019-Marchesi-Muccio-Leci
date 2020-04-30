@@ -96,6 +96,10 @@ public class Server implements Runnable {
             if (nickname.equals(view.getPlayer().getNickname()))
                 return false;
         }
+        for (VirtualView view : gameController.getViews()) {
+            if (nickname.equals(view.getPlayer().getNickname()))
+                return false;
+        }
         return true;
     }
 

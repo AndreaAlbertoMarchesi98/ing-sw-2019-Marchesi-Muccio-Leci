@@ -27,6 +27,7 @@ public class CLI implements View {
     public CLI(Client client) {
         this.client = client;
         printLogo();
+        isPositionWorkersPhase = true;
     }
 
 
@@ -98,6 +99,8 @@ public class CLI implements View {
     @Override
     public void updateGameCreation() {
 
+        client.setPlayerNumber(1);
+
         System.out.println("dentro updateGameCreation");
 
         //scegli il numero di giocatori
@@ -134,7 +137,7 @@ public class CLI implements View {
 
 
         //salvataggio index del giocatore
-        client.setPlayerIndex(lobbyMessage.players.indexOf(client.getNickname()));
+        client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname()) + 1);
 
 
         //stampa i player dal messaggio  <<<<<<<<<<<<<<<<da fare
@@ -187,7 +190,8 @@ public class CLI implements View {
         printBoard(boardMessage.board);
 
         //se e il suo turno
-        if (boardMessage.activePlayerIndex == 0)//identificatore intero nuova variabile)
+        System.out.println("client playerNumber is:" + client.getPlayerNumber());
+        if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
         {
             if(boardMessage.hasChoice)
             {
@@ -395,7 +399,7 @@ public class CLI implements View {
 
                     System.out.print(ANSI_GREEN_BACKGROUND);
                     System.out.print("   ");
-                    switch (board[i][j].playerIndex + 1)
+                    switch (board[i][j].playerNumber)
                     {
 
                         case 0 :
@@ -412,7 +416,7 @@ public class CLI implements View {
                             break;
                         default: break;
                     }
-                    System.out.print(board[i][j].playerIndex);
+                    System.out.print(board[i][j].playerNumber);
                     ansi_reset();
                     System.out.print("║  ");
                 }
@@ -642,7 +646,6 @@ public class CLI implements View {
         } while (!(xPosition > -1 && xPosition < 5 && yPosition > -1 && yPosition < 5));
 
 
-        System.out.println();
         return new Vector2d(xPosition,yPosition);
 
     }
