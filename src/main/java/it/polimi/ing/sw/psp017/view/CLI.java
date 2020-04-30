@@ -271,16 +271,16 @@ public class CLI implements View {
     public int getNumberOfPlayers()
     {
 
-        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "How many players [1-3] ? " + ANSI_RESET);
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "How many players [2-3] ? " + ANSI_RESET);
         int answer = 0;
 
         do {
 
             if (answer != 0)
-                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please insert a valid number [1-3]" + ANSI_RESET);
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please insert a valid number [2-3]" + ANSI_RESET);
             if (!in.hasNextInt()) {
                 System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________this is not a number____________>>>>>>>>>> " + ANSI_RESET);
-                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please insert a valid number [1-3]" + ANSI_RESET);
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please insert a valid number [2-3]" + ANSI_RESET);
                 try {
                     answer = in.nextInt();
                 } catch (InputMismatchException e) {

@@ -4,6 +4,7 @@ import it.polimi.ing.sw.psp017.controller.messages.*;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.controller.server.Server;
+import it.polimi.ing.sw.psp017.view.ValidTiles;
 import it.polimi.ing.sw.psp017.view.View;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
@@ -78,9 +79,16 @@ public class NetworkHandler implements Runnable{
                     view.updateLobby((LobbyMessage) message);
                 }
                 else if(message instanceof BoardMessage){
-
-
                     view.updateBoard((BoardMessage) message);
+                }
+                else if(message instanceof LobbyMessage){
+                    view.updateLobby((LobbyMessage)message);
+                }
+                else if(message instanceof ValidTilesMessage){
+                    view.updateValidTiles((ValidTilesMessage) message);
+                }
+                else if(message instanceof WaitMessage){
+                    view.updateWaitingRoom((WaitMessage)message);
                 }
 
             } catch (SocketTimeoutException e){
