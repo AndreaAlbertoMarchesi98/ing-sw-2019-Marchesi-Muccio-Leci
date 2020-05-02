@@ -8,11 +8,11 @@ import java.io.Serializable;
 //user select a tile in the board
 public class SelectionMessage implements Serializable {
     public Vector2d workerPosition;
-    public boolean isPowerActive;//da cancellare!!!!!!!!!!!!!!!!
 
 
-    public SelectionMessage(Vector2d workerPosition, boolean isPowerActive) {
+
+    public SelectionMessage(Vector2d workerPosition) {
         this.workerPosition = workerPosition;
-        this.isPowerActive = isPowerActive;//da cancellare!!!!!!!!!!!!!!!!!1
+
     }
 }

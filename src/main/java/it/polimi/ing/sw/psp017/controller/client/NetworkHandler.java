@@ -81,11 +81,19 @@ public class NetworkHandler implements Runnable{
                 else if(message instanceof BoardMessage){
                     view.updateBoard((BoardMessage) message);
                 }
-                else if(message instanceof LobbyMessage){
-                    view.updateLobby((LobbyMessage)message);
-                }
                 else if(message instanceof ValidTilesMessage){
-                    view.updateValidTiles((ValidTilesMessage) message);
+                    //view.updateValidTiles((ValidTilesMessage) message);
+
+
+
+
+
+
+
+
+
+
+                    //da eliminare
                 }
                 else if(message instanceof WaitMessage){
                     view.updateWaitingRoom((WaitMessage)message);

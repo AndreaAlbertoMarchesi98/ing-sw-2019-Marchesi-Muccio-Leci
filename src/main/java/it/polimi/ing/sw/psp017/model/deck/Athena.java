@@ -9,6 +9,7 @@ public class Athena extends BaseCard{
 
     public Athena(){
         name=GodName.ATHENA;
+
     }
 
     @Override
@@ -22,5 +23,22 @@ public class Athena extends BaseCard{
     }
 
 
+     class AthenaDecorator extends CardDecorator {
+
+        public AthenaDecorator(Card newCard) {
+            super(newCard);
+        }
+
+
+        @Override
+        public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
+            if (currentStep.getTargetTile().getLevel() > currentStep.getCurrentTile().getLevel())
+                return false;
+            else
+                return super.isValidMove(currentStep, previousStep, board);
+        }
+
+
+    }
 
 }

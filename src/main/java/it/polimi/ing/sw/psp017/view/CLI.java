@@ -1,12 +1,10 @@
 package it.polimi.ing.sw.psp017.view;
 
 import it.polimi.ing.sw.psp017.controller.client.Client;
-import it.polimi.ing.sw.psp017.controller.client.NetworkHandler;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Vector2d;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.InputMismatchException;
@@ -85,6 +83,13 @@ public class CLI implements View {
     }
 
     @Override
+    public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
+
+        client.getNetworkHandler().sendMessage(powerActiveMessage);
+
+    }
+
+    @Override
     public void notifyAction(ActionMessage actionMessage) {
 
         client.getNetworkHandler().sendMessage(actionMessage);
@@ -146,7 +151,7 @@ public class CLI implements View {
 
         //chooseGodCard(lobbyMessage.cards);
         // lobbyMessage.cards; //stampa le carte che puo scegliere
-        //scelta di una sola carta dal arrai in input
+        //scelta di una sola carta dal array in input
         //invia carta scelta
         notifyCard(new CardMessage(chooseGodCard(lobbyMessage.availableCards))); //é correto available?'
 
@@ -165,22 +170,7 @@ public class CLI implements View {
 
     }
 
-    @Override
-    public void updateValidTiles(ValidTilesMessage validTilesMessage) {
 
-        System.out.println("dentro a updateValidTiles");
-        //stampa board con validTiles
-        printValidTiles(validTilesMessage.validTiles);
-
-
-        //seleziona una cella
-        Vector2d targetTile = getTargetTile(validTilesMessage.isMove ? 1 : 0);
-
-        //ismove da usare per i colori per distinguere le fasi
-
-        notifyAction(new ActionMessage(targetTile));
-
-    }
 
     @Override
     public void updateBoard(BoardMessage boardMessage) {
@@ -193,57 +183,70 @@ public class CLI implements View {
         System.out.println("client playerNumber is:" + client.getPlayerNumber());
         if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
         {
-            if(boardMessage.hasChoice)
+
+            System.out.println("ACTION MESSAGE : " + boardMessage.action);
+            if(boardMessage.action == ActionNames.PLACE_WORKERS)
             {
-                //scegli un worker
-                //salva posizione scelta lastWorkerposition == scegli worker
-                lastSelectedTile = getTargetTile(WORKER);  //numero a caso da move e build
-
-
-                //attivare il potere
-
-                activatePower = getChoice();
-                CommandLineInterface.getChoice();
-                //si o no
-
-                notifySelection(new SelectionMessage(lastSelectedTile,activatePower));
-
-                //bisogna disattivare la scelta precedente??
-
-
-            }
-
-
-            else if (isPositionWorkersPhase) {
-                isPositionWorkersPhase = false;
                 Vector2d[] temp = new Vector2d[2];
 
 
+                System.out.println("workers placement");
                 //utente sceglie 2 posizioni
                 printBoard(boardMessage.board);
 
+                /*
                 //salvo 2 posizioni
                 for(int i = 0; i <2; i++)
                 {
                     System.out.println("where do you want to position worker number "+(i+1)+"?");
-                    temp[i] = getTargetTile(WORKER);
+                    temp[i] = getTargetTile(boardMessage.action,boardMessage.board);
+
+
+                    //da aggiungere : non far scegliere la stessa posizione oppure posizione occupata dagli avversari
 
 
                 }
+                 */
+                temp = setWorkerPosition(boardMessage.action,boardMessage.board);
                 //invio
                 notifyPlacement(new PlacementMessage(temp[0], temp[1]));
 
+            }
+            else if(boardMessage.action == ActionNames.SELECT_WORKER)
+            {
+                //scelta del worker da utilizzare
+
+                //da fare : obbligo di scegliere un worker
+                notifySelection(new SelectionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
 
             }
-            else  //condizione senza poteri muovi costruisci
+            else if(boardMessage.hasChoice) //possibilita di attivare il potere
             {
-                //scegli un worker
-                lastSelectedTile = getTargetTile(WORKER);
 
+                //attivare il potere
+
+                //activatePower = getChoice();  ?? serve
+
+                //si o no
+
+                notifyIsPowerActive(new PowerActiveMessage(getChoice()));
+
+
+
+
+            }
+
+
+            else if(boardMessage.action == ActionNames.MOVE || boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
+            {
                 //salva posizione scelta lastWorkerposition == scegli worker
 
-                notifySelection(new SelectionMessage(lastSelectedTile,false));
+                printValidTiles(boardMessage.validTiles);
+                notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
 
+            }
+            else{
+                System.out.println("invalid action NONE");
             }
 
 
@@ -399,7 +402,7 @@ public class CLI implements View {
 
                     System.out.print(ANSI_GREEN_BACKGROUND);
                     System.out.print("   ");
-                    switch (board[i][j].playerNumber)
+                    switch (board[i][j].playerNumber -1)
                     {
 
                         case 0 :
@@ -599,23 +602,28 @@ public class CLI implements View {
 
 
 
-    public Vector2d getTargetTile(int isMove) {
+    public Vector2d getTargetTile(ActionNames action, BoardMessage.PrintableTile[][] board) {
 
 
-        if(isMove == 1){
-            System.out.println(ANSI_PURPLE_BACKGROUND + "███████████████████████████████████████████████████████████████");
+        if(action == ActionNames.MOVE){
+            System.out.println(ANSI_PURPLE_BACKGROUND + "███████████████████████████████████████████████████████████████\n");
             System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< MOVE >>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println("███████████████████████████████████████████████████████████████");
         }
-        else if (isMove == 0)
+        else if (action == ActionNames.BUILD)
         {
             System.out.println(ANSI_BRIGHT_BG_YELLOW + "███████████████████████████████████████████████████████████████");
             System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BUILD >>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println("███████████████████████████████████████████████████████████████");
         }
-        else {
+        else if(action == ActionNames.SELECT_WORKER){
             System.out.println(ANSI_BRIGHT_BG_YELLOW + "███████████████████████████████████████████████████████████████");
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<SELECT WORKER  >>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println("███████████████████████████████████████████████████████████████");
+        }
+        else if(action == ActionNames.PLACE_WORKERS){
+            System.out.println(ANSI_BRIGHT_BG_YELLOW + "███████████████████████████████████████████████████████████████");
+            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<PLACE WORKER  >>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println("███████████████████████████████████████████████████████████████");
         }
 
@@ -624,9 +632,11 @@ public class CLI implements View {
         System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "Please enter the target tile coordinates: [x,y]" + ANSI_RESET);
 
         do {
-            if (xPosition != -1)
+            if (xPosition != -1) {
                 System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please insert a valid range input____________>>>>>>>>>> " + ANSI_RESET);
-
+                if (action == ActionNames.SELECT_WORKER)
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________you're supposed to select one of your workers____________>>>>>>>>>> " + ANSI_RESET);
+            }
 
             try {
 
@@ -643,7 +653,9 @@ public class CLI implements View {
             }
 
 
-        } while (!(xPosition > -1 && xPosition < 5 && yPosition > -1 && yPosition < 5));
+        } while (!(xPosition > -1 && xPosition < 5 && yPosition > -1 && yPosition < 5)
+                || action == ActionNames.SELECT_WORKER && board[xPosition][yPosition].playerNumber != client.getPlayerNumber());
+
 
 
         return new Vector2d(xPosition,yPosition);
@@ -684,6 +696,58 @@ public class CLI implements View {
 
         ansi_reset();
         return !"N".equalsIgnoreCase(answer);
+
+    }
+
+
+
+    public  Vector2d[] setWorkerPosition(ActionNames action, BoardMessage.PrintableTile[][] board)
+    {
+        Vector2d[] temp = new Vector2d[2];
+
+        int count = 0;
+
+
+
+
+        do{
+
+            //salvo 2 posizioni
+
+            System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "where do you want to place your "+(count+1)+" worker ?" + ANSI_RESET);
+
+            temp[count] = getTargetTile(ActionNames.PLACE_WORKERS,board);
+            count++;
+            if (count == 2)
+            {
+                if(isSameTargetTile(temp))
+                {
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________THIS IS YOUR PREVIOUS WORKERS POSITION____________>>>>>>>>>> " + ANSI_RESET);
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please try again____________>>>>>>>>>> " + ANSI_RESET);
+                    count--;
+                }
+
+
+
+            }
+
+        }while (count < 2);
+
+
+
+        return temp;
+    }
+
+    private  boolean isSameTargetTile(Vector2d[] temp) {
+
+        for(int i =0; i <temp.length-1;i++)
+        {
+            if(temp[i].x == temp[i+1].x &&temp[i].y == temp[i+1].y) return  true;
+
+        }
+
+
+        return false;
 
     }
 

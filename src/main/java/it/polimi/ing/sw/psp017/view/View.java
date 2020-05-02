@@ -28,6 +28,5 @@ public interface View {
     void updateLoginScreen(InvalidNameMessage invalidNameMessage);
     void updateLobby(LobbyMessage lobbyMessage);//1> tutte le carte, other il resto delle carte
     void updateWaitingRoom(WaitMessage waitMessage);//giocatori in attesa
-    void updateValidTiles(ValidTilesMessage validTilesMessage);//da cancellare
     void updateBoard(BoardMessage boardMessage);//contiene anche isMove e le valid tiles
 }
