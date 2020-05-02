@@ -10,9 +10,7 @@ public class SelectionMessage implements Serializable {
     public Vector2d workerPosition;
 
 
-
     public SelectionMessage(Vector2d workerPosition) {
         this.workerPosition = workerPosition;
-
     }
 }

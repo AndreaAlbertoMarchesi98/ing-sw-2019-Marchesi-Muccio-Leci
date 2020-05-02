@@ -1,6 +1,8 @@
 package it.polimi.ing.sw.psp017.controller.messages.ClientToServer;
 
-public class PowerActiveMessage {
+import java.io.Serializable;
+
+public class PowerActiveMessage implements Serializable {
     public boolean isPowerActive;
 
     public PowerActiveMessage(boolean isPowerActive) {

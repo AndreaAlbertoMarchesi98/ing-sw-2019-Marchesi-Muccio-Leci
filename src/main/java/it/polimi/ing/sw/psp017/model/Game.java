@@ -89,9 +89,9 @@ public class Game {
             stepNumber = 0;
             playerIndex = 0;
         }
-        public void nextStep(){
+        public void nextStep(Tile targetTile){
             stepNumber++;
-            selectedTile = null;
+            selectedTile = targetTile;
         }
         public void nextTurn(){
             powerActive = false;

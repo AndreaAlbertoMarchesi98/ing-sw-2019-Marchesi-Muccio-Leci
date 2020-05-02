@@ -5,7 +5,6 @@ import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.GameCreationMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.ValidTilesMessage;
 import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
@@ -51,21 +50,22 @@ public class GameController {
 
         views.add(view);
         view.setGameController(this);
-        view.getPlayer().setPlayerIndex(views.size());
+        view.getPlayer().setPlayerNumber(views.size());
 
         view.updateGameCreation();
     }
 
     public void addPlayerToLobby(VirtualView view) {
         System.out.println("addingPlayerToLobby");
+        System.out.println(view.getPlayer().getPlayerNumber());
         views.add(view);
         view.setGameController(this);
-        view.getPlayer().setPlayerIndex(views.size());
+
+        view.getPlayer().setPlayerNumber(views.size());
 
         lobby.addPlayer(view.getPlayer());
-        view.getPlayer().setPlayerIndex(lobby.getPlayerCount());
-
-        notifyLobby();
+        if(lobby.getPlayerCount() == lobby.getExpectedPlayersCount())
+            notifyLobby();
     }
 
     public void createLobby(GameSetUpMessage message, VirtualView view) {
@@ -73,7 +73,7 @@ public class GameController {
         lobby = new Lobby(message.godNames);
 
         lobby.addPlayer(view.getPlayer());
-        view.getPlayer().setPlayerIndex(lobby.getPlayerCount());
+        view.getPlayer().setPlayerNumber(lobby.getPlayerCount());
 
         gameState = GameState.LOBBY;
 
@@ -113,12 +113,15 @@ public class GameController {
         Vector2d worker1Position = message.firstWorker;
         Vector2d worker2Position = message.secondWorker;
         Player player = game.getTurn().getPlayer();
+        System.out.println("assign player: "+player+" to worker");
         game.getBoard().getTile(worker1Position).setWorker(new Worker(player));
         game.getBoard().getTile(worker2Position).setWorker(new Worker(player));
 
         game.getTurn().nextTurn();
-
-        notifyBoard(null, ActionNames.PLACE_WORKERS);
+        if(game.getTurn().getPlayerIndex()==0)
+            notifyBoard(null, ActionNames.SELECT_WORKER);
+        else
+            notifyBoard(null, ActionNames.PLACE_WORKERS);
     }
 
     public void performAction(ActionMessage message, Player player) {
@@ -138,7 +141,7 @@ public class GameController {
                 else if (card.canBuild(game.getTurn().getStepNumber(), currentStep.isPowerActive()))
                     card.build(currentStep, previousStep, game.getBoard());
 
-                game.getTurn().nextStep();
+                game.getTurn().nextStep(targetTile);
                 if(isTurnFinished(card,currentStep.isPowerActive()))//da sistemare
                 {
                     game.getTurn().nextTurn();
@@ -184,7 +187,11 @@ public class GameController {
 
     public void setPowerActive(PowerActiveMessage message){
         game.getTurn().setPowerActive(message.isPowerActive);
-        notifyLobby();
+
+        if(game.getTurn().getSelectedTile()!=null)
+            notifyBoard(calculateValidTiles(),calculateAction());
+        else
+            notifyBoard(null,ActionNames.SELECT_WORKER);
     }
 
     private ActionNames calculateAction(){

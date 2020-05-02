@@ -1,0 +1,10 @@
+I bugs sono:
+1)costruisce e muove fori dalle valid tiles, aggiungere controllo su client
+
+Da aggiungere nella CLI:
+1)completare l option
+
+Da aggiungere nel server:
+1)vittoria
+2)finire waiting list
+3)decorator

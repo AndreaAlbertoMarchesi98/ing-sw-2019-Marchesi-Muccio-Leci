@@ -7,7 +7,7 @@ import java.util.Random;
 public class Player {
 
     private String nickname;
-    private int playerIndex;
+    private int playerNumber;
     private Color color;
     private ArrayList<Worker> workers;
     private Card card;
@@ -30,12 +30,12 @@ public class Player {
         }
     }
 
-    public int getPlayerIndex() {
-        return playerIndex;
+    public int getPlayerNumber() {
+        return playerNumber;
     }
 
-    public void setPlayerIndex(int playerIndex) {
-        this.playerIndex = playerIndex;
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
     }
 
     public Color getColor() {

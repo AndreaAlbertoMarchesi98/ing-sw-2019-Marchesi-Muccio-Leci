@@ -37,7 +37,7 @@ public class BoardMessage implements Serializable {
             this.level = tile.getLevel();
             this.dome = tile.isDome();
             if(tile.getWorker()!=null)
-                this.playerNumber = tile.getWorker().getOwner().getPlayerIndex() + 1;
+                this.playerNumber = tile.getWorker().getOwner().getPlayerNumber();
         }
     }
 }

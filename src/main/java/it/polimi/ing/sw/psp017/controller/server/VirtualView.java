@@ -48,6 +48,7 @@ public class VirtualView implements Runnable, View {
         try {
             processMessages();
         } catch (SocketTimeoutException e) {
+            System.out.println();
             notifyDisconnection();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -137,9 +138,6 @@ public class VirtualView implements Runnable, View {
     }
     public void updateWaitingRoom(WaitMessage waitMessage) {
         sendMessage(waitMessage);
-    }
-    public void updateValidTiles(ValidTilesMessage validTilesMessage) {
-        sendMessage(validTilesMessage);
     }
     public void updateBoard(BoardMessage boardMessage) {
         sendMessage(boardMessage);

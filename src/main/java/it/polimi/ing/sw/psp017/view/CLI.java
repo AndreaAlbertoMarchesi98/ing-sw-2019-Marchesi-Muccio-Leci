@@ -19,7 +19,7 @@ public class CLI implements View {
     private Vector2d lastSelectedTile = null;
     private int numberOfPlayers;
     private Scanner in = new Scanner(System.in);
-    private boolean activatePower = false;
+    private boolean hasAskedPowerActive = false;
     public final static int WORKER = 3;
 
     public CLI(Client client) {
@@ -214,13 +214,14 @@ public class CLI implements View {
             }
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
             {
+                hasAskedPowerActive = false;
                 //scelta del worker da utilizzare
 
                 //da fare : obbligo di scegliere un worker
                 notifySelection(new SelectionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
 
             }
-            else if(boardMessage.hasChoice) //possibilita di attivare il potere
+            else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
             {
 
                 //attivare il potere
@@ -231,7 +232,7 @@ public class CLI implements View {
 
                 notifyIsPowerActive(new PowerActiveMessage(getChoice()));
 
-
+                hasAskedPowerActive = true;
 
 
             }
@@ -402,11 +403,11 @@ public class CLI implements View {
 
                     System.out.print(ANSI_GREEN_BACKGROUND);
                     System.out.print("   ");
-                    switch (board[i][j].playerNumber -1)
+                    switch (board[i][j].playerNumber)
                     {
 
                         case 0 :
-                            System.out.print(ANSI_BLUE_BACKGROUND + ANSI_BLACK + " ");
+                            System.out.print(ANSI_GREEN_BACKGROUND + ANSI_BLACK + " ");
                             break;
                         case 1 :
                             System.out.print(ANSI_BLUE_BACKGROUND + ANSI_BLACK + "♠");
@@ -663,8 +664,21 @@ public class CLI implements View {
     }
 
 
+/*
+    private boolean check(){
 
+    }
 
+    private selectWorker(){
+        selectTile()
+        //controllli worker
+    }
+
+    private selectMove(){
+        selectTile()
+        //controlli su select move
+    }
+*/
 
 
 
