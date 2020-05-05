@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="progettoIngSoftware" />
         <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+        <module name="progetto" />
       </profile>
     </annotationProcessing>
   </component>

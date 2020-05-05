@@ -142,6 +142,12 @@ public class VirtualView implements Runnable, View {
     public void updateBoard(BoardMessage boardMessage) {
         sendMessage(boardMessage);
     }
+
+    @Override
+    public void updateVictory(VictoryMessage victoryMessage) {
+
+    }
+
     private void sendMessage(Object message){
         try {
             output.writeObject(message);

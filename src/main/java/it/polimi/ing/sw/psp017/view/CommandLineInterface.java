@@ -39,17 +39,21 @@ public class CommandLineInterface{
         }
 
 
-
-        System.out.println(getChoice());
-        System.out.println(chooseGodCard(cards));
-        startingServerConnection();
-        ViewTile workerPosition = setWorkersPosition(board);
-
-        ViewTile targetTile = getTile(board);
-        System.out.println(getNickname());
-
-        int answer = getNumberOfPlayers();
-        printBoard(board);
+        printWinner();
+        printLoser();
+        gameOver();
+        /**
+         * System.out.println(getChoice());
+         *         System.out.println(chooseGodCard(cards));
+         *         startingServerConnection();
+         *         ViewTile workerPosition = setWorkersPosition(board);
+         *
+         *         ViewTile targetTile = getTile(board);
+         *         System.out.println(getNickname());
+         *
+         *         int answer = getNumberOfPlayers();
+         *         printBoard(board);
+         */
 
 
 
@@ -460,6 +464,47 @@ public class CommandLineInterface{
 
     }
 
+    public static void printWinner()
+    {
+        ansi_reset();
+        System.out.println(ANSI_GREEN+"\n" +
+                "██╗██╗██╗██╗   ██╗ ██████╗ ██╗   ██╗     █████╗ ██████╗ ███████╗    ████████╗██╗  ██╗███████╗    ██╗    ██╗██╗███╗   ██╗███╗   ██╗███████╗██████╗ ██╗██╗██╗\n" +
+                "██║██║██║╚██╗ ██╔╝██╔═══██╗██║   ██║    ██╔══██╗██╔══██╗██╔════╝    ╚══██╔══╝██║  ██║██╔════╝    ██║    ██║██║████╗  ██║████╗  ██║██╔════╝██╔══██╗██║██║██║\n" +
+                "██║██║██║ ╚████╔╝ ██║   ██║██║   ██║    ███████║██████╔╝█████╗         ██║   ███████║█████╗      ██║ █╗ ██║██║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝██║██║██║\n" +
+                "╚═╝╚═╝╚═╝  ╚██╔╝  ██║   ██║██║   ██║    ██╔══██║██╔══██╗██╔══╝         ██║   ██╔══██║██╔══╝      ██║███╗██║██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗╚═╝╚═╝╚═╝\n" +
+                "██╗██╗██╗   ██║   ╚██████╔╝╚██████╔╝    ██║  ██║██║  ██║███████╗       ██║   ██║  ██║███████╗    ╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║██╗██╗██╗\n" +
+                "╚═╝╚═╝╚═╝   ╚═╝    ╚═════╝  ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝       ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝╚═╝\n" +
+                "                                                                                                                                                           \n");
+    }
+
+    public static void printLoser()
+    {
+        ansi_reset();
+        System.out.println(ANSI_RED+"\n" +
+                "██╗   ██╗ ██████╗ ██╗   ██╗    ██╗      ██████╗ ███████╗███████╗    \n" +
+                "╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║     ██╔═══██╗██╔════╝██╔════╝    \n" +
+                " ╚████╔╝ ██║   ██║██║   ██║    ██║     ██║   ██║███████╗█████╗      \n" +
+                "  ╚██╔╝  ██║   ██║██║   ██║    ██║     ██║   ██║╚════██║██╔══╝      \n" +
+                "   ██║   ╚██████╔╝╚██████╔╝    ███████╗╚██████╔╝███████║███████╗    \n" +
+                "   ╚═╝    ╚═════╝  ╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝╚══════╝    \n" +
+                "                                                                    \n");
+
+    }
+
+    public static void gameOver()
+    {
+        ansi_reset();
+        System.out.println("\n" +
+                " ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ \n" +
+                "██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗\n" +
+                "██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝\n" +
+                "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗\n" +
+                "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║\n" +
+                " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝\n" +
+                "                                                                          \n");
+
+        ansi_reset();
+    }
 
 
 

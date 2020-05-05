@@ -1,38 +1,42 @@
 package it.polimi.ing.sw.psp017.view;
 
 import it.polimi.ing.sw.psp017.controller.client.Client;
+import it.polimi.ing.sw.psp017.controller.client.PlayersInfo;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Vector2d;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class CLI implements View {
 
+    //
+    private static final int MAX_NUMBER_OF_WORKERS = 2 ;
+    private static final int NO_PLAYER = 0;
+    private int NUMBER_OF_PLAYERS;
+
+
     private Client client;
-    private boolean isPositionWorkersPhase;
-    private boolean isPowerActive;
-    private Vector2d lastSelectedTile = null;
-    private int numberOfPlayers;
+
+
+
+
+
     private Scanner in = new Scanner(System.in);
     private boolean hasAskedPowerActive = false;
-    public final static int WORKER = 3;
+
 
     public CLI(Client client) {
         this.client = client;
         printLogo();
-        isPositionWorkersPhase = true;
+
     }
 
 
     public void printLogo() {
 
-        System.out.println(ANSI_CYAN);
-        //System.out.println(ANSI_BLACK_BACKGROUND);
+        ansi_reset();
         System.out.println("  ██████  ▄▄▄       ███▄    █ ▄▄▄█████▓ ▒█████   ██▀███   ██▓ ███▄    █  ██▓");
         System.out.println("▒██    ▒ ▒████▄     ██ ▀█   █ ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒▓██▒ ██ ▀█   █ ▓██▒");
         System.out.println("░ ▓██▄   ▒██  ▀█▄  ▓██  ▀█ ██▒▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒▒██▒▓██  ▀█ ██▒▒██▒");
@@ -42,7 +46,7 @@ public class CLI implements View {
         System.out.println("░ ░▒  ░ ░  ▒   ▒▒ ░░ ░░   ░ ▒░    ░      ░ ▒ ▒░   ░▒ ░ ▒░ ▒ ░░ ░░   ░ ▒░ ▒ ░");
         System.out.println("░  ░  ░    ░   ▒      ░   ░ ░   ░      ░ ░ ░ ▒    ░░   ░  ▒ ░   ░   ░ ░  ▒ ░");
         System.out.println("      ░        ░  ░         ░              ░ ░     ░      ░           ░  ░  ");
-        System.out.println(ANSI_RESET);
+        ansi_reset();
     }
 
 
@@ -109,14 +113,14 @@ public class CLI implements View {
         System.out.println("dentro updateGameCreation");
 
         //scegli il numero di giocatori
-        numberOfPlayers = getNumberOfPlayers();
+        NUMBER_OF_PLAYERS = getNUMBER_OF_PLAYERS();
 
         //create arrayList from enum
         ArrayList<GodName> cards = new ArrayList<>(EnumSet.allOf(GodName.class));
         ArrayList<GodName> selectedCards = new ArrayList<>();
 
 
-        for(int i = 0; i <numberOfPlayers; i++)
+        for(int i = 0; i < NUMBER_OF_PLAYERS; i++)
         {
             selectedCards.add(chooseGodCard(cards));
             cards.remove(selectedCards.get(i));
@@ -147,15 +151,45 @@ public class CLI implements View {
 
         //stampa i player dal messaggio  <<<<<<<<<<<<<<<<da fare
 
+        //client.playersInformation = new PlayersInformation[lobbyMessage.players.size()];
+        saveOpponentPlayers(lobbyMessage);
+
+        client.playersInformation.toString();
+
+        Arrays.toString(client.playersInformation.toArray());
 
 
-        //chooseGodCard(lobbyMessage.cards);
+
+
+        //choosodCard(lobbyMessage.cards);
         // lobbyMessage.cards; //stampa le carte che puo scegliere
         //scelta di una sola carta dal array in input
         //invia carta scelta
         notifyCard(new CardMessage(chooseGodCard(lobbyMessage.availableCards))); //é correto available?'
 
 
+    }
+
+    private void saveOpponentPlayers(LobbyMessage lobbyMessage) {
+
+
+        System.out.println("dentro saveOpponentplayers");
+
+        client.playersInformation = new ArrayList<>();
+
+        for(int i = 0; i < lobbyMessage.players.size();i++)
+        {
+            //client.playersInformation = new PlayersInformation(lobbyMessage.players.get(i),i);
+            client.playersInformation.add(new PlayersInfo(lobbyMessage.players.get(i),i));
+            //client.playersInformation[i] = new PlayersInformation(lobbyMessage.players.get(i),i+1);
+        }
+
+
+        for(int i = 0; i < client.playersInformation.size();i++)
+        {
+            //System.out.println("nome : "+ client.playersInformation[i].);
+            client.playersInformation.toString();
+        }
     }
 
     @Override
@@ -207,7 +241,7 @@ public class CLI implements View {
 
                 }
                  */
-                temp = setWorkerPosition(boardMessage.action,boardMessage.board);
+                temp = setWorkerPosition(boardMessage);
                 //invio
                 notifyPlacement(new PlacementMessage(temp[0], temp[1]));
 
@@ -218,7 +252,9 @@ public class CLI implements View {
                 //scelta del worker da utilizzare
 
                 //da fare : obbligo di scegliere un worker
-                notifySelection(new SelectionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
+
+                //Vector2d temp = selectWorker(boardMessage);
+                notifySelection(new SelectionMessage(selectWorker(boardMessage)));
 
             }
             else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
@@ -236,14 +272,31 @@ public class CLI implements View {
 
 
             }
-
-
-            else if(boardMessage.action == ActionNames.MOVE || boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
+            else if(boardMessage.action == ActionNames.MOVE)
             {
+
+                System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+                notifyAction(new ActionMessage(getMoveTargetTile(boardMessage)));
+            }
+
+
+            else if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
+            {
+
+                //   boardMessage.action == ActionNames.MOVE ||
+
+
+
+                System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+                notifyAction(new ActionMessage(getBuildTargetTile(boardMessage)));
                 //salva posizione scelta lastWorkerposition == scegli worker
 
+                /*
                 printValidTiles(boardMessage.validTiles);
                 notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
+                 */
 
             }
             else{
@@ -258,6 +311,16 @@ public class CLI implements View {
 
 
     }
+
+    @Override
+    public void updateVictory(VictoryMessage victoryMessage) {
+        if(victoryMessage.playerNumber == client.getPlayerNumber()) printWinner();
+        else printLoser();
+        printGameOver();
+    }
+
+
+
 
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
         if (invalidNameMessage != null) {
@@ -276,7 +339,7 @@ public class CLI implements View {
      * @return a number [1-3]
      */
 
-    public int getNumberOfPlayers()
+    public int getNUMBER_OF_PLAYERS()
     {
 
         System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "How many players [2-3] ? " + ANSI_RESET);
@@ -299,7 +362,7 @@ public class CLI implements View {
                 answer = in.nextInt();
             }
 
-        } while (answer > 3 || answer < 1);
+        } while (answer > 3 || answer < 2);
 
 
         ansi_reset();
@@ -561,6 +624,7 @@ public class CLI implements View {
 
         int line = 2;
         System.out.println(ANSI_CYAN);
+
         System.out.print("███████████████████████████████████████████████████████████████");
         optionValidTiles(0);
         System.out.print(ANSI_YELLOW_BACKGROUND + "██" + ANSI_RED + "    ►►►0◄◄◄  ►►►1◄◄◄  ►►►2◄◄◄  ►►►3◄◄◄  ►►►4◄◄◄  " + ANSI_CYAN + "██" + ANSI_RESET + ANSI_CYAN);
@@ -602,31 +666,122 @@ public class CLI implements View {
     }
 
 
+    private Vector2d selectWorker(BoardMessage boardMessage) {
 
-    public Vector2d getTargetTile(ActionNames action, BoardMessage.PrintableTile[][] board) {
+        System.out.println("dentro select worker'");
+
+            System.out.println(ANSI_BRIGHT_BG_BLACK + "███████████████████████████████████████████████████████████████\n" +"<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SELECT WORKER >>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+"███████████████████████████████████████████████████████████████" );
+
+            ansi_reset();
+
+            printBoard(boardMessage.board);
+
+            Vector2d selectedWorkerTile = getTargetTileUnified();
+            while(!checkSelectedOwnWorker(boardMessage,selectedWorkerTile)){
+
+                printBoard(boardMessage.board);
+
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please select your own worker [GREEN]____________>>>>>>>>>> " + ANSI_RESET);
+                selectedWorkerTile = getTargetTileUnified();
+
+            }
+            return selectedWorkerTile;
 
 
-        if(action == ActionNames.MOVE){
-            System.out.println(ANSI_PURPLE_BACKGROUND + "███████████████████████████████████████████████████████████████\n");
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< MOVE >>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("███████████████████████████████████████████████████████████████");
+
+
+    }
+
+    private boolean checkSelectedOwnWorker(BoardMessage boardMessage,Vector2d selectedWorkerTile) {
+
+
+        return boardMessage.board[selectedWorkerTile.x][selectedWorkerTile.y].playerNumber == client.getPlayerNumber();
+    }
+
+
+
+     /**
+     * this method is used to perform move and build steps
+     * @param boardMessage game information
+     * @return correctly selected target tile
+     */
+
+    public Vector2d getMoveTargetTile(BoardMessage boardMessage)
+    {
+        System.out.println(ANSI_PURPLE_BACKGROUND + "███████████████████████████████████████████████████████████████\n" +"<<<<<<<<<<<<<<<<<<<<<<<<<<<<< MOVE >>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+"███████████████████████████████████████████████████████████████" );
+        ansi_reset();
+
+
+
+        return performMoveOrBuildGetTargetTile(boardMessage);
+
+
+    }
+
+    /**
+     * this method is used to perform move and build steps
+     * @param boardMessage game information
+     * @return correctly selected target tile
+     */
+    private Vector2d performMoveOrBuildGetTargetTile(BoardMessage boardMessage)
+    {
+        printValidTiles(boardMessage.validTiles);
+
+        Vector2d moveTargetTile = getTargetTileUnified();
+        while(!checkValidTileSelection(boardMessage.validTiles,moveTargetTile)){
+
+            printValidTiles(boardMessage.validTiles);
+
+            System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please select a valid tile [GREEN]____________>>>>>>>>>> " + ANSI_RESET);
+            moveTargetTile = getTargetTileUnified();
+
         }
-        else if (action == ActionNames.BUILD)
-        {
-            System.out.println(ANSI_BRIGHT_BG_YELLOW + "███████████████████████████████████████████████████████████████");
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BUILD >>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("███████████████████████████████████████████████████████████████");
-        }
-        else if(action == ActionNames.SELECT_WORKER){
-            System.out.println(ANSI_BRIGHT_BG_YELLOW + "███████████████████████████████████████████████████████████████");
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<SELECT WORKER  >>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("███████████████████████████████████████████████████████████████");
-        }
-        else if(action == ActionNames.PLACE_WORKERS){
-            System.out.println(ANSI_BRIGHT_BG_YELLOW + "███████████████████████████████████████████████████████████████");
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<PLACE WORKER  >>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("███████████████████████████████████████████████████████████████");
-        }
+        return moveTargetTile;
+    }
+
+    /**
+     * check if the player selected a valid target tile
+     * @param validTiles allowed target tile
+     * @param moveTargetTile user target tile
+     * @return true if it is allowed
+     */
+    private boolean checkValidTileSelection(boolean[][] validTiles,Vector2d moveTargetTile) {
+
+
+        /*
+        if(validTiles[moveTargetTile.x][moveTargetTile.y]) return true;
+        else return  false;
+         */
+        return validTiles[moveTargetTile.x][moveTargetTile.y];
+
+    }
+
+
+    /**
+     *
+     * @param boardMessage game information
+     * @return vector2d selected target tile for build
+     */
+    private Vector2d getBuildTargetTile(BoardMessage boardMessage) {
+
+
+        System.out.println(ANSI_BRIGHT_BG_GREEN + ANSI_RED+ "███████████████████████████████████████████████████████████████\n" +"<<<<<<<<<<<<<<<<<<<<<<<<<<<<< BUILD >>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+"███████████████████████████████████████████████████████████████" );
+        ansi_reset();
+
+        return performMoveOrBuildGetTargetTile(boardMessage);
+
+
+    }
+
+
+    /**
+     * this method is used every time user has to choose a target tile, which happens in every steps
+     *
+     * @return Vector2d selected target tile from player
+     */
+    public Vector2d getTargetTileUnified()
+    {
+
 
         int xPosition = -1, yPosition = -1;
 
@@ -635,8 +790,7 @@ public class CLI implements View {
         do {
             if (xPosition != -1) {
                 System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please insert a valid range input____________>>>>>>>>>> " + ANSI_RESET);
-                if (action == ActionNames.SELECT_WORKER)
-                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________you're supposed to select one of your workers____________>>>>>>>>>> " + ANSI_RESET);
+
             }
 
             try {
@@ -654,37 +808,16 @@ public class CLI implements View {
             }
 
 
-        } while (!(xPosition > -1 && xPosition < 5 && yPosition > -1 && yPosition < 5)
-                || action == ActionNames.SELECT_WORKER && board[xPosition][yPosition].playerNumber != client.getPlayerNumber());
-
-
+        } while (!(xPosition > -1 && xPosition < 5 && yPosition > -1 && yPosition < 5));
 
         return new Vector2d(xPosition,yPosition);
 
     }
 
 
-/*
-    private boolean check(){
-
-    }
-
-    private selectWorker(){
-        selectTile()
-        //controllli worker
-    }
-
-    private selectMove(){
-        selectTile()
-        //controlli su select move
-    }
-*/
-
-
-
-
-
-
+    /**
+     * cleaning text after ANSI colors
+     */
     public static void ansi_reset()
     {
         System.out.print(ANSI_RESET + ANSI_CYAN);
@@ -692,20 +825,22 @@ public class CLI implements View {
 
 
     /**
-     * get players choiche about god power activation
+     * get players choice about god power activation
      * @return boolean choice
      */
     public boolean getChoice() {
 
-        System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? ");
-        System.out.print("[y/n} :");
-        String answer = in.nextLine();
 
-        while (!"N".equalsIgnoreCase(answer) && !"Y".equalsIgnoreCase(answer)) {
-            System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "Please try again" + ANSI_RESET);
-            System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? :");
+        String answer;
+
+
+        do {
+
+            System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? :");
             answer = in.nextLine();
-        }
+
+
+        } while (!"N".equalsIgnoreCase(answer) && !"Y".equalsIgnoreCase(answer));
 
 
         ansi_reset();
@@ -714,94 +849,167 @@ public class CLI implements View {
     }
 
 
-
-    public  Vector2d[] setWorkerPosition(ActionNames action, BoardMessage.PrintableTile[][] board)
+    /**
+     * this method set workers position at the beginning of the game
+     * @param boardMessage game information
+     * @return Vector2d of two workers position
+     */
+    public  Vector2d[] setWorkerPosition(BoardMessage boardMessage)
     {
-        Vector2d[] temp = new Vector2d[2];
+
+        Vector2d[] selectedWorkersPosition = new Vector2d[2];
+
+        System.out.println(ANSI_BRIGHT_BG_BLUE +ANSI_BLACK+ "███████████████████████████████████████████████████████████████\n" +"<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PLACE WORKER >>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+"███████████████████████████████████████████████████████████████" );
+
+        ansi_reset();
 
         int count = 0;
+        boolean done = false;
 
 
+        while(!done)
+        {
+            do {
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "where do you want to place your " + (count + 1) + " worker ?" + ANSI_RESET);
+                printBoard(boardMessage.board);
 
+                selectedWorkersPosition[count] = getTargetTileUnified();
 
-        do{
-
-            //salvo 2 posizioni
-
-            System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "where do you want to place your "+(count+1)+" worker ?" + ANSI_RESET);
-
-            temp[count] = getTargetTile(ActionNames.PLACE_WORKERS,board);
-            count++;
-            if (count == 2)
-            {
-                if(isSameTargetTile(temp))
-                {
-                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________THIS IS YOUR PREVIOUS WORKERS POSITION____________>>>>>>>>>> " + ANSI_RESET);
+                if(!checkOccupiedTargetTile(boardMessage,selectedWorkersPosition[count])) count++;
+                else{
+                    printBoard(boardMessage.board);
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________OCCUPIED TILE____________>>>>>>>>>> " + ANSI_RESET);
                     System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please try again____________>>>>>>>>>> " + ANSI_RESET);
-                    count--;
+
                 }
 
+            }while(count < MAX_NUMBER_OF_WORKERS);
 
-
+            if(checkSameWorkerPlacement(selectedWorkersPosition))
+            {
+                printBoard(boardMessage.board);
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________NOT ALLOWED PLACEMENT____________>>>>>>>>>> " + ANSI_RESET);
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please try again____________>>>>>>>>>> " + ANSI_RESET);
+                count--;
             }
+            else done = true;
 
-        }while (count < 2);
-
-
-
-        return temp;
+        }
+        return selectedWorkersPosition;
     }
 
-    private  boolean isSameTargetTile(Vector2d[] temp) {
+    /**
+     * check if the target tile is occupied by an opponent workers
+     * @param boardMessage board game
+     * @param workerPosition Vector2d position in game board
+     * @return true if target tile is occupied
+     */
+    private boolean checkOccupiedTargetTile(BoardMessage boardMessage, Vector2d workerPosition) {
 
-        for(int i =0; i <temp.length-1;i++)
+
+        return boardMessage.board[workerPosition.x][workerPosition.y].playerNumber != NO_PLAYER;
+    }
+
+
+    /**
+     *check if user set workers in the same place
+     * @param workersPosition Vector2d position in game board
+     * @return true if it is the same target tile selected
+     */
+    private  boolean checkSameWorkerPlacement(Vector2d[] workersPosition ){
+
+        for(int i =0; i <workersPosition.length-1;i++)
         {
-            if(temp[i].x == temp[i+1].x &&temp[i].y == temp[i+1].y) return  true;
+            if(workersPosition[i].x == workersPosition[i+1].x &&workersPosition[i].y == workersPosition[i+1].y) return  true;
 
         }
 
+       return false;
 
-        return false;
 
+    }
+
+    public static void printWinner()
+    {
+        ansi_reset();
+        System.out.println(ANSI_GREEN+"\n" +
+                "██╗██╗██╗██╗   ██╗ ██████╗ ██╗   ██╗     █████╗ ██████╗ ███████╗    ████████╗██╗  ██╗███████╗    ██╗    ██╗██╗███╗   ██╗███╗   ██╗███████╗██████╗ ██╗██╗██╗\n" +
+                "██║██║██║╚██╗ ██╔╝██╔═══██╗██║   ██║    ██╔══██╗██╔══██╗██╔════╝    ╚══██╔══╝██║  ██║██╔════╝    ██║    ██║██║████╗  ██║████╗  ██║██╔════╝██╔══██╗██║██║██║\n" +
+                "██║██║██║ ╚████╔╝ ██║   ██║██║   ██║    ███████║██████╔╝█████╗         ██║   ███████║█████╗      ██║ █╗ ██║██║██╔██╗ ██║██╔██╗ ██║█████╗  ██████╔╝██║██║██║\n" +
+                "╚═╝╚═╝╚═╝  ╚██╔╝  ██║   ██║██║   ██║    ██╔══██║██╔══██╗██╔══╝         ██║   ██╔══██║██╔══╝      ██║███╗██║██║██║╚██╗██║██║╚██╗██║██╔══╝  ██╔══██╗╚═╝╚═╝╚═╝\n" +
+                "██╗██╗██╗   ██║   ╚██████╔╝╚██████╔╝    ██║  ██║██║  ██║███████╗       ██║   ██║  ██║███████╗    ╚███╔███╔╝██║██║ ╚████║██║ ╚████║███████╗██║  ██║██╗██╗██╗\n" +
+                "╚═╝╚═╝╚═╝   ╚═╝    ╚═════╝  ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝       ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝╚═╝\n" +
+                "                                                                                                                                                           \n");
+    }
+
+    public static void printLoser()
+    {
+        ansi_reset();
+        System.out.println(ANSI_RED+"\n" +
+                "██╗   ██╗ ██████╗ ██╗   ██╗    ██╗      ██████╗ ███████╗███████╗    \n" +
+                "╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║     ██╔═══██╗██╔════╝██╔════╝    \n" +
+                " ╚████╔╝ ██║   ██║██║   ██║    ██║     ██║   ██║███████╗█████╗      \n" +
+                "  ╚██╔╝  ██║   ██║██║   ██║    ██║     ██║   ██║╚════██║██╔══╝      \n" +
+                "   ██║   ╚██████╔╝╚██████╔╝    ███████╗╚██████╔╝███████║███████╗    \n" +
+                "   ╚═╝    ╚═════╝  ╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝╚══════╝    \n" +
+                "                                                                    \n");
+
+    }
+
+    public static void printGameOver()
+    {
+
+        System.out.println(ANSI_BRIGHT_BG_BLUE +ANSI_WHITE+ "██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+        ansi_reset();
+        System.out.println("\n" +
+                " ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ \n" +
+                "██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗\n" +
+                "██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝\n" +
+                "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗\n" +
+                "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║\n" +
+                " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝\n" +
+                "                                                                          \n");
+        System.out.println(ANSI_BRIGHT_BG_BLUE +ANSI_WHITE+ "██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+        ansi_reset();
     }
 
 
     //ANSI COLOR
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String Bright_Black = "\u001b[30;1m";
+    public static final String ANSI_RESET =                  "\u001B[0m";
+    public static final String ANSI_BLACK =                  "\u001B[30m";
+    public static final String ANSI_RED =                    "\u001B[31m";
+    public static final String ANSI_GREEN =                  "\u001B[32m";
+    public static final String ANSI_YELLOW =                 "\u001B[33m";
+    public static final String ANSI_BLUE =                   "\u001B[34m";
+    public static final String ANSI_PURPLE =                 "\u001B[35m";
+    public static final String ANSI_CYAN =                   "\u001B[36m";
+    public static final String ANSI_WHITE =                  "\u001B[37m";
+    public static final String Bright_Black =                "\u001b[30;1m";
 
     //ANSI BACKGROUND
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
-    public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
-    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-    public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
-    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-    public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+    public static final String ANSI_BLACK_BACKGROUND =       "\u001B[40m";
+    public static final String ANSI_RED_BACKGROUND =         "\u001B[41m";
+    public static final String ANSI_GREEN_BACKGROUND =       "\u001B[42m";
+    public static final String ANSI_YELLOW_BACKGROUND =      "\u001B[43m";
+    public static final String ANSI_BLUE_BACKGROUND =        "\u001B[44m";
+    public static final String ANSI_PURPLE_BACKGROUND =      "\u001B[45m";
+    public static final String ANSI_CYAN_BACKGROUND =        "\u001B[46m";
+    public static final String ANSI_WHITE_BACKGROUND =       "\u001B[47m";
 
     //ANSI BRIGHT
-    public static final String ANSI_BRIGHT_BG_BLACK = "\u001B[100m";
-    public static final String ANSI_BRIGHT_BG_RED = "\u001B[101m";
-    public static final String ANSI_BRIGHT_BG_GREEN = "\u001B[102m";
-    public static final String ANSI_BRIGHT_BG_YELLOW = "\u001B[103m";
-    public static final String ANSI_BRIGHT_BG_BLUE = "\u001B[104m";
-    public static final String ANSI_BRIGHT_BG_PURPLE = "\u001B[105m";
-    public static final String ANSI_BRIGHT_BG_CYAN = "\u001B[106m";
-    public static final String ANSI_BRIGHT_BG_WHITE = "\u001B[107m";
+    public static final String ANSI_BRIGHT_BG_BLACK =       "\u001B[100m";
+    public static final String ANSI_BRIGHT_BG_RED =         "\u001B[101m";
+    public static final String ANSI_BRIGHT_BG_GREEN =       "\u001B[102m";
+    public static final String ANSI_BRIGHT_BG_YELLOW =      "\u001B[103m";
+    public static final String ANSI_BRIGHT_BG_BLUE =        "\u001B[104m";
+    public static final String ANSI_BRIGHT_BG_PURPLE =      "\u001B[105m";
+    public static final String ANSI_BRIGHT_BG_CYAN =        "\u001B[106m";
+    public static final String ANSI_BRIGHT_BG_WHITE =       "\u001B[107m";
 
     //ANSI
-    public static final String HIGH_INTENSITY = "\u001B[1m";
-    public static final String LOW_INTENSITY = "\u001B[2m";
-    public static final String ITALIC = "\u001B[3m";
-    public static final String UNDERLINE = "\u001B[4m";
-    public static final String BLINK = "\u001B[5m";
+    public static final String HIGH_INTENSITY =             "\u001B[1m";
+    public static final String LOW_INTENSITY =              "\u001B[2m";
+    public static final String ITALIC =                     "\u001B[3m";
+    public static final String UNDERLINE =                  "\u001B[4m";
+    public static final String BLINK =                      "\u001B[5m";
 }

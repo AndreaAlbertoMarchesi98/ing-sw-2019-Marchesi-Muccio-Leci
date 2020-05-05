@@ -29,4 +29,5 @@ public interface View {
     void updateLobby(LobbyMessage lobbyMessage);//1> tutte le carte, other il resto delle carte
     void updateWaitingRoom(WaitMessage waitMessage);//giocatori in attesa
     void updateBoard(BoardMessage boardMessage);//contiene anche isMove e le valid tiles
+    void updateVictory(VictoryMessage victoryMessage);
 }

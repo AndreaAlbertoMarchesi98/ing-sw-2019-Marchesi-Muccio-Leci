@@ -1,7 +1,7 @@
 package it.polimi.ing.sw.psp017.controller.client;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.view.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -12,6 +12,9 @@ import java.util.Scanner;
         private View view;
         private int playerNumber;
         private String nickname;
+
+
+        public ArrayList<PlayersInfo> playersInformation;
 
 
 
@@ -60,6 +63,14 @@ import java.util.Scanner;
         public int getPlayerNumber() {
             return playerNumber;
         }
+
+
+
+
+
+
+
+
 
     }
 

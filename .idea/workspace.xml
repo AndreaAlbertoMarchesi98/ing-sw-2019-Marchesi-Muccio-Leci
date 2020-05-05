@@ -23,21 +23,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/bugsToFix" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/progetto.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/PlayersInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/VictoryMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/CardFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/CardFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/NetworkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/NetworkHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/PowerActiveMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/PowerActiveMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/SelectionMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/SelectionMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/BoardMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/BoardMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/ValidTilesMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/VirtualView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/VirtualView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Athena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Athena.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/decorators/CardDecorator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/CardDecorator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CommandLineInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CommandLineInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/View.java" afterDir="false" />
     </list>
     <list id="a3cf9edb-428a-4e49-92c7-f90e306296d5" name="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -85,7 +80,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
   <component name="Push.Settings">
     <option name="SHOW_DETAILS_PANEL" value="false" />
@@ -113,10 +108,10 @@
       <recent name="it.polimi.ing.sw.psp017.view" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.CommandLineInterface">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.controller.client.Client" />
-      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <module name="progetto" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="it.polimi.ing.sw.psp017.controller.client.*" />
@@ -129,7 +124,7 @@
     </configuration>
     <configuration name="CommandLineInterface" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.view.CommandLineInterface" />
-      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <module name="progetto" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="it.polimi.ing.sw.psp017.view.*" />
@@ -166,9 +161,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Server" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="13" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.controller.server.Server" />
-      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <module name="progetto" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="it.polimi.ing.sw.psp017.controller.server.*" />
@@ -188,9 +185,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.CommandLineInterface" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="Application.CommandLineInterface" />
         <item itemvalue="Application.Prova" />
         <item itemvalue="Application.GUItest" />
       </list>
@@ -254,6 +251,13 @@
       <workItem from="1588283089344" duration="347000" />
       <workItem from="1588323680926" duration="174000" />
       <workItem from="1588401784290" duration="9048000" />
+      <workItem from="1588448254308" duration="1170000" />
+      <workItem from="1588449972213" duration="9457000" />
+      <workItem from="1588495909098" duration="9719000" />
+      <workItem from="1588536234733" duration="5223000" />
+      <workItem from="1588615964046" duration="4276000" />
+      <workItem from="1588666372725" duration="4970000" />
+      <workItem from="1588678558711" duration="760000" />
     </task>
     <task id="LOCAL-00001" summary="base card implementation, apollo implementation">
       <created>1585491765125</created>
@@ -357,6 +361,14 @@
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
     <state x="715" y="198" key="#App/76.0.1844.1080@76.0.1844.1080" timestamp="1585467630204" />
+    <state x="659" y="86" key="#Client" timestamp="1588448468869">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="659" y="86" key="#Client/0.0.1920.1040@0.0.1920.1040" timestamp="1588448468869" />
+    <state x="659" y="86" key="#CommandLineInterface" timestamp="1588450000924">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="659" y="86" key="#CommandLineInterface/0.0.1920.1040@0.0.1920.1040" timestamp="1588450000924" />
     <state x="361" y="71" key="#Notifications" timestamp="1586263397176">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -365,6 +377,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="485" y="71" key="#Prova/0.0.1536.824@0.0.1536.824" timestamp="1586104841990" />
+    <state x="659" y="86" key="#Server" timestamp="1588448449761">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="659" y="86" key="#Server/0.0.1920.1040@0.0.1920.1040" timestamp="1588448449761" />
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587916606402">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -379,12 +395,13 @@
     <state x="400" y="144" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680@0.0.1280.680" timestamp="1586001875251" />
     <state x="480" y="174" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586591567942" />
     <state x="649" y="228" width="673" height="433" key="#com.intellij.fileTypes.FileTypeChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588409390627" />
-    <state x="715" y="77" width="378" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1588282110789">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state x="669" y="74" width="378" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1588669780066">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="446" y="49" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1588149745315" />
     <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586680329778" />
     <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1586623716458" />
+    <state x="669" y="74" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1588669780066" />
     <state x="715" y="77" width="378" height="592" key="#com.intellij.ide.util.MemberChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588282110789" />
     <state x="718" y="77" key="#com.intellij.ide.util.MemberChooser/76.0.1844.1080@76.0.1844.1080" timestamp="1587469318388" />
     <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1588410724935">
@@ -394,18 +411,20 @@
     <state x="566" y="272" width="403" height="287" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1586116746447" />
     <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/71.0.1849.1080@71.0.1849.1080" timestamp="1588410724935" />
     <state x="755" y="357" width="554" height="288" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/76.0.1844.1080@76.0.1844.1080" timestamp="1587485906730" />
-    <state x="646" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1587456020783">
-      <screen x="76" y="0" width="1844" height="1080" />
+    <state x="593" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1588679152394">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="396" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.680@0.0.1280.680" timestamp="1585392933170" />
     <state x="475" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585405698580" />
+    <state x="593" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588679152394" />
     <state x="646" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/76.0.1844.1080@76.0.1844.1080" timestamp="1587456020783" />
-    <state x="416" y="131" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587917298334">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="624" y="200" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588678621816">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="416" y="131" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1280.680@0.0.1280.680" timestamp="1587917298334" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585405676892" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1586624148525" />
+    <state x="624" y="200" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588678621816" />
     <state x="516" y="136" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1585403962394">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -420,68 +439,77 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586263466693" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1585403920958">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="686" y="211" key="FileChooserDialogImpl" timestamp="1588667609834">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585403920958" />
-    <state width="1793" height="491" key="GridCell.Tab.0.bottom" timestamp="1588411411500">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state x="686" y="211" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588667609834" />
+    <state width="1877" height="443" key="GridCell.Tab.0.bottom" timestamp="1588671378810">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
+    <state width="1877" height="443" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588671378810" />
     <state width="1793" height="491" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1588411411500" />
     <state width="1801" height="246" key="GridCell.Tab.0.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="491" key="GridCell.Tab.0.center" timestamp="1588411411500">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state width="1877" height="443" key="GridCell.Tab.0.center" timestamp="1588671378810">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
+    <state width="1877" height="443" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588671378810" />
     <state width="1793" height="491" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1588411411500" />
     <state width="1801" height="246" key="GridCell.Tab.0.center/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="491" key="GridCell.Tab.0.left" timestamp="1588411411500">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state width="1877" height="443" key="GridCell.Tab.0.left" timestamp="1588671378810">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
+    <state width="1877" height="443" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588671378810" />
     <state width="1793" height="491" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1588411411500" />
     <state width="1801" height="246" key="GridCell.Tab.0.left/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="491" key="GridCell.Tab.0.right" timestamp="1588411411500">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state width="1877" height="443" key="GridCell.Tab.0.right" timestamp="1588671378810">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
+    <state width="1877" height="443" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588671378810" />
     <state width="1793" height="491" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1588411411500" />
     <state width="1801" height="246" key="GridCell.Tab.0.right/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1587916623866">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="340" key="GridCell.Tab.1.bottom" timestamp="1588621286082">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1586198456914" />
+    <state width="1877" height="340" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1588621286082" />
     <state width="1803" height="354" key="GridCell.Tab.1.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1587910960790" />
     <state width="1801" height="364" key="GridCell.Tab.1.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
-    <state width="1493" height="261" key="GridCell.Tab.1.center" timestamp="1587916623866">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="340" key="GridCell.Tab.1.center" timestamp="1588621286082">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
     <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1586198456914" />
+    <state width="1877" height="340" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1588621286082" />
     <state width="1803" height="354" key="GridCell.Tab.1.center/71.0.1849.1080@71.0.1849.1080" timestamp="1587910960777" />
     <state width="1801" height="364" key="GridCell.Tab.1.center/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
-    <state width="1493" height="261" key="GridCell.Tab.1.left" timestamp="1587916623866">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="340" key="GridCell.Tab.1.left" timestamp="1588621286082">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
     <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1586198456914" />
+    <state width="1877" height="340" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1588621286082" />
     <state width="1803" height="354" key="GridCell.Tab.1.left/71.0.1849.1080@71.0.1849.1080" timestamp="1587910960776" />
     <state width="1801" height="364" key="GridCell.Tab.1.left/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
-    <state width="1493" height="261" key="GridCell.Tab.1.right" timestamp="1587916623866">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1877" height="340" key="GridCell.Tab.1.right" timestamp="1588621286082">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
     <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1586198456914" />
+    <state width="1877" height="340" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1588621286082" />
     <state width="1803" height="354" key="GridCell.Tab.1.right/71.0.1849.1080@71.0.1849.1080" timestamp="1587910960788" />
     <state width="1801" height="364" key="GridCell.Tab.1.right/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
     <state x="251" y="94" width="1483" height="894" key="MergeDialog" timestamp="1588404210043">
@@ -492,12 +520,13 @@
       <screen x="76" y="0" width="1844" height="1080" />
     </state>
     <state x="710" y="256" key="MultipleFileMergeDialog/76.0.1844.1080@76.0.1844.1080" timestamp="1587486721430" />
-    <state x="404" y="0" key="SettingsEditor" timestamp="1588323853083">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state x="346" y="0" key="SettingsEditor" timestamp="1588667620726">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="231" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1588147226138" />
     <state x="277" y="55" key="SettingsEditor/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585408888738" />
     <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588187595226" />
+    <state x="346" y="0" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1588667620726" />
     <state x="404" y="0" key="SettingsEditor/71.0.1849.1080@71.0.1849.1080" timestamp="1588323853083" />
     <state x="409" y="72" key="SettingsEditor/76.0.1844.1080@76.0.1844.1080" timestamp="1585492419633" />
     <state x="843" y="456" width="299" height="169" key="VCS.ChangelistChooser" timestamp="1588283392788">
@@ -549,41 +578,43 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="348" y="98" key="refactoring.ChangeSignatureDialog/0.0.1280.680@0.0.1280.680" timestamp="1588165516582" />
-    <state x="586" y="245" key="run.anything.popup" timestamp="1587292188416">
-      <screen x="76" y="0" width="1844" height="1080" />
+    <state x="531" y="236" key="run.anything.popup" timestamp="1588617167689">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586680200250" />
+    <state x="531" y="236" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588617167689" />
     <state x="586" y="245" key="run.anything.popup/76.0.1844.1080@76.0.1844.1080" timestamp="1587292188416" />
-    <state x="359" y="120" width="672" height="560" key="search.everywhere.popup" timestamp="1588165462408">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="539" y="184" width="1008" height="857" key="search.everywhere.popup" timestamp="1588619624609">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="359" y="120" width="672" height="560" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1588165462408" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1586194334046" />
+    <state x="539" y="184" width="1008" height="857" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1588619624609" />
     <state x="590" y="190" width="809" height="889" key="search.everywhere.popup/71.0.1849.1080@71.0.1849.1080" timestamp="1587892233985" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidBuilding.ic" NAME="AppTest.testIsValidBuilding Coverage Results" MODIFIED="1586166619568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidMove.ic" NAME="AppTest.testIsValidMove Coverage Results" MODIFIED="1586166605073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ApolloTest.ic" NAME="ApolloTest Coverage Results" MODIFIED="1586179297137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>it.polimi.ing.sw.psp017.model.deck.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_TestController.ic" NAME="AppTest.TestController Coverage Results" MODIFIED="1586104865674" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$it_polimi_ing_sw_psp017_in_ing_sw_2019_Marchesi_Muccio_Leci.ic" NAME="it.polimi.ing.sw.psp017 in ing-sw-2019-Marchesi-Muccio-Leci Coverage Results" MODIFIED="1586261929553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ControllerTest_TestController.ic" NAME="ControllerTest.TestController Coverage Results" MODIFIED="1586182580943" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidBuilding.ic" NAME="AppTest.testIsValidBuilding Coverage Results" MODIFIED="1586166619568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ApolloTest_apolloMoveTest.ic" NAME="ApolloTest.apolloMoveTest Coverage Results" MODIFIED="1586179015448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>it.polimi.ing.sw.psp017.model.deck.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ApolloTest.ic" NAME="ApolloTest Coverage Results" MODIFIED="1586179297137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.model.deck.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest.ic" NAME="AppTest Coverage Results" MODIFIED="1586173650244" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidMove.ic" NAME="AppTest.testIsValidMove Coverage Results" MODIFIED="1586166605073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_TestController.ic" NAME="AppTest.TestController Coverage Results" MODIFIED="1586104865674" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ControllerTest_TestController.ic" NAME="ControllerTest.TestController Coverage Results" MODIFIED="1586182580943" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
     </SUITE>
   </component>
