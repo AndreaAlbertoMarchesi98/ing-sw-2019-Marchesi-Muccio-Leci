@@ -19,6 +19,8 @@ public class LobbyMessage implements Serializable {
         this.availableCards = lobby.getAvailableCards();
         this.cards = lobby.getCards();
     }
+
+
 }
 
 

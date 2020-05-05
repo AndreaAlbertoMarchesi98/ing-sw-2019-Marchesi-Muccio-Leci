@@ -198,7 +198,7 @@ public class CLI implements View {
         System.out.println("dentro updateWaitingRoom");
 
         //gioatore in attessa di una nuova partita
-        System.out.println(ANSI_CYAN_BACKGROUND +"Number of players in waitingRoom : " + waitMessage.queueLength);
+        System.out.println("Number of players in waitingRoom : " + waitMessage.queueLength);
 
         ansi_reset();
 
@@ -314,13 +314,10 @@ public class CLI implements View {
 
     @Override
     public void updateVictory(VictoryMessage victoryMessage) {
-        if(victoryMessage.playerNumber == client.getPlayerNumber()) printWinner();
+        if(victoryMessage.winnerNumber == client.getPlayerNumber()) printWinner();
         else printLoser();
         printGameOver();
     }
-
-
-
 
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
         if (invalidNameMessage != null) {
@@ -430,9 +427,6 @@ public class CLI implements View {
      * @param board game board
      */
     public  void printBoard(BoardMessage.PrintableTile[][] board) {
-
-
-
 
         int line = 2;
         System.out.println(ANSI_CYAN);
@@ -627,7 +621,7 @@ public class CLI implements View {
 
         System.out.print("███████████████████████████████████████████████████████████████");
         optionValidTiles(0);
-        System.out.print(ANSI_YELLOW_BACKGROUND + "██" + ANSI_RED + "    ►►►0◄◄◄  ►►►1◄◄◄  ►►►2◄◄◄  ►►►3◄◄◄  ►►►4◄◄◄  " + ANSI_CYAN + "██" + ANSI_RESET + ANSI_CYAN);
+        System.out.print(ANSI_YELLOW_BACKGROUND + "██"+ ANSI_RED+ "    ►►►►0◄◄◄◄  ►►►►1◄◄◄◄  ►►►►2◄◄◄◄  ►►►►3◄◄◄◄  ►►►►4◄◄◄◄  " +ANSI_CYAN +"██"+ANSI_RESET+ ANSI_CYAN  );
         optionValidTiles(1);
         System.out.print(ANSI_CYAN);
         for (int i = 0; i < 5; i++) {

@@ -65,13 +65,13 @@ public class BaseCardTest {
         Tile targetTile = testConfiguration.game.getBoard().getTile(new Vector2d(0, 1));
         Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
         targetTile.setLevel(3);
-        assertTrue("error:free tile", card.checkWin(currentstep, null, testConfiguration.board));
+        assertTrue("error:free tile", card.checkWin(currentstep,  testConfiguration.board));
 
         targetTile.setLevel(4);
-        assertFalse("error:free tile", card.checkWin(currentstep, null, testConfiguration.board));
+        assertFalse("error:free tile", card.checkWin(currentstep,  testConfiguration.board));
 
         targetTile.setLevel(2);
-        assertFalse("error:free tile", card.checkWin(currentstep, null, testConfiguration.board));
+        assertFalse("error:free tile", card.checkWin(currentstep,  testConfiguration.board));
 
 
     }

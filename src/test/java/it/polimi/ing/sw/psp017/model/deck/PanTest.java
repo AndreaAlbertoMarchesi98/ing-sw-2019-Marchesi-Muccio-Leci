@@ -25,7 +25,7 @@ public class PanTest  {
         testConfiguration.currentTile.setLevel(2);
         Tile targetTile = testConfiguration.board.getTile(new Vector2d(1,0));
          Step currentStep = new Step(testConfiguration.currentTile, targetTile, false);
-        assertTrue(card.checkWin(currentStep,testConfiguration.previousStep,testConfiguration.board));
+        assertTrue(card.checkWin(currentStep,testConfiguration.board));
     }
 
 

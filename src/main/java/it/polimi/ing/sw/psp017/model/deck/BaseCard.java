@@ -35,7 +35,6 @@ public class BaseCard implements Card {
         if( targetTile.getLevel() - currentTile.getLevel() < 2) {
             return (board.isTileEmpty(targetTile));
         }
-
         return false;
     }
 
@@ -44,7 +43,7 @@ public class BaseCard implements Card {
         return !targetTile.isDome() && targetTile.getWorker() == null;
     }
 
-    public boolean checkWin(Step currentStep, Step previousStep, Board board) {
+    public boolean checkWin(Step currentStep, Board board) {
         Tile targetTile = currentStep.getTargetTile();
         return targetTile.getLevel() == 3;
     }

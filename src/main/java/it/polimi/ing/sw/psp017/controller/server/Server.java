@@ -24,7 +24,7 @@ public class Server implements Runnable {
 
     public Server() {
         waitingViews = new LinkedList<>();
-        gameController = new GameController();
+        gameController = new GameController(this);
     }
 
     public static void main(String[] args) {
@@ -40,21 +40,15 @@ public class Server implements Runnable {
         Thread thread = new Thread(server);
         thread.start();
 
+        while (true)
+            server.tryAddingViewToGame();
+
     }
 
-
-    private void checkGameStatus() {
-        /*
-        if (!waitingViews.isEmpty()) {
-            System.out.println("ain t empty");
-            if (!gameController.isGameRunning())
-                gameController.startGameCreation(popWaitingView());
-            else if (!gameController.isLobbyFull())
-                gameController.addPlayerToLobby(popWaitingView());
-        }
-        */
+    public void addWaitingView(VirtualView view) {
+        waitingViews.add(view);
+        view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
     }
-
 
     private VirtualView popWaitingView() {
         VirtualView view = waitingViews.poll();
@@ -62,23 +56,26 @@ public class Server implements Runnable {
             waitingView.updateWaitingRoom(new WaitMessage(waitingViews.size()));
         return view;
     }
-    private void addWaitingView(VirtualView view) {
-        view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
+
+    private synchronized void assignView(VirtualView view) {
+        System.out.println("assigningView");
         waitingViews.add(view);
+        if(!tryAddingViewToGame())
+            view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
     }
 
-    private synchronized void assignView(VirtualView view){
-        System.out.println("assigningView");
-        if(waitingViews.isEmpty()) {
-            if (gameController.isGameCreatable())
-                gameController.startGameCreation(view);
-            else if (gameController.isLobbyJoinable())
-                gameController.addPlayerToLobby(view);
-            else
-                addWaitingView(view);
+    private synchronized boolean tryAddingViewToGame() {
+        if (!waitingViews.isEmpty()) {
+            if (gameController.isGameCreatable()) {
+                gameController.startGameCreation(popWaitingView());
+                return true;
+            }
+            else if (gameController.isLobbyJoinable()) {
+                gameController.addPlayerToLobby(popWaitingView());
+                return true;
+            }
         }
-        else
-            addWaitingView(view);
+        return false;
     }
 
     public synchronized void tryAuthenticatingView(String nickname, VirtualView view) {
@@ -108,7 +105,7 @@ public class Server implements Runnable {
     }
 
     public void run() {
-        while (true)
+        while (true) {
             try {
                 Socket client = socket.accept();
 
@@ -119,10 +116,10 @@ public class Server implements Runnable {
                 Thread thread = new Thread(virtualView, "server_" + client.getInetAddress());
                 thread.start();
 
-
             } catch (IOException e) {
                 System.out.println("connection dropped");
             }
+        }
     }
 
 }

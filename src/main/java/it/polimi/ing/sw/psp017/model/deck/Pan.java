@@ -19,14 +19,13 @@ public class Pan extends BaseCard{
      * if the difference between the starting and finishing cell is greater than 2,
      * the player has automatically won
      * @param currentStep contains information about in which tile the worker is and what move wants to do next
-     * @param previousStep contains information about last step
      * @param board main board used to manage the game
      * @return true is current player has won
      */
     @Override
-    public boolean checkWin(Step currentStep, Step previousStep, Board board) {
+    public boolean checkWin(Step currentStep, Board board) {
             if(currentStep.getCurrentTile().getLevel()-currentStep.getTargetTile().getLevel() >=2) return true;
-        else return super.checkWin(currentStep, previousStep, board);
+        else return super.checkWin(currentStep, board);
 
     }
 }

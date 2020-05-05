@@ -1,12 +1,11 @@
 package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 
-public class VictoryMessage {
-    public String winnerName;
-    public int playerNumber;
+import java.io.Serializable;
 
-    public VictoryMessage(String winnerName,int playerNumber)
-    {
-        this.winnerName = winnerName;
-        this.playerNumber = playerNumber;
+public class VictoryMessage implements Serializable {
+    public int winnerNumber;
+
+    public VictoryMessage(int winnerNumber) {
+        this.winnerNumber = winnerNumber;
     }
 }

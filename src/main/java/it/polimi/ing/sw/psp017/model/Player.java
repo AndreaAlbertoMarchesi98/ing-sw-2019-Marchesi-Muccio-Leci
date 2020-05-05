@@ -11,6 +11,7 @@ public class Player {
     private Color color;
     private ArrayList<Worker> workers;
     private Card card;
+    private Card originalCard;
 
     private Step previousStep;
 
@@ -36,6 +37,14 @@ public class Player {
 
     public void setPlayerNumber(int playerNumber) {
         this.playerNumber = playerNumber;
+    }
+
+    public Card getOriginalCard() {
+        return originalCard;
+    }
+
+    public void setOriginalCard(Card originalCard) {
+        this.originalCard = originalCard;
     }
 
     public Color getColor() {

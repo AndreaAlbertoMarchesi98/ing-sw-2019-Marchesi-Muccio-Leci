@@ -6,9 +6,6 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 public interface View {
     /*robe da modificare
     1)power active cia il suo metodo
-
-
-
     */
 
     //send information to controller

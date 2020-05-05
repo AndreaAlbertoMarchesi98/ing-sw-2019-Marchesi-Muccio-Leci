@@ -14,18 +14,17 @@ public class BoardMessage implements Serializable {
     public boolean[][] validTiles;
     public ActionNames action;
 
-    public BoardMessage(Game game, boolean[][] validTiles, ActionNames action){
-        activePlayerNumber = game.getTurn().getPlayerIndex() + 1;
-        hasChoice = game.getTurn().hasChoice();
+    public BoardMessage(Game game){
+        activePlayerNumber = game.getPlayerIndex() + 1;
+        hasChoice = game.hasChoice();
         this.board = new PrintableTile[Board.size][Board.size];
         for(int x = 0; x < Board.size; x++){
             for(int y = 0; y < Board.size; y++){
                 this.board[x][y] = new PrintableTile(game.getBoard().getTile(new Vector2d(x, y)));
             }
         }
-
-        this.validTiles = validTiles;
-        this.action = action;
+        this.validTiles = game.getValidTiles();
+        this.action = game.getAction();
     }
 
     public class PrintableTile implements Serializable{

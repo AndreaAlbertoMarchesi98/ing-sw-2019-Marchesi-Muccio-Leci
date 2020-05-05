@@ -38,8 +38,8 @@ abstract public class CardDecorator implements Card {
         return tempCard.isValidBuilding(currentStep, previousStep, board);
     }
 
-    public boolean checkWin(Step currentStep, Step previousStep, Board board) {
-        return tempCard.checkWin(currentStep, previousStep, board);
+    public boolean checkWin(Step currentStep, Board board) {
+        return tempCard.checkWin(currentStep, board);
     }
 
     public void move(Step currentStep, Step previousStep, Board board) {
