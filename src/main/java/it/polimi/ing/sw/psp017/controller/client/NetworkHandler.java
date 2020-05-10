@@ -22,6 +22,26 @@ public class NetworkHandler implements Runnable{
     private ObjectOutputStream output;
     private boolean isConnected;
 
+    private static class PingSender implements Runnable{
+        private NetworkHandler networkHandler;
+
+        public PingSender(NetworkHandler networkHandler){
+            this.networkHandler = networkHandler;
+        }
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    networkHandler.sendMessage(new Ping());
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
 
 
     public NetworkHandler(View view) {
@@ -43,6 +63,9 @@ public class NetworkHandler implements Runnable{
 
             Thread thread = new Thread(this);
             thread.start();
+
+            Thread pingSenderThread = new Thread(new PingSender(this));
+            pingSenderThread.start();
 
             System.out.println();
             view.updateLoginScreen(null);
@@ -84,6 +107,9 @@ public class NetworkHandler implements Runnable{
                 else if(message instanceof WaitMessage){
                     view.updateWaitingRoom((WaitMessage)message);
                 }
+                else if(message instanceof SDisconnectionMessage){
+                    System.out.println("disconnection message has arrived, it was player: " + ((SDisconnectionMessage) message).disconnectedPlayerNumber);
+                }
 
             } catch (SocketTimeoutException e){
                 e.printStackTrace();
@@ -102,7 +128,7 @@ public class NetworkHandler implements Runnable{
     public void sendMessage(Object message){
         try{
             output.writeObject(message);
-            System.out.println("wait for Server response");
+            //System.out.println("wait for Server response");
         } catch (IOException e) {
             e.printStackTrace();
         }

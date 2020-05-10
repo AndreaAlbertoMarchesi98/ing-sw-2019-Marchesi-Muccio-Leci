@@ -1,4 +1,6 @@
 package it.polimi.ing.sw.psp017.controller.messages.ClientToServer;
 
-public class Ping {
+import java.io.Serializable;
+
+public class Ping implements Serializable {
 }

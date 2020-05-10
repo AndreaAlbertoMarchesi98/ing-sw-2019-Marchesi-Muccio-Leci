@@ -8,6 +8,7 @@ import it.polimi.ing.sw.psp017.model.Player;
 import it.polimi.ing.sw.psp017.model.Step;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.view.View;
+import java.util.concurrent.locks.Lock;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -48,17 +49,19 @@ public class VirtualView implements Runnable, View {
         try {
             processMessages();
         } catch (SocketTimeoutException e) {
-            System.out.println();
+            System.out.println("it s timeout!!!!!!!!!!!!");
             notifyDisconnection();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            notifyDisconnection();
+            //e.printStackTrace();
         }
     }
 
 
-    private void processMessages() throws IOException, ClassNotFoundException {
+    private void processMessages() throws SocketTimeoutException, IOException, ClassNotFoundException {
         while (true) {
             Object message = input.readObject();
+
 
             if (message instanceof AuthenticationMessage)
                 notifyNickname((AuthenticationMessage)message);
@@ -89,10 +92,13 @@ public class VirtualView implements Runnable, View {
     }
 
     private void notifyDisconnection() {
-        if (gameController != null)
-            gameController.handleDisconnection(this);
-        else
-            server.handleDisconnection(this);
+        System.out.println("inside disxconnection");
+        //synchronized (server.getWaitingViews()) {
+            if (gameController != null)
+                gameController.handleDisconnection(this);
+            else
+                server.handleDisconnection(this);
+        //}
     }
 
     public void notifyNickname(AuthenticationMessage authenticationMessage) {
@@ -143,8 +149,10 @@ public class VirtualView implements Runnable, View {
         sendMessage(boardMessage);
     }
     public void updateVictory(VictoryMessage victoryMessage) {
-        System.out.println("VICTORY WORKS!!!!!");
         sendMessage(victoryMessage);
+    }
+    public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
+        sendMessage(disconnectionMessage);
     }
 
     private void sendMessage(Object message){

@@ -27,4 +27,5 @@ public interface View {
     void updateWaitingRoom(WaitMessage waitMessage);//giocatori in attesa
     void updateBoard(BoardMessage boardMessage);//contiene anche isMove e le valid tiles
     void updateVictory(VictoryMessage victoryMessage);
+    void updateDisconnection(SDisconnectionMessage disconnectionMessage);
 }

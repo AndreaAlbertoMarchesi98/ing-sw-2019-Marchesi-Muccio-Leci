@@ -45,6 +45,10 @@ public class Server implements Runnable {
 
     }
 
+    public Queue<VirtualView> getWaitingViews() {
+        return waitingViews;
+    }
+
     public void addWaitingView(VirtualView view) {
         waitingViews.add(view);
         view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
@@ -65,17 +69,18 @@ public class Server implements Runnable {
     }
 
     private synchronized boolean tryAddingViewToGame() {
-        if (!waitingViews.isEmpty()) {
-            if (gameController.isGameCreatable()) {
-                gameController.startGameCreation(popWaitingView());
-                return true;
+        //synchronized (waitingViews) {
+            if (!waitingViews.isEmpty()) {
+                if (gameController.isGameCreatable()) {
+                    gameController.startGameCreation(popWaitingView());
+                    return true;
+                } else if (gameController.isLobbyJoinable()) {
+                    gameController.addPlayerToLobby(popWaitingView());
+                    return true;
+                }
             }
-            else if (gameController.isLobbyJoinable()) {
-                gameController.addPlayerToLobby(popWaitingView());
-                return true;
-            }
-        }
-        return false;
+            return false;
+        //}
     }
 
     public synchronized void tryAuthenticatingView(String nickname, VirtualView view) {
@@ -101,7 +106,7 @@ public class Server implements Runnable {
     }
 
     public void handleDisconnection(VirtualView view) {
-
+        waitingViews.remove(view);
     }
 
     public void run() {
@@ -109,7 +114,7 @@ public class Server implements Runnable {
             try {
                 Socket client = socket.accept();
 
-                //client.setSoTimeout(20);
+                client.setSoTimeout(1000);
                 System.out.println("new client connected");
 
                 VirtualView virtualView = new VirtualView(client, this);

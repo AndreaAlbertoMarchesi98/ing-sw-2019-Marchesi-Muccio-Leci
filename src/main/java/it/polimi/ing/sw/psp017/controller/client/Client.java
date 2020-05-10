@@ -1,5 +1,7 @@
 package it.polimi.ing.sw.psp017.controller.client;
-import it.polimi.ing.sw.psp017.view.*;
+
+import it.polimi.ing.sw.psp017.view.CLI;
+import it.polimi.ing.sw.psp017.view.View;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,7 +16,7 @@ import java.util.Scanner;
         private String nickname;
 
 
-        public ArrayList<PlayersInfo> playersInformation;
+        public ArrayList<PlayersInfo> playersInfo;
 
 
 

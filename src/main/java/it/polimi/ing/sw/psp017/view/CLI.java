@@ -11,7 +11,6 @@ import java.util.*;
 
 public class CLI implements View {
 
-    //
     private static final int MAX_NUMBER_OF_WORKERS = 2 ;
     private static final int NO_PLAYER = 0;
     private int NUMBER_OF_PLAYERS;
@@ -141,46 +140,37 @@ public class CLI implements View {
     public void updateLobby(LobbyMessage lobbyMessage) {
 
         System.out.println("dentro updateLobby");
+        client.playersInfo = new ArrayList<>();
 
 
 
+        if(client.getPlayerNumber() == lobbyMessage.choosingPlayerNumber)
+        {
+            System.out.println("turno giocatore : "+lobbyMessage.choosingPlayerNumber);
+            GodName chosenCard = chooseGodCard(lobbyMessage.chosenCards);
 
-        //salvataggio index del giocatore
-        client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname()) + 1);
-
-
-        //stampa i player dal messaggio  <<<<<<<<<<<<<<<<da fare
-
-        //client.playersInformation = new PlayersInformation[lobbyMessage.players.size()];
-        saveOpponentPlayers(lobbyMessage);
-
-        client.playersInformation.toString();
-
-        Arrays.toString(client.playersInformation.toArray());
-
-
-
-
-        //choosodCard(lobbyMessage.cards);
-        // lobbyMessage.cards; //stampa le carte che puo scegliere
-        //scelta di una sola carta dal array in input
-        //invia carta scelta
-        notifyCard(new CardMessage(chooseGodCard(lobbyMessage.availableCards))); //é correto available?'
-
-
+            //se e il suo turno , seleziona la carta e se la salva , poi la invia
+            client.playersInfo.add(new PlayersInfo(lobbyMessage.players.get(client.getPlayerNumber()),lobbyMessage.choosingPlayerNumber,chosenCard));
+            notifyCard(new CardMessage(chooseGodCard(lobbyMessage.chosenCards)));
+        }
+        else
+        {
+            System.out.println("non e il mio turno \n turno del giocatore : "+ lobbyMessage.choosingPlayerNumber);
+            client.playersInfo.add(new PlayersInfo(lobbyMessage.players.get(client.getPlayerNumber()),lobbyMessage.choosingPlayerNumber,lobbyMessage.chosenCards.get(lobbyMessage.choosingPlayerNumber - lobbyMessage.players.size())));//nell ultimo c e un errore, ossia il caso in cui chosen cards è vuoto non si puo fare il get
+        }
     }
-
+/*
     private void saveOpponentPlayers(LobbyMessage lobbyMessage) {
 
 
         System.out.println("dentro saveOpponentplayers");
 
-        client.playersInformation = new ArrayList<>();
+        client.playersInfo = new ArrayList<>();
 
         for(int i = 0; i < lobbyMessage.players.size();i++)
         {
             //client.playersInformation = new PlayersInformation(lobbyMessage.players.get(i),i);
-            client.playersInformation.add(new PlayersInfo(lobbyMessage.players.get(i),i));
+            client.playersInfo.add(new PlayersInfo(lobbyMessage.players.get(i),i));
             //client.playersInformation[i] = new PlayersInformation(lobbyMessage.players.get(i),i+1);
         }
 
@@ -191,7 +181,7 @@ public class CLI implements View {
             client.playersInformation.toString();
         }
     }
-
+*/
     @Override
     public void updateWaitingRoom(WaitMessage waitMessage) {
 
@@ -317,6 +307,11 @@ public class CLI implements View {
         if(victoryMessage.winnerNumber == client.getPlayerNumber()) printWinner();
         else printLoser();
         printGameOver();
+    }
+
+    @Override
+    public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
+
     }
 
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {

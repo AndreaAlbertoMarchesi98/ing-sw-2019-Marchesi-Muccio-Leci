@@ -1,9 +1,4 @@
-cosa abbiamo fatto questa settimana
--1)finito progetto con la cli
-
-
-
-
-
 domande per 12/05
 -1)van fatti i controlli sul server anche se son gia fatti sul client?
+-2)fare classe serverMessages e i messaggi sono inner classes, idem per ClientMessages
+-3)getResources non funziona non capiamo perche

@@ -4,8 +4,10 @@ import it.polimi.ing.sw.psp017.controller.CardFactory;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.SDisconnectionMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.VictoryMessage;
 import it.polimi.ing.sw.psp017.model.*;
+import it.polimi.ing.sw.psp017.model.deck.CardDecorator;
 import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.model.Tile;
@@ -23,12 +25,6 @@ public class GameController {
         views = new ArrayList<>();
         game = Game.getInstance();
         this.server = server;
-    }
-
-    private void endGame(){
-        for(VirtualView view : views){
-            server.addWaitingView(view);
-        }
     }
 
     public ArrayList<VirtualView> getViews() {
@@ -86,19 +82,35 @@ public class GameController {
         game.setUp(lobby.getPlayers());
         notifyBoard();
     }
+    private void endGame() {
+        views.clear();
+        lobby = null;
+    }
 
     public void handleDisconnection(VirtualView view) {
-
+        int disconnectedPlayerNumber = view.getPlayer().getPlayerNumber();
+        views.remove(view);
+        notifyDisconnection(disconnectedPlayerNumber);
+        endGame();
     }
 
 //              VIEW INTERACTION
 //                 notifiers
 
+    private void addEffectOnOthers(){
+        Card card = game.getActivePlayer().getCard();
+        for(Player opponent: game.getPlayers()){
+            if(!opponent.equals(game.getActivePlayer()))
+                opponent.setCard(card.getDecorator(opponent.getCard()));
+        }
+    }
+
     private void notifyLobby() {
         LobbyMessage message = new LobbyMessage(lobby);
-        int choosingViewIndex = lobby.getChoosingPlayerIndex();
-        VirtualView choosingView = views.get(choosingViewIndex);
-        choosingView.updateLobby(message);
+        System.out.println("lobby!!!!!!!!!!!!!:"+lobby.getChosenCards().size());
+        for (VirtualView view : views) {
+            view.updateLobby(message);
+        }
     }
 
     public void notifyBoard() {
@@ -115,6 +127,12 @@ public class GameController {
         }
     }
 
+    private void notifyDisconnection(int disconnectedPlayerNumber){
+        SDisconnectionMessage message = new SDisconnectionMessage(disconnectedPlayerNumber);
+        for (VirtualView view : views) {
+            view.updateDisconnection(message);
+        }
+    }
     //               view reactions
     public void placeWorkers(PlacementMessage message) {
         System.out.println("placing workers");
@@ -181,6 +199,7 @@ public class GameController {
         GodName godName = message.godName;
         if (lobby.getAvailableCards().contains(godName)) {
             lobby.getAvailableCards().remove(godName);
+            lobby.addChosenCards(godName);
 
             view.getPlayer().setCard(CardFactory.getCard(godName));
             view.getPlayer().setOriginalCard(CardFactory.getCard(godName));
