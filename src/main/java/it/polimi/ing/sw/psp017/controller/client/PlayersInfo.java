@@ -5,9 +5,9 @@ import it.polimi.ing.sw.psp017.view.GodName;
 public class PlayersInfo {
 
 
-    String name;
-    int playerNumber;
-    GodName cards;
+    public String name;
+    public int playerNumber;
+    public GodName cards;
 
     public PlayersInfo(String name, int playerNumber,GodName cards) {
         this.name = name;

@@ -1,4 +1,7 @@
-domande per 12/05
--1)van fatti i controlli sul server anche se son gia fatti sul client?
--2)fare classe serverMessages e i messaggi sono inner classes, idem per ClientMessages
--3)getResources non funziona non capiamo perche
+domande
+
+1)problema con le immagini del getIcon resource null getResourcce
+2)controlli nel server?
+3)fare la classe serveramessage e fare i messaggi in innerClass (esempio)
+4)con 3 giocatori ed uno perde , la partita termina (il perdente si disconnette)??
+5)classe gradiente importata , non nostra

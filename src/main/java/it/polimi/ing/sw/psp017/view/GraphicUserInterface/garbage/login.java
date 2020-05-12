@@ -1,4 +1,4 @@
-package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
+package it.polimi.ing.sw.psp017.view.GraphicUserInterface.garbage;
 
 import javax.swing.*;
 import java.awt.*;

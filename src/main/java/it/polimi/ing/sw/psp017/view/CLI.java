@@ -137,27 +137,101 @@ public class CLI implements View {
 
 
     @Override
-    public void updateLobby(LobbyMessage lobbyMessage) {
+    public void updateLobby(final LobbyMessage lobbyMessage) {
 
         System.out.println("dentro updateLobby");
         client.playersInfo = new ArrayList<>();
+        System.out.println("player number : " + client.getPlayerNumber() + " choosing player number : "+ lobbyMessage.choosingPlayerNumber);
+        GodName choosenCard;
 
 
 
-        if(client.getPlayerNumber() == lobbyMessage.choosingPlayerNumber)
+        //ogni player ottiene il suo playerNumber
+
+        if(client.getPlayerNumber() == 0)
         {
-            System.out.println("turno giocatore : "+lobbyMessage.choosingPlayerNumber);
-            GodName chosenCard = chooseGodCard(lobbyMessage.chosenCards);
+            System.out.println("memorizzo playerNumber");
+            client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname())+1);
+            System.out.println("playerNumber settato : "+client.getPlayerNumber());
 
-            //se e il suo turno , seleziona la carta e se la salva , poi la invia
-            client.playersInfo.add(new PlayersInfo(lobbyMessage.players.get(client.getPlayerNumber()),lobbyMessage.choosingPlayerNumber,chosenCard));
-            notifyCard(new CardMessage(chooseGodCard(lobbyMessage.chosenCards)));
         }
-        else
+
+
+
+        //turno del giocatore
+        if(client.getPlayerNumber()==lobbyMessage.choosingPlayerNumber)
         {
-            System.out.println("non e il mio turno \n turno del giocatore : "+ lobbyMessage.choosingPlayerNumber);
-            client.playersInfo.add(new PlayersInfo(lobbyMessage.players.get(client.getPlayerNumber()),lobbyMessage.choosingPlayerNumber,lobbyMessage.chosenCards.get(lobbyMessage.choosingPlayerNumber - lobbyMessage.players.size())));//nell ultimo c e un errore, ossia il caso in cui chosen cards è vuoto non si puo fare il get
+            ArrayList<GodName> copy = new ArrayList<>();
+            copy = lobbyMessage.availableCards;
+
+
+            for (GodName godname : lobbyMessage.chosenCards
+                 ) {
+                copy.remove(godname);
+
+            }
+            System.out.println("choosen cards : "+lobbyMessage.chosenCards);
+
+            System.out.println(lobbyMessage.availableCards);
+            choosenCard = chooseGodCard(copy); // versione con eliminazione lato server
+            notifyCard(new CardMessage(choosenCard));
         }
+
+
+
+        if(lobbyMessage.availableCards.size() == 1)
+        {
+            System.out.println("dentro a size == 1");
+            //salvo informazioni players
+            PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
+            playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0),1,lobbyMessage.availableCards.get(0));
+            client.playersInfo.add(playersInfos[0]);
+            for(int i = 1; i < lobbyMessage.players.size();i++)
+            {
+                playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i),i+1,lobbyMessage.chosenCards.get(i));
+
+                client.playersInfo.add(playersInfos[i]);
+                //else playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i),i+1,lobbyMessage.chosenCards.get())
+            }
+
+            for(int i = 0; i < client.playersInfo.size();i++)
+            {
+                System.out.println("nickname :"+client.playersInfo.get(i).name+
+                                    "card name : "+ client.playersInfo.get(i).cards+
+                                    "playerNumber  : "+ client.playersInfo.get(i).playerNumber);
+            }
+
+
+
+
+        }
+
+
+
+        System.out.println("choosen cards : "+lobbyMessage.chosenCards);
+
+        System.out.println("available cards : " +lobbyMessage.availableCards);
+
+    }
+
+    public PlayersInfo savePlayersInfo(LobbyMessage lobbyMessage)
+    {
+        String name = null;
+        int playerNumber = 0;
+        GodName cards = null;
+
+        return new PlayersInfo(name,playerNumber,cards);
+
+
+    }
+
+    //last player added
+    public PlayersInfo savePlayersInfo(LobbyMessage lobbyMessage,GodName choosenCard)
+    {
+
+        return new PlayersInfo(client.getNickname(),lobbyMessage.choosingPlayerNumber,choosenCard);
+
+
     }
 /*
     private void saveOpponentPlayers(LobbyMessage lobbyMessage) {

@@ -12,7 +12,7 @@ import java.util.Scanner;
         private  NetworkHandler networkHandler;
         private int index;
         private View view;
-        private int playerNumber;
+        private int playerNumber = 0;
         private String nickname;
 
 

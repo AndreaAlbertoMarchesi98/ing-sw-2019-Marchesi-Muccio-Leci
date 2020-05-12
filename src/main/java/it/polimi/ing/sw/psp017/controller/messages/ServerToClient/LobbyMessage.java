@@ -10,16 +10,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LobbyMessage implements Serializable {
+
+
+    //public String choosingNickname
     public int choosingPlayerNumber;
-    public ArrayList<String> players; //numero di giocatori definitivo
-    public ArrayList<GodName> chosenCards;//carte che puoi scegliere
-    public ArrayList<GodName> cards;//carte scelte dal primo player
+    public ArrayList<String> players;
+    public ArrayList<GodName> chosenCards;
+    public ArrayList<GodName> availableCards;
 
     public LobbyMessage(Lobby lobby) {
         this.players = lobby.getPlayersNames();
         this.chosenCards = lobby.getChosenCards();
-        this.cards = lobby.getCards();
-        this.choosingPlayerNumber = lobby.getCards().size() - lobby.getChosenCards().size();
+        this.availableCards = lobby.getCards();
+        //this.choosingPlayerNumber = lobby.getCards().size() - lobby.getChosenCards().size();
+        this.choosingPlayerNumber = lobby.getPlayerCount() - lobby.getChosenCards().size();
     }
 
 
