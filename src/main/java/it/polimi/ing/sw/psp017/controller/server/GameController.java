@@ -173,7 +173,6 @@ public class GameController {
 
             if (card.checkWin(currentStep, game.getBoard())) {
                 notifyVictory(player.getPlayerNumber());
-
             }
             else {
                 game.nextStep(targetTile);

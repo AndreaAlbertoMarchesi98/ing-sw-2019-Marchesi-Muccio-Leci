@@ -1,31 +1,41 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
-import it.polimi.ing.sw.psp017.CommonTest;
-import it.polimi.ing.sw.psp017.TestConfiguration;
-import it.polimi.ing.sw.psp017.controller.CardFactory;
+
+import it.polimi.ing.sw.psp017.BaseCardTest;
+import it.polimi.ing.sw.psp017.GameTest;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.GodName;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PanTest  {
-    Card card;
+    private Board board;
+    private GameTest game;
+    private Player player1;
+    private Worker worker1P1;
 
     @Before
-    public void setCard() {
-        card = CardFactory.getCard(GodName.PAN);
+    public void init(){
+        game = new GameTest();
+
+        player1 = new Player("PlayerPan");
+        game.addPlayer(player1);
+        board = game.getBoard();
+        Card card = new Pan();
+        player1.setCard(card);
+        worker1P1 = new Worker(player1);
+
+        board.addWorker(worker1P1, new Vector2d(0,0));
+
 
     }
+
     @Test
     public void panTest(){
-        TestConfiguration testConfiguration = new TestConfiguration(card);
-
-        testConfiguration.currentTile.setLevel(2);
-        Tile targetTile = testConfiguration.board.getTile(new Vector2d(1,0));
-         Step currentStep = new Step(testConfiguration.currentTile, targetTile, false);
-        assertTrue(card.checkWin(currentStep,testConfiguration.board));
+        worker1P1.getTile(board).setLevel(2);
+        Tile targetTile = board.getTile(new Vector2d(1,0));
+         Step currentStep = new Step(worker1P1.getTile(board), targetTile, false);
+        assertTrue( player1.getCard().checkWin(currentStep,board));
     }
 
 

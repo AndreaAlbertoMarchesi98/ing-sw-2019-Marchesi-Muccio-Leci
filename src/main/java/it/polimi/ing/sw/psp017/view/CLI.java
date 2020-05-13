@@ -137,7 +137,7 @@ public class CLI implements View {
 
 
     @Override
-    public void updateLobby(final LobbyMessage lobbyMessage) {
+    public void updateLobby( LobbyMessage lobbyMessage) {
 
         System.out.println("dentro updateLobby");
         client.playersInfo = new ArrayList<>();

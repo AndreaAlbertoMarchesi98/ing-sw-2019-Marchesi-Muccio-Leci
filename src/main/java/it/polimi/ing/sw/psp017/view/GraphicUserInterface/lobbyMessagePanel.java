@@ -2,20 +2,16 @@ package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 
 import javax.swing.*;
+import java.awt.*;
 
-public class lobbyMessagePanel extends JFrame {
+public class lobbyMessagePanel extends JPanel {
 
-    /**
-     * Creates new form lobbyMessagePanel
-     */
+
     public lobbyMessagePanel() {
         initComponents();
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
 
-     */
 
     private void initComponents() {
 
@@ -29,10 +25,9 @@ public class lobbyMessagePanel extends JFrame {
         selectPanel_JPanel = new JPanel();
         playButton_JButton = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 102, 102));
-
+        kGradientPanel1.setSize(1000,800);
         selectCardPanel_JPanel.setOpaque(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 2, 36)); // NOI18N
@@ -106,19 +101,8 @@ public class lobbyMessagePanel extends JFrame {
                                 .addComponent(selectPanel_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap(43, Short.MAX_VALUE))
         );
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(kGradientPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(kGradientPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        pack();
+        this.setLayout(new BorderLayout());
+        this.add(kGradientPanel1, BorderLayout.CENTER);
     }
 
     private void playButton_JButtonActionPerformed(java.awt.event.ActionEvent evt) {

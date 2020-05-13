@@ -17,7 +17,7 @@ public class Board {
     public void addWorker(Worker worker, Vector2d position){
         Tile tile = getTile(position);
         tile.setWorker(worker);
-        worker.setPosition(position); //riga aggiunta
+        worker.setPosition(position);
     }
 
     public Tile getTile(Vector2d position) {

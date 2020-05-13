@@ -22,6 +22,7 @@ public class Athena extends BaseCard{
     }
 
 
+
      class AthenaDecorator extends CardDecorator {
 
         public AthenaDecorator(Card newCard) {

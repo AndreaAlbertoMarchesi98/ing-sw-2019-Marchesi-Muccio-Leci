@@ -9,115 +9,143 @@ import static org.junit.Assert.*;
 
 
 public class BaseCardTest {
-    @Test
-    public void testIsValidMove() {
+    private Board board;
+    private GameTest game;
+    private Player player1;
+    private Player player2;
+    private Worker worker1P1;
+    private Worker worker2P1;
+    private Worker worker1P2;
+    private Worker worker2P2;
+
+    @Before
+    public void init(){
+
+        game = new GameTest();
+
+        player1 = new Player("Player1");
+        player2 = new Player("Player2");
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+        board = game.getBoard();
         Card card = new BaseCard();
-        TestConfiguration testConfiguration = new TestConfiguration(card);
+        player1.setCard(card);
+        player2.setCard(card);
 
-        Tile targetTile = testConfiguration.board.getTile(new Vector2d(0, 1));
+        worker1P1 = new Worker(player1);
+        worker2P1 = new Worker(player1);
+        worker1P2 = new Worker(player2);
+        worker2P2 = new Worker(player2);
 
-        Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
-        assertTrue("error:free tile", card.isValidMove(currentstep, null, testConfiguration.board));
-
-        targetTile.setDome(true);
-        assertFalse("error:occupied tile by dome", card.isValidMove(currentstep, null, testConfiguration.board));
-
-        targetTile.setDome(false);
-        targetTile.setWorker(testConfiguration.worker2);   //worker onnipresente
-        assertFalse("error :occupied tile by worker", card.isValidMove(currentstep, null, testConfiguration.board));
-
-        targetTile.setWorker(null);
-        targetTile.setLevel(2);
-        assertFalse("error: level target tile two step up", card.isValidMove(currentstep, null, testConfiguration.board));
-
+        board.addWorker(worker1P1, new Vector2d(0,0));
+        board.addWorker(worker2P1,new Vector2d(1,0));
 
     }
 
     @Test
-    public void testIsValidBuilding() {
-        Card card = new BaseCard();
-        TestConfiguration testConfiguration = new TestConfiguration(card);
+    public void testIsValidMove() {
 
-        Tile targetTile = testConfiguration.board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
-        assertTrue("error:free tile", card.isValidBuilding(currentstep, null, testConfiguration.board));
+
+        Tile targetTile = board.getTile(new Vector2d(0, 1));
+
+        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        assertTrue("error: isValidMove false but tile free ", player1.getCard().isValidMove(currentstep, null, board));
 
         targetTile.setDome(true);
-        assertFalse("error:occupied tile by dome", card.isValidBuilding(currentstep, null, testConfiguration.board));
+        assertFalse("error:isValidMove true but tile occupied  by dome",player1.getCard().isValidMove(currentstep, null, board));
+
+        targetTile.setDome(false);
+        targetTile.setWorker(worker1P2);
+        assertFalse("error :isValidMove true but tile occupied  by worker",player1.getCard().isValidMove(currentstep, null, board));
+
+        targetTile.setWorker(null);
+        targetTile.setLevel(2);
+        assertFalse("error: isValidMove true but level target tile is two step up", player1.getCard().isValidMove(currentstep, null, board));
+    }
+
+    @Test
+    public void testIsValidBuilding() {
+
+        Tile targetTile = board.getTile(new Vector2d(0, 1));
+
+        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        assertTrue("error: isValidBuilding false but tile free ", player1.getCard().isValidBuilding(currentstep, null, board));
+
+        targetTile.setDome(true);
+        assertFalse("error:isValidBuilding true but tile occupied by dome",player1.getCard().isValidBuilding(currentstep, null, board));
 
         targetTile.setDome(false);
         targetTile.setLevel(4);
-        assertFalse("error:occupied tile by dome", card.isValidBuilding(currentstep, null, testConfiguration.board));
+        assertFalse("error:isValidBuilding true but tile occupied  by dome", player1.getCard().isValidBuilding(currentstep, null, board));
 
         targetTile.setDome(false);
-        targetTile.setWorker(testConfiguration.worker2);
-        assertFalse("error :occupied tile by worker", card.isValidBuilding(currentstep, null, testConfiguration.board));
+        targetTile.setWorker(worker1P2);
+        assertFalse("error :isValidBuilding true but tile occupied by an enemy worker",player1.getCard().isValidBuilding(currentstep, null, board));
         targetTile.setWorker(null);
-
+        board.addWorker(worker1P1, targetTile.getPosition());
+        assertFalse("error:isValidBuilding true but tile occupied by a worker of mine", player1.getCard().isValidBuilding(currentstep, null, board));
 
     }
 
     @Test
     public void testCheckWin() {
-        Card card = new BaseCard();
-        TestConfiguration testConfiguration = new TestConfiguration(card);
 
-        Tile targetTile = testConfiguration.game.getBoard().getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
+
+        Tile targetTile = board.getTile(new Vector2d(0, 1));
+        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
         targetTile.setLevel(3);
-        assertTrue("error:free tile", card.checkWin(currentstep,  testConfiguration.board));
+        assertTrue("error:checkWin false but level tile is 3",player1.getCard().checkWin(currentstep,  board));
 
-        targetTile.setLevel(4);
-        assertFalse("error:free tile", card.checkWin(currentstep,  testConfiguration.board));
 
         targetTile.setLevel(2);
-        assertFalse("error:free tile", card.checkWin(currentstep,  testConfiguration.board));
+        assertFalse("error: checkWin true but free tile with build level 2", player1.getCard().checkWin(currentstep,  board));
 
+        //il nostro checkwin non controlla se tutti gli altri worker sono bloccati
+        //il server deve vedere quando gli altri son bloccati e dirgli che hanno perso
+        //notifyGameover quando non hai più mosse
 
     }
 
     @Test
     public void testMove() {
-        Card card = new BaseCard();
-        TestConfiguration testConfiguration = new TestConfiguration(card);
 
-        Tile targetTile = testConfiguration.game.getBoard().getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
-        Worker tempworker = currentstep.getCurrentTile().getWorker();
 
-        card.move(currentstep, null, testConfiguration.board);
+        Tile targetTile = board.getTile(new Vector2d(0, 1));
+        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+
+        player1.getCard().move(currentstep, null, board);
         assertNull("error: worker not null in previous tile", currentstep.getCurrentTile().getWorker());
-        assertSame(tempworker, currentstep.getTargetTile().getWorker());
-        //la move toglie il worker dalla current tile e lo mette sulla target tile --> dopo la move il mio step è già aggiornato, non ho più il vecchio!
+        assertSame("error: worker null in targetTile",worker1P1, currentstep.getTargetTile().getWorker());
 
     }
 
     @Test
     public void testBuild() {
-        Card card = new BaseCard();
-        TestConfiguration testConfiguration = new TestConfiguration(card);
 
-        Tile targetTile = testConfiguration.game.getBoard().getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(testConfiguration.currentTile, targetTile, false);
+
+
+        Tile targetTile = board.getTile(new Vector2d(0, 1));
+        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
 
         int oldlevel = currentstep.getCurrentTile().getLevel();
-        card.build(currentstep, null, testConfiguration.board);
+        player1.getCard().build(currentstep, null, board);
+        assertEquals("error: no adding level after build",oldlevel + 1, currentstep.getTargetTile().getLevel());
+
+        oldlevel = currentstep.getTargetTile().getLevel();
+        player1.getCard().build(currentstep, null, board);
         assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
 
         oldlevel = currentstep.getTargetTile().getLevel();
-        card.build(currentstep, null, testConfiguration.board);
+        player1.getCard().build(currentstep, null, board);
         assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
 
         oldlevel = currentstep.getTargetTile().getLevel();
-        card.build(currentstep, null, testConfiguration.board);
+        player1.getCard().build(currentstep, null, board);
         assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
-
-        oldlevel = currentstep.getTargetTile().getLevel();
-        card.build(currentstep, null, testConfiguration.board);
-        assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
-        assertTrue(currentstep.getTargetTile().isDome());
+        assertTrue("error: no set dome at level 4", currentstep.getTargetTile().isDome());
 
 
     }
+
 }
 

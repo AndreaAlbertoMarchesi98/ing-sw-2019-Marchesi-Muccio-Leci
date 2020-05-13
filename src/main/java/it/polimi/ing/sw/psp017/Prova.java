@@ -1,10 +1,8 @@
 package it.polimi.ing.sw.psp017;
 
 import it.polimi.ing.sw.psp017.controller.CardFactory;
-import it.polimi.ing.sw.psp017.controller.server.Server;
 import it.polimi.ing.sw.psp017.model.*;
 //import it.polimi.ing.sw.psp017.view.CLI;
-import it.polimi.ing.sw.psp017.view.CommandLineInterface;
 import it.polimi.ing.sw.psp017.view.GodName;
 
 import java.io.*;
@@ -93,7 +91,7 @@ public class Prova {
         // while (!game.isGameOver()) {
         for (Player player : game.getPlayers()) {
             card = player.getCard();
-            Tile workerTile = player.getWorkers().get(0).getCurrentTile(board);
+            Tile workerTile = player.getWorkers().get(0).getTile(board);
             currentStep = new Step(workerTile, null, false);
             for (Player otherPlayer : game.getPlayers()) {
                 Card otherCard = otherPlayer.getCard();

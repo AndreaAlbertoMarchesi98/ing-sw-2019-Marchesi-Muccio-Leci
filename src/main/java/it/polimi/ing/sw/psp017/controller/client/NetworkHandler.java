@@ -22,6 +22,9 @@ public class NetworkHandler implements Runnable{
     private ObjectOutputStream output;
     private boolean isConnected;
 
+    public void setView(View view){
+        this.view = view;
+    }
     private static class PingSender implements Runnable{
         private NetworkHandler networkHandler;
 
@@ -48,13 +51,12 @@ public class NetworkHandler implements Runnable{
         this.view = view;
     }
 
-    public void startConnection() {
+    public void startConnection() throws IOException{
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("IP address of server?");
         String ip = "127.0.0.1";//scanner.nextLine();
 
-        try {
             this.server = new Socket(ip, Server.SOCKET_PORT);
             //server.setSoTimeout(2000);
             this.output = new ObjectOutputStream(server.getOutputStream());
@@ -69,10 +71,7 @@ public class NetworkHandler implements Runnable{
 
             System.out.println();
             view.updateLoginScreen(null);
-        } catch (IOException  e) {
-            //displayServerUnreachble();
-            closeConnection();
-        }
+
     }
     public void closeConnection() {
         try {
@@ -109,6 +108,8 @@ public class NetworkHandler implements Runnable{
                 }
                 else if(message instanceof SDisconnectionMessage){
                     System.out.println("disconnection message has arrived, it was player: " + ((SDisconnectionMessage) message).disconnectedPlayerNumber);
+                }else if(message instanceof VictoryMessage){
+                    view.updateVictory((VictoryMessage)message);
                 }
 
             } catch (SocketTimeoutException e){
@@ -116,10 +117,10 @@ public class NetworkHandler implements Runnable{
                 view.notifyDisconnection(new DisconnectionMessage());
             }
             catch (SocketException e){
-                e.printStackTrace();
                 view.notifyDisconnection(new DisconnectionMessage());
             }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+                closeConnection();
             }
 
         }
