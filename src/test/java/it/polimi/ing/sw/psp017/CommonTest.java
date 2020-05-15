@@ -43,7 +43,7 @@ public class CommonTest {
         Step currentStep;
 
         Player player = player1;
-        Tile workerTile = player.getWorkers().get(0).getCurrentTile(board);
+        Tile workerTile = player.getWorkers().get(0).getTile();
         currentStep = new Step(workerTile, null, false);
 
         boolean isPowerActive = false;
@@ -63,7 +63,7 @@ public class CommonTest {
                 currentStep.setTargetTile(targetTile);
                 if(card.isValidMove(currentStep,previousStep,board)){
                     card.move(currentStep, previousStep, board);
-                    assertEquals(targetTile, worker1.getCurrentTile(board));
+                    assertEquals(targetTile, worker1.getTile());
                 }
 
             } else if (card.canBuild(stepNumber, isPowerActive)) {//in futuro da cancellare perche ridondante

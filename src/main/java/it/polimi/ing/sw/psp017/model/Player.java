@@ -39,8 +39,10 @@ public class Player {
         this.playerNumber = playerNumber;
     }
 
-    public Card getOriginalCard() {
-        return originalCard;
+
+
+    public void resetCard() {
+        card = originalCard;
     }
 
     public void setOriginalCard(Card originalCard) {

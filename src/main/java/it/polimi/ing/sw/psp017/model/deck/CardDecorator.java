@@ -14,9 +14,6 @@ abstract public class CardDecorator implements Card {
         tempCard = newCard;
     }
 
-    public GodName getName() {
-        return null;
-    }
 
     public boolean hasChoice(int stepNumber){
         return tempCard.hasChoice(stepNumber);

@@ -38,7 +38,7 @@ public class Prova {
         *
         *
         * */
-
+/*
         Socket socket = new Socket("localhost", 7777);
         System.out.println("Connected!");
 
@@ -93,7 +93,7 @@ public class Prova {
         // while (!game.isGameOver()) {
         for (Player player : game.getPlayers()) {
             card = player.getCard();
-            Tile workerTile = player.getWorkers().get(0).getCurrentTile(board);
+            Tile workerTile = player.getWorkers().get(0).get(board);
             currentStep = new Step(workerTile, null, false);
             for (Player otherPlayer : game.getPlayers()) {
                 Card otherCard = otherPlayer.getCard();
@@ -108,7 +108,7 @@ public class Prova {
             int stepNumber = 0;
 
         }
-        // }
+        // }*/
     }
 }
 

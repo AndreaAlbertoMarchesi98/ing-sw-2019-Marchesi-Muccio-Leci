@@ -137,7 +137,14 @@ public class CLI implements View {
 
 
     @Override
-    public void updateLobby(final LobbyMessage lobbyMessage) {
+    public void updateLobby(LobbyMessage lobbyMessage) {
+
+        System.out.println("PRIMO:");
+        System.out.println("choosen cards : "+lobbyMessage.chosenCards);
+
+        System.out.println("available cards : " +lobbyMessage.availableCards);
+
+
 
         System.out.println("dentro updateLobby");
         client.playersInfo = new ArrayList<>();
@@ -188,6 +195,7 @@ public class CLI implements View {
             client.playersInfo.add(playersInfos[0]);
             for(int i = 1; i < lobbyMessage.players.size();i++)
             {
+                //occhio a i che è playerNumber ma lo usi come index
                 playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i),i+1,lobbyMessage.chosenCards.get(i));
 
                 client.playersInfo.add(playersInfos[i]);

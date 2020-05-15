@@ -7,6 +7,7 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.SDisconnectionMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.VictoryMessage;
 import it.polimi.ing.sw.psp017.model.*;
+import it.polimi.ing.sw.psp017.model.deck.Athena;
 import it.polimi.ing.sw.psp017.model.deck.CardDecorator;
 import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
@@ -38,7 +39,7 @@ public class GameController {
     public boolean isLobbyJoinable() {
 
         if (lobby != null) {
-            return lobby.getPlayerCount() < lobby.getExpectedPlayersCount();
+            return !lobby.isFull();
         } else
             return false;
     }
@@ -55,19 +56,14 @@ public class GameController {
 
     public void addPlayerToLobby(VirtualView view) {
         System.out.println("addingPlayerToLobby");
-        System.out.println(view.getPlayer().getPlayerNumber());
         views.add(view);
         view.setGameController(this);
 
         view.getPlayer().setPlayerNumber(views.size());
 
-
         lobby.addPlayer(view.getPlayer());
-        if (lobby.getPlayerCount() == lobby.getExpectedPlayersCount())
+        if (lobby.isFull())
             notifyLobby();
-
-
-        System.out.println("is lobby join"+(lobby.getPlayerCount() < lobby.getExpectedPlayersCount()));
     }
 
     public void createLobby(GameSetUpMessage message, VirtualView view) {
@@ -75,7 +71,6 @@ public class GameController {
         lobby = new Lobby(message.godNames);
 
         lobby.addPlayer(view.getPlayer());
-        view.getPlayer().setPlayerNumber(lobby.getPlayerCount());
     }
 
     private void startGame() {
@@ -94,20 +89,56 @@ public class GameController {
         endGame();
     }
 
-//              VIEW INTERACTION
-//                 notifiers
+    private void setUpNextTurn(Step currentStep){
+        addEffectOnOpponents(currentStep);
 
-    private void addEffectOnOthers(){
-        Card card = game.getActivePlayer().getCard();
-        for(Player opponent: game.getPlayers()){
-            if(!opponent.equals(game.getActivePlayer()))
-                opponent.setCard(card.getDecorator(opponent.getCard()));
+
+        game.getActivePlayer().resetCard();
+        game.nextTurn();
+        game.setAction(ActionNames.SELECT_WORKER);
+
+        if(!hasPlayerMovesLeft()){
+            System.out.println("\nplayer has no moves left\n");
+            views.remove(views.get(game.getPlayerIndex()));
+            game.removePlayer(game.getActivePlayer());
+            game.nextTurn();
+
+            if(game.getPlayers().size() == 1)
+                notifyVictory(game.getPlayers().get(0).getPlayerNumber());
+        }
+
+    }
+    private boolean hasPlayerMovesLeft(){
+        for(Worker worker : game.getActivePlayer().getWorkers()){
+            Step step = new Step(worker.getTile(), null, game.isPowerActive());
+            boolean[][] validMoves = calculateValidMoves(step, game.getActivePlayer());
+            for (int x = 0; x < Board.size; x++) {
+                for (int y = 0; y < Board.size; y++) {
+                    if(validMoves[x][y])
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+    private void addEffectOnOpponents(Step currentStep){
+        Player player = game.getActivePlayer();
+        Card card = player.getCard();
+        if(card.hasActiveDecorator(currentStep, player.getPreviousStep(), game.getBoard())) {
+            System.out.println("applying decorator");
+            for (Player opponent : game.getPlayers()) {
+                if (!opponent.equals(player)) {
+                    opponent.setCard(card.getDecorator(opponent.getCard()));
+                }
+            }
         }
     }
 
+//              VIEW INTERACTION
+//                 notifiers
+
     private void notifyLobby() {
         LobbyMessage message = new LobbyMessage(lobby);
-        System.out.println("lobby!!!!!!!!!!!!!:"+lobby.getChosenCards().size());
         for (VirtualView view : views) {
             view.updateLobby(message);
         }
@@ -154,10 +185,9 @@ public class GameController {
 
 
     public void performAction(ActionMessage message, Player player) {
-        System.out.println("performing action");
+        System.out.println("performing action\n");
         Tile currentTile = game.getSelectedTile();
         Tile targetTile = game.getBoard().getTile(message.targetTile);
-        System.out.println("selectedTile is: " + currentTile.getPosition().toString());
         boolean isPowerActive = game.isPowerActive();
 
         Step currentStep = new Step(currentTile, targetTile, isPowerActive);
@@ -171,16 +201,14 @@ public class GameController {
             else if (card.canBuild(game.getStepNumber(), currentStep.isPowerActive()))
                 card.build(currentStep, previousStep, game.getBoard());
 
-            if (card.checkWin(currentStep, game.getBoard())) {
-                notifyVictory(player.getPlayerNumber());
 
-            }
+            if (card.checkWin(currentStep, game.getBoard()))
+                notifyVictory(player.getPlayerNumber());
             else {
                 game.nextStep(targetTile);
 
                 if (isTurnFinished(card, currentStep.isPowerActive())) {
-                    game.nextTurn();
-                    game.setAction(ActionNames.SELECT_WORKER);
+                    setUpNextTurn(currentStep);
                 } else {
                     game.setSelectedTile(targetTile);
                     updateValidTiles();
@@ -199,23 +227,18 @@ public class GameController {
         GodName godName = message.godName;
         if (lobby.getAvailableCards().contains(godName)) {
             lobby.getAvailableCards().remove(godName);
-            lobby.addChosenCards(godName);
+            lobby.addChosenCard(godName);
 
-            view.getPlayer().setCard(CardFactory.getCard(godName));
-            view.getPlayer().setOriginalCard(CardFactory.getCard(godName));
 
-            /*if (lobby.getAvailableCards().size() == 1) {
-                Card lastCard = CardFactory.getCard(lobby.getAvailableCards().get(0));
-                views.get(0).getPlayer().setCard(lastCard);
+            Card card = CardFactory.getCard(godName);
+            view.getPlayer().setCard(card);
+            view.getPlayer().setOriginalCard(card);
+
+            if (lobby.getAvailableCards().size() == 0)
                 startGame();
-            }*/
-            if (lobby.getAvailableCards().size() == 0) {
-                startGame();
-            }
             else
                 notifyLobby();
         }
-
     }
 
     public void selectWorker(SelectionMessage message) {

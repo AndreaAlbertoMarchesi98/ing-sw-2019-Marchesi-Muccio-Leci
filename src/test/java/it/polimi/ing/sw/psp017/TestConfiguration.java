@@ -41,7 +41,7 @@ public class TestConfiguration {
          board.addWorker(worker2, new Vector2d(1, 0));
 
 
-         currentTile = worker1.getCurrentTile(game.getBoard());
+         currentTile = worker1.getTile();
      }
 
 

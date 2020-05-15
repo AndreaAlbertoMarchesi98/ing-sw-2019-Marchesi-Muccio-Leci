@@ -99,8 +99,5 @@ public class Minotaur extends BaseCard {
         pushTile.setWorker(enemyWorker);
         targetTile.setWorker(worker);
         currentTile.setWorker(null);
-
-        enemyWorker.setPosition(pushPosition);
-        worker.setPosition(currentTile.getPosition());
     }
 }
