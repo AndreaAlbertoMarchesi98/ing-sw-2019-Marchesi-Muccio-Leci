@@ -207,7 +207,10 @@ public class GameController {
             else {
                 game.nextStep(targetTile);
 
-                if (isTurnFinished(card, currentStep.isPowerActive())) {
+                if(game.getStepNumber() == 2 && game.hasChoice())
+                    game.setPowerActive(true);
+
+                if (isTurnFinished(card)) {
                     setUpNextTurn(currentStep);
                 } else {
                     game.setSelectedTile(targetTile);
@@ -218,8 +221,9 @@ public class GameController {
         }
     }
 
-    private boolean isTurnFinished(Card card, boolean isPowerActive) {
+    private boolean isTurnFinished(Card card) {
         int stepNumber = game.getStepNumber();
+        boolean isPowerActive = game.isPowerActive();
         return !card.canMove(stepNumber, isPowerActive) && !card.canBuild(stepNumber, isPowerActive);
     }
 
@@ -233,6 +237,7 @@ public class GameController {
             Card card = CardFactory.getCard(godName);
             view.getPlayer().setCard(card);
             view.getPlayer().setOriginalCard(card);
+
 
             if (lobby.getAvailableCards().size() == 0)
                 startGame();
@@ -252,13 +257,22 @@ public class GameController {
 
     public void setPowerActive(PowerActiveMessage message) {
         game.setPowerActive(message.isPowerActive);
+        Player player = game.getActivePlayer();
 
+        if (isTurnFinished(player.getCard()))
+            setUpNextTurn(player.getPreviousStep());
+        else
+            updateValidTiles();
+
+        notifyBoard();
+        /*
         if (game.getSelectedTile() != null) {
-
             updateValidTiles();
             notifyBoard();
         } else
             notifyBoard();
+
+         */
     }
 
     private void updateValidTiles() {

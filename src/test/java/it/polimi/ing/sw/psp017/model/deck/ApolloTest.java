@@ -45,18 +45,18 @@ public class ApolloTest {
     @Test
     public void apolloMoveTest() {
         Card card = player1.getCard();
-        Tile targetTile = worker1P2.getTile(board);
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Tile targetTile = worker1P2.getTile();
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
 
         assertTrue("error: valid move false. Target tile occupied by a enemy worker", card.isValidMove(currentstep, null, board));
 
         if (card.isValidMove(currentstep, null, board)) {
-            Tile apolloTempTile = worker1P1.getTile(board);
-            Tile enemyTemptile = worker1P2.getTile(board);
+            Tile apolloTempTile = worker1P1.getTile();
+            Tile enemyTemptile = worker1P2.getTile();
 
             card.move(currentstep, null, board);
-            assertSame("error swap workers ",apolloTempTile, worker1P2.getTile(board));
-            assertSame("error swap workers",enemyTemptile, worker1P1.getTile(board));
+            assertSame("error swap workers ",apolloTempTile, worker1P2.getTile());
+            assertSame("error swap workers",enemyTemptile, worker1P1.getTile());
         }
 
 
@@ -72,7 +72,7 @@ public class ApolloTest {
 
         Tile targetTile = board.getTile(new Vector2d(0, 1));
 
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
         assertTrue("error: isValidMove false but tile free ", player1.getCard().isValidMove(currentstep, null, board));
 
         targetTile.setDome(true);
@@ -86,8 +86,8 @@ public class ApolloTest {
         targetTile.setLevel(2);
         assertFalse("error: isValidMove true but level target tile is two step up", player1.getCard().isValidMove(currentstep, null, board));
 
-        targetTile = worker1P2.getTile(board);
-        currentstep = new Step( worker1P1.getTile(board),targetTile,false );
+        targetTile = worker1P2.getTile();
+        currentstep = new Step( worker1P1.getTile(),targetTile,false );
 
         assertTrue("error: isValidMove false but level target tile occupied by enemy worker", player1.getCard().isValidMove(currentstep, null, board));
 

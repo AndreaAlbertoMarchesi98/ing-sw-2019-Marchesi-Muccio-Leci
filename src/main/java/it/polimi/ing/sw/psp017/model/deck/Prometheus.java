@@ -76,13 +76,13 @@ public class Prometheus extends BaseCard {
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
         Tile currentTile = currentStep.getCurrentTile();
         Tile targetTile = currentStep.getTargetTile();
-        if(currentStep.isPowerActive())
-            return super.isValidMove(currentStep, previousStep, board);
-        else{
+        if(currentStep.isPowerActive()){
             if(targetTile.getLevel()>currentTile.getLevel())
                 return false;
             else
                 return super.isValidMove(currentStep, previousStep, board);
         }
+        else
+            return super.isValidMove(currentStep, previousStep, board);
     }
 }

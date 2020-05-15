@@ -32,9 +32,9 @@ public class PanTest  {
 
     @Test
     public void panTest(){
-        worker1P1.getTile(board).setLevel(2);
+        worker1P1.getTile().setLevel(2);
         Tile targetTile = board.getTile(new Vector2d(1,0));
-         Step currentStep = new Step(worker1P1.getTile(board), targetTile, false);
+         Step currentStep = new Step(worker1P1.getTile(), targetTile, false);
         assertTrue( player1.getCard().checkWin(currentStep,board));
     }
 

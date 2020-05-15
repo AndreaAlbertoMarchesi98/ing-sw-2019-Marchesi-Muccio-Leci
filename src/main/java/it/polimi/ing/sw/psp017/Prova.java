@@ -91,7 +91,7 @@ public class Prova {
         // while (!game.isGameOver()) {
         for (Player player : game.getPlayers()) {
             card = player.getCard();
-            Tile workerTile = player.getWorkers().get(0).getTile(board);
+            Tile workerTile = player.getWorkers().get(0).getTile();
             currentStep = new Step(workerTile, null, false);
             for (Player otherPlayer : game.getPlayers()) {
                 Card otherCard = otherPlayer.getCard();

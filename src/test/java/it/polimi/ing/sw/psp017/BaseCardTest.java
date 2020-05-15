@@ -48,7 +48,7 @@ public class BaseCardTest {
 
         Tile targetTile = board.getTile(new Vector2d(0, 1));
 
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
         assertTrue("error: isValidMove false but tile free ", player1.getCard().isValidMove(currentstep, null, board));
 
         targetTile.setDome(true);
@@ -68,7 +68,7 @@ public class BaseCardTest {
 
         Tile targetTile = board.getTile(new Vector2d(0, 1));
 
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
         assertTrue("error: isValidBuilding false but tile free ", player1.getCard().isValidBuilding(currentstep, null, board));
 
         targetTile.setDome(true);
@@ -92,7 +92,7 @@ public class BaseCardTest {
 
 
         Tile targetTile = board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
         targetTile.setLevel(3);
         assertTrue("error:checkWin false but level tile is 3",player1.getCard().checkWin(currentstep,  board));
 
@@ -111,7 +111,7 @@ public class BaseCardTest {
 
 
         Tile targetTile = board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
 
         player1.getCard().move(currentstep, null, board);
         assertNull("error: worker not null in previous tile", currentstep.getCurrentTile().getWorker());
@@ -125,7 +125,7 @@ public class BaseCardTest {
 
 
         Tile targetTile = board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(worker1P1.getTile(board), targetTile, false);
+        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
 
         int oldlevel = currentstep.getCurrentTile().getLevel();
         player1.getCard().build(currentstep, null, board);
