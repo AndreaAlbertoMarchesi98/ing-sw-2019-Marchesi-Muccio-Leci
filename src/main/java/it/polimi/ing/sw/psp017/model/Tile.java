@@ -37,6 +37,8 @@ public class Tile {
 
     public void setWorker(Worker worker) {
         this.worker = worker;
+        if(worker!=null)
+            worker.setTile(this);
     }
 
     public int getLevel() {

@@ -9,16 +9,12 @@ public class Lobby {
     private ArrayList<Player> players;
     private ArrayList<GodName> availableCards;
     private ArrayList<GodName> chosenCards;
-    private ArrayList<GodName> cards;
-    private int playersCount;
     private int expectedPlayersCount;
 
     public Lobby(ArrayList<GodName> godNames){
         chosenCards = new ArrayList<>();
         expectedPlayersCount = godNames.size();
-        cards = godNames;
-        availableCards = cards;
-        playersCount = 0;
+        availableCards = godNames;
         players = new ArrayList<>();
     }
 
@@ -29,33 +25,20 @@ public class Lobby {
         return names;
     }
 
-    public boolean isPlayerTurn(Player player){
-        return true;//to be implemented
-    }
-    public int getPlayerCount() {
-        return playersCount;
-    }
-
-    public int getExpectedPlayersCount() {
-        return expectedPlayersCount;
-    }
+    public boolean isFull(){
+        return players.size() == expectedPlayersCount; }
 
 
     public void addPlayer(Player player) {
         players.add(player);
-        playersCount++;
     }
 
     public ArrayList<GodName> getAvailableCards() {
         return availableCards;
     }
 
-    public ArrayList<GodName> getCards() {
-        return cards;
-    }
-
-    public int getChoosingPlayerIndex(){
-        return availableCards.size() - 1;
+    public int getChoosingPlayerNumber(){
+        return availableCards.size();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -66,7 +49,7 @@ public class Lobby {
         return chosenCards;
     }
 
-    public void addChosenCards(GodName chosenCard) {
+    public void addChosenCard(GodName chosenCard) {
         chosenCards.add(chosenCard);
     }
 }

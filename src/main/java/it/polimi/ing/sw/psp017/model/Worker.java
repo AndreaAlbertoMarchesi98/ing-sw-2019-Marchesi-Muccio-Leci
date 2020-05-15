@@ -5,21 +5,19 @@ package it.polimi.ing.sw.psp017.model;
  */
 public class Worker {
     private Player owner;
-    private Vector2d position;
+    private Tile tile;
 
     public Worker(Player owner) {
         this.owner = owner;
         owner.addWorker(this);
-        //this.position = Vector2d;
     }
 
-    public Tile getTile(Board board) throws NullPointerException {
-        return board.getTile(position);
+    public Tile getTile() {
+        return tile;
     }
 
-
-    public void setPosition(Vector2d workerPosition) {
-        this.position = workerPosition;
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 
     public Player getOwner() {

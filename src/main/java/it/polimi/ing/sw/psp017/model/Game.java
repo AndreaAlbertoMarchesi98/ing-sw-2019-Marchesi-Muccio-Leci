@@ -64,6 +64,11 @@ public class Game {
         players.add(p);
     }
 
+    public void removePlayer(Player p) {
+        players.remove(p);
+
+    }
+
 
 
     public void nextStep(Tile targetTile){
@@ -73,7 +78,7 @@ public class Game {
     public void nextTurn(){
         powerActive = false;
         stepNumber = 0;
-        if(playerIndex == players.size() - 1)
+        if(playerIndex >= players.size() - 1)
             playerIndex = 0;
         else
             playerIndex++;

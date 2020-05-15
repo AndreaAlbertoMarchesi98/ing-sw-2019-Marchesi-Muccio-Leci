@@ -75,8 +75,5 @@ public class Apollo extends BaseCard {
 
         targetTile.setWorker(worker);
         currentTile.setWorker(enemyWorker);
-
-        worker.setPosition(targetTile.getPosition());
-        enemyWorker.setPosition(currentTile.getPosition());
     }
 }

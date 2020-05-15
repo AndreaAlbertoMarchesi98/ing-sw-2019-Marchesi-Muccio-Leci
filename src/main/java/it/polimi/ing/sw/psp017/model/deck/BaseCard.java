@@ -52,7 +52,6 @@ public class BaseCard implements Card {
         Tile currentTile = currentStep.getCurrentTile();
         Tile targetTile = currentStep.getTargetTile();
         Worker worker = currentTile.getWorker();
-        worker.setPosition(targetTile.getPosition());
         targetTile.setWorker(worker);
         currentTile.setWorker(null);
     }
