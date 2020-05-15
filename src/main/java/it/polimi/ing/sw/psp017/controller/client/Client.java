@@ -24,28 +24,25 @@ import java.util.Scanner;
 
         public static void main(String[] args) throws IOException {
             Client client = new Client();
-            Scanner scanner;
-            System.out.println("CLI or GUI?");
-            scanner = new Scanner(System.in);
-            String choice = "G";//scanner.nextLine();
+           // Scanner scanner;
+            //System.out.println("CLI or GUI?");
+          //  scanner = new Scanner(System.in);
+           // String choice = "G";//scanner.nextLine();
 
 
 
-
-
-
-            if (choice.equals("C")) {
+         /*   if (choice.equals("C")) {
                client.view = new CLI(client);
             }
-            else if(choice.equals("G")){
+            else if(choice.equals("G")){*/
                 client.view = new GUI(client);
-            }
+           // }
 
             client.networkHandler = new NetworkHandler(client.view);
-            if(choice.equals("C")){
+         /*   if(choice.equals("C")){
                 client.networkHandler.startConnection();
 
-            }
+            }*/
 
         }
 

@@ -24,6 +24,7 @@ public class LobbyMessage implements Serializable {
         this.availableCards = lobby.getCards();
         //this.choosingPlayerNumber = lobby.getCards().size() - lobby.getChosenCards().size();
         this.choosingPlayerNumber = lobby.getPlayerCount() - lobby.getChosenCards().size();
+        System.out.println("choosen" + chosenCards);
     }
 
 

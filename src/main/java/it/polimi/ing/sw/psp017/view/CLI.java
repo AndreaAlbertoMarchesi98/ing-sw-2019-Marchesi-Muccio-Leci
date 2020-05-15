@@ -139,6 +139,10 @@ public class CLI implements View {
     @Override
     public void updateLobby( LobbyMessage lobbyMessage) {
 
+        System.out.println("choosen cards : "+lobbyMessage.chosenCards);
+
+        System.out.println("available cards : " +lobbyMessage.availableCards);
+
         System.out.println("dentro updateLobby");
         client.playersInfo = new ArrayList<>();
         System.out.println("player number : " + client.getPlayerNumber() + " choosing player number : "+ lobbyMessage.choosingPlayerNumber);
@@ -207,10 +211,6 @@ public class CLI implements View {
         }
 
 
-
-        System.out.println("choosen cards : "+lobbyMessage.chosenCards);
-
-        System.out.println("available cards : " +lobbyMessage.availableCards);
 
     }
 

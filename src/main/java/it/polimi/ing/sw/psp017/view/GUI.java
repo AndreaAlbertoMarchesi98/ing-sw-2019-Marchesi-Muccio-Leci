@@ -75,41 +75,44 @@ public class GUI implements View {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
+
+                final JFrame tempFrame = new JFrame();
+                tempFrame.setIconImage(im);
+                tempFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                tempFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        Object[] option = {"Quit", "Cancel"};
+                        int n = JOptionPane.showOptionDialog(tempFrame, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+                        if (n == JOptionPane.YES_OPTION) {
+                            tempFrame.dispose();
+                        }
+
+                    }
+                });
+
                 setProgress(55);
                 progressBar.setValue(this.getProgress());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
+                tempFrame.setMinimumSize(new Dimension(500,700));
+                tempFrame.setPreferredSize(dim);
+                tempFrame.pack();
+                tempFrame.setLocationRelativeTo(null);
                 setProgress(99);
                 progressBar.setValue(this.getProgress());
                 try {
+                    mainFrame.dispose();
+                    tempFrame.setContentPane(mainPanel);
+                    mainFrame=tempFrame;
                     client.getNetworkHandler().startConnection();
 
                 } catch (IOException e) {
-                    JOptionPane.showMessageDialog(mainFrame, "Error: No connection. The program will be closed.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainFrame, "Error: Server down. The program will be closed.", "Error", JOptionPane.ERROR_MESSAGE);
                     System.exit(0);
                 }
-                mainFrame.dispose();
-                mainFrame= new JFrame();
-                mainFrame.setIconImage(im);
-                mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                mainFrame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-                        if (n == JOptionPane.YES_OPTION) {
-                            mainFrame.dispose();
-                        }
-
-                    }
-                });
-                mainFrame.setMinimumSize(new Dimension(500,700));
-                mainFrame.setPreferredSize(dim);
-                mainFrame.pack();
-                mainFrame.setLocationRelativeTo(null);
-                mainFrame.setContentPane(mainPanel);
                 mainFrame.setVisible(true);
                 return 1;
             }
@@ -180,7 +183,7 @@ public class GUI implements View {
 
     @Override
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
-        if (invalidNameMessage != null) { //hai già creato il frame e devi solo aggiornare il testo e ricevere un nuovo nick
+        if (invalidNameMessage != null) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -188,18 +191,15 @@ public class GUI implements View {
                     mainPanel.setVisible(false);
                     mainPanel = new LoginPanel();
                     mainFrame.setContentPane(mainPanel);
-
-
                 }
             });
         } else {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-
-
                     mainPanel = new LoginPanel();
                     mainFrame.setContentPane(mainPanel);
+                    mainFrame.pack();
 
                 }
             });
@@ -366,11 +366,10 @@ public class GUI implements View {
             bottomPanel = new JPanel();
             cliButton = new JButton();
 
-            GroupLayout kGradientPanel1Layout = new GroupLayout(kGradientPanel);
 
             kGradientPanel.setkEndColor(new Color(255, 255, 153));
             kGradientPanel.setkStartColor(new Color(0, 204, 102));
-            kGradientPanel.setLayout(new GridLayout(4, 1));
+            kGradientPanel.setLayout(new GridLayout(4, 1,100,10));
 
             logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
