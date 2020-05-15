@@ -25,22 +25,8 @@ public class Game {
         return board;
     }
 
-    // static method to create instance of Singleton class
-    public static Game getInstance() {
-        if (single_instance == null) {
-            System.out.println("new game created");
-            single_instance = new Game();
-        }
-        return single_instance;
-    }
-
-
-    private Game() {
+    public Game(ArrayList<Player> players) {
         board = new Board();
-        players = new ArrayList<>();
-    }
-
-    public void setUp(ArrayList<Player> players) {
         this.players = players;
         stepNumber = 0;
         playerIndex = 0;

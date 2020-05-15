@@ -7,8 +7,6 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.SDisconnectionMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.VictoryMessage;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.model.deck.Athena;
-import it.polimi.ing.sw.psp017.model.deck.CardDecorator;
 import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.model.Tile;
@@ -22,18 +20,21 @@ public class GameController {
     private Lobby lobby;
     private Server server;
 
-    public GameController(Server server) {
+    public GameController(Server server, VirtualView firstView) {
         views = new ArrayList<>();
-        game = Game.getInstance();
         this.server = server;
+
+        System.out.println("start game creation");
+
+        views.add(firstView);
+        firstView.setGameController(this);
+        firstView.getPlayer().setPlayerNumber(views.size());
+
+        firstView.updateGameCreation();
     }
 
     public ArrayList<VirtualView> getViews() {
         return views;
-    }
-
-    public boolean isGameCreatable() {
-        return views.isEmpty();
     }
 
     public boolean isLobbyJoinable() {
@@ -42,16 +43,6 @@ public class GameController {
             return !lobby.isFull();
         } else
             return false;
-    }
-
-    public void startGameCreation(VirtualView view) {
-        System.out.println("start game creation");
-
-        views.add(view);
-        view.setGameController(this);
-        view.getPlayer().setPlayerNumber(views.size());
-
-        view.updateGameCreation();
     }
 
     public void addPlayerToLobby(VirtualView view) {
@@ -74,12 +65,13 @@ public class GameController {
     }
 
     private void startGame() {
-        game.setUp(lobby.getPlayers());
+        game = new Game(lobby.getPlayers());
         notifyBoard();
     }
     private void endGame() {
         views.clear();
         lobby = null;
+        server.removeGameController(this);
     }
 
     public void handleDisconnection(VirtualView view) {

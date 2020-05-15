@@ -35,7 +35,7 @@ import java.util.Scanner;
                client.view = new CLI(client);
             }
             else if(choice.equals("G")){*/
-                client.view = new GUI(client);
+            client.view = new GUI(client);
            // }
 
             client.networkHandler = new NetworkHandler(client.view);
