@@ -17,6 +17,7 @@ public interface View {
     void notifyIsPowerActive(PowerActiveMessage powerActiveMessage);
     void notifyAction(ActionMessage actionMessage);
     void notifyDisconnection(DisconnectionMessage disconnectionMessage);
+    //void notifyUndo(UndoMessage undoMessage);     TO IMPLEMENT!!!!!!!!!!!!!!!!!!!!
 
 
     //get information from controller

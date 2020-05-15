@@ -17,6 +17,7 @@ public class GameController {
 
     private ArrayList<VirtualView> views;
     private Game game;
+    private Board savedBoard;
     private Lobby lobby;
     private Server server;
 
@@ -99,6 +100,7 @@ public class GameController {
                 notifyVictory(game.getPlayers().get(0).getPlayerNumber());
         }
 
+        savedBoard = game.getBoardCopy();
     }
     private boolean hasPlayerMovesLeft(){
         for(Worker worker : game.getActivePlayer().getWorkers()){
@@ -320,5 +322,7 @@ public class GameController {
         return validTiles;
     }
 
-
+    public void undo(){
+        game.undo(savedBoard);
+    }
 }

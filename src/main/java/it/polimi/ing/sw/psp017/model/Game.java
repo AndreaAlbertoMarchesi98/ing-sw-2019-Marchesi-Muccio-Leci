@@ -53,6 +53,7 @@ public class Game {
     public void removePlayer(Player p) {
         players.remove(p);
 
+
     }
 
 
@@ -69,6 +70,27 @@ public class Game {
         else
             playerIndex++;
         selectedTile = null;
+    }
+
+    public void undo(Board board){
+        this.board = board;
+        stepNumber = 0;
+        powerActive = false;
+        selectedTile = null;
+    }
+    public Board getBoardCopy(){
+        Board board = new Board();
+        for (int x = 0; x < Board.size; x++) {
+            for (int y = 0; y < Board.size; y++) {
+                Tile newTile = board.getTile(new Vector2d(x,y));
+                Tile currentTile = this.getBoard().getTile(new Vector2d(x,y));
+
+                newTile.setLevel(currentTile.getLevel());
+                newTile.setWorker(currentTile.getWorker());
+                newTile.setDome(currentTile.isDome());
+            }
+        }
+        return board;
     }
 
     public ActionNames getAction() {

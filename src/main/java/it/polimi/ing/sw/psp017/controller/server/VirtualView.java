@@ -87,6 +87,9 @@ public class VirtualView implements Runnable, View {
             else if (message instanceof DisconnectionMessage)
                 notifyDisconnection();
 
+            else if (message instanceof UndoMessage)
+                notifyUndo();
+
 
         }
     }
@@ -129,7 +132,10 @@ public class VirtualView implements Runnable, View {
         gameController.performAction(actionMessage, player);
     }
     public void notifyDisconnection(DisconnectionMessage disconnectionMessage){
-        //gameController.createLobby(gameSetUpMessage);
+        //gameController.no(gameSetUpMessage);
+    }
+    public void notifyUndo(){
+        gameController.undo();
     }
 
     public void updateGameCreation() {
