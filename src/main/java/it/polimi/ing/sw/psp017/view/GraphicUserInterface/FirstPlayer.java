@@ -436,7 +436,6 @@ public class FirstPlayer extends JPanel {
 
 
 
-
         /*IL PANEL COL GRADIENTE DEVE ESSERE AGGIUNTO AL PANEL FIRSTPLAYER... */
         this.add(kGradientPanel1, BorderLayout.CENTER);
         this.setPreferredSize(kGradientPanel1.getSize());
