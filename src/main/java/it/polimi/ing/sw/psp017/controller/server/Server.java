@@ -16,7 +16,7 @@ public class Server implements Runnable {
 
     private GameController gameController;
     private ServerSocket socket;
-    public final static int SOCKET_PORT = 7777;
+    public final static int SOCKET_PORT = 7778;
 
     private ArrayList<Player> playersInGame;
     private ArrayList<VirtualView> viewsInGame;

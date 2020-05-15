@@ -1,23 +1,2 @@
-Mettere nel client il player
-1. deve connettersi
-2. invia il nick
-3. attende conferma nome
-4. stato di attesa, stato di creazione partita oppure rinvia il nome
-5. sceglie carte
-6.
-...
 
-
-
-RICORDA IL PRIMO CHE VIENE AUTENTICATO DEVE DIVENTARE IL PRIMO GIOCATORE --> CHI CREA LA PARTITA
-
-public Object getMessage(Class<?> cls) {
-    for(Object obj : messages){
-        if(cls.isInstance(messages.element()))
-            return messages.poll();
-    }
-    return null;
-}
-
-
-
+-In attesa di connessione a internet

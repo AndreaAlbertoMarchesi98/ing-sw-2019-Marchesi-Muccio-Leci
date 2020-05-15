@@ -1,34 +1,65 @@
 package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 
+import it.polimi.ing.sw.psp017.view.GUI;
 import it.polimi.ing.sw.psp017.view.GodName;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FirstPlayer extends JFrame {
+public class FirstPlayer extends JPanel {
 
-    /**
-     * Creates new form FirstPlayer
-     */
     private int numberOfPlayers = 0;
     private ArrayList<JCheckBox> checkBoxArray;
     private ArrayList<JCheckBox> selectedGods;
     private ArrayList<GodName> CardsMessage;
+
+
+
+    private JButton APOLLO_JButton;
+    private JCheckBox APOLLO_JCheckBox;
+    private JButton ARTEMIS_JButton;
+    private JCheckBox ARTEMIS_JCheckBox;
+    private JButton ATHENA_JButton;
+    private JCheckBox ATHENA_JCheckBox;
+    private JButton ATLAS_JButton;
+    private JCheckBox ATLAS_JCheckBox;
+    private ButtonGroup CardsButtonPlayers;
+    private JButton DEMETER_JButton;
+    private JCheckBox DEMETER_JCheckBox;
+    private JLabel downCard_JLabel;
+    private JButton HEPHAESTUS_JButton;
+    private JCheckBox HEPHAESTUS_JCheckBox;
+    private JButton MINOTAUR_JButton;
+    private JCheckBox MINOTAUR_JCheckBox;
+    private JButton PAN_JButton;
+    private JCheckBox PAN_JCheckBox;
+    private JButton PROMETHEUS_JButton;
+    private JCheckBox PROMETHEUS_JCheckBox;
+    private JLabel SelectNumberOfPlayerLabel;
+    private JLabel SelectNumberOfPlayerLabel1;
+    private JCheckBox ThreePlayerButton;
+    private JCheckBox TwoPlayerButton;
+    private JPanel chooseCardPanel;
+    private JPanel godsSelectionPanel_JPanel;
+    private JButton play_JButton;
+    private JSeparator jSeparator2;
+    private KGradientPanel kGradientPanel1;
+    private KGradientPanel kGradientPanel3;
+    private JPanel lowerPanel_JPanel;
+    private JPanel rightPanel_JPanel;
+    private ButtonGroup selectNumberOfPlayersGroup;
+    private JPanel selectNumberOfPlayers_JPanel;
+    private JLabel upperCardJLabel;
+
     public FirstPlayer() {
         initComponents();
-
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     */
-
     private void initComponents() {
-
-
 
         selectNumberOfPlayersGroup = new ButtonGroup();
         CardsButtonPlayers = new ButtonGroup();
@@ -66,16 +97,14 @@ public class FirstPlayer extends JFrame {
         upperCardJLabel = new JLabel();
         downCard_JLabel = new JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Game Setting");
-        setBackground(new java.awt.Color(0, 204, 204));
+
+    /*    setBackground(new java.awt.Color(0, 204, 204));
         setBounds(new java.awt.Rectangle(1280, 720, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setFont(new java.awt.Font("Gentium Book Basic", 2, 10));
         setForeground(java.awt.Color.cyan);
-        setLocationByPlatform(true);
-        setMinimumSize(new java.awt.Dimension(600, 325));
+        setMinimumSize(new java.awt.Dimension(600, 325));*/
 
         kGradientPanel1.setForeground(new java.awt.Color(153, 153, 153));
         kGradientPanel1.setkEndColor(new java.awt.Color(0, 153, 153));
@@ -137,7 +166,7 @@ public class FirstPlayer extends JFrame {
         kGradientPanel3.setkStartColor(new java.awt.Color(0, 204, 204));
 
         play_JButton.setBackground(new java.awt.Color(0, 153, 153));
-        play_JButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\enci\\Downloads\\Icon-76.png"));
+        play_JButton.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("STUFF/playButton.png")));
         play_JButton.setToolTipText("");
         play_JButton.setAutoscrolls(true);
         play_JButton.addActionListener(new java.awt.event.ActionListener() {
@@ -173,7 +202,6 @@ public class FirstPlayer extends JFrame {
         selectedGods = new ArrayList<>();
         CardsMessage = new ArrayList<>();
 
-        //CardsButtonPlayers.add(APOLLO_JCheckBox);
         APOLLO_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 APOLLO_JCheckBoxActionPerformed(evt);
@@ -194,7 +222,6 @@ public class FirstPlayer extends JFrame {
         });
         godsSelectionPanel_JPanel.add(ARTEMIS_JButton);
 
-        //CardsButtonPlayers.add(ARTEMIS_JCheckBox);
         ARTEMIS_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ARTEMIS_JCheckBoxActionPerformed(evt);
@@ -232,7 +259,6 @@ public class FirstPlayer extends JFrame {
         });
         godsSelectionPanel_JPanel.add(ATLAS_JButton);
 
-        //CardsButtonPlayers.add(ATLAS_JCheckBox);
         ATLAS_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ATLAS_JCheckBoxActionPerformed(evt);
@@ -251,7 +277,6 @@ public class FirstPlayer extends JFrame {
         });
         godsSelectionPanel_JPanel.add(DEMETER_JButton);
 
-        //CardsButtonPlayers.add(DEMETER_JCheckBox);
         DEMETER_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DEMETER_JCheckBoxActionPerformed(evt);
@@ -270,7 +295,6 @@ public class FirstPlayer extends JFrame {
         });
         godsSelectionPanel_JPanel.add(HEPHAESTUS_JButton);
 
-        //CardsButtonPlayers.add(HEPHAESTUS_JCheckBox);
         HEPHAESTUS_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HEPHAESTUS_JCheckBoxActionPerformed(evt);
@@ -289,7 +313,6 @@ public class FirstPlayer extends JFrame {
         });
         godsSelectionPanel_JPanel.add(MINOTAUR_JButton);
 
-        //CardsButtonPlayers.add(MINOTAUR_JCheckBox);
         MINOTAUR_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MINOTAUR_JCheckBoxActionPerformed(evt);
@@ -342,7 +365,7 @@ public class FirstPlayer extends JFrame {
         rightPanel_JPanel.setLayout(new java.awt.GridLayout(2, 1));
 
         upperCardJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\podium-characters-Apolo.png")));
+        upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("APOLLO/podium-characters-Apolo.png")));
         rightPanel_JPanel.add(upperCardJLabel);
 
         downCard_JLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -350,13 +373,6 @@ public class FirstPlayer extends JFrame {
 
 
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\APOLLO-1.png")));
-
-
- //======================================================================================================================================================
- //       System.out.println(getClass().getResource("/resources/APOLLO/APOLLO-1.png").getPath());
-       // downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("ATHENA/ATHENA-1.png")));
-
-//======================================================================================================================================================
 
 
         downCard_JLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -411,31 +427,24 @@ public class FirstPlayer extends JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(chooseCardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lowerPanel_JPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lowerPanel_JPanel, GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(kGradientPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        )
         );
 
-        pack();
-    }// </editor-fold>
+
+
+
+        /*IL PANEL COL GRADIENTE DEVE ESSERE AGGIUNTO AL PANEL FIRSTPLAYER... */
+        this.add(kGradientPanel1, BorderLayout.CENTER);
+        this.setPreferredSize(kGradientPanel1.getSize());
+    }
+
+
 
     private void ThreePlayerButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         numberOfPlayers = 3;
         //cardManager();
 
@@ -480,7 +489,7 @@ public class FirstPlayer extends JFrame {
     }
 
     private void TwoPlayerButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         if(numberOfPlayers != 2)
         {
             selectedGods.get(0).setSelected(false);
@@ -493,7 +502,6 @@ public class FirstPlayer extends JFrame {
     }
 
     private void DEMETER_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\DEMETER\\podium-characters-Demeter.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\DEMETER\\DEMETER-1.png")));
 
@@ -503,13 +511,8 @@ public class FirstPlayer extends JFrame {
     }
 
     private void playButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
 
         System.out.println(CardsMessage.toString());
-
-
-
-
 
 
 
@@ -518,7 +521,6 @@ public class FirstPlayer extends JFrame {
 
 
     private void APOLLO_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\podium-characters-Apolo.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\APOLLO-1.png")));
 
@@ -527,13 +529,12 @@ public class FirstPlayer extends JFrame {
     }
 
     private void ARTEMIS_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\ARTEMIS\\podium-characters-Artemis.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\ARTEMIS\\ARTEMIS-1.png")));
     }
 
     private void APOLLO_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         selectedGods.add(APOLLO_JCheckBox);
 
 
@@ -542,10 +543,6 @@ public class FirstPlayer extends JFrame {
     }
 
     private void ARTEMIS_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-
-
-
         selectedGods.add(ARTEMIS_JCheckBox);
         cardManager(GodName.ARTEMIS);
 
@@ -553,157 +550,80 @@ public class FirstPlayer extends JFrame {
     }
 
     private void ATHENA_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\ATHENA\\podium-characters-Athena.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\ATHENA\\ATHENA-1.png")));
     }
 
     private void ATHENA_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-
 
         selectedGods.add(ATHENA_JCheckBox);
         cardManager(GodName.ATHENA);
     }
 
     private void ATLAS_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\ATLAS\\podium-characters-Atlas.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\ATLAS\\ATLAS-1.png")));
 
     }
 
     private void ATLAS_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         selectedGods.add(ATLAS_JCheckBox);
         cardManager(GodName.ATLAS);
     }
 
     private void DEMETER_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         selectedGods.add(DEMETER_JCheckBox);
         cardManager(GodName.DEMETER);
     }
 
     private void HEPHAESTUS_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\HEPHAESTUS\\podium-characters-Hephaestus.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\HEPHAESTUS\\HEPHAESTUS-1.png")));
     }
 
     private void HEPHAESTUS_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         selectedGods.add(HEPHAESTUS_JCheckBox);
         cardManager(GodName.HEPHAESTUS);
     }
 
     private void MINOTAUR_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\MINOTAUR\\podium-characters-Minotaur.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\MINOTAUR\\MINOTAUR-1.png")));
     }
 
     private void MINOTAUR_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         selectedGods.add(MINOTAUR_JCheckBox);
         cardManager(GodName.MINOTAUR);
     }
 
     private void PAN_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\PAN\\podium-characters-Pan.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\PAN\\PAN-1.png")));
     }
 
     private void PAN_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         selectedGods.add(PAN_JCheckBox);
         cardManager(GodName.PAN);
     }
 
     private void PROMETHEUS_JButtonActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\PROMETHEUS\\podium-characters-Prometheus.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\PROMETHEUS\\PROMETHEUS-1.png")));
     }
 
     private void PROMETHEUS_JCheckBoxActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
+
         selectedGods.add(PROMETHEUS_JCheckBox);
         cardManager(GodName.PROMETHEUS);
     }
 
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FirstPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FirstPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FirstPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FirstPlayer.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FirstPlayer().setVisible(true);
-            }
-        });
-    }
 
-    // Variables declaration - do not modify
-    private JButton APOLLO_JButton;
-    private JCheckBox APOLLO_JCheckBox;
-    private JButton ARTEMIS_JButton;
-    private JCheckBox ARTEMIS_JCheckBox;
-    private JButton ATHENA_JButton;
-    private JCheckBox ATHENA_JCheckBox;
-    private JButton ATLAS_JButton;
-    private JCheckBox ATLAS_JCheckBox;
-    private ButtonGroup CardsButtonPlayers;
-    private JButton DEMETER_JButton;
-    private JCheckBox DEMETER_JCheckBox;
-    private JLabel downCard_JLabel;
-    private JButton HEPHAESTUS_JButton;
-    private JCheckBox HEPHAESTUS_JCheckBox;
-    private JButton MINOTAUR_JButton;
-    private JCheckBox MINOTAUR_JCheckBox;
-    private JButton PAN_JButton;
-    private JCheckBox PAN_JCheckBox;
-    private JButton PROMETHEUS_JButton;
-    private JCheckBox PROMETHEUS_JCheckBox;
-    private JLabel SelectNumberOfPlayerLabel;
-    private JLabel SelectNumberOfPlayerLabel1;
-    private JCheckBox ThreePlayerButton;
-    private JCheckBox TwoPlayerButton;
-    private JPanel chooseCardPanel;
-    private JPanel godsSelectionPanel_JPanel;
-    private JButton play_JButton;
-    private JSeparator jSeparator2;
-    private KGradientPanel kGradientPanel1;
-    private KGradientPanel kGradientPanel3;
-    private JPanel lowerPanel_JPanel;
-    private JPanel rightPanel_JPanel;
-    private ButtonGroup selectNumberOfPlayersGroup;
-    private JPanel selectNumberOfPlayers_JPanel;
-    private JLabel upperCardJLabel;
-    // End of variables declaration
+
+
 }
