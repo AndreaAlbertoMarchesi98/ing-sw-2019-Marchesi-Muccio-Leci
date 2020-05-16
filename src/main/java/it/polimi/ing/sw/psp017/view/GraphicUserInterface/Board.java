@@ -2,6 +2,14 @@ package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 
 
+import it.polimi.ing.sw.psp017.controller.client.Client;
+
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.SelectedTileMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
+import it.polimi.ing.sw.psp017.controller.server.Lobby;
+import it.polimi.ing.sw.psp017.model.Vector2d;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,19 +17,25 @@ import java.awt.geom.RoundRectangle2D;
 
     public class Board extends JFrame {
         private final Dimension dim;
-        public Board() {
+        public Board(Client client) {
             dim = Toolkit.getDefaultToolkit().getScreenSize();
             initComponents();
+            this.client = client;
         }
+        private Client client;
 
         private void initComponents() {
 
-            kGradientPanel1 = new KGradientPanel();
+            buttonGroup = new ButtonGroup();
+
+
+
+                    kGradientPanel1 = new KGradientPanel();
             kGradientPanel1.setkEndColor(new Color(255, 255, 153));
             kGradientPanel1.setkStartColor(new Color(0, 204, 102));
             tilePanel = new JPanel();
             northPanel_JPanel = new JPanel();
-            jLabel1 = new JLabel();
+            messageLabel_NorthPanel = new JLabel();
              boardGamePanel = new JPanel(){
 
                 public void paintComponent(java.awt.Graphics g) {
@@ -221,17 +235,17 @@ import java.awt.geom.RoundRectangle2D;
             FlowLayout layout  = new FlowLayout();
             layout.setVgap(10);
             northPanel_JPanel.setLayout(layout);
-            jLabel1.setFont(new Font("Tahoma", 3, 36));
-            jLabel1.setForeground(new Color(255, 255, 255));
-            jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-            jLabel1.setVerticalAlignment(SwingConstants.BOTTOM);
-            jLabel1.setText("Move / Build   ");
-            northPanel_JPanel.add(jLabel1);
+            messageLabel_NorthPanel.setFont(new Font("Tahoma", 3, 36));
+            messageLabel_NorthPanel.setForeground(new Color(255, 255, 255));
+            messageLabel_NorthPanel.setHorizontalAlignment(SwingConstants.CENTER);
+            messageLabel_NorthPanel.setVerticalAlignment(SwingConstants.BOTTOM);
+            messageLabel_NorthPanel.setText("Move / Build   ");
+            northPanel_JPanel.add(messageLabel_NorthPanel);
             kGradientPanel1.add(northPanel_JPanel, BorderLayout.NORTH);
 
             workerPanel.setOpaque(false);
             workerPanel.setLayout(new GridLayout(5, 5, 2, 2));
-            final JLabel[][] labelArrayWorker = new JLabel[5][5];
+             labelArrayWorker = new JLabel[5][5];
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
                     labelArrayWorker[row][col] = new JLabel();
@@ -245,7 +259,7 @@ import java.awt.geom.RoundRectangle2D;
             tilePanel.setOpaque(false);
             tilePanel.setLayout(new java.awt.GridLayout(5, 5,2,2));
 
-             final JLabel[][] labelArrayBuild = new JLabel[5][5];
+              labelArrayBuild = new JLabel[5][5];
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
                     labelArrayBuild[row][col]= new JLabel();
@@ -255,144 +269,16 @@ import java.awt.geom.RoundRectangle2D;
                 }
             }
             buttonPanel.setLayout(new GridLayout(5, 5));
-             final JButton[][] buttonGrid = new JButton[5][5];
+             buttonGrid = new AbstractButton[5][5];
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
-                    buttonGrid[row][col]= new JButton(){
-
-                        @Override
-                        public void updateUI() {
-                            super.updateUI();
-                            setVerticalAlignment(SwingConstants.CENTER);
-                            setVerticalTextPosition(SwingConstants.CENTER);
-                            setHorizontalAlignment(SwingConstants.CENTER);
-                            setHorizontalTextPosition(SwingConstants.CENTER);
-                            setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
-                            setMargin(new Insets(2, 8, 2, 8));
-                            setBorderPainted(false);
-                            setContentAreaFilled(false);
-                            setFocusPainted(false);
-                            setOpaque(false);
-                            setForeground(Color.WHITE);
-                            setIcon(new TranslucentButtonIcon(this));
-
-                        }
-                        class TranslucentButtonIcon implements Icon {
-                            private final Color TL = new Color(1f, 1f, 1f, .2f);
-                            private final Color BR = new Color(0f, 0f, 0f, .4f);
-                            private final Color ST = new Color(1f, 1f, 1f, .2f);
-                            private final Color SB = new Color(1f, 1f, 1f, .1f);
-                            private static final int R = 8;
-                            private int width;
-                            private int height;
-
-                            protected TranslucentButtonIcon(JComponent c) {
-                                Insets i = c.getBorder().getBorderInsets(c);
-                                Dimension d = c.getPreferredSize();
-                                width = d.width - i.left - i.right;
-                                height = d.height - i.top - i.bottom;
-                            }
-
-                            @Override
-                            public void paintIcon(Component c, Graphics g, int x, int y) {
-                                if (c instanceof AbstractButton) {
-                                    AbstractButton b = (AbstractButton) c;
-                                    // XXX: Insets i = b.getMargin();
-
-                                    Insets i = b.getBorder().getBorderInsets(b);
-                                    int w = c.getWidth();
-                                    int h = c.getHeight();
-                                    width = w - i.left - i.right;
-                                    height = h - i.top - i.bottom;
-                                    Graphics2D g2 = (Graphics2D) g.create();
-                                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                                    Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
-                                    Color ssc = TL;
-                                    Color bgc = BR;
-                                    ButtonModel m = b.getModel();
-                                    if (m.isPressed()) {
-                                        ssc = SB;
-                                        bgc = ST;
-                                    } else if (m.isRollover()) {
-                                        ssc = ST;
-                                        bgc = SB;
-                                    }
-
-                                    g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
-                                    // g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\peopleBIG.png")).getImage(),0,0,null);
-                                    g2.fill(area);
-                                    g2.setPaint(BR);
-                                    g2.draw(area);
-                                    g2.dispose();
-                                }
-                            }
-
-                            @Override
-                            public int getIconWidth() {
-                                return Math.max(width, 100);
-                            }
-
-                            @Override
-                            public int getIconHeight() {
-                                return Math.max(height, 20);
-                            }
-                        }
-
-                    };
+                    buttonGrid[row][col]= new AbstractButton();
                     buttonPanel.add(buttonGrid[row][col]);
-                    this.addWindowStateListener(new WindowStateListener(){
-                                          @Override
-                                          public void windowStateChanged(WindowEvent e) {
-                                              for (int row = 0; row < 5; row++) {
-                                                  for (int col = 0; col <5; col++) {
-                                                      buttonGrid[row][col].updateUI();
-                                                      buttonGrid[row][col].revalidate();
-                                                      buttonGrid[row][col].repaint();
-                                                    }
-                                                  }
-                                          }
-                                      }
-                    );
-                    MouseListener buttonListerner2 = new MouseListener() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
 
-                        }
-
-                        @Override
-                        public void mousePressed(MouseEvent e) {
-                            for (int row = 0; row < 5; row++) {
-                                for (int col = 0; col <5; col++) {
-                                    if (buttonGrid[row][col] == e.getSource()) {
-                                        System.out.println("Selected row and column: "+ row + " " + col);
-                                        if(e.getButton() == MouseEvent.BUTTON3){
-                                            labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
-                                        }
-                                        else if(e.getButton() == MouseEvent.BUTTON1){
-                                             labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/peopleBIG.png")));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void mouseReleased(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-
-                        }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-
-                        }
-                    };
+                    buttonListeners buttonListerner2 = new buttonListeners();
 
                     buttonGrid[row][col].addMouseListener(buttonListerner2);
+                    buttonGroup.add(buttonGrid[row][col]);
                 }
 
             }
@@ -510,6 +396,9 @@ import java.awt.geom.RoundRectangle2D;
             this.setContentPane(kGradientPanel1);
 
             setLocationRelativeTo(null);
+            setSize(dim.width/2,dim.width/2);
+
+            setVisible(true);
         }
 
         private void opponentPlayerInfo1ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -533,19 +422,106 @@ import java.awt.geom.RoundRectangle2D;
         }
 
 
+        /*
         public static void main(String args[]) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     new Board().setVisible(true);
                 }
             });
+         */
+
+
+        public void x(){
+            messageLabel_NorthPanel.setText("move");
         }
+
+        public void setWorkerPosition()
+        {
+            messageLabel_NorthPanel.setText("place your workes");
+            //SwingUtilities.invokeLater();
+        }
+        public void getTargetTile(BoardMessage boardMessage)
+        {
+            enabledBoard(true);
+         switch (boardMessage.action){
+
+             case PLACE_WORKERS: messageLabel_NorthPanel.setText("PLACE WORKER"); break;
+             case SELECT_WORKER: messageLabel_NorthPanel.setText("SELECT WORKER"); break;
+             case MOVE: messageLabel_NorthPanel.setText("MOVE "); break;
+             case BUILD: messageLabel_NorthPanel.setText("BUILD WORKER"); break;
+             case NONE: messageLabel_NorthPanel.setText("NONE WORKER"); break;
+
+         }
+
+        }
+
+        private Vector2d getSelectedButton() {
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col <5; col++) {
+                    if(buttonGrid[row][col].isSelected())
+                        return new Vector2d(row,col);
+                    System.out.println("cella selezionata  "+ row + col);
+                    }
+                }
+            System.out.println("nulll");
+            return null;
+
+        }
+        public void showValidTile(BoardMessage boardMessage) {
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col < 5; col++) {
+                    if(boardMessage.validTiles[row][col] == true){
+                        buttonGrid[row][col].updateValidTiles();
+                    }
+                    else{
+                        buttonGrid[row][col].setEnabled(false);
+                    }
+                }
+            }
+        }
+        public void updateBoard(BoardMessage boardMessage) {
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col < 5; col++) {
+                    buttonGrid[row][col].setEnabled(true);
+                    if (boardMessage.board[row][col].level == 1) {
+                        labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level1.png")));
+                    } else if (boardMessage.board[row][col].level == 2) {
+                        labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level2.png")));
+                    } else if (boardMessage.board[row][col].level == 3) {
+                        labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level3.png")));
+                    } else if (boardMessage.board[row][col].dome == true) {
+                        labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
+                    }
+                }
+            }
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col < 5; col++) {
+                    if (boardMessage.board[row][col].playerNumber == 1) {
+                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\peopleBIG.png")));
+                    } else if (boardMessage.board[row][col].playerNumber == 2) {
+                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\peopleBIG.png")));
+                    } else if (boardMessage.board[row][col].playerNumber == 3) {
+                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\peopleBIG.png")));
+                    }
+                }
+            }
+
+            if(client.getPlayerNumber() == boardMessage.activePlayerNumber&&boardMessage.validTiles!=null)
+            {
+                System.out.println("mio turno");
+                showValidTile(boardMessage);
+            }
+
+
+        }
+
 
         private JPanel DXPanel;
         private JPanel SXPanel;
         private JPanel boardGamePanel;
         private JPanel buttonPanel;
-        private JLabel jLabel1;   //ha le informazioni
+        private JLabel messageLabel_NorthPanel;   //ha le informazioni
         private KGradientPanel kGradientPanel1;
         private JPanel lowerDXPanel;
         private JPanel northPanel_JPanel;
@@ -559,11 +535,150 @@ import java.awt.geom.RoundRectangle2D;
         private JButton undo;
         private JPanel upperDXPanel;
         private JPanel workerPanel;
+        private ButtonGroup buttonGroup;
+        private AbstractButton[][] buttonGrid;
+        private JLabel[][] labelArrayWorker;
+        private JLabel[][] labelArrayBuild;
+
+       class AbstractButton extends JButton {
+            public void updateValidTiles() {
+            this.setIcon(new TranslucentButtonIcon(this, Color.red));
+            this.repaint();
+        }
+            @Override
+            public void updateUI() {
+            super.updateUI();
+            setVerticalAlignment(SwingConstants.CENTER);
+            setVerticalTextPosition(SwingConstants.CENTER);
+            setHorizontalAlignment(SwingConstants.CENTER);
+            setHorizontalTextPosition(SwingConstants.CENTER);
+            setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
+            setMargin(new Insets(2, 8, 2, 8));
+            setBorderPainted(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setOpaque(false);
+            setForeground(Color.WHITE);
+            setIcon(new TranslucentButtonIcon(this, Color.WHITE));
+
+        }
+            class TranslucentButtonIcon implements Icon {
+                private final Color TL = new Color(1f, 1f, 1f, .2f);
+                private final Color BR = new Color(0f, 0f, 0f, .4f);
+                private final Color ST = new Color(1f, 1f, 1f, .2f);
+                private  Color SB ;
+                private static final int R = 8;
+                private int width;
+                private int height;
+
+                protected TranslucentButtonIcon(JComponent c, Color color) {
+                    this.SB = color;
+                    Insets i = c.getBorder().getBorderInsets(c);
+                    Dimension d = c.getPreferredSize();
+                    width = d.width - i.left - i.right;
+                    height = d.height - i.top - i.bottom;
+                }
+
+                @Override
+                public void paintIcon(Component c, Graphics g, int x, int y) {
+                    if (c instanceof AbstractButton) {
+                        AbstractButton b = (AbstractButton) c;
+                        // XXX: Insets i = b.getMargin();
+
+                        Insets i = b.getBorder().getBorderInsets(b);
+                        int w = c.getWidth();
+                        int h = c.getHeight();
+                        width = w - i.left - i.right;
+                        height = h - i.top - i.bottom;
+                        Graphics2D g2 = (Graphics2D) g.create();
+                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
+                        Color ssc = TL;
+                        Color bgc = BR;
+                        ButtonModel m = b.getModel();
+                        if (m.isPressed()) {
+                            ssc = SB;
+                            bgc = ST;
+                        } else  {
+                            ssc = ST;
+                            bgc = SB;
+                        }
+
+                        g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
+                        // g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\peopleBIG.png")).getImage(),0,0,null);
+                        g2.fill(area);
+                        g2.setPaint(BR);
+                        g2.draw(area);
+                        g2.dispose();
+                    }
+                }
+
+                @Override
+                public int getIconWidth() {
+                    return Math.max(width, 100);
+                }
+
+                @Override
+                public int getIconHeight() {
+                    return Math.max(height, 20);
+                }
+            }
+
+        }
+        private class buttonListeners implements MouseListener {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                    for (int row = 0; row < 5; row++) {
+                        for (int col = 0; col <5; col++) {
+                            if (buttonGrid[row][col] == e.getSource()) {
+                                System.out.println("Selected row and column: "+ row + " " + col);
+                                enabledBoard(false);
+                                client.getNetworkHandler().sendMessage(new SelectedTileMessage(new Vector2d(row,col)));
+
+                            }
+                        }
+                    }
+                }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+
+
+        }
+        private void enabledBoard(boolean isEnabled)
+        {
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col <5; col++) {
+
+                        buttonGrid[row][col].setEnabled(isEnabled);
+
+                    }
+                }
+            }
+
+        }
 
 
 
 
-    }
 
 
 

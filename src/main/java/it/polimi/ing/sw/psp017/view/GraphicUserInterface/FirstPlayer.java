@@ -1,6 +1,8 @@
 package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 
+import it.polimi.ing.sw.psp017.controller.client.Client;
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.GameSetUpMessage;
 import it.polimi.ing.sw.psp017.view.GUI;
 import it.polimi.ing.sw.psp017.view.GodName;
 
@@ -10,12 +12,13 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FirstPlayer extends JPanel {
+public class FirstPlayer extends JFrame {
 
     private int numberOfPlayers = 0;
     private ArrayList<JCheckBox> checkBoxArray;
     private ArrayList<JCheckBox> selectedGods;
     private ArrayList<GodName> CardsMessage;
+    private Client client;
 
 
 
@@ -54,13 +57,14 @@ public class FirstPlayer extends JPanel {
     private ButtonGroup selectNumberOfPlayersGroup;
     private JPanel selectNumberOfPlayers_JPanel;
     private JLabel upperCardJLabel;
+    private  Dimension dim;
 
-    public FirstPlayer() {
-        initComponents();
-    }
 
-    private void initComponents() {
 
+
+    public  FirstPlayer(Client client) {
+
+        this.client = client;
         selectNumberOfPlayersGroup = new ButtonGroup();
         CardsButtonPlayers = new ButtonGroup();
         kGradientPanel1 = new KGradientPanel();
@@ -221,6 +225,7 @@ public class FirstPlayer extends JPanel {
             }
         });
         godsSelectionPanel_JPanel.add(ARTEMIS_JButton);
+        ARTEMIS_JCheckBox.setOpaque(true);
 
         ARTEMIS_JCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -362,7 +367,7 @@ public class FirstPlayer extends JPanel {
         rightPanel_JPanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 5, true));
         rightPanel_JPanel.setForeground(new java.awt.Color(0, 153, 153));
         rightPanel_JPanel.setOpaque(false);
-        rightPanel_JPanel.setLayout(new java.awt.GridLayout(2, 1));
+        rightPanel_JPanel.setLayout(new java.awt.GridLayout(1, 2,1,0));
 
         upperCardJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("APOLLO/podium-characters-Apolo.png")));
@@ -436,9 +441,14 @@ public class FirstPlayer extends JPanel {
 
 
 
+
         /*IL PANEL COL GRADIENTE DEVE ESSERE AGGIUNTO AL PANEL FIRSTPLAYER... */
         this.add(kGradientPanel1, BorderLayout.CENTER);
-        this.setPreferredSize(kGradientPanel1.getSize());
+        //this.setPreferredSize(kGradientPanel1.getSize());
+        dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setSize(dim.width/2,dim.height/2);
+        //this.setMinimumSize(dim/2);
+        //setLocationRelativeTo(null);
     }
 
 
@@ -473,6 +483,8 @@ public class FirstPlayer extends JPanel {
         }
 
         if(selectedGods.size()== numberOfPlayers) play_JButton.setEnabled(true);
+
+
 
         /*
         while(selectedGods.size() > numberOfPlayers)
@@ -512,6 +524,9 @@ public class FirstPlayer extends JPanel {
     private void playButtonActionPerformed(ActionEvent evt) {
 
         System.out.println(CardsMessage.toString());
+        client.getNetworkHandler().sendMessage(new GameSetUpMessage(CardsMessage));
+        play_JButton.setEnabled(false);
+
 
 
 
@@ -619,10 +634,6 @@ public class FirstPlayer extends JPanel {
         selectedGods.add(PROMETHEUS_JCheckBox);
         cardManager(GodName.PROMETHEUS);
     }
-
-
-
-
 
 
 }

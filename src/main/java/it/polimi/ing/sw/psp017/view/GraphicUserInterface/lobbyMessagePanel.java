@@ -1,20 +1,35 @@
 package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 
+import it.polimi.ing.sw.psp017.controller.client.Client;
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.CardMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
+import it.polimi.ing.sw.psp017.view.GodName;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class lobbyMessagePanel extends JPanel {
 
 
-    public lobbyMessagePanel() {
-        initComponents();
-    }
+    private JPanel cardSelection_JPanel;
+    private JButton jButton1;
+    private JButton jButton2;
+    private JButton jButton3;
+    private JLabel jLabel1;
+    private KGradientPanel kGradientPanel1;
+    private JButton playButton_JButton;
+    private JPanel selectCardPanel_JPanel;
+    private JPanel selectPanel_JPanel;
+    private Client client;
+
+
+    public lobbyMessagePanel(final LobbyMessage lobbyMessage,Client client) {
 
 
 
-    private void initComponents() {
-
+        this.client = client;
         kGradientPanel1 = new KGradientPanel();
         selectCardPanel_JPanel = new JPanel();
         jLabel1 = new JLabel();
@@ -22,6 +37,9 @@ public class lobbyMessagePanel extends JPanel {
         jButton1 = new JButton();
         jButton2 = new JButton();
         jButton3 = new JButton();
+
+
+        final ArrayList<JButton> cardsButton = new ArrayList<>();
         selectPanel_JPanel = new JPanel();
         playButton_JButton = new JButton();
 
@@ -32,38 +50,45 @@ public class lobbyMessagePanel extends JPanel {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 2, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 255, 255));
-        jLabel1.setText("select a card  ");
+        jLabel1.setText("player " + lobbyMessage.choosingPlayerNumber + "is selecting a card");
         selectCardPanel_JPanel.add(jLabel1);
 
         cardSelection_JPanel.setOpaque(false);
         cardSelection_JPanel.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton1.setText("jButton1");
-        jButton1.setMaximumSize(new java.awt.Dimension(50, 100));
-        jButton1.setMinimumSize(new java.awt.Dimension(50, 100));
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 200));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        cardSelection_JPanel.add(jButton1);
 
-        jButton2.setText("jButton2");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        cardSelection_JPanel.add(jButton2);
+        for(int i = 0; i < lobbyMessage.availableCards.size();i++)
+        {
+            JButton temp = new JButton(lobbyMessage.availableCards.get(i).toString());
+           // temp.setIcon(new ImageIcon(getClass().getClassLoader().getResource("APOLLO\\APOLLO-1.png")));
+            temp.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton2ActionPerformed(evt,cardsButton);
+                }
+            });
+            if(client.getPlayerNumber() == 0)
+            {
+                System.out.println("memorizzo playerNumber");
+                client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname())+1);
+                System.out.println("playerNumber settato : "+client.getPlayerNumber());
 
-        jButton3.setText("jButton3");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
             }
-        });
-        cardSelection_JPanel.add(jButton3);
+            if(client.getPlayerNumber() != lobbyMessage.choosingPlayerNumber)
+            {
+                temp.setEnabled(false);
+            }
+            else
+            {
+                jLabel1.setText("is your Turn!!!");
+            }
+            cardsButton.add(temp);
+            cardSelection_JPanel.add(temp);
+
+
+        }
+
+
+
 
         selectPanel_JPanel.setOpaque(false);
 
@@ -105,6 +130,10 @@ public class lobbyMessagePanel extends JPanel {
         this.add(kGradientPanel1, BorderLayout.CENTER);
     }
 
+    private void initialiseButton(LobbyMessage lobbyMessage, JButton jButton) {
+    }
+
+
     private void playButton_JButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
@@ -113,8 +142,16 @@ public class lobbyMessagePanel extends JPanel {
         // TODO add your handling code here:
     }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt,ArrayList<JButton> cards) {
         // TODO add your handling code here:
+        for(int i = 0; i <cards.size();i++)
+        {
+            if(evt.getSource().equals(cards.get(i)))
+            {
+                client.getNetworkHandler().sendMessage(new CardMessage(GodName.valueOf(cards.get(i).getText())));
+                System.out.println(GodName.valueOf(cards.get(i).getText()));
+            }
+        }
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,45 +161,15 @@ public class lobbyMessagePanel extends JPanel {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(lobbyMessagePanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(lobbyMessagePanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(lobbyMessagePanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(lobbyMessagePanel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
 
 
 
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new lobbyMessagePanel().setVisible(true);
-            }
-        });
-    }
+
 
     // Variables declaration
-    private JPanel cardSelection_JPanel;
-    private JButton jButton1;
-    private JButton jButton2;
-    private JButton jButton3;
-    private JLabel jLabel1;
-    private KGradientPanel kGradientPanel1;
-    private JButton playButton_JButton;
-    private JPanel selectCardPanel_JPanel;
-    private JPanel selectPanel_JPanel;
+
+
     // End of variables declaration
 }
 

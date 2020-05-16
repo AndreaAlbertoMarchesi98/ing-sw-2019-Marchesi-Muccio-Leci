@@ -3,7 +3,10 @@ package it.polimi.ing.sw.psp017.view;
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
+import it.polimi.ing.sw.psp017.model.Vector2d;
+import it.polimi.ing.sw.psp017.view.GraphicUserInterface.Board;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.FirstPlayer;
+import it.polimi.ing.sw.psp017.view.GraphicUserInterface.WaitingRoom;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.lobbyMessagePanel;
 
 import javax.swing.*;
@@ -20,6 +23,9 @@ public class GUI implements View {
     final public Dimension dim;
     private JLabel backgroundScreen;  //contiene l'immagine di sfondo
     private JPanel mainPanel;
+    private boolean isFirstBoardStep = true;
+    private Board board;
+    private  boolean hasAskedPowerActive;
 
     public GUI(Client client) {
         dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,7 +48,7 @@ public class GUI implements View {
 
     private void createFrame() {
         mainFrame = new JFrame();
-        mainFrame.setSize(1000, 600);
+        mainFrame.setSize(dim.width/2, dim.height/2);
         mainFrame.setResizable(false);
         mainFrame.setUndecorated(true);
         mainFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -63,6 +69,7 @@ public class GUI implements View {
         mainFrame.setContentPane(mainPanel);
         mainFrame.setVisible(true);
         mainFrame.repaint();
+        mainFrame.setLocationRelativeTo(null);
 
         new SwingWorker<Integer, String>() {
             @Override
@@ -75,44 +82,42 @@ public class GUI implements View {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
-
-                final JFrame tempFrame = new JFrame();
-                tempFrame.setIconImage(im);
-                tempFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                tempFrame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(tempFrame, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-                        if (n == JOptionPane.YES_OPTION) {
-                            tempFrame.dispose();
-                        }
-
-                    }
-                });
-
                 setProgress(55);
                 progressBar.setValue(this.getProgress());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
-                tempFrame.setMinimumSize(new Dimension(500,700));
-                tempFrame.setPreferredSize(dim);
-                tempFrame.pack();
-                tempFrame.setLocationRelativeTo(null);
                 setProgress(99);
                 progressBar.setValue(this.getProgress());
                 try {
-                    mainFrame.dispose();
-                    tempFrame.setContentPane(mainPanel);
-                    mainFrame=tempFrame;
                     client.getNetworkHandler().startConnection();
 
                 } catch (IOException e) {
-                    JOptionPane.showMessageDialog(mainFrame, "Error: Server down. The program will be closed.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainFrame, "Error: No connection. The program will be closed.", "Error", JOptionPane.ERROR_MESSAGE);
                     System.exit(0);
                 }
+                mainFrame.dispose();
+                mainFrame= new JFrame();
+                mainFrame.setIconImage(im);
+                mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                mainFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        Object[] option = {"Quit", "Cancel"};
+                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+                        if (n == JOptionPane.YES_OPTION) {
+                            mainFrame.dispose();
+                        }
+
+                    }
+                });
+                mainFrame.setMinimumSize(new Dimension(500,700));
+                //mainFrame.setPreferredSize(dim);
+                mainFrame.pack();
+                mainFrame.setLocationRelativeTo(null); //centrato
+                mainFrame.setContentPane(mainPanel);
+                //mainFrame.setSize(dim);
                 mainFrame.setVisible(true);
                 return 1;
             }
@@ -130,36 +135,33 @@ public class GUI implements View {
 
     @Override
     public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage) {
-
+        client.getNetworkHandler().sendMessage(gameSetUpMessage);
     }
 
     @Override
     public void notifyCard(CardMessage cardMessage) {
-
+        client.getNetworkHandler().sendMessage(cardMessage);
     }
 
     @Override
-    public void notifyPlacement(PlacementMessage placementMessage) {
-
-    }
-
-    @Override
-    public void notifySelection(SelectionMessage selectionMessage) {
+    public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
 
     }
 
     @Override
     public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
-
+        client.getNetworkHandler().sendMessage(powerActiveMessage);
     }
 
-    @Override
-    public void notifyAction(SelectedTileMessage actionMessage) {
 
-    }
 
     @Override
     public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
+        client.getNetworkHandler().sendMessage(disconnectionMessage);
+    }
+
+    @Override
+    public void notifyUndo(UndoMessage undoMessage) {
 
     }
 
@@ -168,13 +170,30 @@ public class GUI implements View {
         SwingUtilities.invokeLater(new Thread(new Runnable() {
             @Override
             public void run() {
+
+
+                mainFrame.dispose();
                 mainPanel.setVisible(false);
-                mainPanel = new FirstPlayer();
-                mainPanel.revalidate();
-                mainPanel.repaint();
-                mainFrame.setContentPane(mainPanel);
+                mainFrame = new FirstPlayer(client);
+                mainFrame.setSize(dim.width/2,dim.height/2);
+                mainFrame.setMinimumSize(new Dimension(1400,850));
                 mainFrame.pack();
                 mainFrame.repaint();
+                mainFrame.setLocationRelativeTo(null);
+                mainFrame.setVisible(true);
+
+
+                mainFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        Object[] option = {"Quit", "Cancel"};
+                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+                        if (n == JOptionPane.YES_OPTION) {
+                            mainFrame.dispose();
+                        }
+
+                    }
+                });
 
             }
         }));
@@ -183,7 +202,7 @@ public class GUI implements View {
 
     @Override
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
-        if (invalidNameMessage != null) {
+        if (invalidNameMessage != null) { //hai già creato il frame e devi solo aggiornare il testo e ricevere un nuovo nick
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -191,15 +210,24 @@ public class GUI implements View {
                     mainPanel.setVisible(false);
                     mainPanel = new LoginPanel();
                     mainFrame.setContentPane(mainPanel);
+                    mainFrame.pack();
+                    mainFrame.setLocationRelativeTo(null);
+
+
+
                 }
             });
         } else {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
+
+
+
                     mainPanel = new LoginPanel();
                     mainFrame.setContentPane(mainPanel);
                     mainFrame.pack();
+                    mainFrame.setLocationRelativeTo(null);
 
                 }
             });
@@ -209,13 +237,20 @@ public class GUI implements View {
     }
 
     @Override
-    public void updateLobby(LobbyMessage lobbyMessage) {
+    public void updateLobby(final LobbyMessage lobbyMessage) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+
+
+
                 mainPanel.setVisible(false);
-                mainPanel = new lobbyMessagePanel();
+                mainPanel = new lobbyMessagePanel(lobbyMessage,client);
+               // mainPanel = new lobbyMessagePanel();
                 mainFrame.setContentPane(mainPanel);
+                mainFrame.pack();
+                mainPanel.setVisible(true);
+
 
             }
         });
@@ -226,9 +261,24 @@ public class GUI implements View {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+
+
                 mainPanel.setVisible(false);
                 mainPanel = new waitingRoom(waitMessage.queueLength);
                 mainFrame.setContentPane(mainPanel);
+                mainFrame.setSize(dim.width/2,dim.width/2);
+                mainFrame.setLocationRelativeTo(null);
+                mainFrame.setVisible(true);
+
+
+
+                /*
+                mainFrame.dispose();
+                mainFrame = new WaitingRoom(waitMessage.queueLength);
+                mainFrame.setSize(dim.width/2,dim.height/2);
+                mainFrame.setVisible(true);
+                mainFrame.setLocationRelativeTo(null);
+                 */
 
             }
         });
@@ -236,6 +286,123 @@ public class GUI implements View {
 
     @Override
     public void updateBoard(BoardMessage boardMessage) {
+
+        if(isFirstBoardStep)
+        {
+            //creato frame della board
+            System.out.println("boardddddddddddddddddddddddddddddddddddddddd");
+            mainFrame.dispose();
+            board = new Board(client);
+            isFirstBoardStep = false;
+        }
+
+        //SwingUtilities.updateComponentTreeUI(mainFrame);
+
+
+        board.updateBoard(boardMessage);
+
+        if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
+        {
+
+            System.out.println("ACTION MESSAGE : " + boardMessage.action);
+
+            if(boardMessage.action == ActionNames.PLACE_WORKERS)
+            {
+              //  Vector2d[] temp = new Vector2d[2];
+
+
+                System.out.println("workers placement");
+                //utente sceglie 2 posizioni
+              //  printBoard(boardMessage.board);
+
+
+                //salvo 2 posizioni
+                //for(int i = 0; i <2; i++)
+                //{
+                   // System.out.println("where do you want to position worker number "+(i+1)+"?");
+                   // temp[i] = getTargetTile(boardMessage.action,boardMessage.board);
+
+
+                    //da aggiungere : non far scegliere la stessa posizione oppure posizione occupata dagli avversari
+
+
+               // }
+
+             //   temp = setWorkerPosition(boardMessage);
+                //invio
+                board.getTargetTile(boardMessage);
+                System.out.println("messaggio inviato");
+            }
+
+            else if(boardMessage.action == ActionNames.SELECT_WORKER)
+            {
+                hasAskedPowerActive = false;
+                //scelta del worker da utilizzare
+
+                //da fare : obbligo di scegliere un worker
+
+                //Vector2d temp = selectWorker(boardMessage);
+                //notifySelection(new SelectionMessage(board.getTargetTile(boardMessage)));
+                board.getTargetTile(boardMessage);
+
+            }
+            else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
+            {
+
+                //attivare il potere
+
+                //activatePower = getChoice();  ?? serve
+
+                //si o no
+
+               notifyIsPowerActive(new PowerActiveMessage(false));
+
+                hasAskedPowerActive = true;
+
+
+            }
+            else if(boardMessage.action == ActionNames.MOVE)
+            {
+
+                System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+               // notifyAction(new ActionMessage(board.getTargetTile(boardMessage)));
+                board.getTargetTile(boardMessage);
+            }
+
+
+            else if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
+            {
+
+                //   boardMessage.action == ActionNames.MOVE ||
+
+
+
+                System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                board.getTargetTile(boardMessage);
+
+               // notifyAction(new ActionMessage(board.getTargetTile(boardMessage)));
+                //salva posizione scelta lastWorkerposition == scegli worker
+
+
+           //     printValidTiles(boardMessage.validTiles);
+            //    notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
+
+
+            }
+            else{
+                System.out.println("invalid action NONE");
+            }
+
+
+
+
+        }
+
+
+
+
+
 
     }
 
@@ -366,10 +533,11 @@ public class GUI implements View {
             bottomPanel = new JPanel();
             cliButton = new JButton();
 
+            GroupLayout kGradientPanel1Layout = new GroupLayout(kGradientPanel);
 
             kGradientPanel.setkEndColor(new Color(255, 255, 153));
             kGradientPanel.setkStartColor(new Color(0, 204, 102));
-            kGradientPanel.setLayout(new GridLayout(4, 1,100,10));
+            kGradientPanel.setLayout(new GridLayout(4, 1));
 
             logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -399,6 +567,7 @@ public class GUI implements View {
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_ENTER && !nicknameField.getText().equals("")) {
                         nicknameField.setEnabled(false);
+                        client.setNickname(nicknameField.getText());
                         nickButton.setEnabled(false);
                         cliButton.setEnabled(false);
 
@@ -433,6 +602,7 @@ public class GUI implements View {
                 public void mouseClicked(MouseEvent e) {
                     if(!nicknameField.getText().equals("")){
                         nicknameField.setEnabled(false);
+                        client.setNickname(nicknameField.getText());
                         nickButton.setEnabled(false);
                         cliButton.setEnabled(false);
                         SwingUtilities.invokeLater(new Runnable() {
@@ -480,6 +650,8 @@ public class GUI implements View {
             kGradientPanel.add(bottomPanel);
             this.setLayout(new BorderLayout());
             this.add(kGradientPanel, BorderLayout.CENTER);
+
+
 
         }
 

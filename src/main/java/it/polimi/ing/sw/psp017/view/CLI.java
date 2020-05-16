@@ -73,17 +73,10 @@ public class CLI implements View {
     }
 
     @Override
-    public void notifyPlacement(PlacementMessage placementMessage) {
-        client.getNetworkHandler().sendMessage(placementMessage);
-
+    public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
+        client.getNetworkHandler().sendMessage(selectedTileMessage);
     }
 
-    @Override
-    public void notifySelection(SelectionMessage selectionMessage) {
-
-        client.getNetworkHandler().sendMessage(selectionMessage);
-
-    }
 
     @Override
     public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
@@ -92,16 +85,16 @@ public class CLI implements View {
 
     }
 
-    @Override
-    public void notifyAction(SelectedTileMessage actionMessage) {
 
-        client.getNetworkHandler().sendMessage(actionMessage);
-
-    }
 
     @Override
     public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
         client.getNetworkHandler().closeConnection();
+    }
+
+    @Override
+    public void notifyUndo(UndoMessage undoMessage) {
+
     }
 
     @Override
@@ -307,7 +300,8 @@ public class CLI implements View {
                  */
                 temp = setWorkerPosition(boardMessage);
                 //invio
-                notifyPlacement(new PlacementMessage(temp[0], temp[1]));
+                notifySelectedTile(new SelectedTileMessage(temp[0]));
+                notifySelectedTile(new SelectedTileMessage(temp[1]));
 
             }
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
@@ -318,7 +312,8 @@ public class CLI implements View {
                 //da fare : obbligo di scegliere un worker
 
                 //Vector2d temp = selectWorker(boardMessage);
-                notifySelection(new SelectionMessage(selectWorker(boardMessage)));
+
+                notifySelectedTile(new SelectedTileMessage(selectWorker(boardMessage)));
 
             }
             else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
@@ -341,7 +336,8 @@ public class CLI implements View {
 
                 System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-                notifyAction(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
+                //notifyAction(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
+                notifySelectedTile(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
             }
 
 
@@ -354,7 +350,10 @@ public class CLI implements View {
 
                 System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-                notifyAction(new SelectedTileMessage(getBuildTargetTile(boardMessage)));
+
+
+                notifySelectedTile(new SelectedTileMessage(getBuildTargetTile(boardMessage)));
+
                 //salva posizione scelta lastWorkerposition == scegli worker
 
                 /*
