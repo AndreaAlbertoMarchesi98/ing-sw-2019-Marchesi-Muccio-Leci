@@ -21,6 +21,10 @@ public class GameController {
     private Lobby lobby;
     private Server server;
 
+    private enum GameState {
+        WORKER_PLACEMENT,
+    }
+
     public GameController(Server server, VirtualView firstView) {
         views = new ArrayList<>();
         this.server = server;
@@ -69,6 +73,7 @@ public class GameController {
         game = new Game(lobby.getPlayers());
         notifyBoard();
     }
+
     private void endGame() {
         views.clear();
         lobby = null;
@@ -82,7 +87,7 @@ public class GameController {
         endGame();
     }
 
-    private void setUpNextTurn(Step currentStep){
+    private void setUpNextTurn(Step currentStep) {
         addEffectOnOpponents(currentStep);
 
 
@@ -90,35 +95,37 @@ public class GameController {
         game.nextTurn();
         game.setAction(ActionNames.SELECT_WORKER);
 
-        if(!hasPlayerMovesLeft()){
+        if (!hasPlayerMovesLeft()) {
             System.out.println("\nplayer has no moves left\n");
             views.remove(views.get(game.getPlayerIndex()));
             game.removePlayer(game.getActivePlayer());
             game.nextTurn();
 
-            if(game.getPlayers().size() == 1)
+            if (game.getPlayers().size() == 1)
                 notifyVictory(game.getPlayers().get(0).getPlayerNumber());
         }
 
         savedBoard = game.getBoardCopy();
     }
-    private boolean hasPlayerMovesLeft(){
-        for(Worker worker : game.getActivePlayer().getWorkers()){
+
+    private boolean hasPlayerMovesLeft() {
+        for (Worker worker : game.getActivePlayer().getWorkers()) {
             Step step = new Step(worker.getTile(), null, game.isPowerActive());
             boolean[][] validMoves = calculateValidMoves(step, game.getActivePlayer());
             for (int x = 0; x < Board.size; x++) {
                 for (int y = 0; y < Board.size; y++) {
-                    if(validMoves[x][y])
+                    if (validMoves[x][y])
                         return true;
                 }
             }
         }
         return false;
     }
-    private void addEffectOnOpponents(Step currentStep){
+
+    private void addEffectOnOpponents(Step currentStep) {
         Player player = game.getActivePlayer();
         Card card = player.getCard();
-        if(card.hasActiveDecorator(currentStep, player.getPreviousStep(), game.getBoard())) {
+        if (card.hasActiveDecorator(currentStep, player.getPreviousStep(), game.getBoard())) {
             System.out.println("applying decorator");
             for (Player opponent : game.getPlayers()) {
                 if (!opponent.equals(player)) {
@@ -152,67 +159,98 @@ public class GameController {
         }
     }
 
-    private void notifyDisconnection(int disconnectedPlayerNumber){
+    private void notifyDisconnection(int disconnectedPlayerNumber) {
         SDisconnectionMessage message = new SDisconnectionMessage(disconnectedPlayerNumber);
         for (VirtualView view : views) {
             view.updateDisconnection(message);
         }
     }
     //               view reactions
-    public void placeWorkers(PlacementMessage message) {
-        System.out.println("placing workers");
-        Vector2d worker1Position = message.firstWorker;
-        Vector2d worker2Position = message.secondWorker;
+
+    public void processSelection(SelectedTileMessage message) {
         Player player = game.getActivePlayer();
-        game.getBoard().getTile(worker1Position).setWorker(new Worker(player));
-        game.getBoard().getTile(worker2Position).setWorker(new Worker(player));
+        if (game.isPlayerTurn(player)) {
+            if(Board.isInsideBounds(message.tilePosition)) {
+                Tile selectedTile = game.getBoard().getTile(message.tilePosition);
 
-        game.nextTurn();
-
-        if (game.getPlayerIndex() == 0)
-            game.setAction(ActionNames.SELECT_WORKER);
-        else
-            game.setAction(ActionNames.PLACE_WORKERS);
-
-        notifyBoard();
+                if (game.getAction() == ActionNames.PLACE_WORKERS)
+                    placeWorker(selectedTile);
+                else if (game.getAction() == ActionNames.SELECT_WORKER)
+                    selectWorker(selectedTile);
+                else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD)
+                    performAction(selectedTile);
+            }
+        }
     }
 
+    private void placeWorker(Tile selectedTile) {
+        Player player = game.getActivePlayer();
+        if (selectedTile.getWorker() == null) {
+            System.out.println("placing worker");
+            selectedTile.setWorker(new Worker(player));
 
-    public void performAction(ActionMessage message, Player player) {
-        System.out.println("performing action\n");
+            game.nextTurn();
+
+            if (game.getPlayerIndex() == 0)
+                game.setAction(ActionNames.SELECT_WORKER);
+            else
+                game.setAction(ActionNames.PLACE_WORKERS);
+
+            notifyBoard();
+        }
+    }
+
+    private void selectWorker(Tile selectedTile) {
+        Player player = game.getActivePlayer();
+
+        if (selectedTile.getWorker() != null && !player.equals(selectedTile.getWorker().getOwner())) {
+            game.setSelectedTile(selectedTile);
+
+            updateValidTiles();
+
+            notifyBoard();
+        } else {
+            game.setAction(ActionNames.SELECT_WORKER);
+            game.setValidTiles(new boolean[Board.size][Board.size]);
+
+            notifyBoard();
+        }
+    }
+
+    private void performAction(Tile targetTile) {
+        System.out.println("build/move with worker\n");
+        Player player = game.getActivePlayer();
         Tile currentTile = game.getSelectedTile();
-        Tile targetTile = game.getBoard().getTile(message.targetTile);
         boolean isPowerActive = game.isPowerActive();
 
         Step currentStep = new Step(currentTile, targetTile, isPowerActive);
 
-        if (game.isPlayerTurn(player)) {
-            Step previousStep = player.getPreviousStep();
-            Card card = player.getCard();
+        Step previousStep = player.getPreviousStep();
+        Card card = player.getCard();
 
-            if (card.canMove(game.getStepNumber(), currentStep.isPowerActive()))
-                card.move(currentStep, previousStep, game.getBoard());
-            else if (card.canBuild(game.getStepNumber(), currentStep.isPowerActive()))
-                card.build(currentStep, previousStep, game.getBoard());
+        if (card.canMove(game.getStepNumber(), currentStep.isPowerActive()))
+            card.move(currentStep, previousStep, game.getBoard());
+        else if (card.canBuild(game.getStepNumber(), currentStep.isPowerActive()))
+            card.build(currentStep, previousStep, game.getBoard());
 
 
-            if (card.checkWin(currentStep, game.getBoard()))
-                notifyVictory(player.getPlayerNumber());
-            else {
-                game.nextStep(targetTile);
+        if (card.checkWin(currentStep, game.getBoard()))
+            notifyVictory(player.getPlayerNumber());
+        else {
+            game.nextStep(targetTile);
 
-                if(game.getStepNumber() == 2 && game.hasChoice())
-                    game.setPowerActive(true);
+            if (game.getStepNumber() == 2 && game.hasChoice())
+                game.setPowerActive(true);
 
-                if (isTurnFinished(card)) {
-                    setUpNextTurn(currentStep);
-                } else {
-                    game.setSelectedTile(targetTile);
-                    updateValidTiles();
-                }
-                notifyBoard();
+            if (isTurnFinished(card)) {
+                setUpNextTurn(currentStep);
+            } else {
+                game.setSelectedTile(targetTile);
+                updateValidTiles();
             }
+            notifyBoard();
         }
+
     }
 
     private boolean isTurnFinished(Card card) {
@@ -238,15 +276,6 @@ public class GameController {
             else
                 notifyLobby();
         }
-    }
-
-    public void selectWorker(SelectionMessage message) {
-        Tile selectedTile = game.getBoard().getTile(message.workerPosition);
-        game.setSelectedTile(selectedTile);
-
-        updateValidTiles();
-
-        notifyBoard();
     }
 
     public void setPowerActive(PowerActiveMessage message) {
@@ -322,7 +351,7 @@ public class GameController {
         return validTiles;
     }
 
-    public void undo(){
+    public void undo() {
         game.undo(savedBoard);
     }
 }

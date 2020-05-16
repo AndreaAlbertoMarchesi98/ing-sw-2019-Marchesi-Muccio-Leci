@@ -93,7 +93,7 @@ public class CLI implements View {
     }
 
     @Override
-    public void notifyAction(ActionMessage actionMessage) {
+    public void notifyAction(SelectedTileMessage actionMessage) {
 
         client.getNetworkHandler().sendMessage(actionMessage);
 
@@ -341,7 +341,7 @@ public class CLI implements View {
 
                 System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-                notifyAction(new ActionMessage(getMoveTargetTile(boardMessage)));
+                notifyAction(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
             }
 
 
@@ -354,7 +354,7 @@ public class CLI implements View {
 
                 System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-                notifyAction(new ActionMessage(getBuildTargetTile(boardMessage)));
+                notifyAction(new SelectedTileMessage(getBuildTargetTile(boardMessage)));
                 //salva posizione scelta lastWorkerposition == scegli worker
 
                 /*

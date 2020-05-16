@@ -22,11 +22,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="implemented multiple games advanced functionality">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/UndoMessage.java" afterDir="false" />
+    <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="implemented undo advanced functionality server side">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/ActionMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/SelectedTileMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/PlacementMessage.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/VirtualView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/VirtualView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/View.java" afterDir="false" />
     </list>
     <list id="a3cf9edb-428a-4e49-92c7-f90e306296d5" name="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" comment="" />
@@ -266,7 +269,9 @@
       <workItem from="1589286677889" duration="1322000" />
       <workItem from="1589362452708" duration="11614000" />
       <workItem from="1589529145818" duration="8146000" />
-      <workItem from="1589575845504" duration="6857000" />
+      <workItem from="1589575845504" duration="6909000" />
+      <workItem from="1589615978485" duration="1047000" />
+      <workItem from="1589618350277" duration="2868000" />
     </task>
     <task id="LOCAL-00001" summary="base card implementation, apollo implementation">
       <created>1585491765125</created>
@@ -366,7 +371,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589581132297</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="implemented undo advanced functionality server side">
+      <created>1589582744022</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1589582744022</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -411,7 +423,8 @@
     <MESSAGE value="added player elimination functionality. Improved Tile and worker classes" />
     <MESSAGE value="completet tests: DemeterTest, HephaestusTest, PrometheusTest" />
     <MESSAGE value="implemented multiple games advanced functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented multiple games advanced functionality" />
+    <MESSAGE value="implemented undo advanced functionality server side" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented undo advanced functionality server side" />
   </component>
   <component name="WindowStateProjectService">
     <state x="715" y="198" key="#App" timestamp="1585467630204">
@@ -441,13 +454,13 @@
     <state x="400" y="144" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680@0.0.1280.680" timestamp="1586001875251" />
     <state x="480" y="174" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586591567942" />
     <state x="649" y="228" width="673" height="433" key="#com.intellij.fileTypes.FileTypeChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588409390627" />
-    <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1589364051956">
+    <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1589621219144">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state x="446" y="49" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1588149745315" />
     <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586680329778" />
     <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1586623716458" />
-    <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1589364051956" />
+    <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1589621219144" />
     <state x="718" y="77" key="#com.intellij.ide.util.MemberChooser/76.0.1844.1080@76.0.1844.1080" timestamp="1587469318388" />
     <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1588410724935">
       <screen x="71" y="0" width="1849" height="1080" />
@@ -456,11 +469,12 @@
     <state x="566" y="272" width="403" height="287" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1586116746447" />
     <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/71.0.1849.1080@71.0.1849.1080" timestamp="1588410724935" />
     <state x="755" y="357" width="554" height="288" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/76.0.1844.1080@76.0.1844.1080" timestamp="1587485906730" />
-    <state x="646" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1587456020783">
-      <screen x="76" y="0" width="1844" height="1080" />
+    <state x="643" y="0" width="886" height="1036" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589616109998">
+      <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state x="396" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.680@0.0.1280.680" timestamp="1585392933170" />
     <state x="475" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585405698580" />
+    <state x="643" y="0" width="886" height="1036" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1589616109998" />
     <state x="646" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/76.0.1844.1080@76.0.1844.1080" timestamp="1587456020783" />
     <state x="416" y="131" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587917298334">
       <screen x="0" y="0" width="1280" height="680" />
@@ -487,37 +501,37 @@
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585403920958" />
     <state x="732" y="219" width="534" height="598" key="FileChooserDialogImpl/71.0.1849.1080@71.0.1849.1080" timestamp="1589099135372" />
-    <state width="1793" height="355" key="GridCell.Tab.0.bottom" timestamp="1589580840269">
+    <state width="1793" height="355" key="GridCell.Tab.0.bottom" timestamp="1589582762503">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="355" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1589580840269" />
+    <state width="1793" height="355" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1589582762503" />
     <state width="1801" height="246" key="GridCell.Tab.0.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="355" key="GridCell.Tab.0.center" timestamp="1589580840268">
+    <state width="1793" height="355" key="GridCell.Tab.0.center" timestamp="1589582762502">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="355" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1589580840268" />
+    <state width="1793" height="355" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1589582762502" />
     <state width="1801" height="246" key="GridCell.Tab.0.center/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="355" key="GridCell.Tab.0.left" timestamp="1589580840267">
+    <state width="1793" height="355" key="GridCell.Tab.0.left" timestamp="1589582762502">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="355" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1589580840267" />
+    <state width="1793" height="355" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1589582762502" />
     <state width="1801" height="246" key="GridCell.Tab.0.left/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="355" key="GridCell.Tab.0.right" timestamp="1589580840268">
+    <state width="1793" height="355" key="GridCell.Tab.0.right" timestamp="1589582762502">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="355" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1589580840268" />
+    <state width="1793" height="355" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1589582762502" />
     <state width="1801" height="246" key="GridCell.Tab.0.right/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1587916623866">
       <screen x="0" y="0" width="1536" height="824" />
@@ -568,12 +582,12 @@
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state x="843" y="456" width="299" height="169" key="VCS.ChangelistChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588283392788" />
-    <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2" timestamp="1589581139067">
+    <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2" timestamp="1589582752803">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1587925094936" />
     <state x="280" y="90" width="1020" height="734" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1586199593888" />
-    <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2/71.0.1849.1080@71.0.1849.1080" timestamp="1589581139067" />
+    <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2/71.0.1849.1080@71.0.1849.1080" timestamp="1589582752803" />
     <state x="412" y="118" key="Vcs.Push.Dialog.v2/76.0.1844.1080@76.0.1844.1080" timestamp="1585672189271" />
     <state x="337" y="165" key="com.intellij.ide.util.TipDialog" timestamp="1585982455202">
       <screen x="0" y="0" width="1280" height="680" />

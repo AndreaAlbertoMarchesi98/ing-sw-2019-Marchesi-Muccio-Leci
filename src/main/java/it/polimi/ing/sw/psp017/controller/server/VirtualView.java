@@ -2,21 +2,14 @@ package it.polimi.ing.sw.psp017.controller.server;
 
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
-import it.polimi.ing.sw.psp017.model.Board;
-import it.polimi.ing.sw.psp017.model.Card;
 import it.polimi.ing.sw.psp017.model.Player;
-import it.polimi.ing.sw.psp017.model.Step;
-import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.view.View;
-import java.util.concurrent.locks.Lock;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Queue;
 
 public class VirtualView implements Runnable, View {
 
@@ -62,33 +55,26 @@ public class VirtualView implements Runnable, View {
         while (true) {
             Object message = input.readObject();
 
-
             if (message instanceof AuthenticationMessage)
-                notifyNickname((AuthenticationMessage)message);
+                notifyNickname((AuthenticationMessage) message);
 
             else if (message instanceof GameSetUpMessage)
-                notifyGameSetUp((GameSetUpMessage)message);
+                notifyGameSetUp((GameSetUpMessage) message);
 
             else if (message instanceof CardMessage)
-                notifyCard((CardMessage)message);
+                notifyCard((CardMessage) message);
 
-            else if (message instanceof PlacementMessage)
-                notifyPlacement((PlacementMessage)message);
-
-            else if (message instanceof SelectionMessage)
-                notifySelection((SelectionMessage)message);
+            else if (message instanceof SelectedTileMessage)
+                notifySelectedTile((SelectedTileMessage) message);
 
             else if (message instanceof PowerActiveMessage)
                 notifyIsPowerActive((PowerActiveMessage) message);
-
-             else if (message instanceof ActionMessage)
-                notifyAction((ActionMessage)message);
 
             else if (message instanceof DisconnectionMessage)
                 notifyDisconnection();
 
             else if (message instanceof UndoMessage)
-                notifyUndo();
+                notifyUndo((UndoMessage) message);
 
 
         }
@@ -97,10 +83,10 @@ public class VirtualView implements Runnable, View {
     private void notifyDisconnection() {
         System.out.println("inside disxconnection");
         //synchronized (server.getWaitingViews()) {
-            if (gameController != null)
-                gameController.handleDisconnection(this);
-            else
-                server.handleDisconnection(this);
+        if (gameController != null)
+            gameController.handleDisconnection(this);
+        else
+            server.handleDisconnection(this);
         //}
     }
 
@@ -108,60 +94,63 @@ public class VirtualView implements Runnable, View {
         String nickname = authenticationMessage.nickname;
         server.tryAuthenticatingView(nickname, this);
     }
-    public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage){
-        gameController.createLobby(gameSetUpMessage,this);
+
+    public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage) {
+        gameController.createLobby(gameSetUpMessage, this);
     }
-    public void notifyCard(CardMessage cardMessage){
+
+    public void notifyCard(CardMessage cardMessage) {
         gameController.setPlayerCard(cardMessage, this);
     }
 
     @Override
-    public void notifyPlacement(PlacementMessage placementMessage) {
-        gameController.placeWorkers(placementMessage);
+    public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
+        gameController.processSelection(selectedTileMessage);
+    }
+
+    public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
+        gameController.setPowerActive(powerActiveMessage);
+    }
+
+    public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
+        //gameController.no(gameSetUpMessage);
     }
 
     @Override
-    public void notifySelection(SelectionMessage selectionMessage) {
-        gameController.selectWorker(selectionMessage);
-    }
-
-    public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage){
-        gameController.setPowerActive(powerActiveMessage);
-    }
-    public void notifyAction(ActionMessage actionMessage){
-        gameController.performAction(actionMessage, player);
-    }
-    public void notifyDisconnection(DisconnectionMessage disconnectionMessage){
-        //gameController.no(gameSetUpMessage);
-    }
-    public void notifyUndo(){
+    public void notifyUndo(UndoMessage undoMessage) {
         gameController.undo();
     }
 
     public void updateGameCreation() {
-        System.out.println(getPlayer().getNickname()+": update game creation");
-            sendMessage(new GameCreationMessage());
+        System.out.println(getPlayer().getNickname() + ": update game creation");
+        sendMessage(new GameCreationMessage());
     }
+
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
         sendMessage(invalidNameMessage);
     }
+
     public void updateLobby(LobbyMessage lobbyMessage) {
         sendMessage(lobbyMessage);
     }
+
     public void updateWaitingRoom(WaitMessage waitMessage) {
         sendMessage(waitMessage);
     }
+
     public void updateBoard(BoardMessage boardMessage) {
         sendMessage(boardMessage);
     }
+
     public void updateVictory(VictoryMessage victoryMessage) {
         sendMessage(victoryMessage);
     }
+
     public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
         sendMessage(disconnectionMessage);
     }
 
-    private void sendMessage(Object message){
+    private void sendMessage(Object message) {
         try {
             output.writeObject(message);
         } catch (IOException e) {

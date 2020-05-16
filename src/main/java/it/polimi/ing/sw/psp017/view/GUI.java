@@ -154,7 +154,7 @@ public class GUI implements View {
     }
 
     @Override
-    public void notifyAction(ActionMessage actionMessage) {
+    public void notifyAction(SelectedTileMessage actionMessage) {
 
     }
 

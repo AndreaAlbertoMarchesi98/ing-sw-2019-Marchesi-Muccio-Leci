@@ -12,12 +12,10 @@ public interface View {
     void notifyNickname(AuthenticationMessage authenticationMessage);
     void notifyGameSetUp(GameSetUpMessage gameSetUpMessage);
     void notifyCard(CardMessage cardMessage);
-    void notifyPlacement(PlacementMessage placementMessage);  //messaggio poszionamento pedine
-    void notifySelection(SelectionMessage selectionMessage);//!!!!questo diventa solo worker position
+    void notifySelectedTile(SelectedTileMessage selectedTileMessage);  //messaggio poszionamento pedine
     void notifyIsPowerActive(PowerActiveMessage powerActiveMessage);
-    void notifyAction(ActionMessage actionMessage);
     void notifyDisconnection(DisconnectionMessage disconnectionMessage);
-    //void notifyUndo(UndoMessage undoMessage);     TO IMPLEMENT!!!!!!!!!!!!!!!!!!!!
+    void notifyUndo(UndoMessage undoMessage);
 
 
     //get information from controller
