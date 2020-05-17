@@ -272,14 +272,6 @@ public class GUI implements View {
 
 
 
-                /*
-                mainFrame.dispose();
-                mainFrame = new WaitingRoom(waitMessage.queueLength);
-                mainFrame.setSize(dim.width/2,dim.height/2);
-                mainFrame.setVisible(true);
-                mainFrame.setLocationRelativeTo(null);
-                 */
-
             }
         });
     }
@@ -296,40 +288,19 @@ public class GUI implements View {
             isFirstBoardStep = false;
         }
 
-        //SwingUtilities.updateComponentTreeUI(mainFrame);
 
 
         board.updateBoard(boardMessage);
 
         if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
         {
-
+            board.setEnabled(true);
             System.out.println("ACTION MESSAGE : " + boardMessage.action);
 
             if(boardMessage.action == ActionNames.PLACE_WORKERS)
             {
-              //  Vector2d[] temp = new Vector2d[2];
-
 
                 System.out.println("workers placement");
-                //utente sceglie 2 posizioni
-              //  printBoard(boardMessage.board);
-
-
-                //salvo 2 posizioni
-                //for(int i = 0; i <2; i++)
-                //{
-                   // System.out.println("where do you want to position worker number "+(i+1)+"?");
-                   // temp[i] = getTargetTile(boardMessage.action,boardMessage.board);
-
-
-                    //da aggiungere : non far scegliere la stessa posizione oppure posizione occupata dagli avversari
-
-
-               // }
-
-             //   temp = setWorkerPosition(boardMessage);
-                //invio
                 board.getTargetTile(boardMessage);
                 System.out.println("messaggio inviato");
             }
@@ -337,26 +308,15 @@ public class GUI implements View {
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
             {
                 hasAskedPowerActive = false;
-                //scelta del worker da utilizzare
-
-                //da fare : obbligo di scegliere un worker
-
-                //Vector2d temp = selectWorker(boardMessage);
-                //notifySelection(new SelectionMessage(board.getTargetTile(boardMessage)));
+                System.out.println("select worker");
                 board.getTargetTile(boardMessage);
 
             }
             else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
             {
 
-                //attivare il potere
 
-                //activatePower = getChoice();  ?? serve
-
-                //si o no
-
-               notifyIsPowerActive(new PowerActiveMessage(false));
-
+                board.askPowerActive();
                 hasAskedPowerActive = true;
 
 
@@ -366,7 +326,6 @@ public class GUI implements View {
 
                 System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-               // notifyAction(new ActionMessage(board.getTargetTile(boardMessage)));
                 board.getTargetTile(boardMessage);
             }
 
@@ -374,19 +333,12 @@ public class GUI implements View {
             else if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
             {
 
-                //   boardMessage.action == ActionNames.MOVE ||
 
 
 
                 System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 board.getTargetTile(boardMessage);
 
-               // notifyAction(new ActionMessage(board.getTargetTile(boardMessage)));
-                //salva posizione scelta lastWorkerposition == scegli worker
-
-
-           //     printValidTiles(boardMessage.validTiles);
-            //    notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
 
 
             }
@@ -399,7 +351,9 @@ public class GUI implements View {
 
         }
 
-
+        else{
+            board.showIsYourTurn(false);
+        }
 
 
 
@@ -413,7 +367,14 @@ public class GUI implements View {
 
     @Override
     public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
-
+        Object[] option = {"Quit", "Restart"};
+        int n = JOptionPane.showOptionDialog(mainFrame, "One player is disconetted. Do you want start a new Game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+        if (n == JOptionPane.YES_OPTION) {
+            mainFrame.dispose();
+        }
+        else{
+            notifyNickname(new AuthenticationMessage(client.getNickname()));
+        }
     }
 
 

@@ -2,6 +2,7 @@ package it.polimi.ing.sw.psp017.controller.client;
 
 import it.polimi.ing.sw.psp017.view.CLI;
 import it.polimi.ing.sw.psp017.view.GUI;
+import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.IOException;
@@ -16,8 +17,14 @@ import java.util.Scanner;
         private View view;
         private int playerNumber = 0;
         private String nickname;
+        private GodName card;
 
-
+        public void setCard(GodName card){
+            this.card = card;
+        }
+        public GodName getCard(){
+            return card;
+        }
         public ArrayList<PlayersInfo> playersInfo;
 
 

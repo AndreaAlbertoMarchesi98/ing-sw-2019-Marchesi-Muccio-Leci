@@ -148,6 +148,7 @@ public class lobbyMessagePanel extends JPanel {
         {
             if(evt.getSource().equals(cards.get(i)))
             {
+                client.setCard(GodName.valueOf(cards.get(i).getText()));
                 client.getNetworkHandler().sendMessage(new CardMessage(GodName.valueOf(cards.get(i).getText())));
                 System.out.println(GodName.valueOf(cards.get(i).getText()));
             }

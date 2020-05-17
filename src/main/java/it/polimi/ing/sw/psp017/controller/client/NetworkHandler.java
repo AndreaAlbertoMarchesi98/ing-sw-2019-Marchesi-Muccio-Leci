@@ -106,7 +106,7 @@ public class NetworkHandler implements Runnable{
                     view.updateWaitingRoom((WaitMessage)message);
                 }
                 else if(message instanceof SDisconnectionMessage){
-                    System.out.println("disconnection message has arrived, it was player: " + ((SDisconnectionMessage) message).disconnectedPlayerNumber);
+                    view.updateDisconnection((SDisconnectionMessage)message);
                 }else if(message instanceof VictoryMessage){
                     view.updateVictory((VictoryMessage)message);
                 }
