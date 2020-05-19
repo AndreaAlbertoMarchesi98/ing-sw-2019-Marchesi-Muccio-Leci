@@ -3,10 +3,8 @@ package it.polimi.ing.sw.psp017.view;
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
-import it.polimi.ing.sw.psp017.model.Vector2d;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.Board;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.FirstPlayer;
-import it.polimi.ing.sw.psp017.view.GraphicUserInterface.WaitingRoom;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.lobbyMessagePanel;
 
 import javax.swing.*;
@@ -366,7 +364,7 @@ public class GUI implements View {
     }
 
     @Override
-    public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
+    public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
         Object[] option = {"Quit", "Restart"};
         int n = JOptionPane.showOptionDialog(mainFrame, "One player is disconetted. Do you want start a new Game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
         if (n == JOptionPane.YES_OPTION) {

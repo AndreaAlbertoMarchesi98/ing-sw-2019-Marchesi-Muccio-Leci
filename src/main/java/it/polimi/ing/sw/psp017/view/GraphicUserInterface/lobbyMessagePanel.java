@@ -93,7 +93,7 @@ public class lobbyMessagePanel extends JPanel {
         selectPanel_JPanel.setOpaque(false);
 
         playButton_JButton.setBackground(new java.awt.Color(0, 153, 153));
-        playButton_JButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\playButton.png")));
+        playButton_JButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/playButton.png")));
         playButton_JButton.setToolTipText("");
         playButton_JButton.setAutoscrolls(true);
         playButton_JButton.addActionListener(new java.awt.event.ActionListener() {

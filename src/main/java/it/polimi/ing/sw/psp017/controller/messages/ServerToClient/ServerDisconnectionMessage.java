@@ -2,10 +2,10 @@ package it.polimi.ing.sw.psp017.controller.messages.ServerToClient;
 
 import java.io.Serializable;
 
-public class SDisconnectionMessage implements Serializable {
+public class ServerDisconnectionMessage implements Serializable {
     public int disconnectedPlayerNumber;
 
-    public SDisconnectionMessage(int disconnectedPlayerNumber) {
+    public ServerDisconnectionMessage(int disconnectedPlayerNumber) {
         this.disconnectedPlayerNumber = disconnectedPlayerNumber;
     }
 }

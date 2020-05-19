@@ -1,13 +1,10 @@
 package it.polimi.ing.sw.psp017.controller.client;
 
-import it.polimi.ing.sw.psp017.controller.messages.*;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.controller.server.Server;
-import it.polimi.ing.sw.psp017.view.ValidTiles;
 import it.polimi.ing.sw.psp017.view.View;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
@@ -35,7 +32,7 @@ public class NetworkHandler implements Runnable{
         public void run() {
             while (true) {
                 try {
-                    networkHandler.sendMessage(new Ping());
+                    networkHandler.sendMessage(new ClientPing());
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -105,8 +102,8 @@ public class NetworkHandler implements Runnable{
                 else if(message instanceof WaitMessage){
                     view.updateWaitingRoom((WaitMessage)message);
                 }
-                else if(message instanceof SDisconnectionMessage){
-                    view.updateDisconnection((SDisconnectionMessage)message);
+                else if(message instanceof ServerDisconnectionMessage){
+                    view.updateDisconnection((ServerDisconnectionMessage)message);
                 }else if(message instanceof VictoryMessage){
                     view.updateVictory((VictoryMessage)message);
                 }

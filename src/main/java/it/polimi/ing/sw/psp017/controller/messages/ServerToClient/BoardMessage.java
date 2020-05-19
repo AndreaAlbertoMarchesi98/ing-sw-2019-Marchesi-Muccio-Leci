@@ -25,6 +25,13 @@ public class BoardMessage implements Serializable {
         }
         this.validTiles = game.getValidTiles();
         this.action = game.getAction();
+
+        for(int x = 0; x < Board.size; x++){
+            for(int y = 0; y < Board.size; y++){
+                if(this.board[x][y].dome)
+                    System.out.println(this.board[x][y].dome);
+            }
+        }
     }
 
     public class PrintableTile implements Serializable{

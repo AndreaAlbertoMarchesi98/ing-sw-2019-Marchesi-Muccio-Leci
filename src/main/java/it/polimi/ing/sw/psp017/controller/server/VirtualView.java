@@ -105,7 +105,7 @@ public class VirtualView implements Runnable, View {
 
     @Override
     public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
-        gameController.processSelection(selectedTileMessage);
+        gameController.processSelection(selectedTileMessage, player);
     }
 
     public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
@@ -146,7 +146,7 @@ public class VirtualView implements Runnable, View {
         sendMessage(victoryMessage);
     }
 
-    public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
+    public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
         sendMessage(disconnectionMessage);
     }
 

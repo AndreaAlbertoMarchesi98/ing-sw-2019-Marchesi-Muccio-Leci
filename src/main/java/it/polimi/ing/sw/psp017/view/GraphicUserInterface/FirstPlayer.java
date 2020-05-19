@@ -376,8 +376,7 @@ public class FirstPlayer extends JFrame {
         downCard_JLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
 
-
-        downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\APOLLO-1.png")));
+        downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("APOLLO/APOLLO-1.png")));
 
 
         downCard_JLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

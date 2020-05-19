@@ -383,7 +383,7 @@ public class CLI implements View {
     }
 
     @Override
-    public void updateDisconnection(SDisconnectionMessage disconnectionMessage) {
+    public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
 
     }
 

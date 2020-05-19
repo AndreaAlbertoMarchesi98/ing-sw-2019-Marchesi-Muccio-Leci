@@ -204,7 +204,7 @@ import java.awt.geom.RoundRectangle2D;
                             }
 
                             g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
-                            g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\quit.png")).getImage(), x - i.left, y - i.top, null);
+                            g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF/quit.png")).getImage(), x - i.left, y - i.top, null);
                             g2.fill(area);
                             g2.setPaint(BR);
                             g2.draw(area);
@@ -306,7 +306,7 @@ import java.awt.geom.RoundRectangle2D;
             powerActivated.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    powerActivated.setEnabled(false);
+                    //powerActivated.setEnabled(false);
                     client.getView().notifyIsPowerActive(new PowerActiveMessage(true));
 
                 }
@@ -496,15 +496,16 @@ import java.awt.geom.RoundRectangle2D;
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
                     labelArrayBuild[row][col].setIcon(null);
-                    // buttonGrid[row][col].setEnabled(true);
-                    if (boardMessage.board[row][col].level == 1) {
+                    if (boardMessage.board[row][col].dome == true) {
+                        labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
+                    }
+
+                    else if (boardMessage.board[row][col].level == 1) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level1.png")));
                     } else if (boardMessage.board[row][col].level == 2) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level2.png")));
                     } else if (boardMessage.board[row][col].level == 3) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level3.png")));
-                    } else if (boardMessage.board[row][col].dome == true) {
-                        labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
                     }
                 }
             }
@@ -512,11 +513,11 @@ import java.awt.geom.RoundRectangle2D;
                 for (int col = 0; col < 5; col++) {
                     labelArrayWorker[row][col].setIcon(null);
                     if (boardMessage.board[row][col].playerNumber == 1) {
-                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("player\\player1.png")));
+                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("player/player1.png")));
                     } else if (boardMessage.board[row][col].playerNumber == 2) {
-                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("player\\player2.png")));
+                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("player/player2.png")));
                     } else if (boardMessage.board[row][col].playerNumber == 3) {
-                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("player\\player3.png")));
+                        labelArrayWorker[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("player/player3.png")));
                     }
                 }
             }
