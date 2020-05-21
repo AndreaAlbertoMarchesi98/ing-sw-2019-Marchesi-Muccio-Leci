@@ -10,6 +10,7 @@ import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.model.Tile;
+import sun.awt.Mutex;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ public class GameController {
     private Board savedBoard;
     private Lobby lobby;
     private final Server server;
+    private Mutex undoMutex;
+    private boolean hasUndoArrived;
 
     private enum GameState {
         WORKER_PLACEMENT,
@@ -222,8 +225,19 @@ public class GameController {
         notifyBoard();
     }
 
+
     private void performAction(Tile targetTile, Player player) {
         if (game.getValidTiles()[targetTile.getPosition().x][targetTile.getPosition().y]) {
+            undoMutex.unlock();
+            long finishTime = System.nanoTime() + 5000;
+            while (System.nanoTime() < finishTime) {
+                if (hasUndoArrived) {
+                    undoMutex.lock();
+                    hasUndoArrived = false;
+                    return;
+                }
+            }
+            undoMutex.lock();
 
 
             System.out.println("build/move with worker");
@@ -371,6 +385,9 @@ public class GameController {
     }
 
     public synchronized void undo() {
+        undoMutex.lock();
+        hasUndoArrived = true;
         game.restore(savedBoard);
+        undoMutex.unlock();
     }
 }
