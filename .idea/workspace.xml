@@ -23,21 +23,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="implemented undo advanced functionality server side">
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/GameControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/ServerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/AthenaTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/CardFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/CardFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/NetworkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/NetworkHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/Ping.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ClientToServer/ClientPing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/BoardMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/BoardMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/PingS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/ServerPing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/SDisconnectionMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/ServerDisconnectionMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/VirtualView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/server/VirtualView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Worker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/FirstPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/FirstPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/lobbyMessagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/lobbyMessagePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Apollo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Apollo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Artemis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Artemis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Athena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Athena.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Atlas.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Atlas.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Demeter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Demeter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Hephaestus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Hephaestus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Minotaur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Minotaur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Pan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Pan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Prometheus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/deck/Prometheus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/BaseCardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/BaseCardTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/DemeterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/DemeterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/HephaestusTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/HephaestusTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/PanTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/PanTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/PrometheusTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/model/deck/PrometheusTest.java" afterDir="false" />
     </list>
     <list id="a3cf9edb-428a-4e49-92c7-f90e306296d5" name="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -96,11 +105,8 @@
       <recent name="it.polimi.ing.sw.psp017.controller" />
       <recent name="it.polimi.ing.sw.psp017.model.deck" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\java\it\polimi\ing\sw\psp017\controller\Client" />
-      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\server example" />
-      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\it\polimi\ing\sw\psp017" />
-      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="it.polimi.ing.sw.psp017.view" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="it.polimi.ing.sw.psp017.model.deck" />
@@ -110,11 +116,14 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="junit.framework.TestCase" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="it.polimi.ing.sw.psp017.view" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\java\it\polimi\ing\sw\psp017\controller\Client" />
+      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\server example" />
+      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\it\polimi\ing\sw\psp017" />
+      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.controller.client.Client" />
       <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
@@ -141,7 +150,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DemeterTest.demeterDoubleBuildTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in ing-sw-2019-Marchesi-Muccio-Leci" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AthenaTest.athenaEffectOffTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
       <extension name="coverage">
         <pattern>
@@ -150,14 +167,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ing.sw.psp017.model.deck" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.DemeterTest" />
-      <option name="METHOD_NAME" value="demeterDoubleBuildTest" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.AthenaTest" />
+      <option name="METHOD_NAME" value="athenaEffectOffTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="HephaestusTest.hephaestusDomeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AthenaTest.athenaEffectOnTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
       <extension name="coverage">
         <pattern>
@@ -166,24 +183,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ing.sw.psp017.model.deck" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.HephaestusTest" />
-      <option name="METHOD_NAME" value="hephaestusDomeTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HephaestusTest.hephaestusDoubleBuildTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ing.sw.psp017.model.deck.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ing.sw.psp017.model.deck" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.HephaestusTest" />
-      <option name="METHOD_NAME" value="hephaestusDoubleBuildTest" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.AthenaTest" />
+      <option name="METHOD_NAME" value="athenaEffectOnTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -192,17 +193,17 @@
     <list>
       <item itemvalue="Application.Server" />
       <item itemvalue="Application.Client" />
-      <item itemvalue="JUnit.DemeterTest.demeterDoubleBuildTest" />
-      <item itemvalue="JUnit.HephaestusTest.hephaestusDomeTest" />
-      <item itemvalue="JUnit.HephaestusTest.hephaestusDoubleBuildTest" />
+      <item itemvalue="JUnit.AthenaTest.athenaEffectOnTest" />
+      <item itemvalue="JUnit.AthenaTest.athenaEffectOffTest" />
+      <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci" />
+        <item itemvalue="JUnit.AthenaTest.athenaEffectOffTest" />
+        <item itemvalue="JUnit.AthenaTest.athenaEffectOnTest" />
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="JUnit.DemeterTest.demeterDoubleBuildTest" />
-        <item itemvalue="JUnit.HephaestusTest.hephaestusDoubleBuildTest" />
-        <item itemvalue="JUnit.HephaestusTest.hephaestusDomeTest" />
       </list>
     </recent_temporary>
   </component>
@@ -284,6 +285,7 @@
       <workItem from="1589705214700" duration="1576000" />
       <workItem from="1589706820113" duration="132000" />
       <workItem from="1589890429700" duration="10903000" />
+      <workItem from="1590093412532" duration="4504000" />
     </task>
     <task id="LOCAL-00001" summary="base card implementation, apollo implementation">
       <created>1585491765125</created>
@@ -474,12 +476,12 @@
     <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1586623716458" />
     <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1589621219144" />
     <state x="718" y="77" key="#com.intellij.ide.util.MemberChooser/76.0.1844.1080@76.0.1844.1080" timestamp="1587469318388" />
-    <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1588410724935">
+    <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1590096265087">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state x="566" y="272" width="433" height="287" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586172600116" />
     <state x="566" y="272" width="403" height="287" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1586116746447" />
-    <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/71.0.1849.1080@71.0.1849.1080" timestamp="1588410724935" />
+    <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/71.0.1849.1080@71.0.1849.1080" timestamp="1590096265087" />
     <state x="755" y="357" width="554" height="288" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/76.0.1844.1080@76.0.1844.1080" timestamp="1587485906730" />
     <state x="643" y="0" width="886" height="1036" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589616109998">
       <screen x="71" y="0" width="1849" height="1080" />
@@ -513,37 +515,37 @@
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585403920958" />
     <state x="732" y="219" width="534" height="598" key="FileChooserDialogImpl/71.0.1849.1080@71.0.1849.1080" timestamp="1589099135372" />
-    <state width="1793" height="352" key="GridCell.Tab.0.bottom" timestamp="1589901130800">
+    <state width="1793" height="352" key="GridCell.Tab.0.bottom" timestamp="1590097879941">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="352" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1589901130800" />
+    <state width="1793" height="352" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1590097879941" />
     <state width="1801" height="246" key="GridCell.Tab.0.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="352" key="GridCell.Tab.0.center" timestamp="1589901130799">
+    <state width="1793" height="352" key="GridCell.Tab.0.center" timestamp="1590097879941">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="352" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1589901130799" />
+    <state width="1793" height="352" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1590097879941" />
     <state width="1801" height="246" key="GridCell.Tab.0.center/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="352" key="GridCell.Tab.0.left" timestamp="1589901130799">
+    <state width="1793" height="352" key="GridCell.Tab.0.left" timestamp="1590097879940">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="352" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1589901130799" />
+    <state width="1793" height="352" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1590097879940" />
     <state width="1801" height="246" key="GridCell.Tab.0.left/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1793" height="352" key="GridCell.Tab.0.right" timestamp="1589901130799">
+    <state width="1793" height="352" key="GridCell.Tab.0.right" timestamp="1590097879941">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
     <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
     <state width="723" height="564" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1588230430574" />
-    <state width="1793" height="352" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1589901130799" />
+    <state width="1793" height="352" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1590097879941" />
     <state width="1801" height="246" key="GridCell.Tab.0.right/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
     <state width="1793" height="337" key="GridCell.Tab.1.bottom" timestamp="1589703853095">
       <screen x="71" y="0" width="1849" height="1080" />
@@ -656,6 +658,7 @@
     <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidBuilding.ic" NAME="AppTest.testIsValidBuilding Coverage Results" MODIFIED="1586166619568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci Coverage Results" MODIFIED="1590098011475" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidMove.ic" NAME="AppTest.testIsValidMove Coverage Results" MODIFIED="1586166605073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
     </SUITE>

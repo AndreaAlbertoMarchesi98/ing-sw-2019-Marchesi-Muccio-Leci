@@ -1,7 +1,9 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
-import it.polimi.ing.sw.psp017.model.*;
 
+import it.polimi.ing.sw.psp017.model.Board;
+import it.polimi.ing.sw.psp017.model.Step;
+import it.polimi.ing.sw.psp017.model.Tile;
 
 /**
  * Atlas' card
@@ -23,7 +25,6 @@ public class Atlas extends BaseCard{
      @Override
     public void build(Step currentStep, Step previousStep, Board board) {
         Tile targetTile = currentStep.getTargetTile();
-        targetTile.setLevel(targetTile.getLevel()+1);
         if(currentStep.isPowerActive()){
             targetTile.setDome(true);
         }

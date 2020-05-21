@@ -1,7 +1,6 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
 
-import it.polimi.ing.sw.psp017.BaseCardTest;
 import it.polimi.ing.sw.psp017.GameTest;
 import it.polimi.ing.sw.psp017.model.*;
 import org.junit.Before;

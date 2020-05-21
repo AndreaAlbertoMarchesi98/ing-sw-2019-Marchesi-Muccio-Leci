@@ -109,7 +109,7 @@ public class VirtualView implements Runnable, View {
     }
 
     public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
-        gameController.setPowerActive(powerActiveMessage);
+        gameController.setPowerActive();
     }
 
     public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
@@ -150,9 +150,10 @@ public class VirtualView implements Runnable, View {
         sendMessage(disconnectionMessage);
     }
 
-    private void sendMessage(Object message) {
+    private synchronized void sendMessage(Object message) {
         try {
             output.writeObject(message);
+            output.reset();
         } catch (IOException e) {
             e.printStackTrace();
         }
