@@ -137,7 +137,7 @@ public class CLI implements View {
         System.out.println("available cards : " +lobbyMessage.availableCards);
 
         System.out.println("dentro updateLobby");
-        client.playersInfo = new ArrayList<>();
+      //  client.playersInfo = new ArrayList<>();
         System.out.println("player number : " + client.getPlayerNumber() + " choosing player number : "+ lobbyMessage.choosingPlayerNumber);
         GodName choosenCard;
 
@@ -194,7 +194,7 @@ public class CLI implements View {
             for(int i = 0; i < client.playersInfo.size();i++)
             {
                 System.out.println("nickname :"+client.playersInfo.get(i).name+
-                                    "card name : "+ client.playersInfo.get(i).cards+
+                                    "card name : "+ client.playersInfo.get(i).card +
                                     "playerNumber  : "+ client.playersInfo.get(i).playerNumber);
             }
 

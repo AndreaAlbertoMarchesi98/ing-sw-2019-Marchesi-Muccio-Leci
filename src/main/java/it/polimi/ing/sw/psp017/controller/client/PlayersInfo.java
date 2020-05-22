@@ -7,12 +7,12 @@ public class PlayersInfo {
 
     public String name;
     public int playerNumber;
-    public GodName cards;
+    public GodName card;
 
     public PlayersInfo(String name, int playerNumber,GodName cards) {
         this.name = name;
         this.playerNumber = playerNumber;
-        this.cards = cards;
+        this.card = cards;
     }
 
 

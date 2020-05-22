@@ -21,6 +21,7 @@ import java.awt.geom.RoundRectangle2D;
 
     public class BoardGUI extends JFrame {
         private final Dimension dim;
+        public JButton[] playersButton;
 
         public BoardGUI(Client client) {
             dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -143,10 +144,7 @@ import java.awt.geom.RoundRectangle2D;
             };
             powerActivated = new JButton();
             lowerDXPanel = new JPanel();
-            opponentPlayerInfo3 = new JButton();
             SXPanel = new JPanel();
-            opponentPlayerInfo1 = new JButton();
-            opponentPlayerInfo2 = new JButton();
             southPanel = new JPanel();
             quitButton = new JButton() {
 
@@ -355,35 +353,50 @@ import java.awt.geom.RoundRectangle2D;
 
             lowerDXPanel.setOpaque(false);
 
-            opponentPlayerInfo3.setFont(new Font("Tahoma", 3, 24));
-            opponentPlayerInfo3.setForeground(new Color(255, 255, 255));
-            opponentPlayerInfo3.setName(client.getCard().toString());
-            opponentPlayerInfo3.setIcon(GodView.getCard(client.getCard()).getIcon());
-            opponentPlayerInfo3.setBackground(new Color(1f, 1f, 1f, .1f));
-            opponentPlayerInfo3.setBorderPainted(true);
+
             Border compound;
             Border raisedbevel = BorderFactory.createRaisedBevelBorder();
             Border loweredbevel = BorderFactory.createLoweredBevelBorder();
             compound = BorderFactory.createCompoundBorder(
                     raisedbevel, loweredbevel);
-            opponentPlayerInfo3.setBorder(compound);
+
+            playersButton = new JButton[client.playersInfo.size()];
+            for(int i = 0; i < client.playersInfo.size();i++)
+            {
+
+                playersButton[i] = new JButton();
+                playersButton[i].setFont(new Font("Tahoma", 3, 24));
+                playersButton[i].setForeground(new Color(255, 255, 255));
+                playersButton[i].setName(client.playersInfo.get(i).name);
+                playersButton[i].setIcon(GodView.getCard(client.playersInfo.get(i).card).getIcon());
+                playersButton[i].setBackground(new Color(1f, 1f, 1f, .1f));
+                playersButton[i].setBorderPainted(true);
+                playersButton[i].setBorder(compound);
+                System.out.println(client.getCard().toString());
+                playersButton[i].addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        infoPlayerAction(evt);
+                    }
+                });
 
 
+                playersButton[i].setToolTipText("Your Player");
+                playersButton[i].setHorizontalTextPosition(SwingConstants.CENTER);
+                playersButton[i].setOpaque(false);
 
-            System.out.println(client.getCard().toString());
-            opponentPlayerInfo3.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    infoPlayerAction(evt);
+                if(client.playersInfo.get(i).playerNumber == client.getPlayerNumber())
+                {
+                    DXPanel.add(playersButton[i]);
                 }
-            });
+                else
+                {
+                    SXPanel.add(playersButton[i]);
+                }
+            }
 
-            //opponentPlayerInfo3.setText(client.getCard().toString());
-              opponentPlayerInfo3.setToolTipText("Your Player");
-            opponentPlayerInfo3.setHorizontalTextPosition(SwingConstants.CENTER);
-            opponentPlayerInfo3.setOpaque(false);
 
 
-            DXPanel.add(opponentPlayerInfo3);
+
 
             kGradientPanel1.add(DXPanel, BorderLayout.EAST);
 
@@ -393,31 +406,7 @@ import java.awt.geom.RoundRectangle2D;
             // SXPanel.setSize(200,400);
             SXPanel.setLayout(new GridLayout(2, 1));
 
-            opponentPlayerInfo1.setFont(new Font("Tahoma", 3, 24));
-            opponentPlayerInfo1.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    infoPlayerAction(evt);
-                }
-            });
-            opponentPlayerInfo1.setForeground(new Color(255, 255, 255));
-            //   opponentPlayerInfo1.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/APOLLO.png"))); // NOI18N
-            opponentPlayerInfo1.setText("player 2");
-            opponentPlayerInfo1.setToolTipText("");
-            opponentPlayerInfo1.setHorizontalTextPosition(SwingConstants.CENTER);
-            opponentPlayerInfo1.setOpaque(false);
 
-            SXPanel.add(opponentPlayerInfo1);
-
-            opponentPlayerInfo2.setText("player 3");
-            opponentPlayerInfo2.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    infoPlayerAction(evt);
-                }
-            });
-            opponentPlayerInfo2.setFont(new Font("Tahoma", 3, 24));
-            opponentPlayerInfo2.setForeground(new Color(255, 255, 255));
-
-            SXPanel.add(opponentPlayerInfo2);
 
             kGradientPanel1.add(SXPanel, BorderLayout.WEST);
 
@@ -438,7 +427,7 @@ import java.awt.geom.RoundRectangle2D;
             southPanel.add(quitButton, BorderLayout.EAST);
             kGradientPanel1.add(southPanel, BorderLayout.SOUTH);
 
-            Dimension dimBoard = new Dimension(800, 650);
+            Dimension dimBoard = new Dimension((int) (dim.height*0.7), (int) (dim.height*0.7));
             JLayeredPane layer = new JLayeredPane();
             layer.setPreferredSize(dimBoard);
             layer.setSize(dimBoard);
@@ -447,14 +436,14 @@ import java.awt.geom.RoundRectangle2D;
             System.out.println(layer.getWidth());
             System.out.println(this.getWidth());
             System.out.println(SXPanel.getMinimumSize().width);
-            boardGamePanel.setBounds(SXPanel.getWidth() + dimBoard.width / 4, 0, dimBoard.width, dimBoard.height);
-            buttonPanel.setBounds(SXPanel.getWidth() + dimBoard.width / 4, 0, dimBoard.width, dimBoard.height);
-            workerPanel.setBounds(SXPanel.getWidth() + dimBoard.width / 4, 0, dimBoard.width, dimBoard.height);
-            tilePanel.setBounds(SXPanel.getWidth() + dimBoard.width / 4, 0, dimBoard.width, dimBoard.height);
-            layer.add(boardGamePanel, new Integer(0));
-            layer.add(buttonPanel, new Integer(3));
-            layer.add(workerPanel, new Integer(2));
-            layer.add(tilePanel, new Integer(1));
+            boardGamePanel.setBounds(SXPanel.getWidth() + dimBoard.width / 2, 0, dimBoard.width, dimBoard.height);
+            buttonPanel.setBounds(SXPanel.getWidth() + dimBoard.width / 2, 0, dimBoard.width, dimBoard.height);
+            workerPanel.setBounds(SXPanel.getWidth() + dimBoard.width / 2, 0, dimBoard.width, dimBoard.height);
+            tilePanel.setBounds(SXPanel.getWidth() + dimBoard.width / 2, 0, dimBoard.width, dimBoard.height);
+            layer.add(boardGamePanel, Integer.valueOf(0));
+            layer.add(buttonPanel, Integer.valueOf(3));
+            layer.add(workerPanel, Integer.valueOf(2));
+            layer.add(tilePanel, Integer.valueOf(1));
 
 
             this.setContentPane(kGradientPanel1);
@@ -517,7 +506,7 @@ import java.awt.geom.RoundRectangle2D;
             }
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
-                    if (boardMessage.validTiles[row][col] == true) {
+                    if (boardMessage.validTiles[row][col]) {
                         buttonGrid[row][col].setColorTiles(color);
                     }
                 }
@@ -529,10 +518,8 @@ import java.awt.geom.RoundRectangle2D;
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
                     labelArrayBuild[row][col].setIcon(null);
-                    if(boardMessage.board[row][col].dome == true){
-                        System.out.println("DOMEEEEEEEEEEEEEEEeee");
-                    }
-                    if (boardMessage.board[row][col].dome == true) {
+
+                    if (boardMessage.board[row][col].dome) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
                     } else if (boardMessage.board[row][col].level == 1) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level1.png")));
@@ -584,9 +571,6 @@ import java.awt.geom.RoundRectangle2D;
         private KGradientPanel kGradientPanel1;
         private JPanel lowerDXPanel;
         private JPanel northPanel_JPanel;
-        private JButton opponentPlayerInfo1;
-        private JButton opponentPlayerInfo2;
-        private JButton opponentPlayerInfo3;
         private JButton powerActivated;
         private JButton quitButton;
         private JPanel southPanel;
@@ -694,15 +678,21 @@ import java.awt.geom.RoundRectangle2D;
 
         }
         private void infoPlayerAction( ActionEvent evt){
-            if(evt.getSource()== opponentPlayerInfo3){
-                JDialog popUp = new JDialog(this);
-                JLabel playerDescription = new JLabel();
-                playerDescription.setIcon(GodView.getCard(GodName.valueOf(opponentPlayerInfo3.getName())).getIconDescription());
-                popUp.add(playerDescription);
-                popUp.setResizable(false);
-                popUp.setVisible(true);
-                popUp.setSize(507,278);
-                popUp.setLocationRelativeTo(null);
+
+            for(int i = 0; i < playersButton.length;i++)
+            {
+                if(evt.getSource()== playersButton[i]){
+                    JDialog popUp = new JDialog(this);
+                    JLabel playerDescription = new JLabel();
+                    playerDescription.setIcon(GodView.getCard(client.playersInfo.get(i).card).getIconDescription());
+                    playerDescription.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
+                    popUp.add(playerDescription);
+                    popUp.setResizable(false);
+                    popUp.setVisible(true);
+                    popUp.setSize(507,278);
+                    popUp.setLocationRelativeTo(null);
+                }
+
             }
 
         }

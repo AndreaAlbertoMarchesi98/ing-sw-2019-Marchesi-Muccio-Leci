@@ -94,7 +94,7 @@ public abstract class GodView {
 
         @Override
         public Icon getIconDescription() {
-            return new ImageIcon(GodView.class.getClassLoader().getResource("ATHENA-1.png"));
+            return new ImageIcon(GodView.class.getClassLoader().getResource("ATHENA/ATHENA-1.png"));
         }
 
         @Override

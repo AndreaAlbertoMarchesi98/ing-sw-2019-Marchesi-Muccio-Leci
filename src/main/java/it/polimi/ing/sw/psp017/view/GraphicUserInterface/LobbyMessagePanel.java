@@ -15,7 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
-public class lobbyMessagePanel extends JPanel {
+public class LobbyMessagePanel extends JPanel {
 
 
     private JPanel cardSelection_JPanel;
@@ -30,7 +30,7 @@ public class lobbyMessagePanel extends JPanel {
 
 
 
-    public lobbyMessagePanel(final LobbyMessage lobbyMessage, final Client client, final JFrame actualFrame) {
+    public LobbyMessagePanel(final LobbyMessage lobbyMessage, final Client client, final JFrame actualFrame) {
 
 
 
@@ -156,6 +156,7 @@ public class lobbyMessagePanel extends JPanel {
             }
         });
         selectPanel_JPanel.add(playButton_JButton);
+        playButton_JButton.setEnabled(false);
 
         GroupLayout kGradientPanel1Layout = new GroupLayout(kGradientPanel1);
         kGradientPanel1.setLayout(kGradientPanel1Layout);
@@ -200,6 +201,7 @@ public class lobbyMessagePanel extends JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt,ArrayList<JButton> cards) {
         // TODO add your handling code here:
+        playButton_JButton.setEnabled(true);
         for(int i = 0; i <cards.size();i++)
         {
             if(evt.getSource().equals(cards.get(i)))

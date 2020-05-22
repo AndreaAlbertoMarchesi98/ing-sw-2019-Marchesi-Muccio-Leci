@@ -10,7 +10,6 @@ import it.polimi.ing.sw.psp017.model.*;
 import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.model.Tile;
-import sun.awt.Mutex;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class GameController {
     private Board savedBoard;
     private Lobby lobby;
     private final Server server;
-    private Mutex undoMutex;
+    private boolean isUndoPossible;
     private boolean hasUndoArrived;
 
     private enum GameState {
@@ -53,7 +52,7 @@ public class GameController {
             return false;
     }
 
-    public synchronized void addPlayerToLobby(VirtualView view) {
+    public synchronized void addViewToLobby(VirtualView view) {
         System.out.println("addingPlayerToLobby");
         views.add(view);
         view.setGameController(this);
@@ -228,16 +227,17 @@ public class GameController {
 
     private void performAction(Tile targetTile, Player player) {
         if (game.getValidTiles()[targetTile.getPosition().x][targetTile.getPosition().y]) {
-            undoMutex.unlock();
+            hasUndoArrived = false;
+            isUndoPossible = true;
             long finishTime = System.nanoTime() + 5000;
             while (System.nanoTime() < finishTime) {
                 if (hasUndoArrived) {
-                    undoMutex.lock();
-                    hasUndoArrived = false;
+                    isUndoPossible = false;
+                    game.restore(savedBoard);
                     return;
                 }
             }
-            undoMutex.lock();
+            isUndoPossible = false;
 
 
             System.out.println("build/move with worker");
@@ -385,9 +385,7 @@ public class GameController {
     }
 
     public synchronized void undo() {
-        undoMutex.lock();
-        hasUndoArrived = true;
-        game.restore(savedBoard);
-        undoMutex.unlock();
+        if(isUndoPossible)
+            hasUndoArrived = true;
     }
 }

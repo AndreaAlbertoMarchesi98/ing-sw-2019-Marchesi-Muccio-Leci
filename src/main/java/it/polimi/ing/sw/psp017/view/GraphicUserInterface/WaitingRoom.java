@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-    public class WaitingRoom extends JFrame {
+    public class WaitingRoom extends JPanel {
         private JLabel infoLabel;
         private JLabel queueLabel;
         private JLabel boatBigLabel;
@@ -89,7 +89,7 @@ import java.awt.*;
 
             this.setLayout(new BorderLayout());
             this.add(kGradientPanel1, BorderLayout.CENTER);
-            this.setLocationRelativeTo(null);
+
 
         }
     }

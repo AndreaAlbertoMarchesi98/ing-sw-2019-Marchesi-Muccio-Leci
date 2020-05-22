@@ -76,6 +76,7 @@ public class KGradientPanel extends JPanel {
             setBg(false);
         }
 
+
     }
 
     @Override

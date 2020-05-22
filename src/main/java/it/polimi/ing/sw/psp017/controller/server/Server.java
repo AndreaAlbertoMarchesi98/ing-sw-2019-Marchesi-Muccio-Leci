@@ -71,7 +71,7 @@ public class Server implements Runnable {
                     gameControllers.add(waitingGameController);
                     return true;
                 } else if (waitingGameController.isLobbyJoinable()) {
-                    waitingGameController.addPlayerToLobby(popWaitingView());
+                    waitingGameController.addViewToLobby(popWaitingView());
                     if(!waitingGameController.isLobbyJoinable())
                         waitingGameController = null;
                     return true;
