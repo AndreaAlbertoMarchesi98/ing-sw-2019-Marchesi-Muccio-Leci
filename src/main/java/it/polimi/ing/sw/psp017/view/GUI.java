@@ -3,9 +3,7 @@ package it.polimi.ing.sw.psp017.view;
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
-import it.polimi.ing.sw.psp017.view.GraphicUserInterface.Board;
-import it.polimi.ing.sw.psp017.view.GraphicUserInterface.FirstPlayer;
-import it.polimi.ing.sw.psp017.view.GraphicUserInterface.lobbyMessagePanel;
+import it.polimi.ing.sw.psp017.view.GraphicUserInterface.*;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -15,14 +13,15 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class GUI implements View {
+    final public Dimension dim;
+
     private JFrame mainFrame;
     private Client client;
-    private Container container;
-    final public Dimension dim;
-    private JLabel backgroundScreen;  //contiene l'immagine di sfondo
+    private JLabel backgroundScreen;
     private JPanel mainPanel;
+
+    private BoardGUI board;
     private boolean isFirstBoardStep = true;
-    private Board board;
     private  boolean hasAskedPowerActive;
 
     public GUI(Client client) {
@@ -37,12 +36,6 @@ public class GUI implements View {
 
     }
 
-    private Image getImage(String path) {
-        ImageIcon i = new ImageIcon(path);
-        Image im = i.getImage();
-        im = im.getScaledInstance(mainFrame.getWidth(), mainFrame.getHeight(), Image.SCALE_SMOOTH);
-        return im;
-    }
 
     private void createFrame() {
         mainFrame = new JFrame();
@@ -52,7 +45,7 @@ public class GUI implements View {
         mainFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
         final Image im = new ImageIcon(getClass().getClassLoader().getResource("logo.png")).getImage().getScaledInstance(mainFrame.getWidth(),mainFrame.getHeight(),Image.SCALE_SMOOTH);
-        //mainFrame.setIconImage(im);
+        mainFrame.setIconImage(im);
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setLocationRelativeTo(null);
         mainPanel = new JPanel(new BorderLayout());
@@ -80,12 +73,29 @@ public class GUI implements View {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
+                final JFrame tempFrame = new JFrame("Santorini");
+                tempFrame.setIconImage(im);
+                tempFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                tempFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        Object[] option = {"Quit", "Cancel"};
+                        int n = JOptionPane.showOptionDialog(tempFrame, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+                        if (n == JOptionPane.YES_OPTION) {
+                            tempFrame.dispose();
+                        }
+
+                    }
+                });
                 setProgress(55);
                 progressBar.setValue(this.getProgress());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
+
+                //mainFrame.setSize(dim);
+
                 setProgress(99);
                 progressBar.setValue(this.getProgress());
                 try {
@@ -96,27 +106,13 @@ public class GUI implements View {
                     System.exit(0);
                 }
                 mainFrame.dispose();
-                mainFrame= new JFrame();
-                mainFrame.setIconImage(im);
-                mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                mainFrame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-                        if (n == JOptionPane.YES_OPTION) {
-                            mainFrame.dispose();
-                        }
-
-                    }
-                });
+                mainFrame= tempFrame;
                 mainFrame.setMinimumSize(new Dimension(500,700));
-                //mainFrame.setPreferredSize(dim);
                 mainFrame.pack();
-                mainFrame.setLocationRelativeTo(null); //centrato
+                mainFrame.setLocationRelativeTo(null);
                 mainFrame.setContentPane(mainPanel);
-                //mainFrame.setSize(dim);
                 mainFrame.setVisible(true);
+
                 return 1;
             }
         }.execute();
@@ -185,7 +181,7 @@ public class GUI implements View {
                     @Override
                     public void windowClosing(WindowEvent e) {
                         Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+                        int n = JOptionPane.showOptionDialog(mainFrame, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
                         if (n == JOptionPane.YES_OPTION) {
                             mainFrame.dispose();
                         }
@@ -200,18 +196,16 @@ public class GUI implements View {
 
     @Override
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
-        if (invalidNameMessage != null) { //hai già creato il frame e devi solo aggiornare il testo e ricevere un nuovo nick
+        if (invalidNameMessage != null) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     JOptionPane.showMessageDialog(mainFrame, "Invalid nickname. Please insert again", "invalid nickname", JOptionPane.ERROR_MESSAGE);
                     mainPanel.setVisible(false);
-                    mainPanel = new LoginPanel();
+                    mainPanel = new LoginPanel(client);
                     mainFrame.setContentPane(mainPanel);
                     mainFrame.pack();
                     mainFrame.setLocationRelativeTo(null);
-
-
 
                 }
             });
@@ -219,14 +213,9 @@ public class GUI implements View {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-
-
-
-                    mainPanel = new LoginPanel();
+                    mainPanel = new LoginPanel(client);
                     mainFrame.setContentPane(mainPanel);
-                    mainFrame.pack();
                     mainFrame.setLocationRelativeTo(null);
-
                 }
             });
 
@@ -243,8 +232,7 @@ public class GUI implements View {
 
 
                 mainPanel.setVisible(false);
-                mainPanel = new lobbyMessagePanel(lobbyMessage,client);
-               // mainPanel = new lobbyMessagePanel();
+                mainPanel = new lobbyMessagePanel(lobbyMessage,client, mainFrame);
                 mainFrame.setContentPane(mainPanel);
                 mainFrame.pack();
                 mainPanel.setVisible(true);
@@ -275,84 +263,40 @@ public class GUI implements View {
     }
 
     @Override
-    public void updateBoard(BoardMessage boardMessage) {
+    public void updateBoard(final BoardMessage boardMessage) {
 
         if(isFirstBoardStep)
         {
-            //creato frame della board
-            System.out.println("boardddddddddddddddddddddddddddddddddddddddd");
-            mainFrame.dispose();
-            board = new Board(client);
-            isFirstBoardStep = false;
+            SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                mainFrame.dispose();
+                board = new BoardGUI(client);
+                board.updateBoard(boardMessage);
+                isFirstBoardStep = false;
+            }
+        });
+
         }
 
 
-
-        board.updateBoard(boardMessage);
-
-        if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
-        {
-            board.setEnabled(true);
-            System.out.println("ACTION MESSAGE : " + boardMessage.action);
-
-            if(boardMessage.action == ActionNames.PLACE_WORKERS)
-            {
-
-                System.out.println("workers placement");
-                board.getTargetTile(boardMessage);
-                System.out.println("messaggio inviato");
-            }
-
-            else if(boardMessage.action == ActionNames.SELECT_WORKER)
-            {
-                hasAskedPowerActive = false;
-                System.out.println("select worker");
-                board.getTargetTile(boardMessage);
-
-            }
-            else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
-            {
-
-
-                board.askPowerActive();
-                hasAskedPowerActive = true;
-
-
-            }
-            else if(boardMessage.action == ActionNames.MOVE)
-            {
-
-                System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-                board.getTargetTile(boardMessage);
-            }
-
-
-            else if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
-            {
-
-
-
-
-                System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                board.getTargetTile(boardMessage);
-
-
-
-            }
-            else{
-                System.out.println("invalid action NONE");
-            }
-
-
-
-
-        }
-
-        else{
-            board.showIsYourTurn(false);
-        }
-
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    board.updateBoard(boardMessage);
+                    if (boardMessage.activePlayerNumber == client.getPlayerNumber()) {
+                        board.showAction(boardMessage);
+                        if (boardMessage.hasChoice) //possibilita di attivare il potere
+                        {
+                            board.askPowerActive();
+                            // hasAskedPowerActive = true;
+                        }
+                    }
+                    else {
+                        board.showIsYourTurn(false);
+                    }
+                }
+            });
 
 
 
@@ -369,11 +313,13 @@ public class GUI implements View {
         int n = JOptionPane.showOptionDialog(mainFrame, "One player is disconetted. Do you want start a new Game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
         if (n == JOptionPane.YES_OPTION) {
             mainFrame.dispose();
+            System.exit(0);
         }
         else{
             notifyNickname(new AuthenticationMessage(client.getNickname()));
         }
     }
+
 
 
     class waitingRoom extends JPanel {
@@ -464,168 +410,7 @@ public class GUI implements View {
     }
 
 
-    class LoginPanel extends JPanel {
-        private JPanel bottomPanel;
-        private JButton cliButton;
-        private JLabel infoLabel;
-        private JPanel inputPanel;
-        private KGradientPanel kGradientPanel;
-        private JLabel logoLabel;
-        private JButton nickButton;
-        private JTextField nicknameField;
 
-        public LoginPanel(){
-            initComponents();
-        }
-
-        private void initComponents() {
-            this.setMinimumSize(new Dimension(800,1000));
-            mainPanel.setMinimumSize(this.getSize());
-            mainFrame.pack();
-
-            kGradientPanel = new KGradientPanel();
-            logoLabel = new JLabel();
-            infoLabel = new JLabel();
-            inputPanel = new JPanel();
-            nicknameField = new JTextField();
-            nickButton = new JButton();
-            bottomPanel = new JPanel();
-            cliButton = new JButton();
-
-            GroupLayout kGradientPanel1Layout = new GroupLayout(kGradientPanel);
-
-            kGradientPanel.setkEndColor(new Color(255, 255, 153));
-            kGradientPanel.setkStartColor(new Color(0, 204, 102));
-            kGradientPanel.setLayout(new GridLayout(4, 1));
-
-            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-            logoLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("logonome.png")));
-            logoLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-            kGradientPanel.add(logoLabel);
-
-            infoLabel.setFont(new Font("Tahoma", 1, 48));
-            infoLabel.setForeground(Color.white);
-            infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            infoLabel.setText("Insert your nickname");
-            kGradientPanel.add(infoLabel);
-
-            inputPanel.setOpaque(false);
-
-            nicknameField.setFont(new Font("Tahoma", 0, 36));
-            nicknameField.setForeground(Color.DARK_GRAY);
-            nicknameField.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
-            nicknameField.setPreferredSize(new Dimension(300, 70));
-            nicknameField.setText("");
-            nicknameField.addKeyListener(new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_ENTER && !nicknameField.getText().equals("")) {
-                        nicknameField.setEnabled(false);
-                        client.setNickname(nicknameField.getText());
-                        nickButton.setEnabled(false);
-                        cliButton.setEnabled(false);
-
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                invalidNick();
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                }
-            });
-
-            inputPanel.add(nicknameField);
-
-            nickButton.setBackground(new Color(0, 153, 0));
-            nickButton.setFont(new Font("Tahoma", 1, 24));
-            nickButton.setForeground(new Color(0, 102, 51));
-            nickButton.setText("Ok");
-            nickButton.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
-            nickButton.setOpaque(false);
-            nickButton.setPreferredSize(new Dimension(70, 70));
-
-
-            nickButton.addMouseListener(new MouseAdapter() {
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if(!nicknameField.getText().equals("")){
-                        nicknameField.setEnabled(false);
-                        client.setNickname(nicknameField.getText());
-                        nickButton.setEnabled(false);
-                        cliButton.setEnabled(false);
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                invalidNick();
-                            }
-                        });
-                    }
-
-                }
-            });
-
-            inputPanel.add(nickButton);
-
-            kGradientPanel.add(inputPanel);
-
-            bottomPanel.setOpaque(false);
-            bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 200, 0));
-
-            cliButton.setBackground(new Color(204, 255, 204));
-            cliButton.setFont(new Font("Tahoma", 0, 14));
-            cliButton.setForeground(new Color(204, 102, 0));
-            cliButton.setText("Continue with CLI");
-            cliButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-            cliButton.setOpaque(false);
-            cliButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    Object[] option = {"Confirm", "Cancel"};
-                    int n = JOptionPane.showOptionDialog(mainFrame, "Are you sure you want to switch to the command line? Gui will be closed.", "Close Graphic User Interface", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);
-                    ;
-                    if (n == JOptionPane.YES_OPTION) {
-                        mainFrame.setVisible(false);
-                        System.out.println("Continue here...");
-                        client.setView(new CLI(client));
-                        client.getView().updateLoginScreen(null);
-                    }
-
-                }
-            });
-
-            bottomPanel.add(cliButton);
-
-            kGradientPanel.add(bottomPanel);
-            this.setLayout(new BorderLayout());
-            this.add(kGradientPanel, BorderLayout.CENTER);
-
-
-
-        }
-
-        private void invalidNick(){
-            nickButton.setText("");
-            infoLabel.setText("Waiting for Server response...");
-            nickButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("ajax-loader.gif")));
-            client.getNetworkHandler().sendMessage(new AuthenticationMessage(nicknameField.getText()));
-            mainPanel.revalidate();
-            mainPanel.repaint();
-            mainFrame.repaint();
-        }
-
-
-    }
 
 
 

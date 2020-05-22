@@ -10,16 +10,19 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.server.Lobby;
 import it.polimi.ing.sw.psp017.model.Vector2d;
+import it.polimi.ing.sw.psp017.view.GodName;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 
-    public class Board extends JFrame {
+    public class BoardGUI extends JFrame {
         private final Dimension dim;
 
-        public Board(Client client) {
+        public BoardGUI(Client client) {
             dim = Toolkit.getDefaultToolkit().getScreenSize();
             this.client = client;
             initComponents();
@@ -30,7 +33,7 @@ import java.awt.geom.RoundRectangle2D;
         private void initComponents() {
 
             buttonGroup = new ButtonGroup();
-
+            this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("logo.png")).getImage());
 
             kGradientPanel1 = new KGradientPanel();
             kGradientPanel1.setkEndColor(new Color(255, 255, 153));
@@ -225,7 +228,18 @@ import java.awt.geom.RoundRectangle2D;
 
             };
 
-            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            this.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    Object[] option = {"Quit", "Cancel"};
+                    int n = JOptionPane.showOptionDialog(e.getComponent(), "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+                    if (n == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
+
+                }
+            });
             setMinimumSize(new Dimension(1600, 900));
             this.setExtendedState(MAXIMIZED_BOTH);
             setMaximumSize(new Dimension(1600, 900));
@@ -243,7 +257,7 @@ import java.awt.geom.RoundRectangle2D;
             messageLabel_NorthPanel.setForeground(new Color(255, 255, 255));
             messageLabel_NorthPanel.setHorizontalAlignment(SwingConstants.CENTER);
             messageLabel_NorthPanel.setVerticalAlignment(SwingConstants.BOTTOM);
-            messageLabel_NorthPanel.setText("Move / Build   ");
+            messageLabel_NorthPanel.setText(" Loading... ");
             northPanel_JPanel.add(messageLabel_NorthPanel);
             kGradientPanel1.add(northPanel_JPanel, BorderLayout.NORTH);
 
@@ -303,6 +317,8 @@ import java.awt.geom.RoundRectangle2D;
             //undo.setSelected(true);
             upperDXPanel.add(undo);
             powerActivated.setText("Power Active");
+            powerActivated.setBackground(new Color(.1f,.1f,.1f,.1f));
+            powerActivated.setBorder(BorderFactory.createLoweredBevelBorder());
             powerActivated.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -331,7 +347,7 @@ import java.awt.geom.RoundRectangle2D;
 
                 }
             });
-            //  powerActivated.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/heropower_active.png")));
+            powerActivated.setIcon(GodView.getCard(client.getCard()).getIconPower());
 
             upperDXPanel.add(powerActivated);
 
@@ -341,10 +357,28 @@ import java.awt.geom.RoundRectangle2D;
 
             opponentPlayerInfo3.setFont(new Font("Tahoma", 3, 24));
             opponentPlayerInfo3.setForeground(new Color(255, 255, 255));
-            //   opponentPlayerInfo3.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/podium-characters-Apolo.png"))); // NOI18N
+            opponentPlayerInfo3.setName(client.getCard().toString());
+            opponentPlayerInfo3.setIcon(GodView.getCard(client.getCard()).getIcon());
+            opponentPlayerInfo3.setBackground(new Color(1f, 1f, 1f, .1f));
+            opponentPlayerInfo3.setBorderPainted(true);
+            Border compound;
+            Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+            Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+            compound = BorderFactory.createCompoundBorder(
+                    raisedbevel, loweredbevel);
+            opponentPlayerInfo3.setBorder(compound);
+
+
+
             System.out.println(client.getCard().toString());
-            opponentPlayerInfo3.setText(client.getCard().toString());
-            //  opponentPlayerInfo3.setToolTipText("");
+            opponentPlayerInfo3.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    infoPlayerAction(evt);
+                }
+            });
+
+            //opponentPlayerInfo3.setText(client.getCard().toString());
+              opponentPlayerInfo3.setToolTipText("Your Player");
             opponentPlayerInfo3.setHorizontalTextPosition(SwingConstants.CENTER);
             opponentPlayerInfo3.setOpaque(false);
 
@@ -360,8 +394,13 @@ import java.awt.geom.RoundRectangle2D;
             SXPanel.setLayout(new GridLayout(2, 1));
 
             opponentPlayerInfo1.setFont(new Font("Tahoma", 3, 24));
+            opponentPlayerInfo1.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    infoPlayerAction(evt);
+                }
+            });
             opponentPlayerInfo1.setForeground(new Color(255, 255, 255));
-            //   opponentPlayerInfo1.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/podium-characters-Apolo.png"))); // NOI18N
+            //   opponentPlayerInfo1.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/APOLLO.png"))); // NOI18N
             opponentPlayerInfo1.setText("player 2");
             opponentPlayerInfo1.setToolTipText("");
             opponentPlayerInfo1.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -370,6 +409,11 @@ import java.awt.geom.RoundRectangle2D;
             SXPanel.add(opponentPlayerInfo1);
 
             opponentPlayerInfo2.setText("player 3");
+            opponentPlayerInfo2.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    infoPlayerAction(evt);
+                }
+            });
             opponentPlayerInfo2.setFont(new Font("Tahoma", 3, 24));
             opponentPlayerInfo2.setForeground(new Color(255, 255, 255));
 
@@ -380,7 +424,8 @@ import java.awt.geom.RoundRectangle2D;
             southPanel.setOpaque(false);
             southPanel.setPreferredSize(new Dimension(1120, 100));
             quitButton.setToolTipText("QUIT");
-            quitButton.setOpaque(false);
+            quitButton.setVisible(true);
+            // quitButton.setOpaque(false);
             quitButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     quitButtonActionPerformed(evt);
@@ -428,22 +473,13 @@ import java.awt.geom.RoundRectangle2D;
             if (n == JOptionPane.YES_OPTION) {
                 this.dispose();
             }
+
         }
 
 
-        public void x() {
-            messageLabel_NorthPanel.setText("move");
-        }
-
-        public void setWorkerPosition() {
-            messageLabel_NorthPanel.setText("place your workes");
-            //SwingUtilities.invokeLater();
-        }
-
-        public void getTargetTile(BoardMessage boardMessage) {
+        public void showAction(BoardMessage boardMessage) {
             enabledBoard(true);
             switch (boardMessage.action) {
-
                 case PLACE_WORKERS:
                     messageLabel_NorthPanel.setText("PLACE WORKER");
                     break;
@@ -469,38 +505,36 @@ import java.awt.geom.RoundRectangle2D;
             else messageLabel_NorthPanel.setText("Your turn");
         }
 
-        private Vector2d getSelectedButton() {
-            for (int row = 0; row < 5; row++) {
-                for (int col = 0; col < 5; col++) {
-                    if (buttonGrid[row][col].isSelected())
-                        return new Vector2d(row, col);
-                    System.out.println("cella selezionata  " + row + col);
-                }
-            }
-            return null;
-
-        }
 
         public void showValidTile(BoardMessage boardMessage) {
+            Color color = Color.red;
+            switch (boardMessage.action) {
+                case MOVE:
+                    color = Color.BLUE;
+                    break;
+                case BUILD:
+                    color = Color.ORANGE;
+            }
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
                     if (boardMessage.validTiles[row][col] == true) {
-                        buttonGrid[row][col].updateValidTiles();
+                        buttonGrid[row][col].setColorTiles(color);
                     }
                 }
             }
         }
 
-        public void updateBoard(BoardMessage boardMessage) {
+        public void updateBoard(final BoardMessage boardMessage) {
 
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
                     labelArrayBuild[row][col].setIcon(null);
+                    if(boardMessage.board[row][col].dome == true){
+                        System.out.println("DOMEEEEEEEEEEEEEEEeee");
+                    }
                     if (boardMessage.board[row][col].dome == true) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
-                    }
-
-                    else if (boardMessage.board[row][col].level == 1) {
+                    } else if (boardMessage.board[row][col].level == 1) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level1.png")));
                     } else if (boardMessage.board[row][col].level == 2) {
                         labelArrayBuild[row][col].setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level2.png")));
@@ -523,7 +557,7 @@ import java.awt.geom.RoundRectangle2D;
             }
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 5; col++) {
-                    buttonGrid[row][col].setColorTiles(Color.WHITE);
+                    buttonGrid[row][col].setColorTiles(new Color(1f, 1f, 1f, .1f));
                 }
             }
 
@@ -533,8 +567,13 @@ import java.awt.geom.RoundRectangle2D;
             }
             powerActivated.setEnabled(false);
             powerActivated.setBackground(null);
-
+            this.revalidate();
+            this.repaint();
         }
+
+
+
+
 
 
         private JPanel DXPanel;
@@ -561,10 +600,7 @@ import java.awt.geom.RoundRectangle2D;
         private JLabel[][] labelArrayBuild;
 
         class AbstractButton extends JButton {
-            public void updateValidTiles() {
-                this.setIcon(new TranslucentButtonIcon(this, Color.red));
-                this.repaint();
-            }
+
 
             public void setColorTiles(Color color) {
                 this.setIcon(new TranslucentButtonIcon(this, color));
@@ -585,7 +621,7 @@ import java.awt.geom.RoundRectangle2D;
                 setFocusPainted(false);
                 setOpaque(false);
                 setForeground(Color.WHITE);
-                setIcon(new TranslucentButtonIcon(this, Color.WHITE));
+                setIcon(new TranslucentButtonIcon(this,  new Color(1f, 1f, 1f, .1f)));
 
             }
 
@@ -626,9 +662,14 @@ import java.awt.geom.RoundRectangle2D;
                         if (m.isPressed()) {
                             ssc = SB;
                             bgc = ST;
-                        } else {
+                        } else if(m.isRollover()) {
                             ssc = ST;
                             bgc = SB;
+                        } else{
+                            ssc = SB;
+                            bgc = ST;
+                           // ssc =  new Color(1f, 1f, 1f, .1f);
+                           // bgc =  new Color(1f, 1f, 1f, .1f);
                         }
 
                         g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
@@ -652,6 +693,21 @@ import java.awt.geom.RoundRectangle2D;
             }
 
         }
+        private void infoPlayerAction( ActionEvent evt){
+            if(evt.getSource()== opponentPlayerInfo3){
+                JDialog popUp = new JDialog(this);
+                JLabel playerDescription = new JLabel();
+                playerDescription.setIcon(GodView.getCard(GodName.valueOf(opponentPlayerInfo3.getName())).getIconDescription());
+                popUp.add(playerDescription);
+                popUp.setResizable(false);
+                popUp.setVisible(true);
+                popUp.setSize(507,278);
+                popUp.setLocationRelativeTo(null);
+            }
+
+        }
+
+
 
         private class buttonListeners implements MouseListener {
             @Override
@@ -663,7 +719,6 @@ import java.awt.geom.RoundRectangle2D;
                             System.out.println("Selected row and column: " + row + " " + col);
                             enabledBoard(false);
                             client.getNetworkHandler().sendMessage(new SelectedTileMessage(new Vector2d(row, col)));
-
                         }
                     }
                 }

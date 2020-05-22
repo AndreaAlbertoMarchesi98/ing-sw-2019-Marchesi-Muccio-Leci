@@ -3,14 +3,12 @@ package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.GameSetUpMessage;
-import it.polimi.ing.sw.psp017.view.GUI;
 import it.polimi.ing.sw.psp017.view.GodName;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FirstPlayer extends JFrame {
 
@@ -370,8 +368,9 @@ public class FirstPlayer extends JFrame {
         rightPanel_JPanel.setLayout(new java.awt.GridLayout(1, 2,1,0));
 
         upperCardJLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("APOLLO/podium-characters-Apolo.png")));
+        upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("APOLLO/APOLLO.png")));
         rightPanel_JPanel.add(upperCardJLabel);
+        upperCardJLabel.setIcon(GodView.getCard(GodName.APOLLO).getIcon());
 
         downCard_JLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -534,7 +533,7 @@ public class FirstPlayer extends JFrame {
 
 
     private void APOLLO_JButtonActionPerformed(ActionEvent evt) {
-        upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\podium-characters-Apolo.png")));
+        upperCardJLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\APOLLO.png")));
         downCard_JLabel.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("\\APOLLO\\APOLLO-1.png")));
 
 

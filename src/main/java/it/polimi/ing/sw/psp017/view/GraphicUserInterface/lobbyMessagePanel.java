@@ -1,6 +1,7 @@
 package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
 
+
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.CardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
@@ -8,15 +9,16 @@ import it.polimi.ing.sw.psp017.view.GodName;
 
 import javax.swing.*;
 import java.awt.*;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 public class lobbyMessagePanel extends JPanel {
 
 
     private JPanel cardSelection_JPanel;
-    private JButton jButton1;
-    private JButton jButton2;
-    private JButton jButton3;
     private JLabel jLabel1;
     private KGradientPanel kGradientPanel1;
     private JButton playButton_JButton;
@@ -25,7 +27,10 @@ public class lobbyMessagePanel extends JPanel {
     private Client client;
 
 
-    public lobbyMessagePanel(final LobbyMessage lobbyMessage,Client client) {
+
+
+
+    public lobbyMessagePanel(final LobbyMessage lobbyMessage, final Client client, final JFrame actualFrame) {
 
 
 
@@ -34,12 +39,8 @@ public class lobbyMessagePanel extends JPanel {
         selectCardPanel_JPanel = new JPanel();
         jLabel1 = new JLabel();
         cardSelection_JPanel = new JPanel();
-        jButton1 = new JButton();
-        jButton2 = new JButton();
-        jButton3 = new JButton();
 
-
-        final ArrayList<JButton> cardsButton = new ArrayList<>();
+        final ArrayList<JToggleButton> cardsButton = new ArrayList<>();
         selectPanel_JPanel = new JPanel();
         playButton_JButton = new JButton();
 
@@ -59,18 +60,14 @@ public class lobbyMessagePanel extends JPanel {
 
         for(int i = 0; i < lobbyMessage.availableCards.size();i++)
         {
-            JButton temp = new JButton(lobbyMessage.availableCards.get(i).toString());
-           // temp.setIcon(new ImageIcon(getClass().getClassLoader().getResource("APOLLO\\APOLLO-1.png")));
-            temp.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton2ActionPerformed(evt,cardsButton);
-                }
-            });
-            if(client.getPlayerNumber() == 0)
-            {
-                System.out.println("memorizzo playerNumber");
-                client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname())+1);
-                System.out.println("playerNumber settato : "+client.getPlayerNumber());
+            JToggleButton temp = new JToggleButton();
+            temp.setContentAreaFilled(false);
+            temp.setName(lobbyMessage.availableCards.get(i).toString());
+            temp.setIcon(GodView.getCard(lobbyMessage.availableCards.get(i)).getIcon());
+            temp.setBackground(null);
+
+            if (client.getPlayerNumber() == 0) {
+                client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname()) + 1);
 
             }
             if(client.getPlayerNumber() != lobbyMessage.choosingPlayerNumber)
@@ -79,14 +76,71 @@ public class lobbyMessagePanel extends JPanel {
             }
             else
             {
-                jLabel1.setText("is your Turn!!!");
+                temp.setEnabled(true);
+                jLabel1.setText("Choose your card");
+                temp.setContentAreaFilled(true);
+                temp.setBackground(new Color(200,80,254));
+                //temp.setBackground(new Color(.1f,.1f,.1f, .1f));
             }
             cardsButton.add(temp);
             cardSelection_JPanel.add(temp);
 
 
         }
+        ButtonGroup group = new ButtonGroup();
 
+        for(final JToggleButton toggleButton : cardsButton){
+            group.add(toggleButton);
+            toggleButton.addMouseListener((new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(e.getClickCount() >= 2){
+                        JDialog popUp = new JDialog(actualFrame);
+                        JLabel playerDescription = new JLabel();
+                        playerDescription.setIcon(GodView.getCard(GodName.valueOf((toggleButton.getName()))).getIconDescription());
+                        popUp.add(playerDescription);
+                        popUp.setResizable(false);
+                        popUp.setVisible(true);
+                        popUp.setSize(507,278);
+                        popUp.setLocationRelativeTo(null);
+                    }
+
+                    else {
+
+                            client.setCard(GodName.valueOf(toggleButton.getName()));
+                            playButton_JButton.setEnabled(true);
+                            playButton_JButton.setName(toggleButton.getName());
+
+
+
+                    }
+
+                }
+
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+
+            }));
+
+        }
 
 
 
@@ -135,7 +189,9 @@ public class lobbyMessagePanel extends JPanel {
 
 
     private void playButton_JButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+       if(evt.getSource() == playButton_JButton){
+           client.getView().notifyCard(new CardMessage(GodName.valueOf(playButton_JButton.getName())));
+       };
     }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {

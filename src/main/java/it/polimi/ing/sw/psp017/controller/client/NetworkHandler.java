@@ -55,7 +55,7 @@ public class NetworkHandler implements Runnable{
         String ip = "127.0.0.1";//scanner.nextLine();
 
             this.server = new Socket(ip, Server.SOCKET_PORT);
-            //server.setSoTimeout(2000);
+           // server.setSoTimeout(2000);
             this.output = new ObjectOutputStream(server.getOutputStream());
             this.input = new ObjectInputStream(server.getInputStream());
             isConnected = true;
@@ -110,10 +110,12 @@ public class NetworkHandler implements Runnable{
 
             } catch (SocketTimeoutException e){
                 e.printStackTrace();
-                view.notifyDisconnection(new DisconnectionMessage());
+                System.exit(0);
+               // view.notifyDisconnection(new DisconnectionMessage());
             }
             catch (SocketException e){
-                view.notifyDisconnection(new DisconnectionMessage());
+               // view.notifyDisconnection(new DisconnectionMessage());
+                System.exit(0);
             }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 closeConnection();
