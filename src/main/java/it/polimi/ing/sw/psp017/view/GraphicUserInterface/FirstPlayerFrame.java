@@ -58,7 +58,7 @@ public class FirstPlayerFrame extends JFrame {
         kGradientPanel3.setkStartColor(new java.awt.Color(0, 204, 204));
 
         playButtonJButton.setBackground(new java.awt.Color(0, 153, 153));
-        playButtonJButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF\\playButton.png"))); // NOI18N
+        playButtonJButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/playButton.png"))); // NOI18N
         playButtonJButton.setToolTipText("");
         playButtonJButton.setAutoscrolls(true);
         playButtonJButton.addActionListener(new java.awt.event.ActionListener() {

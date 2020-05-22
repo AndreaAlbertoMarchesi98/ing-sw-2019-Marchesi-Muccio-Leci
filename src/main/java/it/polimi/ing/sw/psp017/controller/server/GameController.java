@@ -82,11 +82,13 @@ public class GameController {
         server.removeGameController(this);
     }
 
-    public synchronized void handleDisconnection(VirtualView view) {
-        int disconnectedPlayerNumber = view.getPlayer().getPlayerNumber();
-        views.remove(view);
-        notifyDisconnection(disconnectedPlayerNumber);
-        endGame();
+    public void handleDisconnection(VirtualView view) {
+        synchronized (this) {
+            views.remove(view);
+            notifyDisconnection(view.getPlayer().getPlayerNumber());
+            view = null;
+            endGame();
+        }
     }
 
     private void setUpNextTurn(Step currentStep) {
@@ -138,7 +140,6 @@ public class GameController {
             }
         }
     }
-
 //              VIEW INTERACTION
 //                 notifiers
 
@@ -150,6 +151,7 @@ public class GameController {
     }
 
     public void notifyBoard() {
+        System.out.println("notify board");
         BoardMessage message = new BoardMessage(game);
         for (VirtualView view : views) {
             view.updateBoard(message);
@@ -157,6 +159,7 @@ public class GameController {
     }
 
     public void notifyVictory(int winnerNumber) {
+        System.out.println("notify victory");
         VictoryMessage message = new VictoryMessage(winnerNumber);
         for (VirtualView view : views) {
             view.updateVictory(message);
@@ -171,7 +174,7 @@ public class GameController {
     }
     //               view reactions
 
-    public synchronized void processSelection(SelectedTileMessage message, Player player) {
+    public void processSelection(SelectedTileMessage message, Player player) {
         synchronized (this) {
             if (game.isPlayerTurn(player)) {
                 if (Board.isInsideBounds(message.tilePosition)) {
@@ -224,22 +227,8 @@ public class GameController {
         notifyBoard();
     }
 
-
     private void performAction(Tile targetTile, Player player) {
         if (game.getValidTiles()[targetTile.getPosition().x][targetTile.getPosition().y]) {
-            hasUndoArrived = false;
-            isUndoPossible = true;
-            long finishTime = System.nanoTime() + 5000;
-            while (System.nanoTime() < finishTime) {
-                if (hasUndoArrived) {
-                    isUndoPossible = false;
-                    game.restore(savedBoard);
-                    return;
-                }
-            }
-            isUndoPossible = false;
-
-
             System.out.println("build/move with worker");
             Tile currentTile = game.getSelectedTile();
             boolean isPowerActive = game.isPowerActive();
@@ -250,13 +239,14 @@ public class GameController {
             Step previousStep = player.getPreviousStep();
             Card card = player.getCard();
 
-            if (card.canMove(game.getStepNumber(), currentStep.isPowerActive()))
+            if (game.getAction()==ActionNames.MOVE)
                 card.move(currentStep, previousStep, game.getBoard());
-            else if (card.canBuild(game.getStepNumber(), currentStep.isPowerActive()))
+            //else if (card.canBuild(game.getStepNumber(), currentStep.isPowerActive()))
+            else if (game.getAction()==ActionNames.BUILD)
                 card.build(currentStep, previousStep, game.getBoard());
 
 
-            if (card.checkWin(currentStep, game.getBoard()))
+            if (card.checkWin(currentStep, game.getBoard())&&game.getAction()==ActionNames.MOVE)
                 notifyVictory(player.getPlayerNumber());
             else {
                 game.nextStep(targetTile);
@@ -273,9 +263,24 @@ public class GameController {
                 player.setPreviousStep(currentStep);
 
                 notifyBoard();
+
+                waitForUndo();
             }
         }
 
+    }
+
+    private void waitForUndo() {
+        hasUndoArrived = false;
+        isUndoPossible = true;
+        long finishTime = System.nanoTime() + 5000;
+        while (System.nanoTime() < finishTime) {
+            if (hasUndoArrived) {
+                game.restore(savedBoard);
+                notifyBoard();
+            }
+        }
+        isUndoPossible = false;
     }
 
     private boolean isTurnFinished(Card card) {
@@ -384,7 +389,7 @@ public class GameController {
         return validTiles;
     }
 
-    public synchronized void undo() {
+    public synchronized void receiveUndo() {
         if(isUndoPossible)
             hasUndoArrived = true;
     }

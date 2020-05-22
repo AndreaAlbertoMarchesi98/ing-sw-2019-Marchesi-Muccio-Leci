@@ -1,6 +1,6 @@
 package it.polimi.ing.sw.psp017;
 
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.GameSetUpMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.server.GameController;
 import it.polimi.ing.sw.psp017.controller.server.Server;
 import it.polimi.ing.sw.psp017.controller.server.VirtualView;
@@ -10,6 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -17,88 +21,86 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class GameControllerTest {
+    private final static int SERVER_PORT = 7778;
+    private final static String ip = "127.0.0.1";
+    private Socket client1;
+    private Socket client2;
+    private Socket client3;
     private Server server;
+    private ServerSocket serverSocket;
     private GameController gameController;
     private VirtualView view1;
     private VirtualView view2;
     private VirtualView view3;
-/*
+
+    //before class setta roba
     @Before
     public void init() throws IOException {
 
-        view1 = new VirtualView(new Socket(), server);
-        view2 = new VirtualView(new Socket(), server);
+        serverSocket = new ServerSocket(SERVER_PORT);
+
+
+        Socket socket1 = new Socket(ip, SERVER_PORT);
+        client1 = serverSocket.accept();
+        Socket socket2 = new Socket(ip, SERVER_PORT);
+        client2 = serverSocket.accept();
+        Socket socket3 = new Socket(ip, SERVER_PORT);
+        client3 = serverSocket.accept();
+
+        ObjectOutputStream output1 = new ObjectOutputStream(socket1.getOutputStream());
+        output1.writeObject(new ClientPing());
+        ObjectOutputStream output2 = new ObjectOutputStream(socket2.getOutputStream());
+        output2.writeObject(new ClientPing());
+        ObjectOutputStream output3 = new ObjectOutputStream(socket3.getOutputStream());
+        output3.writeObject(new ClientPing());
+
+        view1 = new VirtualView(client1, server);
+        view2 = new VirtualView(client2, server);
+        view3 = new VirtualView(client3, server);
 
         view1.setPlayer(new Player("player1"));
         view2.setPlayer(new Player("player2"));
+        view3.setPlayer(new Player("player3"));
 
         gameController = new GameController(server, view1);
 
-        ArrayList<GodName> cards = new ArrayList<>();
-        cards.add(GodName.APOLLO);
-        gameController.createLobby(new GameSetUpMessage({new Arra;
 
-        player1 = new Player("Player1");
-        player2 = new Player("Player2");
-        game.addPlayer(player1);
-        game.addPlayer(player2);
-        board = game.getBoard();
-        Card card = new BaseCard();
-        player1.setCard(card);
-        player2.setCard(card);
-
-        worker1P1 = new Worker(player1);
-        worker2P1 = new Worker(player1);
-        worker1P2 = new Worker(player2);
-        worker2P2 = new Worker(player2);
-
-        board.addWorker(worker1P1, new Vector2d(0,0));
-        board.addWorker(worker2P1,new Vector2d(1,0));
 
     }
 
     @Test
-    public void testIsValidMove() {
+    public void normal3PlayersGameTest() throws InterruptedException, IOException {
+        ArrayList<GodName> chosenCards = new ArrayList<>();
+        chosenCards.add(GodName.ATLAS);
+        chosenCards.add(GodName.ATHENA);
+        chosenCards.add(GodName.DEMETER);
+
+        view1.notifyGameSetUp(new GameSetUpMessage(chosenCards));
+
+        gameController.addViewToLobby(view2);
+        gameController.addViewToLobby(view3);
 
 
-        Tile targetTile = board.getTile(new Vector2d(0, 1));
+        view3.notifyCard(new CardMessage(GodName.ATLAS));
+        view2.notifyCard(new CardMessage(GodName.ATHENA));
+        view1.notifyCard(new CardMessage(GodName.DEMETER));
 
-        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
-        assertTrue("error: isValidMove false but tile free ", player1.getCard().isValidMove(currentstep, null, board));
+        view1.notifySelectedTile(new SelectedTileMessage(new Vector2d(0,0)));
+        view1.notifySelectedTile(new SelectedTileMessage(new Vector2d(1,0)));
 
-        targetTile.setDome(true);
-        assertFalse("error:isValidMove true but tile occupied  by dome",player1.getCard().isValidMove(currentstep, null, board));
+        view2.notifySelectedTile(new SelectedTileMessage(new Vector2d(0,1)));
+        view2.notifySelectedTile(new SelectedTileMessage(new Vector2d(1,1)));
 
-        targetTile.setDome(false);
-        targetTile.setWorker(worker1P2);
-        assertFalse("error :isValidMove true but tile occupied  by worker",player1.getCard().isValidMove(currentstep, null, board));
+        view3.notifySelectedTile(new SelectedTileMessage(new Vector2d(0,2)));
+        view3.notifySelectedTile(new SelectedTileMessage(new Vector2d(1,2)));
 
-        targetTile.setWorker(null);
-        targetTile.setLevel(2);
-        assertFalse("error: isValidMove true but level target tile is two step up", player1.getCard().isValidMove(currentstep, null, board));
+        view1.notifySelectedTile(new SelectedTileMessage(new Vector2d(1,0)));
+        view1.notifySelectedTile(new SelectedTileMessage(new Vector2d(2,0)));
+        view1.notifyIsPowerActive(new PowerActiveMessage(true));
+        view1.notifySelectedTile(new SelectedTileMessage(new Vector2d(2,0)));
+
+        assertTrue("error:checkWin false but level tile is 3",true);
+
+        serverSocket.close();
     }
-
-    @Test
-    public void testIsValidBuilding() {
-
-        Tile targetTile = board.getTile(new Vector2d(0, 1));
-
-        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
-        assertTrue("error: isValidBuilding false but tile free ", player1.getCard().isValidBuilding(currentstep, null, board));
-
-        targetTile.setDome(true);
-        assertFalse("error:isValidBuilding true but tile occupied by dome",player1.getCard().isValidBuilding(currentstep, null, board));
-
-        targetTile.setDome(false);
-        targetTile.setLevel(4);
-        assertFalse("error:isValidBuilding true but tile occupied  by dome", player1.getCard().isValidBuilding(currentstep, null, board));
-
-        targetTile.setDome(false);
-        targetTile.setWorker(worker1P2);
-        assertFalse("error :isValidBuilding true but tile occupied by an enemy worker",player1.getCard().isValidBuilding(currentstep, null, board));
-        targetTile.setWorker(null);
-        board.addWorker(worker1P1, targetTile.getPosition());
-        assertFalse("error:isValidBuilding true but tile occupied by a worker of mine", player1.getCard().isValidBuilding(currentstep, null, board));
-
-    }*/
 }

@@ -3,6 +3,7 @@ package it.polimi.ing.sw.psp017.controller.server;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Player;
+import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.IOException;
@@ -16,8 +17,33 @@ public class VirtualView implements Runnable, View {
     private Player player;
     private Server server;
     private GameController gameController;
+    private PingSender pingSender;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+
+    private static class PingSender implements Runnable{
+        private final VirtualView virtualView;
+        private boolean isRunning;
+
+        public PingSender(VirtualView virtualView){
+            this.virtualView = virtualView;
+        }
+        @Override
+        public void run() {
+            while (isRunning) {
+                try {
+                    virtualView.sendMessage(new ServerPing());
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        public void stop() {
+            isRunning = false;
+        }
+    }
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
@@ -33,8 +59,13 @@ public class VirtualView implements Runnable, View {
 
     public VirtualView(Socket client, Server server) throws IOException {
         this.server = server;
+
         input = new ObjectInputStream(client.getInputStream());
         output = new ObjectOutputStream(client.getOutputStream());
+
+        pingSender = new PingSender(this);
+        Thread pingSenderThread = new Thread(pingSender);
+        pingSenderThread.start();
     }
 
     @Override
@@ -81,13 +112,14 @@ public class VirtualView implements Runnable, View {
     }
 
     private void notifyDisconnection() {
-        System.out.println("inside disxconnection");
-        //synchronized (server.getWaitingViews()) {
-        if (gameController != null)
-            gameController.handleDisconnection(this);
-        else
-            server.handleDisconnection(this);
-        //}
+        synchronized (this) {
+            System.out.println("client disconnected");
+            pingSender.stop();
+            if (gameController != null)
+                gameController.handleDisconnection(this);
+            else
+                server.handleDisconnection(this);
+        }
     }
 
     public void notifyNickname(AuthenticationMessage authenticationMessage) {
@@ -103,7 +135,6 @@ public class VirtualView implements Runnable, View {
         gameController.setPlayerCard(cardMessage, this);
     }
 
-    @Override
     public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
         gameController.processSelection(selectedTileMessage, player);
     }
@@ -116,13 +147,11 @@ public class VirtualView implements Runnable, View {
         //gameController.no(gameSetUpMessage);
     }
 
-    @Override
     public void notifyUndo(UndoMessage undoMessage) {
-        gameController.undo();
+        gameController.receiveUndo();
     }
 
     public void updateGameCreation() {
-        System.out.println(getPlayer().getNickname() + ": update game creation");
         sendMessage(new GameCreationMessage());
     }
 
@@ -150,12 +179,14 @@ public class VirtualView implements Runnable, View {
         sendMessage(disconnectionMessage);
     }
 
-    private synchronized void sendMessage(Object message) {
-        try {
-            output.writeObject(message);
-            output.reset();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void sendMessage(Object message) {
+        synchronized (this) {
+            try {
+                output.writeObject(message);
+                output.reset();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

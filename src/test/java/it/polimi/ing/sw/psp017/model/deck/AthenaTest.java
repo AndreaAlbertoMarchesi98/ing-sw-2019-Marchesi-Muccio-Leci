@@ -41,7 +41,7 @@ public class AthenaTest {
     public void athenaEffectOnTest() {
         Card cardP1 = player1.getCard();
 
-        board.getTile(new Vector2d(2, 0)).setLevel(1);
+        board.getTile(new Vector2d(1, 0)).setLevel(1);
         board.getTile(new Vector2d(1, 1)).setLevel(1);
 
         Tile targetTile1 = board.getTile(new Vector2d(1, 0));
@@ -50,8 +50,8 @@ public class AthenaTest {
         Step previousStep = new Step(worker1P1.getTile(), targetTile1, false);
         Step currentStep = new Step(targetTile1, targetTile2, false);
 
-        if (cardP1.hasActiveDecorator(currentStep, previousStep, board))
-            player2.setCard(cardP1.getDecorator(player2.getCard()));
+        assertTrue("error: decorator should be active", cardP1.hasActiveDecorator(currentStep, previousStep, board));
+        player2.setCard(cardP1.getDecorator(player2.getCard()));
 
         Tile targetTile = board.getTile(new Vector2d(1, 1));
         currentStep = new Step(worker1P2.getTile(), targetTile, false);

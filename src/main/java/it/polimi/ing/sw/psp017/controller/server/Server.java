@@ -14,7 +14,7 @@ import java.util.Queue;
 
 public class Server implements Runnable {
     private ServerSocket socket;
-    public final static int SOCKET_PORT = 7778;
+    private final static int SOCKET_PORT = 7778;
 
     private final Queue<VirtualView> waitingViews;
 
@@ -46,7 +46,11 @@ public class Server implements Runnable {
     }
 
     public void removeGameController(GameController gameController) {
-        gameControllers.remove(gameController);
+        synchronized (gameControllers) {
+            if(gameController.equals(waitingGameController))
+                waitingGameController=null;
+            gameControllers.remove(gameController);
+        }
     }
 
     private VirtualView popWaitingView() {
@@ -68,7 +72,9 @@ public class Server implements Runnable {
             if (!waitingViews.isEmpty()) {
                 if (waitingGameController == null) {
                     waitingGameController = new GameController(this, popWaitingView());
-                    gameControllers.add(waitingGameController);
+                    synchronized (gameControllers) {
+                        gameControllers.add(waitingGameController);
+                    }
                     return true;
                 } else if (waitingGameController.isLobbyJoinable()) {
                     waitingGameController.addViewToLobby(popWaitingView());

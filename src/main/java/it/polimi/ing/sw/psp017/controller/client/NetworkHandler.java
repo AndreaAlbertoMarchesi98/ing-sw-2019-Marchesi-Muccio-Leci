@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 
 public class NetworkHandler implements Runnable{
+    private final static int SERVER_PORT = 7778;
     private View view;
     private Socket server;
     private ObjectInputStream input;
@@ -23,7 +24,7 @@ public class NetworkHandler implements Runnable{
         this.view = view;
     }
     private static class PingSender implements Runnable{
-        private NetworkHandler networkHandler;
+        private final NetworkHandler networkHandler;
 
         public PingSender(NetworkHandler networkHandler){
             this.networkHandler = networkHandler;
@@ -54,7 +55,7 @@ public class NetworkHandler implements Runnable{
         System.out.println("IP address of server?");
         String ip = "127.0.0.1";//scanner.nextLine();
 
-            this.server = new Socket(ip, Server.SOCKET_PORT);
+            this.server = new Socket(ip, SERVER_PORT);
            // server.setSoTimeout(2000);
             this.output = new ObjectOutputStream(server.getOutputStream());
             this.input = new ObjectInputStream(server.getInputStream());
