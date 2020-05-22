@@ -1,27 +1,42 @@
 package it.polimi.ing.sw.psp017;
 
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.GameSetUpMessage;
+import it.polimi.ing.sw.psp017.controller.server.GameController;
+import it.polimi.ing.sw.psp017.controller.server.Server;
+import it.polimi.ing.sw.psp017.controller.server.VirtualView;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.model.deck.BaseCard;
+import it.polimi.ing.sw.psp017.view.GodName;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class BaseCardTest {
-    private Board board;
-    private GameTest game;
-    private Player player1;
-    private Player player2;
-    private Worker worker1P1;
-    private Worker worker2P1;
-    private Worker worker1P2;
-    private Worker worker2P2;
-
+public class GameControllerTest {
+    private Server server;
+    private GameController gameController;
+    private VirtualView view1;
+    private VirtualView view2;
+    private VirtualView view3;
+/*
     @Before
-    public void init(){
+    public void init() throws IOException {
 
-        game = new GameTest();
+        view1 = new VirtualView(new Socket(), server);
+        view2 = new VirtualView(new Socket(), server);
+
+        view1.setPlayer(new Player("player1"));
+        view2.setPlayer(new Player("player2"));
+
+        gameController = new GameController(server, view1);
+
+        ArrayList<GodName> cards = new ArrayList<>();
+        cards.add(GodName.APOLLO);
+        gameController.createLobby(new GameSetUpMessage({new Arra;
 
         player1 = new Player("Player1");
         player2 = new Player("Player2");
@@ -85,67 +100,5 @@ public class BaseCardTest {
         board.addWorker(worker1P1, targetTile.getPosition());
         assertFalse("error:isValidBuilding true but tile occupied by a worker of mine", player1.getCard().isValidBuilding(currentstep, null, board));
 
-    }
-
-    @Test
-    public void testCheckWin() {
-
-
-        Tile targetTile = board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
-        targetTile.setLevel(3);
-        assertTrue("error:checkWin false but level tile is 3",player1.getCard().checkWin(currentstep,  board));
-
-
-        targetTile.setLevel(2);
-        assertFalse("error: checkWin true but free tile with build level 2", player1.getCard().checkWin(currentstep,  board));
-
-        //il nostro checkwin non controlla se tutti gli altri worker sono bloccati
-        //il server deve vedere quando gli altri son bloccati e dirgli che hanno perso
-        //notifyGameover quando non hai più mosse
-
-    }
-
-    @Test
-    public void testMove() {
-
-
-        Tile targetTile = board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
-
-        player1.getCard().move(currentstep, null, board);
-        assertNull("error: worker not null in previous tile", currentstep.getCurrentTile().getWorker());
-        assertSame("error: worker null in targetTile",worker1P1, currentstep.getTargetTile().getWorker());
-
-    }
-
-    @Test
-    public void testBuild() {
-
-
-
-        Tile targetTile = board.getTile(new Vector2d(0, 1));
-        Step currentstep = new Step(worker1P1.getTile(), targetTile, false);
-
-        int oldlevel = currentstep.getCurrentTile().getLevel();
-        player1.getCard().build(currentstep, null, board);
-        assertEquals("error: no adding level after build",oldlevel + 1, currentstep.getTargetTile().getLevel());
-
-        oldlevel = currentstep.getTargetTile().getLevel();
-        player1.getCard().build(currentstep, null, board);
-        assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
-
-        oldlevel = currentstep.getTargetTile().getLevel();
-        player1.getCard().build(currentstep, null, board);
-        assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
-
-        oldlevel = currentstep.getTargetTile().getLevel();
-        player1.getCard().build(currentstep, null, board);
-        assertEquals(oldlevel + 1, currentstep.getTargetTile().getLevel());
-        assertTrue("error: no set dome at level 4", currentstep.getTargetTile().isDome());
-
-
-    }
-
+    }*/
 }
-

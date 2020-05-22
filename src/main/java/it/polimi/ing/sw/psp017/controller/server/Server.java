@@ -16,11 +16,9 @@ public class Server implements Runnable {
     private ServerSocket socket;
     public final static int SOCKET_PORT = 7778;
 
-    private ArrayList<Player> playersInGame;
-    private ArrayList<VirtualView> viewsInGame;
-    private Queue<VirtualView> waitingViews;
+    private final Queue<VirtualView> waitingViews;
 
-    private ArrayList<GameController> gameControllers;
+    private final ArrayList<GameController> gameControllers;
     GameController waitingGameController;
 
     public Server() {
@@ -48,16 +46,7 @@ public class Server implements Runnable {
     }
 
     public void removeGameController(GameController gameController) {
-        waitingViews.remove(gameController);
-    }
-
-    public Queue<VirtualView> getWaitingViews() {
-        return waitingViews;
-    }
-
-    public void addWaitingView(VirtualView view) {
-        waitingViews.add(view);
-        view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
+        gameControllers.remove(gameController);
     }
 
     private VirtualView popWaitingView() {

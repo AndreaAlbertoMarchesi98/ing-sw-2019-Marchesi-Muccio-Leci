@@ -124,9 +124,10 @@ public class NetworkHandler implements Runnable{
         }
     }
 
-    public void sendMessage(Object message){
+    public synchronized void sendMessage(Object message){
         try{
             output.writeObject(message);
+            output.reset();
             //System.out.println("wait for Server response");
         } catch (IOException e) {
             e.printStackTrace();

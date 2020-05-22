@@ -2,6 +2,7 @@ package it.polimi.ing.sw.psp017.model.deck;
 
 import it.polimi.ing.sw.psp017.model.Board;
 import it.polimi.ing.sw.psp017.model.Step;
+import it.polimi.ing.sw.psp017.model.deck.BaseCard;
 
 /**
  * Pan's card
@@ -11,7 +12,7 @@ import it.polimi.ing.sw.psp017.model.Step;
  * your Worker moves down two or
  * more levels.
  */
-public class Pan extends BaseCard{
+public class Pan extends BaseCard {
 
     /**
      *

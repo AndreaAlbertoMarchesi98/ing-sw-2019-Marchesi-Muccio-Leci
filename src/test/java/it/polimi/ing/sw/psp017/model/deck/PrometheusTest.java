@@ -3,8 +3,6 @@ package it.polimi.ing.sw.psp017.model.deck;
 
 import it.polimi.ing.sw.psp017.GameTest;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.GodName;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +19,7 @@ public class PrometheusTest  {
     public void init(){
         game = new GameTest();
 
-        player1 = new Player("PlayerPrometheus");
+        player1 = new Player("PrometheusPlayer");
         game.addPlayer(player1);
         board = game.getBoard();
         player1.setCard(new Prometheus());

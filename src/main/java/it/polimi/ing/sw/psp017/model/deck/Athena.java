@@ -1,16 +1,16 @@
 package it.polimi.ing.sw.psp017.model.deck;
 
-import it.polimi.ing.sw.psp017.model.*;
-
-import it.polimi.ing.sw.psp017.view.GodName;
+import it.polimi.ing.sw.psp017.model.Board;
+import it.polimi.ing.sw.psp017.model.Card;
+import it.polimi.ing.sw.psp017.model.Step;
 
 public class Athena extends BaseCard {
 
 
     @Override
     public boolean hasActiveDecorator(Step currentStep, Step previousStep, Board board) {
-        if(previousStep != null) {
-            return previousStep.getTargetTile().getLevel() > previousStep.getCurrentTile().getLevel();
+        if(currentStep != null) {
+            return currentStep.getTargetTile().getLevel() > previousStep.getCurrentTile().getLevel();
         } else return false;
     }
 

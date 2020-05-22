@@ -72,7 +72,7 @@ public class Game {
         selectedTile = null;
     }
 
-    public void undo(Board board){
+    public void restore(Board board){
         this.board = board;
         stepNumber = 0;
         powerActive = false;
