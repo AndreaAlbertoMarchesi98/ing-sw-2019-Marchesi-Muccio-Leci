@@ -143,7 +143,7 @@ public class LoginPanel extends JPanel {
                     int n = JOptionPane.showOptionDialog(cliButton.getRootPane(), "Are you sure you want to switch to the command line? Gui will be closed.", "Close Graphic User Interface", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);
                     ;
                     if (n == JOptionPane.YES_OPTION) {
-                        cliButton.getRootPane().setVisible(false);
+                        ((JFrame)SwingUtilities.getRoot(kGradientPanel)).dispose();
                         System.out.println("Continue here...");
                         client.setView(new CLI(client));
                         client.getView().updateLoginScreen(null);

@@ -6,6 +6,7 @@ import it.polimi.ing.sw.psp017.controller.client.Client;
 
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.PowerActiveMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.SelectedTileMessage;
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.UndoMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
 import it.polimi.ing.sw.psp017.controller.server.Lobby;
@@ -22,6 +23,7 @@ import java.awt.geom.RoundRectangle2D;
     public class BoardGUI extends JFrame {
         private final Dimension dim;
         public JButton[] playersButton;
+        private JDialog popUp;
 
         public BoardGUI(Client client) {
             dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -100,8 +102,7 @@ import java.awt.geom.RoundRectangle2D;
 
                     @Override
                     public void paintIcon(Component c, Graphics g, int x, int y) {
-                        if (c instanceof AbstractButton) {
-                            AbstractButton b = (AbstractButton) c;
+                            JButton b = (JButton) c;
                             Insets i = b.getBorder().getBorderInsets(b);
                             int w = 65;
                             int h = 65;
@@ -128,18 +129,19 @@ import java.awt.geom.RoundRectangle2D;
                             g2.draw(area);
                             g2.dispose();
                         }
-                    }
 
                     @Override
                     public int getIconWidth() {
-                        return Math.max(width, 100);
+                        return 0;
                     }
 
                     @Override
                     public int getIconHeight() {
-                        return Math.max(height, 20);
+                        return 0;
                     }
                 }
+
+
 
             };
             powerActivated = new JButton();
@@ -171,31 +173,26 @@ import java.awt.geom.RoundRectangle2D;
                     private final Color ST = new Color(1f, 1f, 1f, .2f);
                     private final Color SB = new Color(1f, 1f, 1f, .1f);
                     private static final int R = 8;
-                    private int width;
-                    private int height;
 
                     protected TranslucentButtonIcon(JComponent c) {
                         Insets i = c.getBorder().getBorderInsets(c);
                         Dimension d = c.getPreferredSize();
-                        width = d.width - i.left - i.right;
-                        height = d.height - i.top - i.bottom;
+
                     }
 
                     @Override
                     public void paintIcon(Component c, Graphics g, int x, int y) {
-                        if (c instanceof AbstractButton) {
-                            AbstractButton b = (AbstractButton) c;
-                            Insets i = b.getBorder().getBorderInsets(b);
+
                             int w = 65;
                             int h = 65;
-                            width = w - i.left - i.right;
-                            height = h - i.top - i.bottom;
+
                             Graphics2D g2 = (Graphics2D) g.create();
                             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
+                            Shape area = new RoundRectangle2D.Double(x , y, w - 1, h - 1, R, R);
                             Color ssc = TL;
                             Color bgc = BR;
-                            ButtonModel m = b.getModel();
+
+                        ButtonModel m = ((JButton)c).getModel();
                             if (m.isPressed()) {
                                 ssc = SB;
                                 bgc = ST;
@@ -205,24 +202,25 @@ import java.awt.geom.RoundRectangle2D;
                             }
 
                             g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
-                            g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF/quit.png")).getImage(), x - i.left, y - i.top, null);
+                            g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF/quit.png")).getImage(), x , y , null);
                             g2.fill(area);
                             g2.setPaint(BR);
                             g2.draw(area);
                             g2.dispose();
                         }
-                    }
 
                     @Override
                     public int getIconWidth() {
-                        return Math.max(width, 100);
+                        return 0;
                     }
 
                     @Override
                     public int getIconHeight() {
-                        return Math.max(height, 20);
+                        return 0;
                     }
                 }
+
+
 
             };
 
@@ -309,9 +307,17 @@ import java.awt.geom.RoundRectangle2D;
 
             upperDXPanel.setOpaque(false);
             upperDXPanel.setLayout(new GridLayout(2, 1, 0, 2));
-
+            undo.setEnabled(false);
             undo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/pointing-left.png")));
             undo.setToolTipText("Undo");
+            undo.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(e.getSource() == undo)
+                        System.out.println("sending undo message");
+                    client.getNetworkHandler().sendMessage(new UndoMessage());
+                }
+            });
             //undo.setSelected(true);
             upperDXPanel.add(undo);
             powerActivated.setText("Power Active");
@@ -380,16 +386,18 @@ import java.awt.geom.RoundRectangle2D;
                 });
 
 
-                playersButton[i].setToolTipText("Your Player");
+
                 playersButton[i].setHorizontalTextPosition(SwingConstants.CENTER);
                 playersButton[i].setOpaque(false);
 
                 if(client.playersInfo.get(i).playerNumber == client.getPlayerNumber())
                 {
+                    playersButton[i].setToolTipText("Your Player");
                     DXPanel.add(playersButton[i]);
                 }
                 else
                 {
+                    playersButton[i].setToolTipText("Opponent Player");
                     SXPanel.add(playersButton[i]);
                 }
             }
@@ -421,10 +429,10 @@ import java.awt.geom.RoundRectangle2D;
                 }
             });
             // southPanel.setSize(1120,100);
-            southPanel.setLayout(new BorderLayout());
+            southPanel.setLayout(new FlowLayout());
 
             southPanel.setMinimumSize(new Dimension(this.getMinimumSize().width, 200));
-            southPanel.add(quitButton, BorderLayout.EAST);
+            southPanel.add(quitButton);
             kGradientPanel1.add(southPanel, BorderLayout.SOUTH);
 
             Dimension dimBoard = new Dimension((int) (dim.height*0.7), (int) (dim.height*0.7));
@@ -477,9 +485,11 @@ import java.awt.geom.RoundRectangle2D;
                     break;
                 case MOVE:
                     messageLabel_NorthPanel.setText("MOVE ");
+
                     break;
                 case BUILD:
-                    messageLabel_NorthPanel.setText("BUILD WORKER");
+                    messageLabel_NorthPanel.setText("BUILD ");
+
                     break;
                 case NONE:
                     messageLabel_NorthPanel.setText("NONE WORKER");
@@ -552,6 +562,8 @@ import java.awt.geom.RoundRectangle2D;
                 System.out.println("mio turno");
                 showValidTile(boardMessage);
             }
+
+
             powerActivated.setEnabled(false);
             powerActivated.setBackground(null);
             this.revalidate();
@@ -681,17 +693,36 @@ import java.awt.geom.RoundRectangle2D;
 
             for(int i = 0; i < playersButton.length;i++)
             {
-                if(evt.getSource()== playersButton[i]){
-                    JDialog popUp = new JDialog(this);
+                if(evt.getSource() == playersButton[i]) {
                     JLabel playerDescription = new JLabel();
                     playerDescription.setIcon(GodView.getCard(client.playersInfo.get(i).card).getIconDescription());
-                    playerDescription.setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
-                    popUp.add(playerDescription);
-                    popUp.setResizable(false);
-                    popUp.setVisible(true);
-                    popUp.setSize(507,278);
-                    popUp.setLocationRelativeTo(null);
+
+                    if (popUp == null) {
+                        popUp = new JDialog(this);
+                        popUp.add(playerDescription);
+                        popUp.setResizable(false);
+                        popUp.setVisible(true);
+                        popUp.setSize(507, 278);
+                        popUp.setLocationRelativeTo(null);
+
+                        popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+
+                        popUp.addWindowListener(new WindowAdapter() {
+                            @Override
+                            public void windowClosing(WindowEvent e) {
+                                popUp.dispose();
+                                popUp = null;
+
+                            }
+                        });
+                    }
+                    else{
+                        popUp.setContentPane(playerDescription);
+                        popUp.revalidate();
+                        popUp.repaint();
+                    }
                 }
+
 
             }
 
@@ -706,8 +737,10 @@ import java.awt.geom.RoundRectangle2D;
                 for (int row = 0; row < 5; row++) {
                     for (int col = 0; col < 5; col++) {
                         if (buttonGrid[row][col] == e.getSource()) {
-                            System.out.println("Selected row and column: " + row + " " + col);
-                            enabledBoard(false);
+                            //System.out.println("Selected row and column: " + row + " " + col);
+
+                            if(messageLabel_NorthPanel.getText() == "MOVE " || messageLabel_NorthPanel.getText().equals("BUILD ")){
+                                    undo() ;}
                             client.getNetworkHandler().sendMessage(new SelectedTileMessage(new Vector2d(row, col)));
                         }
                     }
@@ -752,6 +785,25 @@ import java.awt.geom.RoundRectangle2D;
         public void askPowerActive() {
             powerActivated.setEnabled(true);
             powerActivated.setBackground(Color.green);
+        }
+
+        public void undo(){
+
+            undo.setEnabled(true);
+            undo.setBackground(Color.green);
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           try {
+                               Thread.sleep(5000);
+                               undo.setEnabled(false);
+                               undo.setBackground(null);
+                           } catch (InterruptedException e) {
+                               e.printStackTrace();
+                           }
+                       }
+                   }).start();
+
         }
     }
 

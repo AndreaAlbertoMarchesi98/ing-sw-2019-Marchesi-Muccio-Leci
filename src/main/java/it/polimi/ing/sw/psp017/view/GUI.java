@@ -5,6 +5,7 @@ import it.polimi.ing.sw.psp017.controller.client.PlayersInfo;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 
+import it.polimi.ing.sw.psp017.model.Board;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.*;
 
 import javax.swing.*;
@@ -263,7 +264,7 @@ public class GUI implements View {
 
 
                 mainPanel.setVisible(false);
-                mainPanel = new LobbyMessagePanel(lobbyMessage,client,mainFrame);
+                mainPanel = new LobbyMessagePanel(lobbyMessage,client);
                // mainPanel = new lobbyMessagePanel();
                 mainFrame.setContentPane(mainPanel);
                 mainFrame.pack();
@@ -360,7 +361,11 @@ public class GUI implements View {
 
         @Override
     public void updateVictory(VictoryMessage victoryMessage) {
-
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    JOptionPane.showMessageDialog(board, "HAI VINTO", "wIN", JOptionPane.ERROR_MESSAGE);
+                }});
     }
 
     @Override
@@ -373,6 +378,7 @@ public class GUI implements View {
         }
         else{
             notifyNickname(new AuthenticationMessage(client.getNickname()));
+            if(board != null) board.dispose();
         }
     }
 

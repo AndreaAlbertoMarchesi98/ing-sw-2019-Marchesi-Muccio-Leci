@@ -12,6 +12,8 @@ import java.awt.*;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
@@ -25,14 +27,12 @@ public class LobbyMessagePanel extends JPanel {
     private JPanel selectCardPanel_JPanel;
     private JPanel selectPanel_JPanel;
     private Client client;
+    private JDialog popUp;
 
 
 
 
-
-    public LobbyMessagePanel(final LobbyMessage lobbyMessage, final Client client, final JFrame actualFrame) {
-
-
+    public LobbyMessagePanel(final LobbyMessage lobbyMessage, final Client client) {
 
         this.client = client;
         kGradientPanel1 = new KGradientPanel();
@@ -95,14 +95,30 @@ public class LobbyMessagePanel extends JPanel {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(e.getClickCount() >= 2){
-                        JDialog popUp = new JDialog(actualFrame);
                         JLabel playerDescription = new JLabel();
                         playerDescription.setIcon(GodView.getCard(GodName.valueOf((toggleButton.getName()))).getIconDescription());
+
+                        if(popUp == null){
+                        popUp = new JDialog((JFrame)SwingUtilities.getRoot(kGradientPanel1));
                         popUp.add(playerDescription);
                         popUp.setResizable(false);
                         popUp.setVisible(true);
                         popUp.setSize(507,278);
                         popUp.setLocationRelativeTo(null);
+                        popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                        popUp.addWindowListener(new WindowAdapter() {
+                                @Override
+                                public void windowClosing(WindowEvent e) {
+                                    popUp.dispose();
+                                    popUp = null;
+
+                                }
+                            });}
+                        else{
+                            popUp.setContentPane(playerDescription);
+                            popUp.revalidate();
+                            popUp.repaint();
+                        }
                     }
 
                     else {

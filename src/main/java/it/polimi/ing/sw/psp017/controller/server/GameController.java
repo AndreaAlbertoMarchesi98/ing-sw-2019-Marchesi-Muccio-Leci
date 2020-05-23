@@ -11,6 +11,7 @@ import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.GodName;
 import it.polimi.ing.sw.psp017.model.Tile;
 
+
 import java.util.ArrayList;
 
 public class GameController {
@@ -273,8 +274,8 @@ public class GameController {
     private void waitForUndo() {
         hasUndoArrived = false;
         isUndoPossible = true;
-        long finishTime = System.nanoTime() + 5000;
-        while (System.nanoTime() < finishTime) {
+        long finishTime = System.currentTimeMillis()+ 5000;
+        while (System.currentTimeMillis() < finishTime) {
             if (hasUndoArrived) {
                 game.restore(savedBoard);
                 notifyBoard();
