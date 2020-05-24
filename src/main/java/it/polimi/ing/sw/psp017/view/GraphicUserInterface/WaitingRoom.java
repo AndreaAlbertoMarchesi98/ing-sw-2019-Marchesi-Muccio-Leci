@@ -1,6 +1,6 @@
 package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 
-import it.polimi.ing.sw.psp017.view.KGradientPanel;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.awt.*;
         private JPanel westPanel;
         private JPanel centerPanel;
         private JPanel eastPanel;
-        private it.polimi.ing.sw.psp017.view.KGradientPanel kGradientPanel1;
+        private KGradientPanel kGradientPanel1;
 
         public WaitingRoom(int numPlayers) {
 
@@ -89,6 +89,8 @@ import java.awt.*;
 
             this.setLayout(new BorderLayout());
             this.add(kGradientPanel1, BorderLayout.CENTER);
+            kGradientPanel1.backgroundTransition();
+            kGradientPanel1.backgroundGradient();
 
 
         }

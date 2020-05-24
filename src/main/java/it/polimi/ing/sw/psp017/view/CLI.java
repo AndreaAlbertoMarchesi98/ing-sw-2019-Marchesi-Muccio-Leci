@@ -140,17 +140,39 @@ public class CLI implements View {
       //  client.playersInfo = new ArrayList<>();
         System.out.println("player number : " + client.getPlayerNumber() + " choosing player number : "+ lobbyMessage.choosingPlayerNumber);
         GodName choosenCard;
+        if (client.getPlayerNumber() == 0) {
+            client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname()) + 1);
+
+        }
 
 
 
-        //ogni player ottiene il suo playerNumber
+        if (lobbyMessage.availableCards.size() == 1) {
+            System.out.println("dentro a size == 1");
 
-        if(client.getPlayerNumber() == 0)
+            //salvo informazioni players
+            PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
+            playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0), 1, lobbyMessage.availableCards.get(0));
+            client.playersInfo.add(playersInfos[0]);
+            for (int i = 1; i < lobbyMessage.players.size(); i++) {
+                playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i), i + 1, lobbyMessage.chosenCards.get(i-1));
+
+                client.playersInfo.add(playersInfos[i]);
+            }
+
+
+
+
+        }
+
+        //si puo eliminare
+        if(lobbyMessage.choosingPlayerNumber == 1)
         {
-            System.out.println("memorizzo playerNumber");
-            client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname())+1);
-            System.out.println("playerNumber settato : "+client.getPlayerNumber());
-
+            for (int i = 0; i < client.playersInfo.size(); i++) {
+                System.out.println("nickname :" + client.playersInfo.get(i).name +
+                        "\n card name : " + client.playersInfo.get(i).card +
+                        " \n playerNumber  : " + client.playersInfo.get(i).playerNumber);
+            }
         }
 
 
@@ -158,97 +180,18 @@ public class CLI implements View {
         //turno del giocatore
         if(client.getPlayerNumber()==lobbyMessage.choosingPlayerNumber)
         {
-            ArrayList<GodName> copy = new ArrayList<>();
-            copy = lobbyMessage.availableCards;
-
-
-            for (GodName godname : lobbyMessage.chosenCards
-                 ) {
-                copy.remove(godname);
-
-            }
             System.out.println("choosen cards : "+lobbyMessage.chosenCards);
 
             System.out.println(lobbyMessage.availableCards);
-            choosenCard = chooseGodCard(copy); // versione con eliminazione lato server
+            choosenCard = chooseGodCard(lobbyMessage.availableCards); // versione con eliminazione lato server
             notifyCard(new CardMessage(choosenCard));
         }
 
 
 
-        if(lobbyMessage.availableCards.size() == 1)
-        {
-            System.out.println("dentro a size == 1");
-            //salvo informazioni players
-            PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
-            playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0),1,lobbyMessage.availableCards.get(0));
-            client.playersInfo.add(playersInfos[0]);
-            for(int i = 1; i < lobbyMessage.players.size();i++)
-            {
-                playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i),i+1,lobbyMessage.chosenCards.get(i));
-
-                client.playersInfo.add(playersInfos[i]);
-                //else playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i),i+1,lobbyMessage.chosenCards.get())
-            }
-
-            for(int i = 0; i < client.playersInfo.size();i++)
-            {
-                System.out.println("nickname :"+client.playersInfo.get(i).name+
-                                    "card name : "+ client.playersInfo.get(i).card +
-                                    "playerNumber  : "+ client.playersInfo.get(i).playerNumber);
-            }
-
-
-
-
-        }
-
-
 
     }
 
-    public PlayersInfo savePlayersInfo(LobbyMessage lobbyMessage)
-    {
-        String name = null;
-        int playerNumber = 0;
-        GodName cards = null;
-
-        return new PlayersInfo(name,playerNumber,cards);
-
-
-    }
-
-    //last player added
-    public PlayersInfo savePlayersInfo(LobbyMessage lobbyMessage,GodName choosenCard)
-    {
-
-        return new PlayersInfo(client.getNickname(),lobbyMessage.choosingPlayerNumber,choosenCard);
-
-
-    }
-/*
-    private void saveOpponentPlayers(LobbyMessage lobbyMessage) {
-
-
-        System.out.println("dentro saveOpponentplayers");
-
-        client.playersInfo = new ArrayList<>();
-
-        for(int i = 0; i < lobbyMessage.players.size();i++)
-        {
-            //client.playersInformation = new PlayersInformation(lobbyMessage.players.get(i),i);
-            client.playersInfo.add(new PlayersInfo(lobbyMessage.players.get(i),i));
-            //client.playersInformation[i] = new PlayersInformation(lobbyMessage.players.get(i),i+1);
-        }
-
-
-        for(int i = 0; i < client.playersInformation.size();i++)
-        {
-            //System.out.println("nome : "+ client.playersInformation[i].);
-            client.playersInformation.toString();
-        }
-    }
-*/
     @Override
     public void updateWaitingRoom(WaitMessage waitMessage) {
 
@@ -278,30 +221,19 @@ public class CLI implements View {
             System.out.println("ACTION MESSAGE : " + boardMessage.action);
             if(boardMessage.action == ActionNames.PLACE_WORKERS)
             {
-                Vector2d[] temp = new Vector2d[2];
+                Vector2d temp ;
 
 
                 System.out.println("workers placement");
                 //utente sceglie 2 posizioni
                 printBoard(boardMessage.board);
 
-                /*
-                //salvo 2 posizioni
-                for(int i = 0; i <2; i++)
-                {
-                    System.out.println("where do you want to position worker number "+(i+1)+"?");
-                    temp[i] = getTargetTile(boardMessage.action,boardMessage.board);
 
-
-                    //da aggiungere : non far scegliere la stessa posizione oppure posizione occupata dagli avversari
-
-
-                }
-                 */
-                temp = setWorkerPosition(boardMessage);
+                //temp = setWorkerPosition(boardMessage);
+                temp = setWorkerPositionFinal(boardMessage);
                 //invio
-                notifySelectedTile(new SelectedTileMessage(temp[0]));
-                notifySelectedTile(new SelectedTileMessage(temp[1]));
+                notifySelectedTile(new SelectedTileMessage(temp));
+
 
             }
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
@@ -369,6 +301,7 @@ public class CLI implements View {
 
 
         }
+
 
         //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
 
@@ -937,7 +870,7 @@ public class CLI implements View {
 
                 selectedWorkersPosition[count] = getTargetTileUnified();
 
-                if(!checkOccupiedTargetTile(boardMessage,selectedWorkersPosition[count])) count++;
+                if(!checkFreeTargetTile(boardMessage,selectedWorkersPosition[count])) count++;
                 else{
                     printBoard(boardMessage.board);
                     System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________OCCUPIED TILE____________>>>>>>>>>> " + ANSI_RESET);
@@ -960,16 +893,52 @@ public class CLI implements View {
         return selectedWorkersPosition;
     }
 
+
+
+
+
+
+    public  Vector2d setWorkerPositionFinal(BoardMessage boardMessage)
+    {
+
+        Vector2d selectedWorkersPosition = null ;
+
+        System.out.println(ANSI_BRIGHT_BG_BLUE +ANSI_BLACK+ "███████████████████████████████████████████████████████████████\n" +"<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PLACE WORKER >>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+"███████████████████████████████████████████████████████████████" );
+
+        ansi_reset();
+
+        boolean done = false;
+
+
+            do {
+                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "where do you want to place your  worker ?" + ANSI_RESET);
+
+                if(selectedWorkersPosition!=null){
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________OCCUPIED TILE____________>>>>>>>>>> " + ANSI_RESET);
+                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please try again____________>>>>>>>>>> " + ANSI_RESET);
+
+                }
+
+                selectedWorkersPosition= getTargetTileUnified();
+                //if(checkFreeTargetTile(boardMessage,selectedWorkersPosition)) done = true;
+
+
+            }while(!checkFreeTargetTile(boardMessage,selectedWorkersPosition));
+
+
+        return selectedWorkersPosition;
+    }
+
     /**
      * check if the target tile is occupied by an opponent workers
      * @param boardMessage board game
      * @param workerPosition Vector2d position in game board
-     * @return true if target tile is occupied
+     * @return true if target tile is empty
      */
-    private boolean checkOccupiedTargetTile(BoardMessage boardMessage, Vector2d workerPosition) {
+    private boolean checkFreeTargetTile(BoardMessage boardMessage, Vector2d workerPosition) {
 
 
-        return boardMessage.board[workerPosition.x][workerPosition.y].playerNumber != NO_PLAYER;
+        return boardMessage.board[workerPosition.x][workerPosition.y].playerNumber == NO_PLAYER;
     }
 
 
@@ -1033,6 +1002,26 @@ public class CLI implements View {
                 "                                                                          \n");
         System.out.println(ANSI_BRIGHT_BG_BLUE +ANSI_WHITE+ "██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
         ansi_reset();
+    }
+
+    public boolean getUndoAnswer() {
+
+
+        String answer;
+
+
+        do {
+
+            System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "do you want to undo your last choice ? :");
+            answer = in.nextLine();
+
+
+        } while (!"N".equalsIgnoreCase(answer) && !"Y".equalsIgnoreCase(answer));
+
+
+        ansi_reset();
+        return !"N".equalsIgnoreCase(answer);
+
     }
 
 

@@ -3,7 +3,7 @@ package it.polimi.ing.sw.psp017.view.GraphicUserInterface;
 import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.AuthenticationMessage;
 import it.polimi.ing.sw.psp017.view.CLI;
-import it.polimi.ing.sw.psp017.view.KGradientPanel;
+
 
 
 import javax.swing.*;
@@ -158,6 +158,9 @@ public class LoginPanel extends JPanel {
             this.setLayout(new BorderLayout());
            // this.setPreferredSize(new Dimension(1200, 1000));
             this.add(kGradientPanel, BorderLayout.CENTER);
+
+            kGradientPanel.backgroundTransition();
+            kGradientPanel.backgroundGradient();
 
 
 

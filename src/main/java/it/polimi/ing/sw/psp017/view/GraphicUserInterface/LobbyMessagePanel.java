@@ -97,21 +97,19 @@ public class LobbyMessagePanel extends JPanel {
                     if(e.getClickCount() >= 2){
                         JLabel playerDescription = new JLabel();
                         playerDescription.setIcon(GodView.getCard(GodName.valueOf((toggleButton.getName()))).getIconDescription());
-
                         if(popUp == null){
-                        popUp = new JDialog((JFrame)SwingUtilities.getRoot(kGradientPanel1));
-                        popUp.add(playerDescription);
-                        popUp.setResizable(false);
-                        popUp.setVisible(true);
-                        popUp.setSize(507,278);
-                        popUp.setLocationRelativeTo(null);
-                        popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                        popUp.addWindowListener(new WindowAdapter() {
+                            popUp = new JDialog((JFrame)SwingUtilities.getRoot(kGradientPanel1));
+                            popUp.add(playerDescription);
+                            popUp.setResizable(false);
+                            popUp.setVisible(true);
+                            popUp.setSize(507,278);
+                            popUp.setLocationRelativeTo(null);
+                            popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                            popUp.addWindowListener(new WindowAdapter() {
                                 @Override
                                 public void windowClosing(WindowEvent e) {
                                     popUp.dispose();
                                     popUp = null;
-
                                 }
                             });}
                         else{
@@ -120,14 +118,10 @@ public class LobbyMessagePanel extends JPanel {
                             popUp.repaint();
                         }
                     }
-
                     else {
-
-                            client.setCard(GodName.valueOf(toggleButton.getName()));
-                            playButton_JButton.setEnabled(true);
-                            playButton_JButton.setName(toggleButton.getName());
-
-
+                        client.setCard(GodName.valueOf(toggleButton.getName()));
+                        playButton_JButton.setEnabled(true);
+                        playButton_JButton.setName(toggleButton.getName());
 
                     }
 

@@ -33,7 +33,7 @@ public class FirstPlayerFrame extends JFrame {
         this.client = client;
         numberOfPlayersGroup = new ButtonGroup();
         kGradientPanel1 = new KGradientPanel();
-        kGradientPanel3 = new KGradientPanel();
+        kGradientPanelPlayButton = new KGradientPanel();
         playButtonJButton = new JButton();
         selectNumberOfPlayers_JPanel = new JPanel();
         SelectNumberOfPlayerLabel = new JLabel();
@@ -54,8 +54,8 @@ public class FirstPlayerFrame extends JFrame {
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 51, 153));
         kGradientPanel1.setkStartColor(new java.awt.Color(51, 204, 255));
 
-        kGradientPanel3.setkEndColor(new java.awt.Color(0, 153, 153));
-        kGradientPanel3.setkStartColor(new java.awt.Color(0, 204, 204));
+        kGradientPanelPlayButton.setkEndColor(new java.awt.Color(0, 153, 153));
+        kGradientPanelPlayButton.setkStartColor(new java.awt.Color(0, 204, 204));
 
         playButtonJButton.setBackground(new java.awt.Color(0, 153, 153));
         playButtonJButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/playButton.png"))); // NOI18N
@@ -66,7 +66,7 @@ public class FirstPlayerFrame extends JFrame {
                 playButtonActionPerformed(evt);
             }
         });
-        kGradientPanel3.add(playButtonJButton);
+        kGradientPanelPlayButton.add(playButtonJButton);
 
         selectNumberOfPlayers_JPanel.setOpaque(false);
 
@@ -95,7 +95,6 @@ public class FirstPlayerFrame extends JFrame {
         numberOfPlayersGroup.add(TwoPlayerButton);
         TwoPlayerButton.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         TwoPlayerButton.setForeground(new java.awt.Color(102, 102, 102));
-        TwoPlayerButton.setSelected(true);
         TwoPlayerButton.setText("2");
         TwoPlayerButton.setToolTipText("");
         TwoPlayerButton.setBorder(BorderFactory.createTitledBorder(null, "", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18), new java.awt.Color(102, 0, 102))); // NOI18N
@@ -185,6 +184,8 @@ public class FirstPlayerFrame extends JFrame {
             buttonsPanel.add(deckJToggleButton[i]);
         }
 
+        kGradientPanelPlayButton.backgroundGradient();
+
         jScrollPane1.setViewportView(buttonsPanel);
 
         viewCardsPanel.setBorder(BorderFactory.createLineBorder(new java.awt.Color(153, 255, 255), 2));
@@ -210,7 +211,7 @@ public class FirstPlayerFrame extends JFrame {
         kGradientPanel1.setLayout(kGradientPanel1Layout);
         kGradientPanel1Layout.setHorizontalGroup(
                 kGradientPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(kGradientPanel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(kGradientPanelPlayButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(selectNumberOfPlayers_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, GroupLayout.Alignment.TRAILING)
                         .addComponent(viewCardsPanel, GroupLayout.DEFAULT_SIZE, 1095, Short.MAX_VALUE)
@@ -228,7 +229,7 @@ public class FirstPlayerFrame extends JFrame {
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(kGradientPanel3, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(kGradientPanelPlayButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
                                 .addGap(25, 25, 25))
         );
 
@@ -367,7 +368,7 @@ public class FirstPlayerFrame extends JFrame {
     private JSeparator jSeparator1;
     private JToggleButton[] deckJToggleButton;
     private KGradientPanel kGradientPanel1;
-    private KGradientPanel kGradientPanel3;
+    private KGradientPanel kGradientPanelPlayButton;
     private ButtonGroup numberOfPlayersGroup;
     private JButton resetNumberOfPlyer;
     private JPanel selectNumberOfPlayers_JPanel;

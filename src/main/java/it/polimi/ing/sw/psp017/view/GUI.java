@@ -7,6 +7,7 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 
 import it.polimi.ing.sw.psp017.model.Board;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.*;
+import it.polimi.ing.sw.psp017.view.GraphicUserInterface.KGradientPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,6 +36,11 @@ public class GUI implements View {
             @Override
             public void run() {
                 createFrame();
+
+
+
+
+
             }
         });
 
@@ -189,6 +195,8 @@ public class GUI implements View {
         SwingUtilities.invokeLater(new Thread(new Runnable() {
             @Override
             public void run() {
+
+
 
 
                 mainFrame.dispose();

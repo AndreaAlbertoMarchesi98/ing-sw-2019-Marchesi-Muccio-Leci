@@ -6,23 +6,19 @@ import it.polimi.ing.sw.psp017.controller.client.Client;
 
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.PowerActiveMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.SelectedTileMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.UndoMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.LobbyMessage;
-import it.polimi.ing.sw.psp017.controller.server.Lobby;
 import it.polimi.ing.sw.psp017.model.Vector2d;
-import it.polimi.ing.sw.psp017.view.GodName;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 
-    public class BoardGUI extends JFrame {
+public class BoardGUI extends JFrame {
         private final Dimension dim;
         public JButton[] playersButton;
+        boolean tempKGradient = false;
         private JDialog popUp;
 
         public BoardGUI(Client client) {
@@ -102,7 +98,8 @@ import java.awt.geom.RoundRectangle2D;
 
                     @Override
                     public void paintIcon(Component c, Graphics g, int x, int y) {
-                            JButton b = (JButton) c;
+                        if (c instanceof AbstractButton) {
+                            AbstractButton b = (AbstractButton) c;
                             Insets i = b.getBorder().getBorderInsets(b);
                             int w = 65;
                             int h = 65;
@@ -129,19 +126,18 @@ import java.awt.geom.RoundRectangle2D;
                             g2.draw(area);
                             g2.dispose();
                         }
+                    }
 
                     @Override
                     public int getIconWidth() {
-                        return 0;
+                        return Math.max(width, 100);
                     }
 
                     @Override
                     public int getIconHeight() {
-                        return 0;
+                        return Math.max(height, 20);
                     }
                 }
-
-
 
             };
             powerActivated = new JButton();
@@ -173,26 +169,31 @@ import java.awt.geom.RoundRectangle2D;
                     private final Color ST = new Color(1f, 1f, 1f, .2f);
                     private final Color SB = new Color(1f, 1f, 1f, .1f);
                     private static final int R = 8;
+                    private int width;
+                    private int height;
 
                     protected TranslucentButtonIcon(JComponent c) {
                         Insets i = c.getBorder().getBorderInsets(c);
                         Dimension d = c.getPreferredSize();
-
+                        width = d.width - i.left - i.right;
+                        height = d.height - i.top - i.bottom;
                     }
 
                     @Override
                     public void paintIcon(Component c, Graphics g, int x, int y) {
-
+                        if (c instanceof AbstractButton) {
+                            AbstractButton b = (AbstractButton) c;
+                            Insets i = b.getBorder().getBorderInsets(b);
                             int w = 65;
                             int h = 65;
-
+                            width = w - i.left - i.right;
+                            height = h - i.top - i.bottom;
                             Graphics2D g2 = (Graphics2D) g.create();
                             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            Shape area = new RoundRectangle2D.Double(x , y, w - 1, h - 1, R, R);
+                            Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
                             Color ssc = TL;
                             Color bgc = BR;
-
-                        ButtonModel m = ((JButton)c).getModel();
+                            ButtonModel m = b.getModel();
                             if (m.isPressed()) {
                                 ssc = SB;
                                 bgc = ST;
@@ -202,25 +203,24 @@ import java.awt.geom.RoundRectangle2D;
                             }
 
                             g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
-                            g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF/quit.png")).getImage(), x , y , null);
+                            g2.drawImage(new ImageIcon(getClass().getClassLoader().getResource("STUFF/quit.png")).getImage(), x - i.left, y - i.top, null);
                             g2.fill(area);
                             g2.setPaint(BR);
                             g2.draw(area);
                             g2.dispose();
                         }
+                    }
 
                     @Override
                     public int getIconWidth() {
-                        return 0;
+                        return Math.max(width, 100);
                     }
 
                     @Override
                     public int getIconHeight() {
-                        return 0;
+                        return Math.max(height, 20);
                     }
                 }
-
-
 
             };
 
@@ -307,17 +307,9 @@ import java.awt.geom.RoundRectangle2D;
 
             upperDXPanel.setOpaque(false);
             upperDXPanel.setLayout(new GridLayout(2, 1, 0, 2));
-            undo.setEnabled(false);
+
             undo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/pointing-left.png")));
             undo.setToolTipText("Undo");
-            undo.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(e.getSource() == undo)
-                        System.out.println("sending undo message");
-                    client.getNetworkHandler().sendMessage(new UndoMessage());
-                }
-            });
             //undo.setSelected(true);
             upperDXPanel.add(undo);
             powerActivated.setText("Power Active");
@@ -360,45 +352,29 @@ import java.awt.geom.RoundRectangle2D;
             lowerDXPanel.setOpaque(false);
 
 
-            Border compound;
-            Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-            Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-            compound = BorderFactory.createCompoundBorder(
-                    raisedbevel, loweredbevel);
+
 
             playersButton = new JButton[client.playersInfo.size()];
             for(int i = 0; i < client.playersInfo.size();i++)
             {
 
-                playersButton[i] = new JButton();
-                playersButton[i].setFont(new Font("Tahoma", 3, 24));
-                playersButton[i].setForeground(new Color(255, 255, 255));
-                playersButton[i].setName(client.playersInfo.get(i).name);
-                playersButton[i].setIcon(GodView.getCard(client.playersInfo.get(i).card).getIcon());
-                playersButton[i].setBackground(new Color(1f, 1f, 1f, .1f));
-                playersButton[i].setBorderPainted(true);
-                playersButton[i].setBorder(compound);
-                System.out.println(client.getCard().toString());
-                playersButton[i].addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        infoPlayerAction(evt);
-                    }
-                });
+                playersButton[i] = createJButton(i);
 
-
-
-                playersButton[i].setHorizontalTextPosition(SwingConstants.CENTER);
-                playersButton[i].setOpaque(false);
 
                 if(client.playersInfo.get(i).playerNumber == client.getPlayerNumber())
                 {
-                    playersButton[i].setToolTipText("Your Player");
                     DXPanel.add(playersButton[i]);
                 }
                 else
                 {
-                    playersButton[i].setToolTipText("Opponent Player");
                     SXPanel.add(playersButton[i]);
+                    if(client.playersInfo.size() == 2)
+                    {
+                        JButton extensionButton = createJButton(i);
+                        extensionButton.setIcon(GodView.getCard(client.playersInfo.get(i).card).getIconDescription());
+                        SXPanel.add(extensionButton);
+
+                    }
                 }
             }
 
@@ -418,7 +394,7 @@ import java.awt.geom.RoundRectangle2D;
 
             kGradientPanel1.add(SXPanel, BorderLayout.WEST);
 
-            southPanel.setOpaque(false);
+           // southPanel.setOpaque(false);
             southPanel.setPreferredSize(new Dimension(1120, 100));
             quitButton.setToolTipText("QUIT");
             quitButton.setVisible(true);
@@ -429,11 +405,11 @@ import java.awt.geom.RoundRectangle2D;
                 }
             });
             // southPanel.setSize(1120,100);
-            southPanel.setLayout(new FlowLayout());
+            southPanel.setLayout(new GridLayout());
 
             southPanel.setMinimumSize(new Dimension(this.getMinimumSize().width, 200));
             southPanel.add(quitButton);
-            kGradientPanel1.add(southPanel, BorderLayout.SOUTH);
+           // kGradientPanel1.add(southPanel, BorderLayout.SOUTH);
 
             Dimension dimBoard = new Dimension((int) (dim.height*0.7), (int) (dim.height*0.7));
             JLayeredPane layer = new JLayeredPane();
@@ -453,17 +429,87 @@ import java.awt.geom.RoundRectangle2D;
             layer.add(workerPanel, Integer.valueOf(2));
             layer.add(tilePanel, Integer.valueOf(1));
 
+            boardGamePanel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 102, 0), 5, true));
+            SXPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 255), new java.awt.Color(0, 255, 255), new java.awt.Color(0, 102, 102), new java.awt.Color(0, 153, 153)));
+            DXPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 153, 255), new java.awt.Color(0, 255, 255), new java.awt.Color(0, 102, 102), new java.awt.Color(0, 153, 153)));
+
+
+            KGradientPanel kGradientPanel = new KGradientPanel();
+
+            kGradientPanel.setLayout(new FlowLayout());
+            kGradientPanel.setkEndColor(new java.awt.Color(255, 51, 102));
+            kGradientPanel.setkGradientFocus(1000);
+            kGradientPanel.setkStartColor(new java.awt.Color(255, 204, 0));
+
+            KGradientPanel copykGradientPanel = kGradientPanel;
+            copykGradientPanel.setVisible(true);
+            kGradientPanel.add(quitButton);
+
+           // southPanel.removeAll();
+            //southPanel.add(copykGradientPanel);
+
+            kGradientPanel1.add(copykGradientPanel,BorderLayout.SOUTH);
+
+
+
+            copykGradientPanel.add(messageLabel_NorthPanel);
+            northPanel_JPanel.removeAll();
+            northPanel_JPanel.add(copykGradientPanel);
+            northPanel_JPanel.setLayout(new GridLayout());
+
 
             this.setContentPane(kGradientPanel1);
+
+
 
             setLocationRelativeTo(null);
             setSize(dim.width / 2, dim.width / 2);
 
             setVisible(true);
+
+            kGradientPanel1.backgroundGradient();
+
+
+
+
+
+
         }
 
+    private JButton createJButton(int i) {
 
-        private void quitButtonActionPerformed(ActionEvent evt) {
+        Border compound;
+        Border raisedbevel = BorderFactory.createRaisedBevelBorder();
+        Border loweredbevel = BorderFactory.createLoweredBevelBorder();
+        compound = BorderFactory.createCompoundBorder(
+                raisedbevel, loweredbevel);
+
+        JButton playersButton = new JButton();
+        playersButton = new JButton();
+        playersButton.setFont(new Font("Tahoma", 3, 24));
+        playersButton.setForeground(new Color(255, 255, 255));
+        playersButton.setName(client.playersInfo.get(i).name);
+        playersButton.setIcon(GodView.getCard(client.playersInfo.get(i).card).getIcon());
+        playersButton.setBackground(new Color(1f, 1f, 1f, .1f));
+        playersButton.setBorderPainted(true);
+        playersButton.setBorder(compound);
+        System.out.println(client.getCard().toString());
+        playersButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                infoPlayerAction(evt);
+            }
+        });
+
+
+        playersButton.setToolTipText("Your Player");
+        playersButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        playersButton.setOpaque(false);
+
+        return playersButton;
+    }
+
+
+    private void quitButtonActionPerformed(ActionEvent evt) {
             Object[] option = {"Quit", "Cancel"};
             int n = JOptionPane.showOptionDialog(this, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);
             ;
@@ -485,11 +531,9 @@ import java.awt.geom.RoundRectangle2D;
                     break;
                 case MOVE:
                     messageLabel_NorthPanel.setText("MOVE ");
-
                     break;
                 case BUILD:
-                    messageLabel_NorthPanel.setText("BUILD ");
-
+                    messageLabel_NorthPanel.setText("BUILD WORKER");
                     break;
                 case NONE:
                     messageLabel_NorthPanel.setText("NONE WORKER");
@@ -505,7 +549,8 @@ import java.awt.geom.RoundRectangle2D;
         }
 
 
-        public void showValidTile(BoardMessage boardMessage) {
+
+    public void showValidTile(BoardMessage boardMessage) {
             Color color = Color.red;
             switch (boardMessage.action) {
                 case MOVE:
@@ -562,8 +607,6 @@ import java.awt.geom.RoundRectangle2D;
                 System.out.println("mio turno");
                 showValidTile(boardMessage);
             }
-
-
             powerActivated.setEnabled(false);
             powerActivated.setBackground(null);
             this.revalidate();
@@ -696,7 +739,6 @@ import java.awt.geom.RoundRectangle2D;
                 if(evt.getSource() == playersButton[i]) {
                     JLabel playerDescription = new JLabel();
                     playerDescription.setIcon(GodView.getCard(client.playersInfo.get(i).card).getIconDescription());
-
                     if (popUp == null) {
                         popUp = new JDialog(this);
                         popUp.add(playerDescription);
@@ -704,15 +746,12 @@ import java.awt.geom.RoundRectangle2D;
                         popUp.setVisible(true);
                         popUp.setSize(507, 278);
                         popUp.setLocationRelativeTo(null);
-
                         popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
                         popUp.addWindowListener(new WindowAdapter() {
                             @Override
                             public void windowClosing(WindowEvent e) {
                                 popUp.dispose();
                                 popUp = null;
-
                             }
                         });
                     }
@@ -722,7 +761,6 @@ import java.awt.geom.RoundRectangle2D;
                         popUp.repaint();
                     }
                 }
-
 
             }
 
@@ -737,14 +775,14 @@ import java.awt.geom.RoundRectangle2D;
                 for (int row = 0; row < 5; row++) {
                     for (int col = 0; col < 5; col++) {
                         if (buttonGrid[row][col] == e.getSource()) {
-                            //System.out.println("Selected row and column: " + row + " " + col);
-
-                            if(messageLabel_NorthPanel.getText() == "MOVE " || messageLabel_NorthPanel.getText().equals("BUILD ")){
-                                    undo() ;}
+                            System.out.println("Selected row and column: " + row + " " + col);
+                            enabledBoard(false);
                             client.getNetworkHandler().sendMessage(new SelectedTileMessage(new Vector2d(row, col)));
                         }
                     }
                 }
+
+
             }
 
             @Override
@@ -787,27 +825,15 @@ import java.awt.geom.RoundRectangle2D;
             powerActivated.setBackground(Color.green);
         }
 
-        public void undo(){
-
-            undo.setEnabled(true);
-            undo.setBackground(Color.green);
-                   new Thread(new Runnable() {
-                       @Override
-                       public void run() {
-                           try {
-                               Thread.sleep(5000);
-                               undo.setEnabled(false);
-                               undo.setBackground(null);
-                           } catch (InterruptedException e) {
-                               e.printStackTrace();
-                           }
-                       }
-                   }).start();
-
-        }
-    }
 
 
+
+
+
+
+
+
+}
 
 
 
