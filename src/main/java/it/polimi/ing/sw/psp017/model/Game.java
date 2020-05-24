@@ -17,6 +17,7 @@ public class Game {
     private Tile selectedTile;
     private boolean[][] validTiles;
     private ActionNames action;
+    private Step savedStep;
 
 
     // private constructor restricted to this class itself
@@ -75,8 +76,10 @@ public class Game {
     public void restore(Board board){
         this.board = board;
         stepNumber = 0;
+        action = ActionNames.SELECT_WORKER;
         powerActive = false;
         selectedTile = null;
+        getActivePlayer().setPreviousStep(savedStep);
     }
     public Board getBoardCopy(){
         Board board = new Board();
@@ -90,6 +93,7 @@ public class Game {
                 newTile.setDome(currentTile.isDome());
             }
         }
+        savedStep = getActivePlayer().getPreviousStep();
         return board;
     }
 
@@ -107,6 +111,10 @@ public class Game {
 
     public void setValidTiles(boolean[][] validTiles) {
         this.validTiles = validTiles;
+    }
+
+    public void clearValidTiles() {
+        this.validTiles = new boolean[Board.size][Board.size];
     }
 
     public boolean hasChoice(){

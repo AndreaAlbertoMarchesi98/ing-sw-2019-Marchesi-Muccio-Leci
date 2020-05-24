@@ -13,6 +13,7 @@ import it.polimi.ing.sw.psp017.model.Tile;
 
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class GameController {
 
@@ -21,12 +22,13 @@ public class GameController {
     private Board savedBoard;
     private Lobby lobby;
     private final Server server;
-    private boolean isUndoPossible;
-    private boolean hasUndoArrived;
-
-    private enum GameState {
-        WORKER_PLACEMENT,
+    private volatile boolean isUndoPossible;
+    private volatile boolean hasUndoArrived;
+    private volatile boolean hasSkippedUndo;
+    private enum GameSate{
+        SET_UP, LOBBY, MATCH
     }
+    private GameSate gameState;
 
     public GameController(Server server, VirtualView firstView) {
         views = new ArrayList<>();
@@ -37,6 +39,7 @@ public class GameController {
         views.add(firstView);
         firstView.setGameController(this);
         firstView.getPlayer().setPlayerNumber(views.size());
+        gameState = GameSate.SET_UP;
 
         firstView.updateGameCreation();
     }
@@ -67,29 +70,143 @@ public class GameController {
 
     public synchronized void createLobby(GameSetUpMessage message, VirtualView view) {
         System.out.println("creatingLobby");
+        gameState = GameSate.LOBBY;
         lobby = new Lobby(message.godNames);
-
         lobby.addPlayer(view.getPlayer());
     }
 
     private void startGame() {
+        System.out.println("starting game");
+        gameState = GameSate.MATCH;
         game = new Game(lobby.getPlayers());
         notifyBoard();
     }
 
     private void endGame() {
+        for (VirtualView view : views)
+            view.stop();
         views.clear();
-        lobby = null;
+        views = null;
         server.removeGameController(this);
+    }
+
+//              VIEW INTERACTION
+//                 NOTIFIERS
+
+    private void notifyLobby() {
+        LobbyMessage message = new LobbyMessage(lobby);
+        for (VirtualView view : views) {
+            view.updateLobby(message);
+        }
+    }
+
+    public void notifyBoard() {
+        BoardMessage message = new BoardMessage(game);
+        for (VirtualView view : views) {
+            view.updateBoard(message);
+        }
+    }
+
+    public void notifyVictory(int winnerNumber) {
+        System.out.println("notify victory");
+        VictoryMessage message = new VictoryMessage(winnerNumber);
+        for (VirtualView view : views) {
+            view.updateVictory(message);
+        }
+    }
+
+    private void notifyDisconnection(VirtualView disconnectedView) {
+        int disconnectedPlayerNumber = disconnectedView.getPlayer().getPlayerNumber();
+        ServerDisconnectionMessage message = new ServerDisconnectionMessage(disconnectedPlayerNumber);
+        for (VirtualView view : views) {
+            if(!view.equals(disconnectedView))
+                view.updateDisconnection(message);
+        }
+    }
+
+    //              VIEW INTERACTION
+    //                 UPDATERS
+
+    public synchronized void setPlayerCard(CardMessage message, VirtualView view) {
+        if(gameState==GameSate.LOBBY) {
+            GodName godName = message.godName;
+            if (lobby.getAvailableCards().contains(godName)) {
+                lobby.getAvailableCards().remove(godName);
+                lobby.addChosenCard(godName);
+
+                Card card = CardFactory.getCard(godName);
+                view.getPlayer().setCard(card);
+                view.getPlayer().setOriginalCard(card);
+
+                if (lobby.getAvailableCards().size() == 0)
+                    startGame();
+                else
+                    notifyLobby();
+            }
+        }
+    }
+
+    public synchronized void setPowerActive() {
+        if(gameState==GameSate.MATCH) {
+            System.out.println("setting power Active to: " + !game.isPowerActive());
+            game.setPowerActive(!game.isPowerActive());
+            Player player = game.getActivePlayer();
+
+            if (isTurnFinished(player.getCard()))
+                setUpNextTurn(player.getPreviousStep());
+            else {
+                updateValidTiles();
+                updateActions(player);
+            }
+            notifyBoard();
+        }
+    }
+
+    public void receiveUndo() {
+        if(gameState==GameSate.MATCH) {
+            System.out.println("receive undo");
+            if (isUndoPossible) {
+                System.out.println("undoHasArrived is set to true");
+                hasUndoArrived = true;
+            }
+        }
+    }
+
+    public void processSelection(SelectedTileMessage message, Player player) {
+        if(gameState==GameSate.MATCH) {
+            if (game.isPlayerTurn(player)) {
+                if (Board.isInsideBounds(message.tilePosition)) {
+
+                    Tile selectedTile = game.getBoard().getTile(message.tilePosition);
+
+                    if (game.getAction() == ActionNames.PLACE_WORKERS)
+                        placeWorker(selectedTile, player);
+                    else if (game.getAction() == ActionNames.SELECT_WORKER)
+                        selectWorker(selectedTile, player);
+                    else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD) {
+                        if (isUndoPossible)
+                            hasSkippedUndo = true;
+                        performAction(selectedTile, player);
+                    }
+                }
+            }
+        }
     }
 
     public void handleDisconnection(VirtualView view) {
         synchronized (this) {
-            views.remove(view);
-            notifyDisconnection(view.getPlayer().getPlayerNumber());
-            view = null;
+            notifyDisconnection(view);
             endGame();
         }
+    }
+
+    //                  GAME LOGIC
+    //                  TURN LOGIC
+
+    private boolean isTurnFinished(Card card) {
+        int stepNumber = game.getStepNumber();
+        boolean isPowerActive = game.isPowerActive();
+        return !card.canMove(stepNumber, isPowerActive) && !card.canBuild(stepNumber, isPowerActive);
     }
 
     private void setUpNextTurn(Step currentStep) {
@@ -141,64 +258,16 @@ public class GameController {
             }
         }
     }
-//              VIEW INTERACTION
-//                 notifiers
-
-    private void notifyLobby() {
-        LobbyMessage message = new LobbyMessage(lobby);
-        for (VirtualView view : views) {
-            view.updateLobby(message);
-        }
-    }
-
-    public void notifyBoard() {
-        System.out.println("notify board");
-        BoardMessage message = new BoardMessage(game);
-        for (VirtualView view : views) {
-            view.updateBoard(message);
-        }
-    }
-
-    public void notifyVictory(int winnerNumber) {
-        System.out.println("notify victory");
-        VictoryMessage message = new VictoryMessage(winnerNumber);
-        for (VirtualView view : views) {
-            view.updateVictory(message);
-        }
-    }
-
-    private void notifyDisconnection(int disconnectedPlayerNumber) {
-        ServerDisconnectionMessage message = new ServerDisconnectionMessage(disconnectedPlayerNumber);
-        for (VirtualView view : views) {
-            view.updateDisconnection(message);
-        }
-    }
-    //               view reactions
-
-    public void processSelection(SelectedTileMessage message, Player player) {
-        synchronized (this) {
-            if (game.isPlayerTurn(player)) {
-                if (Board.isInsideBounds(message.tilePosition)) {
-                    Tile selectedTile = game.getBoard().getTile(message.tilePosition);
-
-                    if (game.getAction() == ActionNames.PLACE_WORKERS)
-                        placeWorker(selectedTile, player);
-                    else if (game.getAction() == ActionNames.SELECT_WORKER)
-                        selectWorker(selectedTile, player);
-                    else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD)
-                        performAction(selectedTile, player);
-                }
-            }
-        }
-    }
-
-    private void placeWorker(Tile selectedTile, Player player) {
+    //                  GAME LOGIC
+    //                  SELECTIONS LOGIC
+    private synchronized void placeWorker(Tile selectedTile, Player player) {
         if (selectedTile.getWorker() == null) {
             System.out.println("player: " + player.getPlayerNumber() + " is placing a worker");
             Worker worker = new Worker(player);
             selectedTile.setWorker(worker);
             player.addWorker(worker);
             if (player.getWorkers().size() == 2) {
+                savedBoard = game.getBoardCopy();
                 game.nextTurn();
 
                 if (game.getPlayerIndex() == 0)
@@ -212,7 +281,7 @@ public class GameController {
         notifyBoard();
     }
 
-    private void selectWorker(Tile selectedTile, Player player) {
+    private synchronized void selectWorker(Tile selectedTile, Player player) {
         System.out.println("player: " + player.getPlayerNumber() + " is selecting a worker");
 
         if (selectedTile.getWorker() != null && player.equals(selectedTile.getWorker().getOwner())) {
@@ -222,13 +291,13 @@ public class GameController {
 
         } else {
             game.setAction(ActionNames.SELECT_WORKER);
-
-            game.setValidTiles(new boolean[Board.size][Board.size]);
+            game.setSelectedTile(null);
+            game.clearValidTiles();
         }
         notifyBoard();
     }
 
-    private void performAction(Tile targetTile, Player player) {
+    private synchronized void performAction(Tile targetTile, Player player) {
         if (game.getValidTiles()[targetTile.getPosition().x][targetTile.getPosition().y]) {
             System.out.println("build/move with worker");
             Tile currentTile = game.getSelectedTile();
@@ -247,8 +316,10 @@ public class GameController {
                 card.build(currentStep, previousStep, game.getBoard());
 
 
-            if (card.checkWin(currentStep, game.getBoard())&&game.getAction()==ActionNames.MOVE)
+            if (card.checkWin(currentStep, game.getBoard())&&game.getAction()==ActionNames.MOVE) {
                 notifyVictory(player.getPlayerNumber());
+                endGame();
+            }
             else {
                 game.nextStep(targetTile);
 
@@ -256,73 +327,43 @@ public class GameController {
                     game.setPowerActive(true);
 
                 if (isTurnFinished(card)) {
-                    setUpNextTurn(currentStep);
+                    game.clearValidTiles();
+                    notifyBoard();
+                    if(!isUndoArrived()) {
+                        setUpNextTurn(currentStep);
+                        notifyBoard();
+                    }
                 } else {
                     game.setSelectedTile(targetTile);
                     updateValidTiles();
+                    player.setPreviousStep(currentStep);
+                    notifyBoard();
+                    isUndoArrived();
                 }
-                player.setPreviousStep(currentStep);
 
-                notifyBoard();
-
-                waitForUndo();
             }
         }
-
     }
 
-    private void waitForUndo() {
+    private boolean isUndoArrived() {
+        System.out.println("checking is undo arrived");
         hasUndoArrived = false;
         isUndoPossible = true;
-        long finishTime = System.currentTimeMillis()+ 5000;
-        while (System.currentTimeMillis() < finishTime) {
+        hasSkippedUndo = false;
+        long finishTime = System.currentTimeMillis() + 5000;
+        while (System.currentTimeMillis() < finishTime && !hasSkippedUndo) {
             if (hasUndoArrived) {
+                System.out.println("restoring board");
                 game.restore(savedBoard);
+                savedBoard = game.getBoardCopy();
+                game.clearValidTiles();
                 notifyBoard();
+                return true;
             }
         }
         isUndoPossible = false;
-    }
-
-    private boolean isTurnFinished(Card card) {
-        int stepNumber = game.getStepNumber();
-        boolean isPowerActive = game.isPowerActive();
-        return !card.canMove(stepNumber, isPowerActive) && !card.canBuild(stepNumber, isPowerActive);
-    }
-
-    public synchronized void setPlayerCard(CardMessage message, VirtualView view) {
-        GodName godName = message.godName;
-        if (lobby.getAvailableCards().contains(godName)) {
-            lobby.getAvailableCards().remove(godName);
-            lobby.addChosenCard(godName);
-
-
-            Card card = CardFactory.getCard(godName);
-            view.getPlayer().setCard(card);
-            view.getPlayer().setOriginalCard(card);
-
-
-            if (lobby.getAvailableCards().size() == 0)
-                startGame();
-            else
-                notifyLobby();
-        }
-    }
-
-    public synchronized void setPowerActive() {
-        System.out.println("before pressed button power" + game.isPowerActive());
-        game.setPowerActive(!game.isPowerActive());
-        System.out.println("after pressed button power" + game.isPowerActive());
-        Player player = game.getActivePlayer();
-
-        if (isTurnFinished(player.getCard()))
-            setUpNextTurn(player.getPreviousStep());
-        else {
-            updateValidTiles();
-            updateActions(player);
-        }
-
-        notifyBoard();
+        System.out.println("undo no more possible");
+        return false;
     }
 
     private void updateActions(Player player) {
@@ -334,6 +375,9 @@ public class GameController {
         else
             game.setAction(ActionNames.SELECT_WORKER);
     }
+
+    //                  GAME LOGIC
+    //                  VALID TILES LOGIC
 
     private void updateValidTiles() {
         System.out.println("calculating validTiles");
@@ -388,10 +432,5 @@ public class GameController {
             }
         }
         return validTiles;
-    }
-
-    public synchronized void receiveUndo() {
-        if(isUndoPossible)
-            hasUndoArrived = true;
     }
 }

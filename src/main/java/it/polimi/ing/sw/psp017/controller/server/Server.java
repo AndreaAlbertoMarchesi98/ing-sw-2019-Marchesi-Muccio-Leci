@@ -1,5 +1,6 @@
 package it.polimi.ing.sw.psp017.controller.server;
 
+import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.UndoMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.InvalidNameMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
 import it.polimi.ing.sw.psp017.model.*;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Server implements Runnable {
+public class Server {
     private ServerSocket socket;
     private final static int SOCKET_PORT = 7778;
 
@@ -21,34 +22,58 @@ public class Server implements Runnable {
     private final ArrayList<GameController> gameControllers;
     GameController waitingGameController;
 
-    public Server() {
+    public static void main(String[] args) {
+        new Server(SOCKET_PORT);
+    }
+
+    public Server(int socketPort) {
         waitingViews = new LinkedList<>();
         waitingGameController = null;
         gameControllers = new ArrayList<>();
-    }
-
-    public static void main(String[] args) {
-        Server server = new Server();
         try {
-            server.socket = new ServerSocket(SOCKET_PORT);
+            socket = new ServerSocket(socketPort);
         } catch (IOException e) {
             System.out.println("cannot open server socket");
             System.exit(1);
-            return;
         }
 
-        Thread thread = new Thread(server);
-        thread.start();
+        new Thread(new AcceptConnectionsThread(this)).start();
+        new Thread(new AddViewsToGameThread(this)).start();
+    }
 
-        while (true)
-            server.tryAddingViewToGame();
+    private static class AcceptConnectionsThread implements Runnable {
+        private final Server server;
 
+        public AcceptConnectionsThread(Server server) {
+            this.server = server;
+        }
+
+        public void run() {
+            server.AcceptConnections();
+        }
+    }
+
+    private static class AddViewsToGameThread implements Runnable {
+        private final Server server;
+
+        public AddViewsToGameThread(Server server) {
+            this.server = server;
+        }
+
+        public void run() {
+            while(true)
+                server.tryAddingViewToGame();
+        }
+    }
+
+    public Queue<VirtualView> getWaitingViews() {
+        return waitingViews;
     }
 
     public void removeGameController(GameController gameController) {
         synchronized (gameControllers) {
-            if(gameController.equals(waitingGameController))
-                waitingGameController=null;
+            if (gameController.equals(waitingGameController))
+                waitingGameController = null;
             gameControllers.remove(gameController);
         }
     }
@@ -63,27 +88,27 @@ public class Server implements Runnable {
     private synchronized void assignView(VirtualView view) {
         System.out.println("assigningView");
         waitingViews.add(view);
-        if(!tryAddingViewToGame())
+        if (!tryAddingViewToGame())
             view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
     }
 
     private synchronized boolean tryAddingViewToGame() {
         //synchronized (waitingViews) {
-            if (!waitingViews.isEmpty()) {
-                if (waitingGameController == null) {
-                    waitingGameController = new GameController(this, popWaitingView());
-                    synchronized (gameControllers) {
-                        gameControllers.add(waitingGameController);
-                    }
-                    return true;
-                } else if (waitingGameController.isLobbyJoinable()) {
-                    waitingGameController.addViewToLobby(popWaitingView());
-                    if(!waitingGameController.isLobbyJoinable())
-                        waitingGameController = null;
-                    return true;
+        if (!waitingViews.isEmpty()) {
+            if (waitingGameController == null) {
+                waitingGameController = new GameController(this, popWaitingView());
+                synchronized (gameControllers) {
+                    gameControllers.add(waitingGameController);
                 }
+                return true;
+            } else if (waitingGameController.isLobbyJoinable()) {
+                waitingGameController.addViewToLobby(popWaitingView());
+                if (!waitingGameController.isLobbyJoinable())
+                    waitingGameController = null;
+                return true;
             }
-            return false;
+        }
+        return false;
     }
 
     public synchronized void tryAuthenticatingView(String nickname, VirtualView view) {
@@ -101,7 +126,7 @@ public class Server implements Runnable {
             if (nickname.equals(view.getPlayer().getNickname()))
                 return false;
         }
-        for(GameController gameController : gameControllers) {
+        for (GameController gameController : gameControllers) {
             for (VirtualView view : gameController.getViews()) {
                 if (nickname.equals(view.getPlayer().getNickname()))
                     return false;
@@ -114,7 +139,7 @@ public class Server implements Runnable {
         waitingViews.remove(view);
     }
 
-    public void run() {
+    public void AcceptConnections() {
         while (true) {
             try {
                 Socket client = socket.accept();

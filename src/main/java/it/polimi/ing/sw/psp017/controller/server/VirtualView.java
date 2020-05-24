@@ -20,17 +20,18 @@ public class VirtualView implements Runnable, View {
     private PingSender pingSender;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    private boolean running;
 
-    private static class PingSender implements Runnable{
+    private static class PingSender implements Runnable {
         private final VirtualView virtualView;
-        private boolean isRunning;
 
-        public PingSender(VirtualView virtualView){
+        public PingSender(VirtualView virtualView) {
             this.virtualView = virtualView;
         }
+
         @Override
         public void run() {
-            while (isRunning) {
+            while (virtualView.isRunning()) {
                 try {
                     virtualView.sendMessage(new ServerPing());
                     Thread.sleep(200);
@@ -40,52 +41,14 @@ public class VirtualView implements Runnable, View {
             }
 
         }
-        public void stop() {
-            isRunning = false;
+    }
+    public class MessageReceiver implements Runnable {
+        private Object message;
+        public MessageReceiver(Object message) {
+            this.message = message;
         }
-    }
 
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public VirtualView(Socket client, Server server) throws IOException {
-        this.server = server;
-
-        input = new ObjectInputStream(client.getInputStream());
-        output = new ObjectOutputStream(client.getOutputStream());
-
-        pingSender = new PingSender(this);
-        Thread pingSenderThread = new Thread(pingSender);
-        pingSenderThread.start();
-    }
-
-    @Override
-    public void run() {
-        try {
-            processMessages();
-        } catch (SocketTimeoutException e) {
-            System.out.println("it s timeout!!!!!!!!!!!!");
-            notifyDisconnection();
-        } catch (IOException | ClassNotFoundException e) {
-            notifyDisconnection();
-            //e.printStackTrace();
-        }
-    }
-
-
-    private void processMessages() throws SocketTimeoutException, IOException, ClassNotFoundException {
-        while (true) {
-            Object message = input.readObject();
-
+        public void run() {
             if (message instanceof AuthenticationMessage)
                 notifyNickname((AuthenticationMessage) message);
 
@@ -106,15 +69,66 @@ public class VirtualView implements Runnable, View {
 
             else if (message instanceof UndoMessage)
                 notifyUndo((UndoMessage) message);
+        }
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void stop() {
+        running = false;
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public VirtualView(Socket client, Server server) throws IOException {
+        running = true;
+
+        this.server = server;
+
+        input = new ObjectInputStream(client.getInputStream());
+        output = new ObjectOutputStream(client.getOutputStream());
+
+        pingSender = new PingSender(this);
+        Thread pingSenderThread = new Thread(pingSender);
+        pingSenderThread.start();
+    }
+
+    @Override
+    public void run() {
+        try {
+            processMessages();
+        } catch (SocketTimeoutException e) {
+            System.out.println("it s timeout!!!!!!!!!!!!");
+            notifyDisconnection();
+        } catch (IOException | ClassNotFoundException e) {
+            notifyDisconnection();
+        }
+    }
 
 
+    private void processMessages() throws SocketTimeoutException, IOException, ClassNotFoundException {
+        while (isRunning()) {
+            Object message = input.readObject();
+
+            new Thread(new MessageReceiver(message)).start();
         }
     }
 
     private void notifyDisconnection() {
         synchronized (this) {
             System.out.println("client disconnected");
-            pingSender.stop();
             if (gameController != null)
                 gameController.handleDisconnection(this);
             else
@@ -179,14 +193,12 @@ public class VirtualView implements Runnable, View {
         sendMessage(disconnectionMessage);
     }
 
-    private void sendMessage(Object message) {
-        synchronized (this) {
+    private synchronized void sendMessage(Object message) {
             try {
                 output.writeObject(message);
                 output.reset();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
 }
