@@ -13,7 +13,6 @@ import java.util.Scanner;
 
     public class Client {
         private  NetworkHandler networkHandler;
-        private int index;
         private View view;
         private int playerNumber = 0;
         private String nickname;
@@ -27,25 +26,13 @@ import java.util.Scanner;
         }
         public ArrayList<PlayersInfo> playersInfo;
 
+        Client(){
+            networkHandler = new NetworkHandler();
+        }
 
-
-        public static void main(String[] args) throws IOException {
+        public static void main(String[] args)  {
             Client client = new Client();
-           // Scanner scanner;
-            //System.out.println("CLI or GUI?");
-          //  scanner = new Scanner(System.in);
-           // String choice = "G";//scanner.nextLine();
 
-
-
-         /*   if (choice.equals("C")) {
-               client.view = new CLI(client);
-               public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-             */
             try {
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                     if ("Nimbus".equals(info.getName())) {
@@ -62,21 +49,9 @@ import java.util.Scanner;
             } catch (javax.swing.UnsupportedLookAndFeelException ex) {
                 java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-            //</editor-fold>
 
-            /* Create and display the form */
 
-            /*}
-            else if(choice.equals("G")){*/
             client.view = new GUI(client);
-           // }
-
-            client.networkHandler = new NetworkHandler(client.view);
-         /*   if(choice.equals("C")){
-                client.networkHandler.startConnection();
-
-            }*/
-
 
         }
 

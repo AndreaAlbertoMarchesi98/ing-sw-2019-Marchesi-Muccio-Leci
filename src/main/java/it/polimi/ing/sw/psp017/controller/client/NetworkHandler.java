@@ -23,6 +23,7 @@ public class NetworkHandler implements Runnable{
     public void setView(View view){
         this.view = view;
     }
+
     private static class PingSender implements Runnable{
         private final NetworkHandler networkHandler;
 
@@ -39,24 +40,16 @@ public class NetworkHandler implements Runnable{
                     e.printStackTrace();
                 }
             }
-
         }
     }
 
 
-
-    public NetworkHandler(View view) {
-        this.view = view;
-    }
-
     public void startConnection() throws IOException{
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("IP address of server?");
-        String ip = "127.0.0.1";//scanner.nextLine();
+        String ip = "127.0.0.1";
 
             this.server = new Socket(ip, SERVER_PORT);
-           // server.setSoTimeout(2000);
+            server.setSoTimeout(1000);
             this.output = new ObjectOutputStream(server.getOutputStream());
             this.input = new ObjectInputStream(server.getInputStream());
             isConnected = true;
@@ -67,10 +60,8 @@ public class NetworkHandler implements Runnable{
             Thread pingSenderThread = new Thread(new PingSender(this));
             pingSenderThread.start();
 
-            System.out.println();
-            view.updateLoginScreen(null);
-
     }
+
     public void closeConnection() {
         try {
             System.out.println("server unreachable");
@@ -105,17 +96,15 @@ public class NetworkHandler implements Runnable{
                 }
                 else if(message instanceof ServerDisconnectionMessage){
                     view.updateDisconnection((ServerDisconnectionMessage)message);
-                }else if(message instanceof VictoryMessage){
-                    view.updateVictory((VictoryMessage)message);
+                }else if(message instanceof VictoryMessage) {
+                    view.updateVictory((VictoryMessage) message);
                 }
 
             } catch (SocketTimeoutException e){
-                e.printStackTrace();
+                System.out.println("ERROR SERVER PING");
                 System.exit(0);
-               // view.notifyDisconnection(new DisconnectionMessage());
             }
             catch (SocketException e){
-               // view.notifyDisconnection(new DisconnectionMessage());
                 System.exit(0);
             }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

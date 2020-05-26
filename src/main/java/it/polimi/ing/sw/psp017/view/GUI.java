@@ -4,10 +4,7 @@ import it.polimi.ing.sw.psp017.controller.client.Client;
 import it.polimi.ing.sw.psp017.controller.client.PlayersInfo;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
-
-import it.polimi.ing.sw.psp017.model.Board;
 import it.polimi.ing.sw.psp017.view.GraphicUserInterface.*;
-import it.polimi.ing.sw.psp017.view.GraphicUserInterface.KGradientPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +15,6 @@ import java.util.ArrayList;
 public class GUI implements View {
     private JFrame mainFrame;
     private Client client;
-    private Container container;
     final public Dimension dim;
     private JLabel backgroundScreen;  //contiene l'immagine di sfondo
     private JPanel mainPanel;
@@ -26,32 +22,23 @@ public class GUI implements View {
     private BoardGUI board;
     private boolean isFirstBoardStep = true;
 
-    private  boolean hasAskedPowerActive;
+
 
     public GUI(Client client) {
         dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.client = client;
         client.playersInfo = new ArrayList<>();
+        client.getNetworkHandler().setView(this);
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 createFrame();
-
-
-
-
-
             }
         });
 
     }
 
-    private Image getImage(String path) {
-        ImageIcon i = new ImageIcon(path);
-        Image im = i.getImage();
-        im = im.getScaledInstance(mainFrame.getWidth(), mainFrame.getHeight(), Image.SCALE_SMOOTH);
-        return im;
-    }
 
     private void createFrame() {
         mainFrame = new JFrame();
@@ -116,13 +103,12 @@ public class GUI implements View {
                 progressBar.setValue(this.getProgress());
                 try {
                     client.getNetworkHandler().startConnection();
-
                 } catch (IOException e) {
                     JOptionPane.showMessageDialog(mainFrame, "Error: No connection. The program will be closed.", "Error", JOptionPane.ERROR_MESSAGE);
                     System.exit(0);
                 }
                 mainFrame.dispose();
-                mainFrame= new JFrame();
+                mainFrame= tempFrame;
                 mainFrame.setIconImage(im);
                 mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 mainFrame.addWindowListener(new WindowAdapter() {
@@ -131,23 +117,20 @@ public class GUI implements View {
                         Object[] option = {"Quit", "Cancel"};
                         int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
                         if (n == JOptionPane.YES_OPTION) {
-                            mainFrame.dispose();
+                            System.exit(0);
                         }
 
                     }
                 });
                 mainFrame.setMinimumSize(new Dimension(500,700));
-                //mainFrame.setPreferredSize(dim);
-                mainFrame.pack();
-                mainFrame.setLocationRelativeTo(null); //centrato
                 mainFrame.setContentPane(mainPanel);
-                //mainFrame.setSize(dim);
+                mainFrame.pack();
+                mainFrame.setLocationRelativeTo(null);
+                updateLoginScreen(null);
                 mainFrame.setVisible(true);
-
                 return 1;
             }
         }.execute();
-
 
 
     }
@@ -195,17 +178,9 @@ public class GUI implements View {
         SwingUtilities.invokeLater(new Thread(new Runnable() {
             @Override
             public void run() {
-
-
-
-
                 mainFrame.dispose();
                 mainPanel.setVisible(false);
                 mainFrame = new FirstPlayerFrame(client);
-               // mainFrame.setSize(dim.width/2,dim.height/2);
-              //  mainFrame.setMinimumSize(new Dimension(1400,850));
-              //  mainFrame.pack();
-              //  mainFrame.repaint();
                 mainFrame.setLocationRelativeTo(null);
                 mainFrame.setVisible(true);
 
@@ -239,23 +214,16 @@ public class GUI implements View {
                     mainFrame.setContentPane(mainPanel);
                     mainFrame.pack();
                     mainFrame.setLocationRelativeTo(null);
-
-
-
                 }
             });
         } else {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-
-
-
                     mainPanel = new LoginPanel(client);
                     mainFrame.setContentPane(mainPanel);
                     mainFrame.pack();
                     mainFrame.setLocationRelativeTo(null);
-
                 }
             });
 
@@ -265,15 +233,13 @@ public class GUI implements View {
 
     @Override
     public void updateLobby(final LobbyMessage lobbyMessage) {
+        board = null;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
-
-
                 mainPanel.setVisible(false);
                 mainPanel = new LobbyMessagePanel(lobbyMessage,client);
-               // mainPanel = new lobbyMessagePanel();
                 mainFrame.setContentPane(mainPanel);
                 mainFrame.pack();
                 mainPanel.setVisible(true);
@@ -291,9 +257,6 @@ public class GUI implements View {
                         client.playersInfo.add(playersInfos[i]);
                     }
 
-
-
-
                 }
 
                 //si puo eliminare
@@ -305,8 +268,6 @@ public class GUI implements View {
                                 " \n playerNumber  : " + client.playersInfo.get(i).playerNumber);
                     }
                 }
-
-
 
 
 
@@ -340,7 +301,7 @@ public class GUI implements View {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    mainFrame.dispose();
+                    mainFrame.setVisible(false);
                     board = new BoardGUI(client);
                     board.updateBoard(boardMessage);
                     isFirstBoardStep = false;

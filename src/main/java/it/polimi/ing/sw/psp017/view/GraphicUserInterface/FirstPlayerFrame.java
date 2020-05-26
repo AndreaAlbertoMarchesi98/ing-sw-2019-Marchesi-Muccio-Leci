@@ -266,7 +266,6 @@ public class FirstPlayerFrame extends JFrame {
 
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         client.getNetworkHandler().sendMessage(new GameSetUpMessage(selectedCards));
         playButtonJButton.setVisible(false);
         resetNumberOfPlyer.setVisible(false);

@@ -376,7 +376,7 @@ public class GameController {
             game.setAction(ActionNames.SELECT_WORKER);
     }
 
-    //                  GAME LOGIC
+    //                 GAME LOGIC
     //                  VALID TILES LOGIC
 
     private void updateValidTiles() {

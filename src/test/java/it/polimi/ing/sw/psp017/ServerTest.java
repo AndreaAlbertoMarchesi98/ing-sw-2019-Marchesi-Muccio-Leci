@@ -54,13 +54,13 @@ public class ServerTest {
     @Before
     public void init() throws IOException {
         server = new Server(SERVER_PORT);
-        dummyView = new CLI(dummyClient);
-        networkHandler1 = new NetworkHandler(dummyView);
-        networkHandler2 = new NetworkHandler(dummyView);
-        networkHandler3 = new NetworkHandler(dummyView);
-        networkHandler4 = new NetworkHandler(dummyView);
-        networkHandler5 = new NetworkHandler(dummyView);
-        networkHandler6 = new NetworkHandler(dummyView);
+       // dummyView = new CLI(dummyClient);
+        networkHandler1 = new NetworkHandler();
+        networkHandler2 = new NetworkHandler();
+        networkHandler3 = new NetworkHandler();
+        networkHandler4 = new NetworkHandler();
+        networkHandler5 = new NetworkHandler();
+        networkHandler6 = new NetworkHandler();
     }
 
     @Test

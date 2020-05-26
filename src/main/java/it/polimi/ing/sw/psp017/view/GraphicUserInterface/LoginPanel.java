@@ -158,10 +158,8 @@ public class LoginPanel extends JPanel {
             this.setLayout(new BorderLayout());
            // this.setPreferredSize(new Dimension(1200, 1000));
             this.add(kGradientPanel, BorderLayout.CENTER);
-
-            kGradientPanel.backgroundTransition();
-            kGradientPanel.backgroundGradient();
-
+        //    kGradientPanel.backgroundTransition();
+          //  kGradientPanel.backgroundGradient();
 
 
         }

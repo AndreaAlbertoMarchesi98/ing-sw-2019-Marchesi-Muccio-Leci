@@ -119,7 +119,7 @@ public abstract class GodView {
 
         @Override
         public Icon getIconPower() {
-            return new ImageIcon(GodView.class.getClassLoader().getResource("PowerButton/gp_builddome.png"));
+            return new ImageIcon(GodView.class.getClassLoader().getResource("PowerButton/dome_complete.png"));
         }
     }
     static class Demeter extends GodView{
@@ -174,7 +174,7 @@ public abstract class GodView {
 
         @Override
         public Icon getIconDescription() {
-            return new ImageIcon(Apollo.class.getClassLoader().getResource("MINOTAUR/MINOTAUR-1.png"));
+            return new ImageIcon(Apollo.class.getClassLoader().getResource("MINOTAUR/_0000s_0009_god_and_hero_powers0049.png"));
         }
 
         @Override
