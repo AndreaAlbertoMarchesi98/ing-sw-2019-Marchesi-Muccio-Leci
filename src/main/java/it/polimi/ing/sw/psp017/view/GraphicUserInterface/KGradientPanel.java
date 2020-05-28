@@ -207,7 +207,7 @@ public class KGradientPanel extends JPanel {
 
                 };
                 Timer work = new Timer();
-                work.schedule(task,100000,20000);
+                work.schedule(task,100000,10000);
 
 
             }
@@ -271,6 +271,48 @@ public class KGradientPanel extends JPanel {
 
 
     }).start();
+    }
+
+    public void backgroundGradient(final int period)
+    {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                revalidate();
+                repaint();
+
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        if(backToOrigin)
+                        {
+                            kGradientFocus--;
+                        }
+                        else
+                        {
+                            kGradientFocus++;
+                        }
+
+                        // if (kGradientFocus > 1000) kGradientFocus = 10 ;
+                        if(kGradientFocus > 1000) backToOrigin = true;
+                        if(kGradientFocus < 1) backToOrigin = false;
+
+
+                        //revalidate();
+                        // repaint();
+                    }
+
+                };
+                java.util.Timer work = new java.util.Timer();
+                work.schedule(task,0,period);
+
+
+            }
+
+
+        }).start();
     }
 
 }

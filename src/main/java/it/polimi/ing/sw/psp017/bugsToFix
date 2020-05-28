@@ -1,7 +1,6 @@
 SERVER BUGS:
-1)
+1)deselezione cella
+2)prova artemis , dopo prima move arriva BUILD, ma lei puo fare una ulteriore move
 VIEW BUGS:
-1)quando un player si disconnette e si crea na nuova partita rimane la schermata del gioco vecchio
-2)manca implementare cosa succede quando uno vince, ossia quando ricevete la notifyVictory
-
+1
 

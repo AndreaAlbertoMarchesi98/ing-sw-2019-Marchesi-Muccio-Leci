@@ -89,6 +89,8 @@ import java.awt.*;
 
             this.setLayout(new BorderLayout());
             this.add(kGradientPanel1, BorderLayout.CENTER);
+            kGradientPanel1.backgroundTransition();
+            kGradientPanel1.backgroundGradient();
 
 
         }

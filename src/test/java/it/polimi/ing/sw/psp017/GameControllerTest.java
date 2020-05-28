@@ -57,7 +57,7 @@ public class GameControllerTest {
     public void init() throws IOException {
         server = new Server(SERVER_PORT);
 
-        serverSocket = new ServerSocket(SERVER_PORT);
+        serverSocket = new   ServerSocket(SERVER_PORT);
 
 
         Socket socket1 = new Socket(ip, SERVER_PORT);

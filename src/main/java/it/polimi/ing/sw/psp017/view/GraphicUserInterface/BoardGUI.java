@@ -7,10 +7,13 @@ import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.model.Vector2d;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,10 +39,47 @@ public class BoardGUI extends JFrame {
         this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("logo.png")).getImage());
 
         kGradientPanel1 = new KGradientPanel();
+
+
         kGradientPanel1.setkEndColor(new Color(151, 241, 255, 164));
         kGradientPanel1.setkStartColor(new Color(48, 36, 245));
+
+
+        southPanel = new KGradientPanel();
+        southPanel.setkEndColor(new Color(253, 121, 2, 164));
+        southPanel.setkStartColor(new Color(245, 24, 17));
+        southPanel.backgroundGradient(50);
+        southPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+
+
+        northPanel_JPanel = new KGradientPanel();
+        northPanel_JPanel.setkEndColor(new Color(253, 121, 2, 164));
+        northPanel_JPanel.setkStartColor(new Color(245, 24, 17));
+        northPanel_JPanel.backgroundGradient(50);
+        northPanel_JPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+
+
+
+        DXPanel = new KGradientPanel();
+        DXPanel.setkEndColor(new Color(136, 2, 253, 164));
+        DXPanel.setkStartColor(new Color(17, 245, 101, 180));
+        DXPanel.backgroundGradient(50);
+        DXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+
+
+        SXPanel = new KGradientPanel();
+        SXPanel.setkEndColor(new Color(136, 2, 253, 164));
+        SXPanel.setkStartColor(new Color(17, 245, 101, 180));
+        SXPanel.backgroundGradient(50);
+        SXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+
+
+
+
+
+
         tilePanel = new JPanel();
-        northPanel_JPanel = new JPanel();
+       // northPanel_JPanel = new JPanel();
         messageLabel_NorthPanel = new JLabel();
         boardGamePanel = new JPanel() {
 
@@ -60,13 +100,12 @@ public class BoardGUI extends JFrame {
 
         workerPanel = new JPanel();
         buttonPanel = new JPanel();
-        DXPanel = new JPanel();
+
         upperDXPanel = new JPanel();
         undo = new AbstractButton();
         powerActivated = new JToggleButton();
         lowerDXPanel = new JPanel();
-        SXPanel = new JPanel();
-        southPanel = new JPanel();
+
         quitButton = new AbstractButton();
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -89,7 +128,7 @@ public class BoardGUI extends JFrame {
         kGradientPanel1.setLayout(new BorderLayout());
 
 
-        northPanel_JPanel.setOpaque(false);
+        //northPanel_JPanel.setOpaque(false);
         FlowLayout layout = new FlowLayout();
         layout.setVgap(10);
         northPanel_JPanel.setLayout(layout);
@@ -131,7 +170,7 @@ public class BoardGUI extends JFrame {
 
         buttonPanel.setOpaque(false);
 
-        DXPanel.setOpaque(false);
+        //DXPanel.setOpaque(false);
         DXPanel.setPreferredSize(new Dimension(200, 400));
         DXPanel.setMinimumSize(new Dimension(100, 400));
         DXPanel.setLayout(new GridLayout(2, 1));
@@ -140,7 +179,7 @@ public class BoardGUI extends JFrame {
         upperDXPanel.setLayout(new GridLayout(3, 1, 0, 2));
 
         undo.setEnabled(false);
-        undo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/undo.png")));
+        undo.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("STUFF/undo.png"))));
         //  undo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/pointing-left.png")));
         //undo.customizeDesignButton(trasparentColor, .getImage());
         undo.setToolTipText("Undo");
@@ -240,7 +279,7 @@ public class BoardGUI extends JFrame {
         kGradientPanel1.add(DXPanel, BorderLayout.EAST);
 
 
-        SXPanel.setOpaque(false);
+        //SXPanel.setOpaque(false);
         SXPanel.setPreferredSize(new Dimension(200, 400));
         SXPanel.setMinimumSize(new Dimension(100, 400));
         // SXPanel.setSize(200,400);
@@ -253,8 +292,9 @@ public class BoardGUI extends JFrame {
 
         southPanel.setPreferredSize(new Dimension(1120, 100));
         quitButton.setToolTipText("QUIT");
+        quitButton.setIcon((new ImageIcon(getClass().getClassLoader().getResource("STUFF/quit.png"))));
         quitButton.setVisible(true);
-        southPanel.setOpaque(false);
+        //southPanel.setOpaque(false);
         quitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 quitButtonActionPerformed(evt);
@@ -297,6 +337,7 @@ public class BoardGUI extends JFrame {
 
         kGradientPanel1.backgroundGradient();
         kGradientPanel1.backgroundTransition();
+        southPanel.add(quitButton);
 
     }
 
@@ -441,17 +482,17 @@ public class BoardGUI extends JFrame {
 
 
 
-    private JPanel DXPanel;
-    private JPanel SXPanel;
+    private KGradientPanel DXPanel;
+    private KGradientPanel SXPanel;
     private JPanel boardGamePanel;
     private JPanel buttonPanel;
     private JLabel messageLabel_NorthPanel;   //ha le informazioni
     private KGradientPanel kGradientPanel1;
     private JPanel lowerDXPanel;
-    private JPanel northPanel_JPanel;
+    private KGradientPanel northPanel_JPanel;
     private JToggleButton powerActivated;
-    private AbstractButton quitButton;
-    private JPanel southPanel;
+    private JButton quitButton;
+    private KGradientPanel southPanel;
     private JPanel tilePanel;
     private AbstractButton undo;
     private JPanel upperDXPanel;

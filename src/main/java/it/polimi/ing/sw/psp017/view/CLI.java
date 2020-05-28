@@ -16,6 +16,9 @@ public class CLI implements View {
     private static final int MAX_NUMBER_OF_WORKERS = 2 ;
     private static final int NO_PLAYER = 0;
     private int NUMBER_OF_PLAYERS;
+    private  boolean isUndoPossible = false;
+    private boolean noMoreTime = false;
+    Boolean undooUnswer;
 
 
     private Client client;
@@ -205,11 +208,21 @@ public class CLI implements View {
         ansi_reset();
 
     }
+    private  class Boh implements Runnable {
+
+        public Boh() {
+        }
+        public void run() {
+            //Scanner ciao= new Scanner(System.in);
+            undooUnswer = getUndoAnswer();
+        }
+    }
 
 
 
     @Override
     public void updateBoard(BoardMessage boardMessage) {
+        boolean answer;
 
         System.out.println("dentro a updateBoard");
 
@@ -220,6 +233,68 @@ public class CLI implements View {
         if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
         {
 
+
+
+            if(isUndoPossible)
+            {
+                try{
+                    Thread threadUndo = new Thread(new Boh());
+                    threadUndo.start();
+                    Thread.sleep(10000);
+                    threadUndo.interrupt();
+                    System.out.println(undooUnswer);
+
+                }catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(undooUnswer)
+                {
+                    client.getNetworkHandler().sendMessage(new UndoMessage());
+                    return;
+                }
+               // return;
+                boardMessage.action = ActionNames.NONE;
+
+            }
+
+            /*
+            if(isUndoPossible){
+
+
+                final Timer timerThread = new Timer();
+                timerThread.schedule(new TimerTask() {
+                    int second = 5;
+
+                    @Override
+                    public void run() {
+
+                        second--;
+                        if (second == 0 ) {
+
+                            noMoreTime = true;
+                            timerThread.cancel();
+                        }
+
+
+                    }
+
+                }, 0, 1000);
+
+                answer = getUndoAnswer();
+
+                if(!noMoreTime && answer){
+
+                    client.getNetworkHandler().sendMessage(new UndoMessage());
+                    return;
+                }
+
+                if(noMoreTime) return;
+
+                //se si undo mando messaggio  e metto isundopossible a false
+
+
+            }
+             */
 
 
             System.out.println("ACTION MESSAGE : " + boardMessage.action);
@@ -242,6 +317,7 @@ public class CLI implements View {
             }
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
             {
+
                 hasAskedPowerActive = false;
                 //scelta del worker da utilizzare
 
@@ -260,11 +336,11 @@ public class CLI implements View {
                 //activatePower = getChoice();  ?? serve
 
                 //si o no
+                if(getChoice()) notifyIsPowerActive(new PowerActiveMessage(true));
 
-                notifyIsPowerActive(new PowerActiveMessage(getChoice()));
+
 
                 hasAskedPowerActive = true;
-
 
             }
             else if(boardMessage.action == ActionNames.MOVE)
@@ -273,6 +349,7 @@ public class CLI implements View {
                 System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
                 //notifyAction(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
+                isUndoPossible = true;
                 notifySelectedTile(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
             }
 
@@ -283,8 +360,9 @@ public class CLI implements View {
                 //   boardMessage.action == ActionNames.MOVE ||
 
 
-
+                isUndoPossible = true;
                 System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
 
 
 
@@ -305,12 +383,16 @@ public class CLI implements View {
 
 
         }
+        else isUndoPossible = false;
+
+
+        }
 
 
         //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
 
 
-    }
+
 
     @Override
     public void updateVictory(VictoryMessage victoryMessage) {
@@ -1012,11 +1094,12 @@ public class CLI implements View {
 
 
         String answer;
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "undo your last step?  ? :");
 
 
         do {
 
-            System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "do you want to undo your last choice ? :");
+
             answer = in.nextLine();
 
 

@@ -193,6 +193,10 @@ public class LobbyMessagePanel extends JPanel {
         );
         this.setLayout(new BorderLayout());
         this.add(kGradientPanel1, BorderLayout.CENTER);
+
+
+
+        kGradientPanel1.backgroundGradient();
     }
 
     private void initialiseButton(LobbyMessage lobbyMessage, JButton jButton) {

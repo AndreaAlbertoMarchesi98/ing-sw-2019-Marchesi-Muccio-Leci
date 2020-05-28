@@ -19,6 +19,25 @@ import java.util.EnumSet;
  */
 public class FirstPlayerFrame extends JFrame {
 
+    // Variables declaration - do not modify
+    private JLabel SelectNumberOfPlayerLabel;
+    private JCheckBox ThreePlayerButton;
+    private JCheckBox TwoPlayerButton;
+    private JPanel buttonsPanel;
+    private JButton playButtonJButton;
+    private JLabel sxCardInfoJLabel;
+    private JLabel dxCardIconJLabel;
+    private JScrollPane jScrollPane1;
+    private JSeparator jSeparator1;
+    private JToggleButton[] deckJToggleButton;
+    private KGradientPanel kGradientPanel1;
+    private KGradientPanel kGradientPanelPlayButton;
+    private ButtonGroup numberOfPlayersGroup;
+    private JButton resetNumberOfPlyer;
+    private JPanel selectNumberOfPlayers_JPanel;
+    private JPanel viewCardsPanel;
+    // End of variables declaration
+
     ArrayList<GodName> selectedCards = new ArrayList();
     ArrayList<GodName> cards = new ArrayList<>(EnumSet.allOf(GodName.class));
     int numberOfPlayer;
@@ -54,8 +73,8 @@ public class FirstPlayerFrame extends JFrame {
         kGradientPanel1.setkEndColor(new java.awt.Color(255, 51, 153));
         kGradientPanel1.setkStartColor(new java.awt.Color(51, 204, 255));
 
-        kGradientPanelPlayButton.setkEndColor(new java.awt.Color(0, 153, 153));
-        kGradientPanelPlayButton.setkStartColor(new java.awt.Color(0, 204, 204));
+        kGradientPanelPlayButton.setkEndColor(new java.awt.Color(248, 81, 30));
+        kGradientPanelPlayButton.setkStartColor(new java.awt.Color(240, 252, 58));
 
         playButtonJButton.setBackground(new java.awt.Color(0, 153, 153));
         playButtonJButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/playButton.png"))); // NOI18N
@@ -246,7 +265,19 @@ public class FirstPlayerFrame extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
-    }// </editor-fold>
+
+        kGradientPanelPlayButton.backgroundGradient();
+        kGradientPanel1.backgroundGradient();
+
+
+
+
+    }//ending initialization
+
+
+
+
+
 
     private void deckJToggleButtonMouseEntered(MouseEvent evt) {
         for(int i = 0; i < deckJToggleButton.length;i++) {
@@ -355,23 +386,6 @@ public class FirstPlayerFrame extends JFrame {
 
 
 
-    // Variables declaration - do not modify
-    private JLabel SelectNumberOfPlayerLabel;
-    private JCheckBox ThreePlayerButton;
-    private JCheckBox TwoPlayerButton;
-    private JPanel buttonsPanel;
-    private JButton playButtonJButton;
-    private JLabel sxCardInfoJLabel;
-    private JLabel dxCardIconJLabel;
-    private JScrollPane jScrollPane1;
-    private JSeparator jSeparator1;
-    private JToggleButton[] deckJToggleButton;
-    private KGradientPanel kGradientPanel1;
-    private KGradientPanel kGradientPanelPlayButton;
-    private ButtonGroup numberOfPlayersGroup;
-    private JButton resetNumberOfPlyer;
-    private JPanel selectNumberOfPlayers_JPanel;
-    private JPanel viewCardsPanel;
-    // End of variables declaration
+
 }
 

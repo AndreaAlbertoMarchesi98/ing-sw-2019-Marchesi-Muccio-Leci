@@ -20,6 +20,7 @@ public class GUI implements View {
     private JPanel mainPanel;
 
     private BoardGUI board;
+
     private boolean isFirstBoardStep = true;
 
 
@@ -304,6 +305,7 @@ public class GUI implements View {
                 public void run() {
                     mainFrame.setVisible(false);
                     board = new BoardGUI(client);
+
                     board.updateBoard(boardMessage);
                     isFirstBoardStep = false;
                 }

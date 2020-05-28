@@ -45,6 +45,7 @@ public class NetworkHandler implements Runnable{
     public void startConnection() throws IOException{
 
         String ip = "127.0.0.1";
+        //String ip = "192.168.1.4";
 
             this.server = new Socket(ip, SERVER_PORT);
             server.setSoTimeout(1000);
