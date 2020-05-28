@@ -6,6 +6,8 @@ import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Vector2d;
 
+import java.awt.*;
+import java.security.Key;
 import java.util.*;
 
 
@@ -218,6 +220,8 @@ public class CLI implements View {
         if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
         {
 
+
+
             System.out.println("ACTION MESSAGE : " + boardMessage.action);
             if(boardMessage.action == ActionNames.PLACE_WORKERS)
             {
@@ -352,7 +356,7 @@ public class CLI implements View {
                 System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "please insert a valid number [2-3]" + ANSI_RESET);
                 try {
                     answer = in.nextInt();
-                } catch (InputMismatchException e) {
+                } catch (InputMismatchException e ) {
                     in.nextLine();
                     answer = 0;
                 }

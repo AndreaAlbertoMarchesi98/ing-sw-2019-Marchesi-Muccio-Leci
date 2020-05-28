@@ -48,7 +48,7 @@ public class GUI implements View {
         mainFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
         final Image im = new ImageIcon(getClass().getClassLoader().getResource("logo.png")).getImage().getScaledInstance(mainFrame.getWidth(),mainFrame.getHeight(),Image.SCALE_SMOOTH);
-        //mainFrame.setIconImage(im);
+        mainFrame.setIconImage(im);
         mainFrame.setLayout(new BorderLayout());
         mainFrame.setLocationRelativeTo(null);
         mainPanel = new JPanel(new BorderLayout());
@@ -222,6 +222,7 @@ public class GUI implements View {
                 public void run() {
                     mainPanel = new LoginPanel(client);
                     mainFrame.setContentPane(mainPanel);
+                    mainFrame.setVisible(true);
                     mainFrame.pack();
                     mainFrame.setLocationRelativeTo(null);
                 }
@@ -317,7 +318,7 @@ public class GUI implements View {
                     board.showAction(boardMessage);
                     if (boardMessage.hasChoice) //possibilita di attivare il potere
                     {
-                        board.askPowerActive();
+                        board.askPowerActive(true);
                         // hasAskedPowerActive = true;
                     }
                 } else {
@@ -333,19 +334,21 @@ public class GUI implements View {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    JOptionPane.showMessageDialog(board, "HAI VINTO", "wIN", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(board, "WIN", "wIN", JOptionPane.WARNING_MESSAGE);
                 }});
     }
 
     @Override
     public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
         Object[] option = {"Quit", "Restart"};
-        int n = JOptionPane.showOptionDialog(mainFrame, "One player is disconetted. Do you want start a new Game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+        int n = JOptionPane.showOptionDialog(mainFrame, "One player is disconected. Do you want start a new Game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
         if (n == JOptionPane.YES_OPTION) {
+            System.out.println("CHIUS" + client.getPlayerNumber());
             mainFrame.dispose();
             System.exit(0);
         }
         else{
+            System.out.println("RESTART" + client.getPlayerNumber());
             notifyNickname(new AuthenticationMessage(client.getNickname()));
             if(board != null) board.dispose();
         }

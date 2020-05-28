@@ -39,12 +39,12 @@ import java.awt.*;
             infoLabel.setFont(new Font("Tahoma", 3, 48));
             infoLabel.setForeground(new Color(0, 153, 102));
             infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            infoLabel.setText("Please wait a new game");
+            infoLabel.setText("A player is creating a new game");
 
             queueLabel.setFont(new Font("Tahoma", 2, 36));
             queueLabel.setForeground(new Color(0, 102, 102));
             queueLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            queueLabel.setText(numPlayers + " Players before you");
+            queueLabel.setText("");
 
             boatBigLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             boatBigLabel.setIcon(new ImageIcon("C:\\Users\\user\\IdeaProjects\\ing-sw-2019-Marchesi-Muccio-Leci\\src\\main\\java\\it\\polimi\\ing\\sw\\psp017\\view\\res\\title_boat_right.png"));

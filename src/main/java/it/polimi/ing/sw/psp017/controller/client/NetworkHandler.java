@@ -2,14 +2,12 @@ package it.polimi.ing.sw.psp017.controller.client;
 
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
-import it.polimi.ing.sw.psp017.controller.server.Server;
 import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.util.Scanner;
 
 
 public class NetworkHandler implements Runnable{
@@ -118,7 +116,6 @@ public class NetworkHandler implements Runnable{
         try{
             output.writeObject(message);
             output.reset();
-            //System.out.println("wait for Server response");
         } catch (IOException e) {
             e.printStackTrace();
         }

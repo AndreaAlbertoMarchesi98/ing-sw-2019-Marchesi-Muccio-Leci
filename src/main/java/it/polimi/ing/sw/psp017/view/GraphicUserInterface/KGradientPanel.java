@@ -169,7 +169,7 @@ public class KGradientPanel extends JPanel {
 
                 };
                 Timer work = new Timer();
-                work.schedule(task,0,200);
+                work.schedule(task,0,1000);
 
 
 
@@ -201,8 +201,8 @@ public class KGradientPanel extends JPanel {
 
                         flipFlopKgradient = !flipFlopKgradient;
 
-                        revalidate();
-                        repaint();
+                     //   revalidate();
+                     //   repaint();
                     }
 
                 };
@@ -258,13 +258,13 @@ public class KGradientPanel extends JPanel {
                     if(kGradientFocus < 1) backToOrigin = false;
 
 
-                    revalidate();
-                    repaint();
+                    //revalidate();
+                   // repaint();
                 }
 
             };
             java.util.Timer work = new java.util.Timer();
-            work.schedule(task,0,10);
+            work.schedule(task,0,100);
 
 
         }
