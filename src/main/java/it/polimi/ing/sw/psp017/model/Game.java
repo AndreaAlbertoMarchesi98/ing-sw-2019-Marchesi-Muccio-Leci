@@ -20,11 +20,18 @@ public class Game {
     private Step savedStep;
 
 
+
+
+
+
     // private constructor restricted to this class itself
 
     public Board getBoard() {
         return board;
     }
+
+
+
 
     public Game(ArrayList<Player> players) {
         board = new Board();

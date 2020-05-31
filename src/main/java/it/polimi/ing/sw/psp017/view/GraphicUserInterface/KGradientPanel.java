@@ -207,7 +207,7 @@ public class KGradientPanel extends JPanel {
 
                 };
                 Timer work = new Timer();
-                work.schedule(task,100000,10000);
+                work.schedule(task,0,10000);
 
 
             }

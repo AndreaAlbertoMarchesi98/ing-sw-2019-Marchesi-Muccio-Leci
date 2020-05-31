@@ -1,6 +1,33 @@
 SERVER BUGS:
 1)deselezione cella
 2)prova artemis , dopo prima move arriva BUILD, ma lei puo fare una ulteriore move
+3)con tre partite in // se nella terza uno quitta l'altro player non viene notificato
+
+java.net.SocketException: Connection reset by peer
+	at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:421)
+	at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:441)
+	at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:825)
+	at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1007)
+	at java.base/java.io.ObjectOutputStream$BlockDataOutputStream.drain(ObjectOutputStream.java:1883)
+	at java.base/java.io.ObjectOutputStream$BlockDataOutputStream.setBlockDataMode(ObjectOutputStream.java:1792)
+	at java.base/java.io.ObjectOutputStream.writeNonProxyDesc(ObjectOutputStream.java:1287)
+	at java.base/java.io.ObjectOutputStream.writeClassDesc(ObjectOutputStream.java:1232)
+	at java.base/java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1428)
+	at java.base/java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1179)
+	at java.base/java.io.ObjectOutputStream.writeFatalException(ObjectOutputStream.java:1583)
+	at java.base/java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:352)
+	at it.polimi.ing.sw.psp017.controller.server.VirtualView.sendMessage(VirtualView.java:198)
+	at it.polimi.ing.sw.psp017.controller.server.VirtualView.access$000(VirtualView.java:15)
+	at it.polimi.ing.sw.psp017.controller.server.VirtualView$PingSender.run(VirtualView.java:36)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+
+
+	
+4)prometeo attiva potere e costruisce 2 volte senza muoversi [cosa strana bottone potere]
+
+
 VIEW BUGS:
-1
+1)win error server ping , tutti i client spenti
+
+
 

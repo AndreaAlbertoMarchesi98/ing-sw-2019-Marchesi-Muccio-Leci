@@ -9,6 +9,7 @@ import it.polimi.ing.sw.psp017.model.Vector2d;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.*;
@@ -49,29 +50,31 @@ public class BoardGUI extends JFrame {
         southPanel.setkEndColor(new Color(253, 121, 2, 164));
         southPanel.setkStartColor(new Color(245, 24, 17));
         southPanel.backgroundGradient(50);
-        southPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
-
+        southPanel.setBorder(new LineBorder(new java.awt.Color(0, 63, 143, 193), 5, true));
 
         northPanel_JPanel = new KGradientPanel();
-        northPanel_JPanel.setkEndColor(new Color(253, 121, 2, 164));
-        northPanel_JPanel.setkStartColor(new Color(245, 24, 17));
+        northPanel_JPanel.setkStartColor(new Color(253, 121, 2, 164));
+        northPanel_JPanel.setkEndColor(new Color(245, 24, 17));
         northPanel_JPanel.backgroundGradient(50);
-        northPanel_JPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+        northPanel_JPanel.setBorder(new LineBorder(new Color(0, 63, 143, 193), 5, true));
+        //northPanel_JPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)));
 
 
 
         DXPanel = new KGradientPanel();
-        DXPanel.setkEndColor(new Color(136, 2, 253, 164));
-        DXPanel.setkStartColor(new Color(17, 245, 101, 180));
+        DXPanel.setkStartColor(new Color(136, 2, 253, 164));
+        DXPanel.setkEndColor(new Color(17, 245, 101, 180));
         DXPanel.backgroundGradient(50);
-        DXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+        DXPanel.setBorder(new LineBorder(new Color(200, 0, 0, 255), 3, true));
+        //DXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 102, 102), new Color(0, 153, 153)));
 
 
         SXPanel = new KGradientPanel();
         SXPanel.setkEndColor(new Color(136, 2, 253, 164));
         SXPanel.setkStartColor(new Color(17, 245, 101, 180));
         SXPanel.backgroundGradient(50);
-        SXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
+        SXPanel.setBorder(new LineBorder(new Color(200, 2, 2, 255), 3, true));
+        //SXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
 
 
 
@@ -102,11 +105,13 @@ public class BoardGUI extends JFrame {
         buttonPanel = new JPanel();
 
         upperDXPanel = new JPanel();
-        undo = new AbstractButton();
+        //undo = new AbstractButton();
+        undo = new JButtonTile();
         powerActivated = new JToggleButton();
         lowerDXPanel = new JPanel();
 
-        quitButton = new AbstractButton();
+        //quitButton = new AbstractButton();
+        quitButton = new JButtonTile();
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
@@ -328,6 +333,7 @@ public class BoardGUI extends JFrame {
         this.setContentPane(kGradientPanel1);
 
         setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         setSize(dim.width / 2, dim.width / 2);
         // kGradientPanel1.backgroundGradient();
         //kGradientPanel1.backgroundTransition();
@@ -335,6 +341,11 @@ public class BoardGUI extends JFrame {
         this.repaint();
         setVisible(true);
 
+
+        //boardGamePanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(102, 102, 9), new Color(181, 55, 55), new Color(57, 162, 3), new Color(27, 87, 117)));
+        boardGamePanel.setBorder(new LineBorder(new java.awt.Color(15, 255, 0, 164), 35, false));
+        layer.setBorder(new LineBorder(new java.awt.Color(83, 255, 214, 52), 30, false));
+        layer.setBorder(new LineBorder(new java.awt.Color(83, 255, 214, 52), 30, false));
         kGradientPanel1.backgroundGradient();
         kGradientPanel1.backgroundTransition();
         southPanel.add(quitButton);
@@ -349,8 +360,12 @@ public class BoardGUI extends JFrame {
         compound = BorderFactory.createCompoundBorder(
                 raisedbevel, loweredbevel);
 
-        JButton playersButton ;
-        playersButton = new AbstractButton();
+        //JButton playersButton ;
+
+
+        //playersButton = new AbstractButton();
+
+        JButtonTile playersButton = new JButtonTile();
         playersButton.setFont(new Font("Tahoma", 3, 24));
         playersButton.setForeground(new Color(255, 255, 255));
         playersButton.setName(client.playersInfo.get(i).name);
@@ -383,6 +398,10 @@ public class BoardGUI extends JFrame {
         }
 
     }
+    /*
+        }
+
+     */
 
 
     public void showAction(BoardMessage boardMessage) {
@@ -501,98 +520,7 @@ public class BoardGUI extends JFrame {
     private JButtonTile[][] buttonGrid;
 
 
-    class AbstractButton extends JButton {
 
-        public void setColorTiles(Color color) {
-            this.setIcon(new TranslucentButtonIcon(this, color));
-            this.repaint();
-        }
-
-
-        @Override
-        public void updateUI() {
-            super.updateUI();
-            setVerticalAlignment(SwingConstants.CENTER);
-            setVerticalTextPosition(SwingConstants.CENTER);
-            setHorizontalAlignment(SwingConstants.CENTER);
-            setHorizontalTextPosition(SwingConstants.CENTER);
-            setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 8));
-            setMargin(new Insets(2, 8, 2, 8));
-            setBorderPainted(false);
-            setContentAreaFilled(false);
-            setFocusPainted(false);
-            setOpaque(false);
-            setForeground(Color.WHITE);
-            setFont(new Font("Tahoma", 1, 50));
-            setIcon(new TranslucentButtonIcon(this, trasparentColor));
-        }
-
-        class TranslucentButtonIcon implements Icon {
-            private final Color BR = new Color(0f, 0f, 0f, .4f);
-            private final Color ST = new Color(1f, 1f, 1f, .2f);
-            private Color SB ;
-            private static final int R = 8;
-            private int width;
-            private int height;
-            //   private Image image;
-
-            protected TranslucentButtonIcon(JComponent c, Color color) {
-                this.SB = color;
-                Insets i = c.getBorder().getBorderInsets(c);
-                Dimension d = c.getPreferredSize();
-                width = d.width - i.left - i.right;
-                height = d.height - i.top - i.bottom;
-                // image = null;
-            }
-
-
-            @Override
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                if (c instanceof AbstractButton) {
-                    AbstractButton b = (AbstractButton) c;
-
-                    Insets i = b.getBorder().getBorderInsets(b);
-                    int w = c.getWidth();
-                    int h = c.getHeight();
-                    width = w - i.left - i.right;
-                    height = h - i.top - i.bottom;
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    Shape area = new RoundRectangle2D.Double(x - i.left, y - i.top, w - 1, h - 1, R, R);
-                    Color ssc;
-                    Color bgc;
-                    ButtonModel m = b.getModel();
-                    if(m.isRollover()) {
-                        ssc = ST;
-                        bgc = SB;
-                    } else{
-                        ssc = SB;
-                        bgc = ST;
-                        // ssc =  new Color(1f, 1f, 1f, .1f);
-                        // bgc =  new Color(1f, 1f, 1f, .1f);
-                    }
-
-                    g2.setPaint(new GradientPaint(0, 0, ssc, 0, h, bgc, true));
-                    // if(image != null ) g2.drawImage(image,0,0,null);
-                    g2.fill(area);
-                    g2.setPaint(BR);
-                    g2.draw(area);
-                    g2.dispose();
-                }
-            }
-
-            @Override
-            public int getIconWidth() {
-                return Math.max(width, 100);
-            }
-
-            @Override
-            public int getIconHeight() {
-                return Math.max(height, 20);
-            }
-        }
-
-    }
     private void infoPlayerAction( ActionEvent evt){
 
         for(int i = 0; i < playersButton.length;i++) {

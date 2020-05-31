@@ -14,6 +14,11 @@ public class BoardMessage implements Serializable {
     public boolean[][] validTiles;
     public ActionNames action;
 
+
+
+
+
+
     public BoardMessage(Game game){
         activePlayerNumber = game.getPlayerIndex() + 1;
         hasChoice = game.hasChoice();
@@ -32,6 +37,7 @@ public class BoardMessage implements Serializable {
                     System.out.println(this.board[x][y].dome);
             }
         }
+
     }
 
     public class PrintableTile implements Serializable{
@@ -45,5 +51,6 @@ public class BoardMessage implements Serializable {
             if(tile.getWorker()!=null)
                 this.playerNumber = tile.getWorker().getOwner().getPlayerNumber();
         }
+
     }
 }

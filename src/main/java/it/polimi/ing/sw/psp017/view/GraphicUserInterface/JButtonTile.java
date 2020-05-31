@@ -8,21 +8,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
-
+/**
+ *  this class is used to managed the board game GUI which is formed by 3 layer.
+ *  being able to refresh this layers is useful for a fluid game
+ *
+ *  ++++++++++++++++++++++++++++ --->JButtonTile layer       ------------------|
+ *                                                                             |
+ *  ++++++++++++++++++++++++++++ --->workerJLabel             <----------------|
+ *                                                                             |
+ *  ++++++++++++++++++++++++++++ --->buildJLabel              <----------------|
+ *
+ */
 public class JButtonTile extends JButton {
-    private final Color trasparentColor = new Color(.1f, .1f, .1f, .1f);
 
-    public Vector2d getPosition() {
-        return position;
-    }
 
+
+    private final Color transparentColor = new Color(.1f, .1f, .1f, .1f);
     private final Vector2d position;
     private int level;
     private boolean isDome;
 
-    public boolean isValidTile() {
-        return isValidTile;
-    }
+
 
     private boolean isValidTile = true;
     private int playerNumber = 0;
@@ -36,7 +42,7 @@ public class JButtonTile extends JButton {
         this.level = 0;
         this.isDome = false;
 
-        //creazione jbutton
+        //JButton initialization
         super.updateUI();
         setVerticalAlignment(SwingConstants.CENTER);
         setVerticalTextPosition(SwingConstants.CENTER);
@@ -50,11 +56,19 @@ public class JButtonTile extends JButton {
         setOpaque(false);
         setForeground(Color.WHITE);
         setFont(new Font("Tahoma", 1, 50));
-        setIcon(new TranslucentButtonIcon(this, trasparentColor));
+        setIcon(new TranslucentButtonIcon(this, transparentColor));
         workerJLabel = new JLabel();
         buildJLabel = new JLabel();
 
 
+    }
+    public JButtonTile(){
+        position = null;
+    }
+
+
+    public Vector2d getPosition() {
+        return position;
     }
 
     public JLabel getWorkerJLabel() {
@@ -73,19 +87,34 @@ public class JButtonTile extends JButton {
         this.buildJLabel = buildJLabel;
     }
 
+    public boolean isValidTile() {
+        return isValidTile;
+    }
+
+
+    /**
+     * update 3 layers getting info from BoardMessage
+     * @param printableTile tile info
+     */
     public void updateTile(BoardMessage.PrintableTile printableTile) {
+
+
         this.level = printableTile.level;
         this.isDome = printableTile.dome;
-        // this.isValidTile = isValidTile;
         this.playerNumber = printableTile.playerNumber;
         updateBoard();
     }
+
 
     public void updateValidTiles(boolean isValidTile, ActionNames actionNames) {
         this.isValidTile = isValidTile;
         showValidTiles(actionNames);
     }
 
+    /**
+     * showing and coloring validTile
+     * @param actionNames MOVE or BUILD
+     */
     public void showValidTiles(ActionNames actionNames) {
         Color color = Color.red;
         switch (actionNames) {
@@ -102,11 +131,17 @@ public class JButtonTile extends JButton {
         //pensare a popUp worker senza validTiles
     }
 
+    /**
+     * updating workerJLabel and buildJLabel
+     */
     private void updateBoard() {
 
         buildJLabel.setIcon(null);
         workerJLabel.setIcon(null);
-        this.setColorTiles(trasparentColor);
+        this.setColorTiles(transparentColor);
+
+
+        //buildJLabel
         if (this.isDome) {
             buildJLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/dome.png")));
         } else if (this.level == 1) {
@@ -116,6 +151,9 @@ public class JButtonTile extends JButton {
         } else if (this.level == 3) {
             buildJLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("Buildings/level3.png")));
         }
+
+
+        //workerLabel
         if (this.playerNumber == 1) {
             workerJLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("player/player1.png")));
         } else if (this.playerNumber == 2) {
@@ -134,7 +172,10 @@ public class JButtonTile extends JButton {
     }
 
 
-    class TranslucentButtonIcon implements Icon {
+    /**
+     * inner class used to customize JButton
+     */
+    protected class TranslucentButtonIcon implements Icon {
         private final Color BR = new Color(0f, 0f, 0f, .4f);
         private final Color ST = new Color(1f, 1f, 1f, .2f);
         private Color shadeButtonColor;

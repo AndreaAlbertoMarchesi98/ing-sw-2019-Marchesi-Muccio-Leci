@@ -196,7 +196,7 @@ public class LobbyMessagePanel extends JPanel {
 
 
 
-        kGradientPanel1.backgroundGradient();
+        kGradientPanel1.backgroundGradient(10);
     }
 
     private void initialiseButton(LobbyMessage lobbyMessage, JButton jButton) {

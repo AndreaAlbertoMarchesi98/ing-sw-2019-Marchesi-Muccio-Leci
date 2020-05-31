@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+//nomi delle persone aggiunte alla partita
 
 public class LoginPanel extends JPanel {
         private JPanel bottomPanel;
@@ -159,7 +160,7 @@ public class LoginPanel extends JPanel {
            // this.setPreferredSize(new Dimension(1200, 1000));
             this.add(kGradientPanel, BorderLayout.CENTER);
             kGradientPanel.backgroundTransition();
-            kGradientPanel.backgroundGradient();
+            kGradientPanel.backgroundGradient(10);
 
 
         }

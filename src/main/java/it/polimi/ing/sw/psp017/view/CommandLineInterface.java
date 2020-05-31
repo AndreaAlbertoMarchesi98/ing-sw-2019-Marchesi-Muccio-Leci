@@ -3,8 +3,10 @@ package it.polimi.ing.sw.psp017.view;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Game;
+import it.polimi.ing.sw.psp017.model.Tile;
 
 
+import java.io.Serializable;
 import java.util.*;
 
 public class CommandLineInterface{
@@ -16,7 +18,7 @@ public class CommandLineInterface{
 
     public static void main(String[] args) {
 
-        ViewTile[][] board = new ViewTile[5][5];
+        PrintableTile[][] board = new PrintableTile[5][5];
         Random random = new Random();
 
 
@@ -31,29 +33,30 @@ public class CommandLineInterface{
         {
             for(int j = 0;j <5;j++)
             {
-                board[i][j]= new ViewTile(random.nextBoolean(),(int) (Math.random()*3),(int) (Math.random()*3 ));
+                board[i][j]= new PrintableTile(random.nextBoolean(),(int) (Math.random()*3),(int) (Math.random()*3 ));
 
             }
 
 
         }
 
+        printBoard(board);
 
-        printWinner();
-        printLoser();
-        gameOver();
-        /**
-         * System.out.println(getChoice());
-         *         System.out.println(chooseGodCard(cards));
-         *         startingServerConnection();
-         *         ViewTile workerPosition = setWorkersPosition(board);
-         *
-         *         ViewTile targetTile = getTile(board);
-         *         System.out.println(getNickname());
-         *
-         *         int answer = getNumberOfPlayers();
-         *         printBoard(board);
-         */
+
+       // printWinner();
+       // printLoser();
+       // gameOver();
+
+         // System.out.println(getChoice());
+              //    System.out.println(chooseGodCard(cards));
+              //    startingServerConnection();
+                //ViewTile workerPosition = setWorkersPosition(board);
+
+               //   ViewTile targetTile = getTile(board);
+              //  System.out.println(getNickname());
+              //  int answer = getNumberOfPlayers();
+                //printBoard((BoardMessage.PrintableTileboard) board);
+
 
 
 
@@ -121,7 +124,7 @@ public class CommandLineInterface{
      * @return selected target tile
      */
     public static ViewTile setWorkersPosition(ViewTile[][] board) {
-        printBoard(board);
+        //printBoard(board);
         int xPosition = -1, yPosition = -1;
 
         System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Set worker position in an empty tile \n" + ANSI_RESET);
@@ -141,7 +144,7 @@ public class CommandLineInterface{
             do {
                 if (xPosition != -1)
                 {
-                    printBoard(board);
+                    //printBoard(board);
                     System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________Please try again____________>>>>>>>>>> " + ANSI_RESET);
                 }
 
@@ -253,7 +256,7 @@ public class CommandLineInterface{
     public static ViewTile getTile(ViewTile[][] board)
     {
 
-        printBoard(board);
+       // printBoard(board);
 
 
         int xPosition = -1,yPosition = -1;
@@ -325,12 +328,14 @@ public class CommandLineInterface{
 
 
 
-    /**
-     * print game board
-     * @param board game board
-     */
-    public static void printBoard(ViewTile[][] board) {
 
+
+    public static void ansi_reset()
+    {
+        System.out.print(ANSI_RESET + ANSI_CYAN);
+    }
+
+    public static   void printBoard(PrintableTile[][] board) {
 
         int line = 2;
         System.out.println(ANSI_CYAN);
@@ -340,7 +345,7 @@ public class CommandLineInterface{
         option(1);
         System.out.print(ANSI_CYAN);
         for (int i = 0; i < 5; i++) {
-            System.out.println("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██                                          ██                                                           ██");
+            System.out.println("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██                                          ██                                                           ");
             //System.out.println("██    ═════════  ═════════  ═════════  ═════════  ═════════  ██");
             System.out.print("██"+ANSI_YELLOW_BACKGROUND + ANSI_RED+"  "+ i + " ");
 
@@ -364,11 +369,11 @@ public class CommandLineInterface{
 
                     System.out.print(ANSI_GREEN_BACKGROUND);
                     System.out.print("   ");
-                    switch (board[i][j].player)
+                    switch (board[i][j].playerNumber)
                     {
 
                         case 0 :
-                            System.out.print(ANSI_BLUE_BACKGROUND + ANSI_BLACK + " ");
+                            System.out.print(ANSI_GREEN_BACKGROUND + ANSI_BLACK + " ");
                             break;
                         case 1 :
                             System.out.print(ANSI_BLUE_BACKGROUND + ANSI_BLACK + "♠");
@@ -381,7 +386,7 @@ public class CommandLineInterface{
                             break;
                         default: break;
                     }
-                    System.out.print(board[i][j].player);
+                    System.out.print(board[i][j].playerNumber);
                     ansi_reset();
                     System.out.print("║  ");
                 }
@@ -395,71 +400,80 @@ public class CommandLineInterface{
             option(line);
             line++;
         }
-        System.out.println("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██                                          ██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██");
+        System.out.print("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██");
+        option(7);
+
         //System.out.println("██    ═════════  ═════════  ═════════  ═════════  ═════════  ██");
-        System.out.println("███████████████████████████████████████████████████████████████                                          ███████████████████████████████████████████████████████████████" +ANSI_RESET);
+        System.out.println("███████████████████████████████████████████████████████████████                                          ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████" +ANSI_RESET);
 
     }
 
 
-    public static void ansi_reset()
-    {
-        System.out.print(ANSI_RESET + ANSI_CYAN);
-    }
+
+
 
     /**
      * connected with printBoard for additional information
+     *
      * @param i raw of printboard line
      */
-    public static void option(int i){
+    public static void option(int i) {
 
         System.out.print("                                          ██");
-        switch(i)
-        {
-            case 2 :
-                System.out.print(ANSI_RED+ "     ████████ ==  DOME");
+        switch (i) {
+            case 2:
+                System.out.print(ANSI_RED + "     ████████ ==  DOME");
                 ansi_reset();
-                System.out.println(ANSI_GREEN+ "              ████████ ==  FREE      "+ANSI_CYAN+"██");
-                ansi_reset();
-                break;
-            case 1 :
-                System.out.println(ANSI_YELLOW_BACKGROUND+ANSI_RED + ITALIC + UNDERLINE +"                           LEGEND :                        "+ANSI_RESET +ANSI_CYAN+"██");
+                System.out.println(ANSI_GREEN + "              ████████ ==  FREE      " + ANSI_CYAN );
                 ansi_reset();
                 break;
-
-            case 3 :
-
-                System.out.print(ITALIC+ANSI_BLUE_BACKGROUND +ANSI_BLACK+ "PLAYER ONE           ");
-                System.out.print(ANSI_BRIGHT_BG_YELLOW + ANSI_RED+ "PLAYER TWO         ");
-                System.out.println(ANSI_BRIGHT_BG_PURPLE+ "PLAYER THREE       "+ANSI_RESET+ANSI_CYAN+"██");
+            case 1:
+                System.out.println(ANSI_YELLOW_BACKGROUND + ANSI_RED + ITALIC + UNDERLINE + "                           LEGEND :                        ");
                 ansi_reset();
                 break;
 
-            case 4 :
+            case 3:
 
-                System.out.print(ITALIC+ANSI_BLUE_BACKGROUND + ANSI_BLACK + "God's name :         ");
-                System.out.print(ANSI_BRIGHT_BG_YELLOW + ANSI_RED+ "God's name :       ");
-                System.out.println(ANSI_BRIGHT_BG_PURPLE+ "God's name :       "+ANSI_RESET+ANSI_CYAN+"██");
-                ansi_reset();
-                break;
-            case 5 :
-                System.out.println("Tile :  "+ANSI_RED+"▲level"+ANSI_RESET+"     <<<<"+ANSI_RED+"DOME //"+ANSI_GREEN+ "   FREE>>>>" +ANSI_CYAN+" tile's owner{♠♣♦}██");
-                ansi_reset();
-                break;
+                System.out.println(ITALIC + ANSI_BLUE_BACKGROUND + ANSI_BLACK + "PLAYER ONE :");
 
-            case 6 :
-                System.out.println("SELECTED TILE :                                           ");
+
+
+
+
                 ansi_reset();
                 break;
 
+            case 4:
+                System.out.println(ITALIC + ANSI_BRIGHT_BG_YELLOW + ANSI_RED + "PLAYER TWO         ");
 
-            case 0 :
-                System.out.println("▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██");
+                ansi_reset();
                 break;
-            default: System.out.println("                                                           ██");
+            case 6:
+                System.out.println("Tile :  " + ANSI_RED + "▲level" + ANSI_RESET + "     <<<<" + ANSI_RED + "DOME //" + ANSI_GREEN + "   FREE>>>>" + ANSI_CYAN + " tile's owner{♠♣♦}");
+                ansi_reset();
+                break;
+
+            case 5:
+                System.out.println(ITALIC + ANSI_PURPLE_BACKGROUND +ANSI_BLACK+ "PLAYER THREE       " );
+                ansi_reset();
+                break;
+            case 7 :
+            {
+                System.out.println(ITALIC + ANSI_BRIGHT_BG_GREEN+ "              IS YOUR TURN" );
+                ansi_reset();
+                break;
+
+                //System.out.println(ANSI_BRIGHT_BG_RED+ "ENEMY'S TURN" );
+            }
+
+
+            case 0:
+                System.out.println("██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+                break;
+            default:
+                System.out.println("                                                           ██");
 
         }
-
 
 
     }
@@ -548,5 +562,21 @@ public class CommandLineInterface{
     public static final String	UNDERLINE			= "\u001B[4m";
     public static final String	BLINK				= "\u001B[5m";
 
+
+    public static class PrintableTile implements Serializable {
+        public int level;
+        public boolean dome;
+        public int playerNumber;
+
+
+
+        //usata per debug prinyboard cli
+        public PrintableTile(boolean dome,int level,int playerNumber)
+        {
+            this.level = level;
+            this.dome = dome;
+            this.playerNumber = playerNumber;
+        }
+    }
 
 }

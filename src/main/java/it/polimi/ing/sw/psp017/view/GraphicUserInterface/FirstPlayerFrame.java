@@ -266,8 +266,8 @@ public class FirstPlayerFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
 
-        kGradientPanelPlayButton.backgroundGradient();
-        kGradientPanel1.backgroundGradient();
+        kGradientPanelPlayButton.backgroundGradient(10);
+        kGradientPanel1.backgroundGradient(10);
 
 
 

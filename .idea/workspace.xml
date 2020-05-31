@@ -22,19 +22,23 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="">
+    <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="fixing GUI bugs">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/GuestLobby.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/tempCLI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/dagger.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/bugsToFix" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/bugsToFix" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/NetworkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/client/NetworkHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/BoardMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/controller/messages/ServerToClient/BoardMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/model/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CLI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CommandLineInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/CommandLineInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/BoardGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/BoardGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/FirstPlayerFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/FirstPlayerFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/JButtonTile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/JButtonTile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/KGradientPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/KGradientPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/LobbyMessagePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/LobbyMessagePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/LoginPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/WaitingRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/view/GraphicUserInterface/WaitingRoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/GameControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/GameControllerTest.java" afterDir="false" />
     </list>
     <list id="a3cf9edb-428a-4e49-92c7-f90e306296d5" name="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,7 +90,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit3" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3" value="junit.framework.TestCase" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/PowerButton" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -94,12 +98,15 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.pathVariables" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="Push.Settings">
     <option name="SHOW_DETAILS_PANEL" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="it.polimi.ing.sw.psp017.view" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="it.polimi.ing.sw.psp017.controller" />
       <recent name="it.polimi.ing.sw.psp017.model.deck" />
@@ -112,19 +119,20 @@
       <recent name="it.polimi.ing.sw.psp017" />
       <recent name="" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\enci\Desktop\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources" />
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\PowerButton" />
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\MINOTAUR" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="it.polimi.ing.sw.psp017.view" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\PowerButton" />
       <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\java\it\polimi\ing\sw\psp017\controller\Client" />
       <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\server example" />
       <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\it\polimi\ing\sw\psp017" />
       <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\PowerButton" />
-      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\MINOTAUR" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="it.polimi.ing.sw.psp017.view" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Client">
@@ -141,6 +149,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CommandLineInterface" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.view.CommandLineInterface" />
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ing.sw.psp017.view.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GuestLobby" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.view.GraphicUserInterface.GuestLobby" />
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ing.sw.psp017.view.GraphicUserInterface.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.controller.server.Server" />
       <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
@@ -150,37 +184,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AthenaTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ing.sw.psp017.model.deck.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ing.sw.psp017.model.deck" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.AthenaTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AthenaTest.athenaEffectOnTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ing.sw.psp017.model.deck.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ing.sw.psp017.model.deck" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.model.deck.AthenaTest" />
-      <option name="METHOD_NAME" value="athenaEffectOnTest" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -204,17 +207,17 @@
     <list>
       <item itemvalue="Application.Server" />
       <item itemvalue="Application.Client" />
+      <item itemvalue="Application.CommandLineInterface" />
+      <item itemvalue="Application.GuestLobby" />
       <item itemvalue="JUnit.GameControllerTest.normal3PlayersGameTest" />
-      <item itemvalue="JUnit.AthenaTest" />
-      <item itemvalue="JUnit.AthenaTest.athenaEffectOnTest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.GuestLobby" />
+        <item itemvalue="Application.CommandLineInterface" />
         <item itemvalue="JUnit.GameControllerTest.normal3PlayersGameTest" />
-        <item itemvalue="JUnit.AthenaTest.athenaEffectOnTest" />
-        <item itemvalue="JUnit.AthenaTest" />
       </list>
     </recent_temporary>
   </component>
@@ -317,7 +320,16 @@
       <workItem from="1590497666871" duration="14415000" />
       <workItem from="1590594798942" duration="7482000" />
       <workItem from="1590649699288" duration="6508000" />
-      <workItem from="1590658094503" duration="3857000" />
+      <workItem from="1590658094503" duration="9648000" />
+      <workItem from="1590673378093" duration="2908000" />
+      <workItem from="1590694978886" duration="6177000" />
+      <workItem from="1590735911333" duration="11866000" />
+      <workItem from="1590751873614" duration="558000" />
+      <workItem from="1590787073879" duration="151000" />
+      <workItem from="1590824211518" duration="10122000" />
+      <workItem from="1590846514153" duration="344000" />
+      <workItem from="1590846870208" duration="462000" />
+      <workItem from="1590915320500" duration="1299000" />
     </task>
     <task id="LOCAL-00001" summary="base card implementation, apollo implementation">
       <created>1585491765125</created>
@@ -445,7 +457,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590493714218</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="fixing GUI bugs">
+      <created>1590662503846</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1590662503846</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,7 +513,8 @@
     <MESSAGE value="completed AthenaTest" />
     <MESSAGE value="enhanced undo advanced function on server side" />
     <MESSAGE value="Implementing undo button." />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing undo button." />
+    <MESSAGE value="fixing GUI bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing GUI bugs" />
   </component>
   <component name="WindowStateProjectService">
     <state x="715" y="198" key="#App" timestamp="1585467630204">
@@ -573,7 +593,7 @@
     </state>
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585403920958" />
     <state x="732" y="219" width="534" height="598" key="FileChooserDialogImpl/71.0.1849.1080@71.0.1849.1080" timestamp="1589099135372" />
-    <state width="1877" height="588" key="GridCell.Tab.0.bottom" timestamp="1590661055573">
+    <state width="1877" height="462" key="GridCell.Tab.0.bottom" timestamp="1590916606455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
@@ -582,10 +602,10 @@
     <state width="1557" height="582" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801002" />
     <state width="1493" height="93" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
     <state width="1557" height="148" key="GridCell.Tab.0.bottom/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
-    <state width="1877" height="588" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1877" height="462" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1590916606455" />
     <state width="1793" height="350" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1590179356325" />
     <state width="1801" height="246" key="GridCell.Tab.0.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1877" height="588" key="GridCell.Tab.0.center" timestamp="1590661055573">
+    <state width="1877" height="462" key="GridCell.Tab.0.center" timestamp="1590916606455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
@@ -594,10 +614,10 @@
     <state width="1557" height="582" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801001" />
     <state width="1493" height="93" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
     <state width="1557" height="148" key="GridCell.Tab.0.center/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
-    <state width="1877" height="588" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1877" height="462" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1590916606455" />
     <state width="1793" height="350" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1590179356324" />
     <state width="1801" height="246" key="GridCell.Tab.0.center/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1877" height="588" key="GridCell.Tab.0.left" timestamp="1590661055573">
+    <state width="1877" height="462" key="GridCell.Tab.0.left" timestamp="1590916606455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
@@ -606,10 +626,10 @@
     <state width="1557" height="582" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801001" />
     <state width="1493" height="93" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
     <state width="1557" height="148" key="GridCell.Tab.0.left/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
-    <state width="1877" height="588" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1877" height="462" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1590916606455" />
     <state width="1793" height="350" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1590179356323" />
     <state width="1801" height="246" key="GridCell.Tab.0.left/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
-    <state width="1877" height="588" key="GridCell.Tab.0.right" timestamp="1590661055573">
+    <state width="1877" height="462" key="GridCell.Tab.0.right" timestamp="1590916606455">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="162" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
@@ -618,7 +638,7 @@
     <state width="1557" height="582" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801002" />
     <state width="1493" height="93" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
     <state width="1557" height="148" key="GridCell.Tab.0.right/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
-    <state width="1877" height="588" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1877" height="462" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1590916606455" />
     <state width="1793" height="350" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1590179356324" />
     <state width="1801" height="246" key="GridCell.Tab.0.right/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
     <state width="726" height="340" key="GridCell.Tab.1.bottom" timestamp="1590521089543">
@@ -658,24 +678,26 @@
     </state>
     <state x="707" y="256" width="536" height="333" key="MultipleFileMergeDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1589533560240" />
     <state x="710" y="256" key="MultipleFileMergeDialog/76.0.1844.1080@76.0.1844.1080" timestamp="1587486721430" />
-    <state x="404" y="0" key="SettingsEditor" timestamp="1589705836650">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state x="182" y="289" key="SettingsEditor" timestamp="1590736345789">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="231" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1588147226138" />
     <state x="277" y="55" key="SettingsEditor/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585408888738" />
     <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588187595226" />
+    <state x="182" y="289" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1590736345789" />
     <state x="404" y="0" key="SettingsEditor/71.0.1849.1080@71.0.1849.1080" timestamp="1589705836650" />
     <state x="409" y="72" key="SettingsEditor/76.0.1844.1080@76.0.1844.1080" timestamp="1585492419633" />
     <state x="843" y="456" width="299" height="169" key="VCS.ChangelistChooser" timestamp="1588283392788">
       <screen x="71" y="0" width="1849" height="1080" />
     </state>
     <state x="843" y="456" width="299" height="169" key="VCS.ChangelistChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588283392788" />
-    <state x="280" y="89" width="804" height="528" key="Vcs.Push.Dialog.v2" timestamp="1590493720067">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="350" y="112" width="804" height="528" key="Vcs.Push.Dialog.v2" timestamp="1590662514195">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1587925094936" />
     <state x="280" y="89" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590493720067" />
     <state x="280" y="90" width="1020" height="734" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1586199593888" />
+    <state x="350" y="112" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1590662514195" />
     <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2/71.0.1849.1080@71.0.1849.1080" timestamp="1590100694475" />
     <state x="412" y="118" key="Vcs.Push.Dialog.v2/76.0.1844.1080@76.0.1844.1080" timestamp="1585672189271" />
     <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1590317343058">
@@ -724,10 +746,11 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="348" y="98" key="refactoring.ChangeSignatureDialog/0.0.1280.680@0.0.1280.680" timestamp="1588165516582" />
-    <state x="582" y="245" key="run.anything.popup" timestamp="1588418773476">
-      <screen x="71" y="0" width="1849" height="1080" />
+    <state x="531" y="236" key="run.anything.popup" timestamp="1590829207985">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586680200250" />
+    <state x="531" y="236" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1590829207985" />
     <state x="582" y="245" key="run.anything.popup/71.0.1849.1080@71.0.1849.1080" timestamp="1588418773476" />
     <state x="586" y="245" key="run.anything.popup/76.0.1844.1080@76.0.1844.1080" timestamp="1587292188416" />
     <state x="359" y="120" width="672" height="560" key="search.everywhere.popup" timestamp="1588165462408">
