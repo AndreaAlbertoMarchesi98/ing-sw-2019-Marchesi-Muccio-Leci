@@ -90,9 +90,6 @@ public class NetworkHandler implements Runnable{
                 else if(message instanceof BoardMessage){
                     view.updateBoard((BoardMessage) message);
                 }
-                else if(message instanceof WaitMessage){
-                    view.updateWaitingRoom((WaitMessage)message);
-                }
                 else if(message instanceof ServerDisconnectionMessage){
                     view.updateDisconnection((ServerDisconnectionMessage)message);
                 }else if(message instanceof VictoryMessage) {

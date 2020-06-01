@@ -3,7 +3,6 @@ package it.polimi.ing.sw.psp017.controller.server;
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Player;
-import it.polimi.ing.sw.psp017.view.ActionNames;
 import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.IOException;
@@ -15,11 +14,11 @@ import java.net.SocketTimeoutException;
 public class VirtualView implements Runnable, View {
 
     private Player player;
-    private Server server;
+    private final Server server;
     private GameController gameController;
-    private PingSender pingSender;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+    private final PingSender pingSender;
+    private final ObjectInputStream input;
+    private final ObjectOutputStream output;
     private boolean running;
 
     private static class PingSender implements Runnable {
@@ -42,8 +41,10 @@ public class VirtualView implements Runnable, View {
 
         }
     }
+
     public class MessageReceiver implements Runnable {
-        private Object message;
+        private final Object message;
+
         public MessageReceiver(Object message) {
             this.message = message;
         }
@@ -52,23 +53,29 @@ public class VirtualView implements Runnable, View {
             if (message instanceof AuthenticationMessage)
                 notifyNickname((AuthenticationMessage) message);
 
-            else if (message instanceof GameSetUpMessage)
-                notifyGameSetUp((GameSetUpMessage) message);
+            if (gameController != null) {
 
-            else if (message instanceof CardMessage)
-                notifyCard((CardMessage) message);
+                if (message instanceof GameSetUpMessage)
+                    notifyGameSetUp((GameSetUpMessage) message);
 
-            else if (message instanceof SelectedTileMessage)
-                notifySelectedTile((SelectedTileMessage) message);
+                else if (message instanceof CardMessage)
+                    notifyCard((CardMessage) message);
 
-            else if (message instanceof PowerActiveMessage)
-                notifyIsPowerActive((PowerActiveMessage) message);
+                else if (message instanceof SelectedTileMessage)
+                    notifySelectedTile((SelectedTileMessage) message);
 
-            else if (message instanceof DisconnectionMessage)
-                notifyDisconnection();
+                else if (message instanceof PowerActiveMessage)
+                    notifyIsPowerActive((PowerActiveMessage) message);
 
-            else if (message instanceof UndoMessage)
-                notifyUndo((UndoMessage) message);
+                else if (message instanceof UndoMessage)
+                    notifyUndo((UndoMessage) message);
+
+                else if (message instanceof ClientDisconnectionMessage)
+                    notifyDisconnection();
+
+                else if (message instanceof RestartMessage)
+                    notifyRestart();
+            }
         }
     }
 
@@ -77,11 +84,16 @@ public class VirtualView implements Runnable, View {
     }
 
     public void stop() {
+        System.out.println("client disconnected, virtualView has stopped");
         running = false;
     }
 
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 
     public Player getPlayer() {
@@ -126,14 +138,9 @@ public class VirtualView implements Runnable, View {
         }
     }
 
-    private void notifyDisconnection() {
-        synchronized (this) {
-            System.out.println("client disconnected");
-            if (gameController != null)
-                gameController.handleDisconnection(this);
-            else
-                server.handleDisconnection(this);
-        }
+    private synchronized void notifyDisconnection() {
+        stop();
+        server.handleDisconnection(this);
     }
 
     public void notifyNickname(AuthenticationMessage authenticationMessage) {
@@ -157,8 +164,12 @@ public class VirtualView implements Runnable, View {
         gameController.setPowerActive();
     }
 
-    public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
+    public void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage) {
         //gameController.no(gameSetUpMessage);
+    }
+
+    public void notifyRestart() {
+        gameController.restartView(this);
     }
 
     public void notifyUndo(UndoMessage undoMessage) {
@@ -177,12 +188,12 @@ public class VirtualView implements Runnable, View {
         sendMessage(lobbyMessage);
     }
 
-    public void updateWaitingRoom(WaitMessage waitMessage) {
-        sendMessage(waitMessage);
-    }
-
     public void updateBoard(BoardMessage boardMessage) {
         sendMessage(boardMessage);
+    }
+
+    public void updateDefeat(NoMovesMessage noMovesMessage) {
+        sendMessage(noMovesMessage);
     }
 
     public void updateVictory(VictoryMessage victoryMessage) {
@@ -194,11 +205,11 @@ public class VirtualView implements Runnable, View {
     }
 
     private synchronized void sendMessage(Object message) {
-            try {
-                output.writeObject(message);
-                output.reset();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            output.writeObject(message);
+            output.reset();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

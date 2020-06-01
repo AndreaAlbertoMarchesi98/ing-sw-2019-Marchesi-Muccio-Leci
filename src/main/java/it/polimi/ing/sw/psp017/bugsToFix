@@ -1,6 +1,7 @@
 SERVER BUGS:
-1)deselezione cella
-2)prova artemis , dopo prima move arriva BUILD, ma lei puo fare una ulteriore move
+
+SISTEMARE PACKAGES SERVER-CLIENT PER UML
+
 3)con tre partite in // se nella terza uno quitta l'altro player non viene notificato
 
 java.net.SocketException: Connection reset by peer

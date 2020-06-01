@@ -20,6 +20,7 @@ public class BoardMessage implements Serializable {
 
 
     public BoardMessage(Game game){
+        System.out.println(game.getAction());
         activePlayerNumber = game.getPlayerIndex() + 1;
         hasChoice = game.hasChoice();
         this.board = new PrintableTile[Board.size][Board.size];

@@ -55,9 +55,9 @@ public class Prometheus extends BaseCard {
     public boolean canBuild(int step, boolean isPowerActive) {
         switch (step) {
             case 0:
+            case 2:
                 return isPowerActive;
             case 1:
-            case 2:
                 return !isPowerActive;
             default:
                 return false;

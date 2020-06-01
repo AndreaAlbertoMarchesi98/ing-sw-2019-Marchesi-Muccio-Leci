@@ -29,15 +29,7 @@ public class ServerTest {
     private Server server;
     private View dummyView;
     private Client dummyClient;
-    private NetworkHandler networkHandler1;
-    private NetworkHandler networkHandler2;
-    private NetworkHandler networkHandler3;
-    private NetworkHandler networkHandler4;
-    private NetworkHandler networkHandler5;
-    private NetworkHandler networkHandler6;
-    private NetworkHandler networkHandler7;
-    private NetworkHandler networkHandler8;
-    private NetworkHandler networkHandler9;
+    private ArrayList<NetworkHandler> networkHandlers;
     private Socket client1;
     private Socket client2;
     private Socket client3;
@@ -53,59 +45,51 @@ public class ServerTest {
 
     @Before
     public void init() throws IOException {
+        networkHandlers = new ArrayList<>();
         server = new Server(SERVER_PORT);
-       // dummyView = new CLI(dummyClient);
-        networkHandler1 = new NetworkHandler();
-        networkHandler2 = new NetworkHandler();
-        networkHandler3 = new NetworkHandler();
-        networkHandler4 = new NetworkHandler();
-        networkHandler5 = new NetworkHandler();
-        networkHandler6 = new NetworkHandler();
+        dummyView = new CLI(dummyClient);
+        for (int i = 0; i < 10; i++) {
+            NetworkHandler networkHandler = new NetworkHandler();
+            networkHandler.setView(dummyView);
+            networkHandlers.add(networkHandler);
+        }
+
     }
 
     @Test
     public void tonsOfConnectionsTest() throws IOException {
-        networkHandler1.startConnection();
-        networkHandler2.startConnection();
-        networkHandler3.startConnection();
-        networkHandler4.startConnection();
+        networkHandlers.get(0).startConnection();
+        networkHandlers.get(1).startConnection();
+        networkHandlers.get(2).startConnection();
+        networkHandlers.get(3).startConnection();
 
-        networkHandler1.sendMessage(new AuthenticationMessage("name1"));
-        networkHandler2.sendMessage(new AuthenticationMessage("name2"));
-        networkHandler3.sendMessage(new AuthenticationMessage("name3"));
-        networkHandler4.sendMessage(new AuthenticationMessage("name4"));
+        networkHandlers.get(0).sendMessage(new AuthenticationMessage("name1"));
+        networkHandlers.get(1).sendMessage(new AuthenticationMessage("name2"));
+        networkHandlers.get(2).sendMessage(new AuthenticationMessage("name3"));
+        networkHandlers.get(3).sendMessage(new AuthenticationMessage("name4"));
 
         ArrayList<GodName> chosenCards = new ArrayList<>();
         chosenCards.add(GodName.ATLAS);
         chosenCards.add(GodName.ATHENA);
         chosenCards.add(GodName.HEPHAESTUS);
-        networkHandler1.sendMessage(new GameSetUpMessage(chosenCards));
+        networkHandlers.get(0).sendMessage(new GameSetUpMessage(chosenCards));
 
-        networkHandler5.startConnection();
-        networkHandler6.startConnection();
-        networkHandler7.startConnection();
+        networkHandlers.get(5).startConnection();
+        networkHandlers.get(6).startConnection();
+        networkHandlers.get(7).startConnection();
 
-        networkHandler5.sendMessage(new AuthenticationMessage("name1"));
-        networkHandler6.sendMessage(new AuthenticationMessage("name2"));
+        networkHandlers.get(5).sendMessage(new AuthenticationMessage("name1"));
+        networkHandlers.get(6).sendMessage(new AuthenticationMessage("name2"));
 
-        networkHandler8.startConnection();
+        networkHandlers.get(8).startConnection();
 
-        networkHandler7.sendMessage(new AuthenticationMessage("name3"));
-        networkHandler8.sendMessage(new AuthenticationMessage("name4"));
+        networkHandlers.get(7).sendMessage(new AuthenticationMessage("name3"));
+        networkHandlers.get(8).sendMessage(new AuthenticationMessage("name4"));
     }
 
     @Test
     public void sameNicknamesTest() throws IOException {
-        networkHandler1.startConnection();
-        networkHandler2.startConnection();
-        networkHandler3.startConnection();
-        networkHandler4.startConnection();
 
-        networkHandler1.sendMessage(new AuthenticationMessage("sameName"));
-        networkHandler2.sendMessage(new AuthenticationMessage("name2"));
-        networkHandler3.sendMessage(new AuthenticationMessage("sameName"));
-        networkHandler4.sendMessage(new AuthenticationMessage("sameName"));
-
-        assertEquals("error: there should be only 2 players", 2, server.getWaitingViews().size());
+        assertEquals("error: there should be only 2 players", 1);
     }
 }

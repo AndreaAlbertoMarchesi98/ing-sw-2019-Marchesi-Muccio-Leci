@@ -6,10 +6,10 @@ import it.polimi.ing.sw.psp017.view.GodName;
 import java.util.ArrayList;
 
 public class Lobby {
-    private ArrayList<Player> players;
-    private ArrayList<GodName> availableCards;
-    private ArrayList<GodName> chosenCards;
-    private int expectedPlayersCount;
+    private final ArrayList<Player> players;
+    private final ArrayList<GodName> availableCards;
+    private final ArrayList<GodName> chosenCards;
+    private final int expectedPlayersCount;
 
     public Lobby(ArrayList<GodName> godNames){
         chosenCards = new ArrayList<>();

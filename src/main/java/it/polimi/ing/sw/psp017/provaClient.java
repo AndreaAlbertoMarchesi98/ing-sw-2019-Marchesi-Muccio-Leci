@@ -1,29 +1,41 @@
 package it.polimi.ing.sw.psp017;
 
+import it.polimi.ing.sw.psp017.controller.server.Server;
+import it.polimi.ing.sw.psp017.view.CLI;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class provaClient {
-    public static void main(String[] args) throws IOException {
-        // don't need to specify a hostname, it will be the current machine
-        ServerSocket ss = new ServerSocket(7777);
-        System.out.println("ServerSocket awaiting connections...");
-        Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
-        System.out.println("Connection from " + socket + "!");
+    private static class Cli {
+        public String variable;
+    }
 
-        // get the input stream from the connected socket
-        // create a DataInputStream so we can read data from it.
-        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+    private static class Boh implements Runnable {
+        private final Cli cli;
 
-        // read the message from the socket
-        String message = dataInputStream.readUTF();
-        System.out.println("The message sent from the socket was: " + message);
+        public Boh(Cli cli) {
+            this.cli = cli;
+        }
 
-        System.out.println("Closing sockets.");
-        ss.close();
-        socket.close();
+        public void run() {
+            Scanner ciao= new Scanner(System.in);
+            String string = ciao.nextLine();
+            cli.variable = string;
+        }
+    }
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        Cli cli = new Cli();
+        Thread t = new Thread(new Boh(cli));
+        t.start();
+        Thread.sleep(10000);
+        t.interrupt();
+
+        System.out.println(cli.variable);
     }
 }

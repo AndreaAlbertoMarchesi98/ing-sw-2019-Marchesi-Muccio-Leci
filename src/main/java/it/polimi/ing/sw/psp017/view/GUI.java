@@ -165,8 +165,8 @@ public class GUI implements View {
 
 
     @Override
-    public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
-        client.getNetworkHandler().sendMessage(disconnectionMessage);
+    public void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage) {
+        client.getNetworkHandler().sendMessage(clientDisconnectionMessage);
     }
 
     @Override
@@ -270,26 +270,6 @@ public class GUI implements View {
                                 " \n playerNumber  : " + client.playersInfo.get(i).playerNumber);
                     }
                 }
-
-
-
-            }
-        });
-    }
-
-    @Override
-    public void updateWaitingRoom(final WaitMessage waitMessage) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-
-
-                mainPanel.setVisible(false);
-                mainPanel = new WaitingRoom(waitMessage.queueLength);
-                mainFrame.setContentPane(mainPanel);
-                mainFrame.setSize(dim.width/2,dim.width/2);
-                mainFrame.setLocationRelativeTo(null);
-                mainFrame.setVisible(true);
 
 
 

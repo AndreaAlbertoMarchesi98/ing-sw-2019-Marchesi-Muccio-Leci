@@ -1,34 +1,31 @@
 package it.polimi.ing.sw.psp017.controller.server;
 
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.UndoMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.InvalidNameMessage;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.WaitMessage;
 import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.View;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Server {
     private ServerSocket socket;
     private final static int SOCKET_PORT = 7778;
 
-    private final Queue<VirtualView> waitingViews;
-
     private final ArrayList<GameController> gameControllers;
-    GameController waitingGameController;
+    private final ArrayList<GameController> waitingGameControllers;
 
     public static void main(String[] args) {
         new Server(SOCKET_PORT);
     }
 
+    /**
+     * initialize server's lists, create server's socket and start AcceptConnectionsThread
+     *
+     * @param socketPort the port where the server socket will run
+     */
     public Server(int socketPort) {
-        waitingViews = new LinkedList<>();
-        waitingGameController = null;
+        waitingGameControllers = new ArrayList<>();
         gameControllers = new ArrayList<>();
         try {
             socket = new ServerSocket(socketPort);
@@ -38,7 +35,6 @@ public class Server {
         }
 
         new Thread(new AcceptConnectionsThread(this)).start();
-        new Thread(new AddViewsToGameThread(this)).start();
     }
 
     private static class AcceptConnectionsThread implements Runnable {
@@ -53,64 +49,83 @@ public class Server {
         }
     }
 
-    private static class AddViewsToGameThread implements Runnable {
-        private final Server server;
+    /**
+     * initialize server's lists, create server's socket and start AcceptConnectionsThread
+     *
+     * @param view the disconnected view
+     */
+    public synchronized void handleDisconnection(VirtualView view) {
+        GameController gameController = view.getGameController();
+        if (gameController != null)
+            gameController.handleDisconnection(view);
+    }
 
-        public AddViewsToGameThread(Server server) {
-            this.server = server;
+    /**
+     * remove game controller form both controllers lists
+     *
+     * @param gameController the gameController to be removed
+     */
+    public synchronized void removeGameController(GameController gameController) {
+        gameControllers.remove(gameController);
+        waitingGameControllers.remove(gameController);
+    }
+
+    /**
+     * add game controller to waitingGameControllers so that players can join it
+     *
+     * @param gameController the gameController to be added
+     */
+    public void addWaitingGameController(GameController gameController) {
+        waitingGameControllers.add(gameController);
+    }
+
+    /**
+     * create a new gameController and add it to gameControllers so that a new game can start
+     *
+     * @param view the view that sets up a new game
+     */
+    private void createGame(VirtualView view) {
+        GameController gameController = new GameController(this, view);
+        gameControllers.add(gameController);
+    }
+
+    /**
+     * add the view to the first waitingGameController, then delete it if it's full
+     *
+     * @param view the view that joins a game
+     */
+    private void joinGame(VirtualView view) {
+        waitingGameControllers.get(0).addViewToLobby(view);
+        if (!waitingGameControllers.get(0).isLobbyJoinable()) {
+            waitingGameControllers.remove(0);
         }
-
-        public void run() {
-            while(true)
-                server.tryAddingViewToGame();
-        }
     }
 
-    public Queue<VirtualView> getWaitingViews() {
-        return waitingViews;
-    }
-
-    public void removeGameController(GameController gameController) {
-        synchronized (gameControllers) {
-            if (gameController.equals(waitingGameController))
-                waitingGameController = null;
-            gameControllers.remove(gameController);
-        }
-    }
-
-    private VirtualView popWaitingView() {
-        VirtualView view = waitingViews.poll();
-        for (VirtualView waitingView : waitingViews)
-            waitingView.updateWaitingRoom(new WaitMessage(waitingViews.size()));
-        return view;
-    }
-
-    private synchronized void assignView(VirtualView view) {
+    /**
+     * if there are no waitingGameControllers create a new one
+     * else if there is one joinable join it
+     * else there are none joinable, so create a new one
+     *
+     * @param view the view to be assigned
+     */
+    public synchronized void assignView(VirtualView view) {
         System.out.println("assigningView");
-        waitingViews.add(view);
-        if (!tryAddingViewToGame())
-            view.updateWaitingRoom(new WaitMessage(waitingViews.size()));
+        if (waitingGameControllers.isEmpty())
+            createGame(view);
+        else if (waitingGameControllers.get(0).isLobbyJoinable())
+            joinGame(view);
+        else
+            createGame(view);
     }
 
-    private synchronized boolean tryAddingViewToGame() {
-        //synchronized (waitingViews) {
-        if (!waitingViews.isEmpty()) {
-            if (waitingGameController == null) {
-                waitingGameController = new GameController(this, popWaitingView());
-                synchronized (gameControllers) {
-                    gameControllers.add(waitingGameController);
-                }
-                return true;
-            } else if (waitingGameController.isLobbyJoinable()) {
-                waitingGameController.addViewToLobby(popWaitingView());
-                if (!waitingGameController.isLobbyJoinable())
-                    waitingGameController = null;
-                return true;
-            }
-        }
-        return false;
-    }
-
+    /**
+     * check if view's nickname is unique among all players,
+     * if it is create new player, assign it to the view, and call assign view method
+     * if it's not notify the view that it's username isn't unique
+     *
+     * @param nickname the view's nickname
+     * @param view     the view to be authenticated
+     */
     public synchronized void tryAuthenticatingView(String nickname, VirtualView view) {
         if (isNicknameUnique(nickname)) {
             Player player = new Player(nickname);
@@ -121,11 +136,13 @@ public class Server {
         }
     }
 
+    /**
+     * loop though all players to check if username's unique
+     *
+     * @param nickname the view's nickname
+     * @return true if username is unique false otherwise
+     */
     private boolean isNicknameUnique(String nickname) {
-        for (VirtualView view : waitingViews) {
-            if (nickname.equals(view.getPlayer().getNickname()))
-                return false;
-        }
         for (GameController gameController : gameControllers) {
             for (VirtualView view : gameController.getViews()) {
                 if (nickname.equals(view.getPlayer().getNickname()))
@@ -135,10 +152,10 @@ public class Server {
         return true;
     }
 
-    public void handleDisconnection(VirtualView view) {
-        waitingViews.remove(view);
-    }
-
+    /**
+     * infinite loop that keeps checking for new connections,
+     * if there's a new connection the virtualView thread is created so that it is handled
+     */
     public void AcceptConnections() {
         while (true) {
             try {
@@ -156,5 +173,4 @@ public class Server {
             }
         }
     }
-
 }

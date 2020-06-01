@@ -4,35 +4,22 @@ import it.polimi.ing.sw.psp017.view.ActionNames;
 
 import java.util.ArrayList;
 
-/**
- * this is a Singleton game class
- */
 public class Game {
     private ArrayList<Player> players;
-    private static Game single_instance = null;
     private Board board;
     private int stepNumber;
     private int playerIndex;
     private boolean powerActive;
-    private Tile selectedTile;
+    private Tile selectedWorkerTile;
     private boolean[][] validTiles;
     private ActionNames action;
     private Step savedStep;
 
-
-
-
-
-
-    // private constructor restricted to this class itself
-
-    public Board getBoard() {
-        return board;
-    }
-
-
-
-
+    /**
+     * create a new board, set a few game's paramenters
+     *
+     * @param players the game's players
+     */
     public Game(ArrayList<Player> players) {
         board = new Board();
         this.players = players;
@@ -41,53 +28,46 @@ public class Game {
         action = ActionNames.PLACE_WORKERS;
     }
 
-
-    public boolean isCreated() {
-        if (single_instance != null)
-            return true;
-        else
-            return false;
-    }
-
-
-    public ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public void addPlayer(Player p) {
-        players.add(p);
-    }
-
-    public void removePlayer(Player p) {
-        players.remove(p);
-
-
-    }
-
-
-
-    public void nextStep(Tile targetTile){
+    /**
+     * increase step number by 1
+     */
+    public void nextStep(){
         stepNumber++;
-        selectedTile = targetTile;
     }
+
+    /**
+     * set parameters so that are a new turn begins, basically resets counters and
+     * change playerIndex to next player's
+     */
     public void nextTurn(){
         powerActive = false;
+        selectedWorkerTile = null;
         stepNumber = 0;
         if(playerIndex >= players.size() - 1)
             playerIndex = 0;
         else
             playerIndex++;
-        selectedTile = null;
     }
 
-    public void restore(Board board){
+    /**
+     * restore parameters so that game state returns to the beginning of the turn
+     *
+     * @param board the saved board that is restored
+     */
+    public void undo(Board board){
         this.board = board;
         stepNumber = 0;
         action = ActionNames.SELECT_WORKER;
         powerActive = false;
-        selectedTile = null;
+        selectedWorkerTile = null;
         getActivePlayer().setPreviousStep(savedStep);
     }
+
+    /**
+     * loop through board to return a deep copy of the board
+     *
+     * @return  a deep copy of the board
+     */
     public Board getBoardCopy(){
         Board board = new Board();
         for (int x = 0; x < Board.size; x++) {
@@ -102,6 +82,22 @@ public class Game {
         }
         savedStep = getActivePlayer().getPreviousStep();
         return board;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void addPlayer(Player p) {
+        players.add(p);
+    }
+
+    public void removePlayer(Player p) {
+        players.remove(p);
     }
 
     public ActionNames getAction() {
@@ -140,17 +136,16 @@ public class Game {
         return playerIndex;
     }
 
-
     public int getStepNumber() {
         return stepNumber;
     }
 
-    public Tile getSelectedTile() {
-        return selectedTile;
+    public Tile getSelectedWorkerTile() {
+        return selectedWorkerTile;
     }
 
-    public void setSelectedTile(Tile selectedTile) {
-        this.selectedTile = selectedTile;
+    public void setSelectedWorkerTile(Tile selectedWorkerTile) {
+        this.selectedWorkerTile = selectedWorkerTile;
     }
 
     public boolean isPowerActive() {

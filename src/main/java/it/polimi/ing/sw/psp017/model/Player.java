@@ -58,6 +58,7 @@ public class Player {
     }
 
     public void setPreviousStep(Step previousStep) {
+        System.out.println("player: "+nickname+"  previousStep x: "+previousStep.getTargetTile().getPosition().x+" y: "+previousStep.getTargetTile().getPosition().y);
         this.previousStep = previousStep;
     }
 
