@@ -28,7 +28,6 @@ public class Lobby {
     public boolean isFull(){
         return players.size() == expectedPlayersCount; }
 
-
     public void addPlayer(Player player) {
         players.add(player);
     }

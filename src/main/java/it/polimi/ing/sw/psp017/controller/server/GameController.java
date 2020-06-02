@@ -88,8 +88,7 @@ public class GameController {
         System.out.println("addingPlayerToLobby");
         addView(view);
         lobby.addPlayer(view.getPlayer());
-        if (lobby.isFull())
-            notifyLobby();
+        notifyLobby();
     }
     //GAME STATE OPERATIONS
 
@@ -118,6 +117,7 @@ public class GameController {
         lobby = new Lobby(message.godNames);
         lobby.addPlayer(view.getPlayer());
         server.addWaitingGameController(this);
+        notifyLobby();
     }
 
     /**
@@ -346,20 +346,24 @@ public class GameController {
         game.getActivePlayer().resetCard();
         game.nextTurn();
         game.setAction(ActionNames.SELECT_WORKER);
+        game.clearValidTiles();
+        savedBoard = game.getBoardCopy();
 
         if (!hasPlayerMovesLeft()) {
             System.out.println("\nplayer has no moves left\n\n");
             VirtualView defeatedView = views.get(game.getPlayerIndex());
-            notifyDefeat(defeatedView);
+
             removeView(defeatedView);
 
+            game.nextStep();
+            game.getActivePlayer().resetCard();
             game.nextTurn();
 
             if (game.getPlayers().size() == 1)
                 notifyVictory(game.getPlayers().get(0).getPlayerNumber());
+            else
+                notifyDefeat(defeatedView);
         }
-        game.clearValidTiles();
-        savedBoard = game.getBoardCopy();
     }
 
     /**

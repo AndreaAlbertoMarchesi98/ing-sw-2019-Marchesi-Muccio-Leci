@@ -55,8 +55,6 @@ public class Hephaestus extends BaseCard {
      */
     @Override
     public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {
-        if(previousStep!=null)
-            System.out.println("efesto: " +previousStep.getTargetTile().getPosition().x+" "+previousStep.getTargetTile().getPosition().y);
         if (currentStep.isPowerActive()){
             if (currentStep.getTargetTile().getLevel() < 3)
                 return currentStep.getTargetTile() == previousStep.getTargetTile();

@@ -9,10 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class VirtualView implements Runnable, View {
-
     private Player player;
     private final Server server;
     private GameController gameController;
@@ -22,6 +20,7 @@ public class VirtualView implements Runnable, View {
     private boolean running;
 
     private static class PingSender implements Runnable {
+        private static final int pingInterval = 1000;
         private final VirtualView virtualView;
 
         public PingSender(VirtualView virtualView) {
@@ -33,7 +32,7 @@ public class VirtualView implements Runnable, View {
             while (virtualView.isRunning()) {
                 try {
                     virtualView.sendMessage(new ServerPing());
-                    Thread.sleep(200);
+                    Thread.sleep(pingInterval);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -70,11 +69,8 @@ public class VirtualView implements Runnable, View {
                 else if (message instanceof UndoMessage)
                     notifyUndo((UndoMessage) message);
 
-                else if (message instanceof ClientDisconnectionMessage)
-                    notifyDisconnection();
-
                 else if (message instanceof RestartMessage)
-                    notifyRestart();
+                    notifyRestart((RestartMessage) message);
             }
         }
     }
@@ -121,16 +117,13 @@ public class VirtualView implements Runnable, View {
     public void run() {
         try {
             processMessages();
-        } catch (SocketTimeoutException e) {
-            System.out.println("it s timeout!!!!!!!!!!!!");
-            notifyDisconnection();
         } catch (IOException | ClassNotFoundException e) {
             notifyDisconnection();
         }
     }
 
 
-    private void processMessages() throws SocketTimeoutException, IOException, ClassNotFoundException {
+    private void processMessages() throws IOException, ClassNotFoundException {
         while (isRunning()) {
             Object message = input.readObject();
 
@@ -139,6 +132,7 @@ public class VirtualView implements Runnable, View {
     }
 
     private synchronized void notifyDisconnection() {
+        System.out.println("client disconnected");
         stop();
         server.handleDisconnection(this);
     }
@@ -164,11 +158,7 @@ public class VirtualView implements Runnable, View {
         gameController.setPowerActive();
     }
 
-    public void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage) {
-        //gameController.no(gameSetUpMessage);
-    }
-
-    public void notifyRestart() {
+    public void notifyRestart(RestartMessage restartMessage) {
         gameController.restartView(this);
     }
 

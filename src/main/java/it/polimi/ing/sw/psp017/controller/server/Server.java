@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
+    private static final int timeout = 4000;
     private ServerSocket socket;
     private final static int SOCKET_PORT = 7778;
 
@@ -161,7 +162,7 @@ public class Server {
             try {
                 Socket client = socket.accept();
 
-                client.setSoTimeout(1000);
+                client.setSoTimeout(timeout);
                 System.out.println("new client connected");
 
                 VirtualView virtualView = new VirtualView(client, this);

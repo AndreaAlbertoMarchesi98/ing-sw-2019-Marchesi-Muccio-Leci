@@ -14,18 +14,16 @@ public interface View {
     void notifyCard(CardMessage cardMessage);
     void notifySelectedTile(SelectedTileMessage selectedTileMessage);  //messaggio poszionamento pedine
     void notifyIsPowerActive(PowerActiveMessage powerActiveMessage);
-    void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage);
-    //void notifyRestart(RestartMessage restartMessage);
+    void notifyRestart(RestartMessage restartMessage);
     void notifyUndo(UndoMessage undoMessage);
 
 
     //get information from controller
-    //void updateFrame();
     void updateGameCreation();  //username valido && primo giocatore
     void updateLoginScreen(InvalidNameMessage invalidNameMessage);
     void updateLobby(LobbyMessage lobbyMessage);//1> tutte le carte, other il resto delle carte
     void updateBoard(BoardMessage boardMessage);//contiene anche isMove e le valid tiles
-    //void updateDefeat(DefeatMessage defeatMessage);
+    void updateDefeat(NoMovesMessage noMovesMessage);
     void updateVictory(VictoryMessage victoryMessage);
     void updateDisconnection(ServerDisconnectionMessage disconnectionMessage);
 }
