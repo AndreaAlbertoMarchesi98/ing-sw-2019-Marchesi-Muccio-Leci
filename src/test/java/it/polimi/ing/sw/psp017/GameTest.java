@@ -1,7 +1,7 @@
 package it.polimi.ing.sw.psp017;
 
-import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.ActionNames;
+import it.polimi.ing.sw.psp017.server.model.*;
+import it.polimi.ing.sw.psp017.client.view.ActionNames;
 
 import java.util.ArrayList;
 

@@ -1,20 +1,16 @@
 package it.polimi.ing.sw.psp017;
 
-import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
-import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
-import it.polimi.ing.sw.psp017.controller.server.GameController;
-import it.polimi.ing.sw.psp017.controller.server.Server;
-import it.polimi.ing.sw.psp017.controller.server.VirtualView;
-import it.polimi.ing.sw.psp017.model.*;
-import it.polimi.ing.sw.psp017.view.CLI;
-import it.polimi.ing.sw.psp017.view.GodName;
+import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
+import it.polimi.ing.sw.psp017.server.controller.GameController;
+import it.polimi.ing.sw.psp017.server.Server;
+import it.polimi.ing.sw.psp017.server.VirtualView;
+import it.polimi.ing.sw.psp017.server.model.*;
+import it.polimi.ing.sw.psp017.client.view.GodName;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
