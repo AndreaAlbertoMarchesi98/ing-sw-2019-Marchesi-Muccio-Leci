@@ -23,6 +23,19 @@ java.net.SocketException: Connection reset by peer
 	at java.base/java.lang.Thread.run(Thread.java:830)
 
 
+4)bug con attiva potere e poi undo, ti fa fare 2 mosse in 1 dopo
+setting power Active to: true
+calculating validTiles
+Exception in thread "Thread-3215" java.lang.NullPointerException
+	at it.polimi.ing.sw.psp017.controller.server.GameController.updateValidTiles(GameController.java:386)
+	at it.polimi.ing.sw.psp017.controller.server.GameController.setPowerActive(GameController.java:158)
+	at it.polimi.ing.sw.psp017.controller.server.VirtualView.notifyIsPowerActive(VirtualView.java:157)
+	at it.polimi.ing.sw.psp017.controller.server.VirtualView$MessageReceiver.run(VirtualView.java:65)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+
+
+
+
 	
 4)prometeo attiva potere e costruisce 2 volte senza muoversi [cosa strana bottone potere]
 

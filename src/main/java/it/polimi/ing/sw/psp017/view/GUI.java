@@ -243,8 +243,11 @@ public class GUI implements View {
                 mainPanel.setVisible(false);
                 mainPanel = new LobbyMessagePanel(lobbyMessage,client);
                 mainFrame.setContentPane(mainPanel);
-                mainFrame.pack();
+                mainFrame.setMinimumSize(new java.awt.Dimension(1200, 800));
+                //mainFrame.pack();
                 mainPanel.setVisible(true);
+                mainFrame.setLocationRelativeTo(null);
+
 
                 if (lobbyMessage.availableCards.size() == 1) {
                     System.out.println("dentro a size == 1");

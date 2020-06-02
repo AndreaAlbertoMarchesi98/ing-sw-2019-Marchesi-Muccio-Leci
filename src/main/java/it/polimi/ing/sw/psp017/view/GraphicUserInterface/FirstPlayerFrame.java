@@ -270,6 +270,9 @@ public class FirstPlayerFrame extends JFrame {
         kGradientPanel1.backgroundGradient(10);
 
 
+        this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("logo.png")).getImage());
+
+
 
 
     }//ending initialization
@@ -300,12 +303,11 @@ public class FirstPlayerFrame extends JFrame {
         client.getNetworkHandler().sendMessage(new GameSetUpMessage(selectedCards));
         playButtonJButton.setVisible(false);
         resetNumberOfPlyer.setVisible(false);
-
         System.out.println(selectedCards);
+
     }
 
     private void ThreePlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         setEnableDeckJToggleButton(true);
         setEnableDeckJCheckBox(false);
         resetNumberOfPlyer.setVisible(true);
@@ -313,7 +315,6 @@ public class FirstPlayerFrame extends JFrame {
     }
 
     private void TwoPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
 
         setEnableDeckJToggleButton(true);
         setEnableDeckJCheckBox(false);

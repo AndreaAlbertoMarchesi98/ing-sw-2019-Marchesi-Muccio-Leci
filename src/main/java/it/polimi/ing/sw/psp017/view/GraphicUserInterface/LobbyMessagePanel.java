@@ -10,10 +10,7 @@ import it.polimi.ing.sw.psp017.view.GodName;
 import javax.swing.*;
 import java.awt.*;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
@@ -72,20 +69,66 @@ public class LobbyMessagePanel extends JPanel {
             }
             if(client.getPlayerNumber() != lobbyMessage.choosingPlayerNumber)
             {
-                temp.setEnabled(false);
+                jLabel1.setText("  double click for info  ");
+                temp.setBackground(Color.LIGHT_GRAY);
+                playButton_JButton.setEnabled(false);
+                temp.setEnabled(true);
+                temp.setContentAreaFilled(true);
+                temp.setBackground(new Color(200,80,254));
             }
             else
             {
                 temp.setEnabled(true);
-                jLabel1.setText("Choose your card");
+                jLabel1.setText(" Choose your card ");
                 temp.setContentAreaFilled(true);
-                temp.setBackground(new Color(200,80,254));
+                temp.setBackground(Color.GREEN.darker());
+                //temp.setBackground(new Color(200,80,254));
                 //temp.setBackground(new Color(.1f,.1f,.1f, .1f));
             }
-            cardsButton.add(temp);
+
+
+            cardsButton.add((temp));
             cardSelection_JPanel.add(temp);
 
+        }
+        if(lobbyMessage.chosenCards != null)
+        {
+            for(int i = 0; i < lobbyMessage.chosenCards.size();i++)
+            {
+                final JButton temp = new JButton();
+                temp.setContentAreaFilled(false);
+                temp.setName("  "+ lobbyMessage.chosenCards.get(i).toString()+ " ");
+                temp.setIcon(GodView.getCard(lobbyMessage.chosenCards.get(i)).getIcon());
+                temp.setBackground(null);
 
+                temp.setEnabled(true);
+                temp.setContentAreaFilled(true);
+                temp.setVerticalTextPosition(JButton.TOP);
+                temp.setHorizontalTextPosition(JButton.CENTER);
+                temp.setFont(new java.awt.Font("Tahoma", 2, 36));
+                temp.setBackground(Color.GRAY.darker());
+                temp.setForeground(new java.awt.Color(204, 255, 255));
+                temp.setText(lobbyMessage.players.get(lobbyMessage.players.size()-i-1));
+
+
+                if(client.getPlayerNumber() != lobbyMessage.choosingPlayerNumber)
+                {
+
+                }
+                else
+                {
+                    temp.setBackground(Color.RED.darker());
+
+                }
+               // cardsButton.add(temp);
+                cardSelection_JPanel.add(temp);
+                temp.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        jButton1MouseClicked(evt,temp.getName());
+                    }
+                });
+
+            }
         }
         ButtonGroup group = new ButtonGroup();
 
@@ -119,8 +162,7 @@ public class LobbyMessagePanel extends JPanel {
                         }
                     }
                     else {
-                        client.setCard(GodName.valueOf(toggleButton.getName()));
-                        playButton_JButton.setEnabled(true);
+                        if(client.getPlayerNumber()==lobbyMessage.choosingPlayerNumber) playButton_JButton.setEnabled(true);
                         playButton_JButton.setName(toggleButton.getName());
 
                     }
@@ -162,7 +204,7 @@ public class LobbyMessagePanel extends JPanel {
         playButton_JButton.setAutoscrolls(true);
         playButton_JButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playButton_JButtonActionPerformed(evt);
+                playButton_JButtonActionPerformed(evt,lobbyMessage.choosingPlayerNumber);
             }
         });
         selectPanel_JPanel.add(playButton_JButton);
@@ -199,38 +241,52 @@ public class LobbyMessagePanel extends JPanel {
         kGradientPanel1.backgroundGradient(10);
     }
 
-    private void initialiseButton(LobbyMessage lobbyMessage, JButton jButton) {
-    }
 
 
-    private void playButton_JButtonActionPerformed(java.awt.event.ActionEvent evt) {
-       if(evt.getSource() == playButton_JButton){
+
+    private void playButton_JButtonActionPerformed(ActionEvent evt, int choosingPlayerNumber) {
+       if(evt.getSource() == playButton_JButton && client.getPlayerNumber()==choosingPlayerNumber){
+           playButton_JButton.setEnabled(false);
+           playButton_JButton.setVisible(false);
+           client.setCard(GodName.valueOf(playButton_JButton.getName()));
            client.getView().notifyCard(new CardMessage(GodName.valueOf(playButton_JButton.getName())));
        };
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt,ArrayList<JButton> cards) {
+
+    private void jButton1MouseClicked(MouseEvent evt, String name) {
         // TODO add your handling code here:
-        playButton_JButton.setEnabled(true);
-        for(int i = 0; i <cards.size();i++)
-        {
-            if(evt.getSource().equals(cards.get(i)))
-            {
-                client.setCard(GodName.valueOf(cards.get(i).getText()));
-                client.getNetworkHandler().sendMessage(new CardMessage(GodName.valueOf(cards.get(i).getText())));
-                System.out.println(GodName.valueOf(cards.get(i).getText()));
+        System.out.println("mouse cliccato");
+
+        if(evt.getClickCount() >= 2){
+            JButton temp = (JButton) evt.getSource();
+            System.out.println("get source name : "+temp.getName());
+            JLabel playerDescription = new JLabel();
+            playerDescription.setIcon(GodView.getCard(GodName.valueOf((temp.getName().replaceAll("\\s+","")))).getIconDescription());
+            if(popUp == null){
+                popUp = new JDialog((JFrame)SwingUtilities.getRoot(kGradientPanel1));
+                popUp.add(playerDescription);
+                popUp.setResizable(false);
+                popUp.setVisible(true);
+                popUp.setSize(507,278);
+                popUp.setLocationRelativeTo(null);
+                popUp.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                popUp.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        popUp.dispose();
+                        popUp = null;
+                    }
+                });}
+            else{
+                popUp.setContentPane(playerDescription);
+                popUp.revalidate();
+                popUp.repaint();
             }
         }
-    }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
     }
-
     /**
      * @param args the command line arguments
      */

@@ -5,6 +5,7 @@ import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.SelectedTileMe
 import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.UndoMessage;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.BoardMessage;
 import it.polimi.ing.sw.psp017.model.Vector2d;
+import it.polimi.ing.sw.psp017.view.ActionNames;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -106,12 +107,12 @@ public class BoardGUI extends JFrame {
 
         upperDXPanel = new JPanel();
         //undo = new AbstractButton();
-        undo = new JButtonTile();
+        undo = new JButton();
         powerActivated = new JToggleButton();
         lowerDXPanel = new JPanel();
 
         //quitButton = new AbstractButton();
-        quitButton = new JButtonTile();
+        quitButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
@@ -234,6 +235,14 @@ public class BoardGUI extends JFrame {
         });
 
         upperDXPanel.add(powerActivated);
+        /*
+        JLabel playerNumberLabel = new JLabel();
+        playerNumberLabel.setIcon((new ImageIcon(getClass().getClassLoader().getResource("player/player1.png"))));
+        playerNumberLabel.setVerticalAlignment(SwingConstants.CENTER);
+        playerNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+         */
+
+
         upperDXPanel.add(new JLabel());
         DXPanel.add(upperDXPanel);
 
@@ -265,7 +274,10 @@ public class BoardGUI extends JFrame {
             else
             {
                 playersButton[i].setToolTipText("Opponent Player");
+
+
                 SXPanel.add(playersButton[i]);
+
                    /* if(client.playersInfo.size() == 2)
                     {
                         JButton extensionButton = createJButton(i);
@@ -273,6 +285,15 @@ public class BoardGUI extends JFrame {
                         SXPanel.add(extensionButton);
 
                     }*/
+            }
+            switch(i){
+                case 0: playersButton[i].setBackground(Color.RED.darker());
+                    break;
+                case 1: playersButton[i].setBackground(Color.BLUE.darker());
+                    break;
+                case 2 : playersButton[i].setBackground(Color.GREEN.darker());
+                    break;
+                default: break;
             }
         }
 
@@ -405,32 +426,35 @@ public class BoardGUI extends JFrame {
 
 
     public void showAction(BoardMessage boardMessage) {
+
+        actionNames = boardMessage.action;
+
         enabledBoard(true);
         switch (boardMessage.action) {
             case PLACE_WORKERS:
-                messageLabel_NorthPanel.setText("PLACE WORKER");
+                messageLabel_NorthPanel.setText("  PLACE WORKER  ");
                 break;
             case SELECT_WORKER:
-                messageLabel_NorthPanel.setText("SELECT WORKER");
+                messageLabel_NorthPanel.setText("  SELECT WORKER  ");
                 break;
             case MOVE:
-                messageLabel_NorthPanel.setText("MOVE ");
+                messageLabel_NorthPanel.setText("  MOVE ");
 
                 break;
             case BUILD:
-                messageLabel_NorthPanel.setText("BUILD ");
+                messageLabel_NorthPanel.setText("  BUILD ");
 
                 break;
             case NONE:
-                messageLabel_NorthPanel.setText("NONE WORKER");
+                messageLabel_NorthPanel.setText("  NONE WORKER  ");
                 break;
         }
 
     }
 
     public void showIsYourTurn(boolean isYourTurn) {
-        if (!isYourTurn) messageLabel_NorthPanel.setText("Wait player");
-        else messageLabel_NorthPanel.setText("Your turn");
+        if (!isYourTurn) messageLabel_NorthPanel.setText("  Wait player  ");
+        else messageLabel_NorthPanel.setText("  Your turn  ");
     }
 
 
@@ -513,11 +537,12 @@ public class BoardGUI extends JFrame {
     private JButton quitButton;
     private KGradientPanel southPanel;
     private JPanel tilePanel;
-    private AbstractButton undo;
+    private JButton undo;
     private JPanel upperDXPanel;
     private JPanel workerPanel;
     private ButtonGroup buttonGroup;
     private JButtonTile[][] buttonGrid;
+    private ActionNames actionNames;
 
 
 
@@ -570,7 +595,7 @@ public class BoardGUI extends JFrame {
 
             //System.out.println("Selected row and column: " + row + " " + col);
 
-            if ((messageLabel_NorthPanel.getText() == "MOVE " || messageLabel_NorthPanel.getText().equals("BUILD ")) && buttonClicked.isValidTile()) {
+            if ((actionNames.equals(ActionNames.MOVE)||actionNames.equals(ActionNames.BUILD)) && buttonClicked.isValidTile()) {
                 undo();
             }
             client.getNetworkHandler().sendMessage(new SelectedTileMessage(buttonClicked.getPosition()));

@@ -6,8 +6,10 @@ import it.polimi.ing.sw.psp017.controller.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.controller.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.model.Vector2d;
 
-import java.awt.*;
-import java.security.Key;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 
@@ -17,8 +19,10 @@ public class CLI implements View {
     private static final int NO_PLAYER = 0;
     private int NUMBER_OF_PLAYERS;
     private  boolean isUndoPossible = false;
-    private boolean noMoreTime = false;
+    private boolean timeOut = false;
+    private ActionNames previousAction;
     Boolean undooUnswer;
+
 
 
     private Client client;
@@ -90,12 +94,19 @@ public class CLI implements View {
 
     }
 
-
-
     @Override
-    public void notifyDisconnection(ClientDisconnectionMessage disconnectionMessage) {
+    public void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage) {
         client.getNetworkHandler().closeConnection();
     }
+
+
+
+    /*
+    @Override
+    public void notifyDisconnection(DisconnectionMessage disconnectionMessage) {
+        client.getNetworkHandler().closeConnection();
+    }
+     */
 
     @Override
     public void notifyUndo(UndoMessage undoMessage) {
@@ -196,188 +207,211 @@ public class CLI implements View {
 
 
     }
-    private  class Boh implements Runnable {
 
-        public Boh() {
-        }
-        public void run() {
-            //Scanner ciao= new Scanner(System.in);
-            undooUnswer = getUndoAnswer();
-        }
+   /*
+    @Override
+    public void updateWaitingRoom(WaitMessage waitMessage) {
+
+        System.out.println("dentro updateWaitingRoom");
+
+        //gioatore in attessa di una nuova partita
+        System.out.println("Number of players in waitingRoom : " + waitMessage.queueLength);
+
+        ansi_reset();
+
     }
-
+    */
 
 
     @Override
     public void updateBoard(BoardMessage boardMessage) {
         boolean answer;
-
         System.out.println("dentro a updateBoard");
-
         printBoard(boardMessage.board);
-
         //se e il suo turno
         System.out.println("client playerNumber is:" + client.getPlayerNumber());
         if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
         {
 
-
-
             if(isUndoPossible)
             {
-                try{
-                    Thread threadUndo = new Thread(new Boh());
-                    threadUndo.start();
-                    Thread.sleep(10000);
-                    threadUndo.interrupt();
-                    System.out.println(undooUnswer);
+                /*
+                Thread threadUndo = new Thread(new Boh());
+                threadUndo.start();
+                Thread.sleep(5000);
+                threadUndo.interrupt();
 
-                }catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if(undooUnswer)
-                {
-                    client.getNetworkHandler().sendMessage(new UndoMessage());
-                    return;
-                }
-               // return;
-                boardMessage.action = ActionNames.NONE;
-
-            }
-
-            /*
-            if(isUndoPossible){
-
+                 */
 
                 final Timer timerThread = new Timer();
                 timerThread.schedule(new TimerTask() {
                     int second = 5;
-
                     @Override
                     public void run() {
-
                         second--;
                         if (second == 0 ) {
-
-                            noMoreTime = true;
+                            timeOut = true;
                             timerThread.cancel();
                         }
 
-
                     }
-
                 }, 0, 1000);
 
                 answer = getUndoAnswer();
-
-                if(!noMoreTime && answer){
-
+                if(!timeOut&&answer){
                     client.getNetworkHandler().sendMessage(new UndoMessage());
+                    timerThread.cancel();
+                    isUndoPossible =false;
                     return;
+
+                }
+                if(timeOut&&answer)
+                {
+                    System.out.println(ANSI_RED_BACKGROUND + "it is  too late for undo my dear....");
+                    ansi_reset();
                 }
 
-                if(noMoreTime) return;
 
-                //se si undo mando messaggio  e metto isundopossible a false
+                timeOut = false;
+
+
+                /*
+                System.out.println(undooUnswer);
+                if(undooUnswer)
+                {
+                    isUndoPossible =false;
+                    return;
+                }
+                 */
+                // return;
+                //  boardMessage.action = ActionNames.NONE;
+            }
+
+            if( boardMessage.validTiles!= null && !validTiles(boardMessage))
+            {
+
+                System.out.println("dentro a checkValidTiles");
+                //no mosse disponibile se ha fatto select prima
+
+
+                if(previousAction == ActionNames.SELECT_WORKER)
+                {
+                    boardMessage.action = ActionNames.SELECT_WORKER;
+                }
 
 
             }
-             */
+        /*
+        if(isUndoPossible){
 
+            final Timer timerThread = new Timer();
+            timerThread.schedule(new TimerTask() {
+                int second = 5;
+                @Override
+                public void run() {
+                    second--;
+                    if (second == 0 ) {
+                        noMoreTime = true;
+                        timerThread.cancel();
+                    }
+
+                }
+            }, 0, 1000);
+            answer = getUndoAnswer();
+            if(!noMoreTime && answer){
+                client.getNetworkHandler().sendMessage(new UndoMessage());
+                return;
+            }
+            if(noMoreTime) return;
+            //se si undo mando messaggio  e metto isundopossible a false
+
+        }
+         */
 
             System.out.println("ACTION MESSAGE : " + boardMessage.action);
             if(boardMessage.action == ActionNames.PLACE_WORKERS)
             {
                 Vector2d temp ;
 
-
                 System.out.println("workers placement");
                 //utente sceglie 2 posizioni
                 printBoard(boardMessage.board);
-
 
                 //temp = setWorkerPosition(boardMessage);
                 temp = setWorkerPositionFinal(boardMessage);
                 //invio
                 notifySelectedTile(new SelectedTileMessage(temp));
 
-
             }
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
             {
-
                 hasAskedPowerActive = false;
                 //scelta del worker da utilizzare
-
                 //da fare : obbligo di scegliere un worker
-
                 //Vector2d temp = selectWorker(boardMessage);
-
                 notifySelectedTile(new SelectedTileMessage(selectWorker(boardMessage)));
-
             }
             else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
             {
-
                 //attivare il potere
-
                 //activatePower = getChoice();  ?? serve
-
                 //si o no
                 if(getChoice()) notifyIsPowerActive(new PowerActiveMessage(true));
 
-
-
                 hasAskedPowerActive = true;
-
             }
-            else if(boardMessage.action == ActionNames.MOVE)
+            if(boardMessage.action == ActionNames.MOVE)
             {
-
                 System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
                 //notifyAction(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
                 isUndoPossible = true;
                 notifySelectedTile(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
             }
 
-
-            else if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
+            if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
             {
-
                 //   boardMessage.action == ActionNames.MOVE ||
-
 
                 isUndoPossible = true;
                 System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-
-
-
+                if(!validTiles(boardMessage)){
+                    return;
+                }
                 notifySelectedTile(new SelectedTileMessage(getBuildTargetTile(boardMessage)));
 
                 //salva posizione scelta lastWorkerposition == scegli worker
-
-                /*
-                printValidTiles(boardMessage.validTiles);
-                notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
-                 */
-
+            /*
+            printValidTiles(boardMessage.validTiles);
+            notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
+             */
+                previousAction = boardMessage.action;
             }
             else{
                 System.out.println("invalid action NONE");
             }
 
-
-
         }
         else isUndoPossible = false;
 
+    }
+    public boolean validTiles(BoardMessage b){
+        for(int x = 0; x <5 ; x++)
+            for (int y = 0 ; y <5; y++){
+                if(b.validTiles[x][y])return true;
+            }
+        return false;
+    }
+    //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
 
-        }
 
 
-        //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
+
+
+
+
+
+    //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
 
 
 
@@ -391,6 +425,8 @@ public class CLI implements View {
 
     @Override
     public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
+
+        //NUOVA pRTITA O CHIUDO GIOCO
 
     }
 
@@ -497,11 +533,7 @@ public class CLI implements View {
     }
 
 
-    /**
-     * print game board
-     * @param board game board
-     */
-    public  void printBoard(BoardMessage.PrintableTile[][] board) {
+    public void printBoard(BoardMessage.PrintableTile[][] board) {
 
         int line = 2;
         System.out.println(ANSI_CYAN);
@@ -511,7 +543,7 @@ public class CLI implements View {
         option(1);
         System.out.print(ANSI_CYAN);
         for (int i = 0; i < 5; i++) {
-            System.out.println("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██                                          ██                                                           ██");
+            System.out.println("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██                                          ██                                                           ");
             //System.out.println("██    ═════════  ═════════  ═════════  ═════════  ═════════  ██");
             System.out.print("██"+ANSI_YELLOW_BACKGROUND + ANSI_RED+"  "+ i + " ");
 
@@ -566,9 +598,11 @@ public class CLI implements View {
             option(line);
             line++;
         }
-        System.out.println("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██                                          ██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██");
+        System.out.print("██  ■ ═════════  ═════════  ═════════  ═════════  ═════════  ██");
+        option(7);
+
         //System.out.println("██    ═════════  ═════════  ═════════  ═════════  ═════════  ██");
-        System.out.println("███████████████████████████████████████████████████████████████                                          ███████████████████████████████████████████████████████████████" +ANSI_RESET);
+        System.out.println("███████████████████████████████████████████████████████████████                                          ██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████" +ANSI_RESET);
 
     }
 
@@ -588,42 +622,54 @@ public class CLI implements View {
             case 2:
                 System.out.print(ANSI_RED + "     ████████ ==  DOME");
                 ansi_reset();
-                System.out.println(ANSI_GREEN + "              ████████ ==  FREE      " + ANSI_CYAN + "██");
+                System.out.println(ANSI_GREEN + "              ████████ ==  FREE      " + ANSI_CYAN );
                 ansi_reset();
                 break;
             case 1:
-                System.out.println(ANSI_YELLOW_BACKGROUND + ANSI_RED + ITALIC + UNDERLINE + "                           LEGEND :                        " + ANSI_RESET + ANSI_CYAN + "██");
+                System.out.println(ANSI_YELLOW_BACKGROUND + ANSI_RED + ITALIC + UNDERLINE + "                           LEGEND :                        ");
                 ansi_reset();
                 break;
 
             case 3:
 
-                System.out.print(ITALIC + ANSI_BLUE_BACKGROUND + ANSI_BLACK + "PLAYER ONE           ");
-                System.out.print(ANSI_BRIGHT_BG_YELLOW + ANSI_RED + "PLAYER TWO         ");
-                System.out.println(ANSI_BRIGHT_BG_PURPLE + "PLAYER THREE       " + ANSI_RESET + ANSI_CYAN + "██");
+                System.out.println(ITALIC + ANSI_BLUE_BACKGROUND + ANSI_BLACK + "PLAYER ONE : "+client.playersInfo.get(0).name +
+                        "CARD : "+ client.playersInfo.get(0).card);
+
                 ansi_reset();
                 break;
 
             case 4:
+                System.out.println(ITALIC + ANSI_BRIGHT_BG_YELLOW + ANSI_RED + "PLAYER TWO  "+client.playersInfo.get(1).name +
+                        "CARD : "+ client.playersInfo.get(1).card);
 
-                System.out.print(ITALIC + ANSI_BLUE_BACKGROUND + ANSI_BLACK + "God's name :         ");
-                System.out.print(ANSI_BRIGHT_BG_YELLOW + ANSI_RED + "God's name :       ");
-                System.out.println(ANSI_BRIGHT_BG_PURPLE + "God's name :       " + ANSI_RESET + ANSI_CYAN + "██");
                 ansi_reset();
                 break;
-            case 5:
-                System.out.println("Tile :  " + ANSI_RED + "▲level" + ANSI_RESET + "     <<<<" + ANSI_RED + "DOME //" + ANSI_GREEN + "   FREE>>>>" + ANSI_CYAN + " tile's owner{♠♣♦}██");
-                ansi_reset();
-                break;
-
             case 6:
-                System.out.println("SELECTED TILE :                                           ");
+                System.out.println("Tile :  " + ANSI_RED + "▲level" + ANSI_RESET + "     <<<<" + ANSI_RED + "DOME //" + ANSI_GREEN + "   FREE>>>>" + ANSI_CYAN + " tile's owner{♠♣♦}");
                 ansi_reset();
                 break;
+
+            case 5:
+                if(client.playersInfo.size() == 3) {
+                    System.out.print(ITALIC + ANSI_PURPLE_BACKGROUND + ANSI_BLACK + "PLAYER THREE : "+client.playersInfo.get(2).name +
+                            "CARD : "+ client.playersInfo.get(2).card);
+                }
+                System.out.println();
+                ansi_reset();
+                break;
+            case 7 :
+            {
+                System.out.println();
+                //System.out.println(ITALIC + ANSI_BRIGHT_BG_GREEN+ "              IS YOUR TURN" );
+                ansi_reset();
+                break;
+
+                //System.out.println(ANSI_BRIGHT_BG_RED+ "ENEMY'S TURN" );
+            }
 
 
             case 0:
-                System.out.println("▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██");
+                System.out.println("██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
                 break;
             default:
                 System.out.println("                                                           ██");
@@ -632,6 +678,7 @@ public class CLI implements View {
 
 
     }
+
 
 
 
@@ -901,11 +948,10 @@ public class CLI implements View {
 
 
         String answer;
-
-
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? :");
         do {
 
-            System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? :");
+
             answer = in.nextLine();
 
 
@@ -1080,22 +1126,35 @@ public class CLI implements View {
 
     public boolean getUndoAnswer() {
 
-
-        String answer;
         System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "undo your last step?  ? :");
+        Scanner answerScan = new Scanner(System.in);
+        String answer = null;
 
-
+        /**
+         * do {
+         *
+         *
+         *
+         *             answer = answerScan.nextLine();
+         *
+         *
+         *
+         *         } while (!"N".equalsIgnoreCase(answer) && !"Y".equalsIgnoreCase(answer));
+         */
+        //String result = in.hasNext() ? in.next() : "";
+       // answer = answerScan.nextLine();
+        InputStreamReader inputStream = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(inputStream);
         do {
-
-
-            answer = in.nextLine();
-
-
+            try {
+                answer = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } while (!"N".equalsIgnoreCase(answer) && !"Y".equalsIgnoreCase(answer));
 
-
         ansi_reset();
-        return !"N".equalsIgnoreCase(answer);
+        return "Y".equalsIgnoreCase(answer);
 
     }
 

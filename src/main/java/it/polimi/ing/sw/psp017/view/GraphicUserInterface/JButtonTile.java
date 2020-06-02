@@ -61,6 +61,15 @@ public class JButtonTile extends JButton {
         buildJLabel = new JLabel();
 
 
+        workerJLabel.setVerticalAlignment(SwingConstants.CENTER);
+        workerJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        buildJLabel.setVerticalAlignment(SwingConstants.CENTER);
+        buildJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+
+
+
+
     }
     public JButtonTile(){
         position = null;
