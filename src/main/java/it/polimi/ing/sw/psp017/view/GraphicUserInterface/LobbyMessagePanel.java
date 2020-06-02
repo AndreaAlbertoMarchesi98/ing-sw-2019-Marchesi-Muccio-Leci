@@ -25,6 +25,8 @@ public class LobbyMessagePanel extends JPanel {
     private JPanel selectPanel_JPanel;
     private Client client;
     private JDialog popUp;
+    private JPanel nicknameJPanel;
+    private ArrayList<JLabel> nickLabel;
 
 
 
@@ -194,6 +196,28 @@ public class LobbyMessagePanel extends JPanel {
 
         }
 
+        nicknameJPanel = new JPanel();
+        nicknameJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(255, 255, 255), 3));
+        nicknameJPanel.setOpaque(false);
+        nicknameJPanel.setLayout(new java.awt.GridLayout());
+
+        for(int i = 0; i < lobbyMessage.players.size();i++)
+        {
+            JLabel tempJLabel = new JLabel();
+            tempJLabel.setFont(new java.awt.Font("Tahoma", 2, 36));
+            tempJLabel.setForeground(Color.WHITE);
+            tempJLabel.setText(" "+lobbyMessage.players.get(i)+ " ");
+            tempJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+            nicknameJPanel.add(tempJLabel);
+
+        }
+
+
+
+
+
+        cardSelection_JPanel.add(nicknameJPanel);
+
 
 
         selectPanel_JPanel.setOpaque(false);
@@ -219,7 +243,12 @@ public class LobbyMessagePanel extends JPanel {
                                 .addGroup(kGradientPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(selectCardPanel_JPanel, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                                         .addComponent(cardSelection_JPanel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                        .addComponent(selectPanel_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(nicknameJPanel,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(selectPanel_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+
+                                )
+
                                 .addContainerGap())
         );
         kGradientPanel1Layout.setVerticalGroup(
@@ -230,8 +259,11 @@ public class LobbyMessagePanel extends JPanel {
                                 .addGap(37, 37, 37)
                                 .addComponent(cardSelection_JPanel, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
+                                .addComponent(nicknameJPanel,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(selectPanel_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addContainerGap(43, Short.MAX_VALUE))
+
         );
         this.setLayout(new BorderLayout());
         this.add(kGradientPanel1, BorderLayout.CENTER);

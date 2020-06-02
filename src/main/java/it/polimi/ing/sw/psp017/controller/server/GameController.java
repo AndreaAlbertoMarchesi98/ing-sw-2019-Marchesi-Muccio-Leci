@@ -168,7 +168,10 @@ public class GameController {
      * @param defeatedView view to notify
      */
     public void notifyDefeat(VirtualView defeatedView) {
-        defeatedView.updateDefeat(new NoMovesMessage());
+        for (VirtualView view : views) {
+            view.updateDefeat(new NoMovesMessage(defeatedView.getPlayer().getPlayerNumber()));
+        }
+
     }
 
     /**

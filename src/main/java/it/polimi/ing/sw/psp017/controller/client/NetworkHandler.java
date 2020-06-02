@@ -10,27 +10,26 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 
-public class NetworkHandler implements Runnable {
-    private static final int timeout = 4000;
+public class NetworkHandler implements Runnable{
     private final static int SERVER_PORT = 7778;
+    private static final int pingInterval = 1000;
+    private static final int timeout = 4000;
     private View view;
     private Socket server;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-    private boolean isConnected;
+    private volatile boolean isConnected;
 
-    public void setView(View view) {
+    public void setView(View view){
         this.view = view;
     }
 
-    private static class PingSender implements Runnable {
-        private static final int pingInterval = 1000;
+    private static class PingSender implements Runnable{
         private final NetworkHandler networkHandler;
 
-        public PingSender(NetworkHandler networkHandler) {
+        public PingSender(NetworkHandler networkHandler){
             this.networkHandler = networkHandler;
         }
-
         @Override
         public void run() {
             while (true) {
@@ -45,11 +44,15 @@ public class NetworkHandler implements Runnable {
     }
 
 
-    public void startConnection() throws IOException {
+
+    public void startConnection(String ipAdrress,int serverPort) throws IOException{
 
         String ip = "127.0.0.1";
+        //String ip = "192.168.1.4";
+        System.out.println(ipAdrress);
+        System.out.println(serverPort);
 
-        this.server = new Socket(ip, SERVER_PORT);
+        this.server = new Socket(ipAdrress, (int) serverPort);
         server.setSoTimeout(timeout);
         this.output = new ObjectOutputStream(server.getOutputStream());
         this.input = new ObjectInputStream(server.getInputStream());
@@ -62,6 +65,7 @@ public class NetworkHandler implements Runnable {
         pingSenderThread.start();
 
     }
+
 
     public void closeConnection() {
         try {
@@ -76,30 +80,37 @@ public class NetworkHandler implements Runnable {
 
     @Override
     public void run() {
-        while (isConnected()) {
+        while (isConnected()){
             try {
-                Object message = input.readObject();
-                if (message instanceof InvalidNameMessage) {
-                    view.updateLoginScreen((InvalidNameMessage) message);
-                } else if (message instanceof GameCreationMessage) {
+                Object message =  input.readObject();
+                if(message instanceof InvalidNameMessage){
+                    view.updateLoginScreen((InvalidNameMessage)message);
+                }
+                else if(message instanceof GameCreationMessage){
                     System.out.println("game creation message");
                     view.updateGameCreation();
-                } else if (message instanceof LobbyMessage) {
+                }
+                else if(message instanceof LobbyMessage){
                     view.updateLobby((LobbyMessage) message);
-                } else if (message instanceof BoardMessage) {
+                }
+                else if(message instanceof BoardMessage){
                     view.updateBoard((BoardMessage) message);
-                } else if (message instanceof ServerDisconnectionMessage) {
-                    view.updateDisconnection((ServerDisconnectionMessage) message);
-                } else if (message instanceof VictoryMessage) {
+                }
+                else if(message instanceof ServerDisconnectionMessage){
+                    view.updateDisconnection((ServerDisconnectionMessage)message);
+                }else if(message instanceof VictoryMessage) {
                     view.updateVictory((VictoryMessage) message);
+                } else if (message instanceof NoMovesMessage) {
+                    view.updateDefeat((NoMovesMessage) message);
                 }
 
-            } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException e){
                 System.out.println("ERROR SERVER PING");
                 System.exit(0);
-            } catch (SocketException e) {
+            }
+            catch (SocketException e){
                 System.exit(0);
-            } catch (IOException | ClassNotFoundException e) {
+            }catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
                 closeConnection();
             }
@@ -107,8 +118,8 @@ public class NetworkHandler implements Runnable {
         }
     }
 
-    public synchronized void sendMessage(Object message) {
-        try {
+    public synchronized void sendMessage(Object message){
+        try{
             output.writeObject(message);
             output.reset();
         } catch (IOException e) {
@@ -117,7 +128,7 @@ public class NetworkHandler implements Runnable {
     }
 
 
-    public boolean isConnected() {
+    public boolean isConnected(){
         return isConnected;
     }
 

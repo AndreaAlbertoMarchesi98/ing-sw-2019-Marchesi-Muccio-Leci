@@ -191,6 +191,7 @@ public class BoardGUI extends JFrame {
         undo.setToolTipText("Undo");
         undo.setFont(new Font("Tahoma", 3, 24));
         undo.setForeground(Color.white);
+        undo.setContentAreaFilled(false);
         undo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -326,6 +327,7 @@ public class BoardGUI extends JFrame {
                 quitButtonActionPerformed(evt);
             }
         });
+        quitButton.setBackground(Color.RED.darker());
 
 
         southPanel.setMinimumSize(new Dimension(this.getMinimumSize().width, 200));
@@ -415,8 +417,10 @@ public class BoardGUI extends JFrame {
         int n = JOptionPane.showOptionDialog(this, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);
         ;
         if (n == JOptionPane.YES_OPTION) {
-            this.dispose();
+            System.exit(0);
         }
+
+
 
     }
     /*
@@ -428,6 +432,7 @@ public class BoardGUI extends JFrame {
     public void showAction(BoardMessage boardMessage) {
 
         actionNames = boardMessage.action;
+
 
         enabledBoard(true);
         switch (boardMessage.action) {
@@ -594,8 +599,8 @@ public class BoardGUI extends JFrame {
 
 
             //System.out.println("Selected row and column: " + row + " " + col);
-
-            if ((actionNames.equals(ActionNames.MOVE)||actionNames.equals(ActionNames.BUILD)) && buttonClicked.isValidTile()) {
+            System.out.println("actionName : "+actionNames);
+            if (actionNames!= null && (actionNames.equals(ActionNames.MOVE)||actionNames.equals(ActionNames.BUILD)) && buttonClicked.isValidTile()) {
                 undo();
             }
             client.getNetworkHandler().sendMessage(new SelectedTileMessage(buttonClicked.getPosition()));

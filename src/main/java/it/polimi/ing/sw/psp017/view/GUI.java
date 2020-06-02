@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class GUI implements View {
     private JFrame mainFrame;
@@ -102,11 +103,11 @@ public class GUI implements View {
 
                 setProgress(99);
                 progressBar.setValue(this.getProgress());
-                try {
-                    client.getNetworkHandler().startConnection();
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(mainFrame, "Error: No connection. The program will be closed.", "Error", JOptionPane.ERROR_MESSAGE);
-                    System.exit(0);
+
+                mainFrame.dispose();
+                mainFrame = new ConnectionPanel(client);
+                while(!client.getNetworkHandler().isConnected()){
+
                 }
                 mainFrame.dispose();
                 mainFrame= tempFrame;
@@ -162,12 +163,11 @@ public class GUI implements View {
         client.getNetworkHandler().sendMessage(powerActiveMessage);
     }
 
-
-
     @Override
-    public void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage) {
-        client.getNetworkHandler().sendMessage(clientDisconnectionMessage);
+    public void notifyRestart(RestartMessage restartMessage) {
+
     }
+
 
     @Override
     public void notifyUndo(UndoMessage undoMessage) {
@@ -253,14 +253,51 @@ public class GUI implements View {
                     System.out.println("dentro a size == 1");
 
                     //salvo informazioni players
-                    PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
-                    playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0), 1, lobbyMessage.availableCards.get(0));
-                    client.playersInfo.add(playersInfos[0]);
-                    for (int i = 1; i < lobbyMessage.players.size(); i++) {
-                        playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i), i + 1, lobbyMessage.chosenCards.get(i-1));
+                    System.out.println("before adding last choosen cards " +lobbyMessage.availableCards);
+                    lobbyMessage.chosenCards.add(lobbyMessage.availableCards.get(0));
 
+                    System.out.println("avaiable " +lobbyMessage.availableCards);
+                    System.out.println("choosen " +lobbyMessage.chosenCards);
+                    System.out.println("players " +lobbyMessage.players);
+
+                    //PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
+                   // playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0), 1, lobbyMessage.availableCards.get(0));
+                    //client.playersInfo.add(playersInfos[0]);
+                    client.playersInfo = new ArrayList<>();
+
+                    for(int i = 0; i < lobbyMessage.players.size();i++)
+                    {
+                        PlayersInfo playersInfos = new PlayersInfo(lobbyMessage.players.get(i), i+1, lobbyMessage.chosenCards.get(lobbyMessage.chosenCards.size()-1-i));
+                        client.playersInfo.add(playersInfos);
+                        //client.playersInfo.add(playersInfos[i]);
+                    }
+
+
+
+                    /*
+                    for (int i = 1; i < lobbyMessage.players.size(); i++) {
+                        playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i), i + 1, lobbyMessage.chosenCards.get(i - 1));
+                        System.out.println("players get " + lobbyMessage.players.get(i));
+                        System.out.println();
+
+                        //invertire 2 players
                         client.playersInfo.add(playersInfos[i]);
                     }
+                     */
+
+
+
+                   /**
+                    for(int i = lobbyMessage.players.size();i>0;i--)
+                    {
+                        System.out.println(lobbyMessage.players.size());
+                        playersInfos[i-1] = new PlayersInfo(lobbyMessage.players.get(i-1), i , lobbyMessage.chosenCards.get(lobbyMessage.players.size()-i));
+                        //System.out.println("players get "+ lobbyMessage.players.get(i));
+
+                        client.playersInfo.add(playersInfos[i-1]);
+
+                    }
+                     */
 
                 }
 
@@ -314,7 +351,35 @@ public class GUI implements View {
 
     }
 
-        @Override
+    @Override
+    public void updateDefeat(final NoMovesMessage noMovesMessage) {
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(board, "No moves left for "+client.playersInfo.get(noMovesMessage.playerNumber).card, "Defeat", JOptionPane.WARNING_MESSAGE);
+            }});
+        if( noMovesMessage.playerNumber==client.getPlayerNumber())
+        {
+            Object[] option = {"Quit", "Restart"};
+            int n = JOptionPane.showOptionDialog(mainFrame, "No move possible. Start new game ?", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+            if (n == JOptionPane.YES_OPTION) {
+                System.out.println("CHIUS" + client.getPlayerNumber());
+                mainFrame.dispose();
+                System.exit(0);
+            }
+            else{
+                System.out.println("RESTART" + client.getPlayerNumber());
+                notifyRestart(new RestartMessage());
+                board.dispose();
+                board=null;
+            }
+
+        }
+                //chiudi connessione o restart
+    }
+
+    @Override
     public void updateVictory(VictoryMessage victoryMessage) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -338,11 +403,5 @@ public class GUI implements View {
             if(board != null) board.dispose();
         }
     }
-
-
-
-
-
-
 
 }

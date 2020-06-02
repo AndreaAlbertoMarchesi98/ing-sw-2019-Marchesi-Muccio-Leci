@@ -95,9 +95,11 @@ public class CLI implements View {
     }
 
     @Override
-    public void notifyDisconnection(ClientDisconnectionMessage clientDisconnectionMessage) {
-        client.getNetworkHandler().closeConnection();
+    public void notifyRestart(RestartMessage restartMessage) {
+
     }
+
+
 
 
 
@@ -395,6 +397,12 @@ public class CLI implements View {
         else isUndoPossible = false;
 
     }
+
+    @Override
+    public void updateDefeat(NoMovesMessage noMovesMessage) {
+
+    }
+
     public boolean validTiles(BoardMessage b){
         for(int x = 0; x <5 ; x++)
             for (int y = 0 ; y <5; y++){
