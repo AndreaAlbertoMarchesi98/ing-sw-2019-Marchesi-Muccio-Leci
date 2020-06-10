@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class LobbyMessage implements Serializable {
     public int choosingPlayerNumber;
-    
     public ArrayList<String> players; //numero di giocatori definitivo
     public ArrayList<GodName> chosenCards;//carte che puoi scegliere
     public ArrayList<GodName> availableCards;//carte scelte dal primo player

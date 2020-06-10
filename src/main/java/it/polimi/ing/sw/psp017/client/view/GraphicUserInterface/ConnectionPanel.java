@@ -13,7 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-
+/**
+ * Create the frame for the connection.
+ * Ask to the user Ip and Port to start a connection with server.
+ * Local ip "127.0.0.1" and "7778", as Port,  is given by default.
+ *
+ */
 public class ConnectionPanel extends JFrame {
 
 
@@ -32,7 +37,6 @@ public class ConnectionPanel extends JFrame {
         okPanel = new JPanel();
         jButton1 = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(400, 550));
 
         kGradientPanel1.setBorder(BorderFactory.createLineBorder(new Color(0, 255, 255), 5));
@@ -111,8 +115,12 @@ public class ConnectionPanel extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-    }// </editor-fold>
+    }
 
+    /**
+     * Call startConnection() of the NetworkHandel through the IP and Port selected by the user.
+     * @param evt
+     */
     private void jButton1ActionPerformed(ActionEvent evt)  {
         try{
             client.getNetworkHandler().startConnection(IPTextField.getText(),Integer.parseInt(PORTTextField.getText()));
@@ -126,7 +134,7 @@ public class ConnectionPanel extends JFrame {
     }
 
 
-    // Variables declaration - do not modify
+
     private JButton jButton1;
     private JLabel jLabel1;
     private JLabel jLabel3;
@@ -138,5 +146,5 @@ public class ConnectionPanel extends JFrame {
     private JPanel okPanel;
     private JPanel selectCardPanel_JPanel;
     private Client client;
-    // End of variables declaration
+
 }

@@ -63,14 +63,23 @@ public class LobbyMessagePanel extends JPanel {
             temp.setName(lobbyMessage.availableCards.get(i).toString());
             temp.setIcon(GodView.getCard(lobbyMessage.availableCards.get(i)).getIcon());
             temp.setBackground(null);
+            temp.setToolTipText("Double click for God's description");
 
             if (client.getPlayerNumber() == 0) {
                 client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname()) + 1);
 
             }
-            if(client.getPlayerNumber() != lobbyMessage.choosingPlayerNumber)
+
+            if(client.getPlayerNumber() != lobbyMessage.choosingPlayerNumber )
             {
-                jLabel1.setText("  double click for info  ");
+                if(allPlayerIn(lobbyMessage)){
+                    jLabel1.setText(lobbyMessage.players.get(lobbyMessage.choosingPlayerNumber-1) + "   is choosing his God  ");
+                    jLabel1.setIcon(null);
+                }
+                else {
+                    jLabel1.setText("  Waiting for other participants  ");
+                    jLabel1.setIcon(new ImageIcon(LobbyMessagePanel.class.getClassLoader().getResource("dagger.png")));
+                }
                 temp.setBackground(Color.LIGHT_GRAY);
                 playButton_JButton.setEnabled(false);
                 temp.setEnabled(true);
@@ -80,11 +89,10 @@ public class LobbyMessagePanel extends JPanel {
             else
             {
                 temp.setEnabled(true);
-                jLabel1.setText(" Choose your card ");
+                jLabel1.setText(" Choose your God ");
                 temp.setContentAreaFilled(true);
                 temp.setBackground(Color.GREEN.darker());
-                //temp.setBackground(new Color(200,80,254));
-                //temp.setBackground(new Color(.1f,.1f,.1f, .1f));
+
             }
 
 
@@ -101,7 +109,7 @@ public class LobbyMessagePanel extends JPanel {
                 temp.setName("  "+ lobbyMessage.chosenCards.get(i).toString()+ " ");
                 temp.setIcon(GodView.getCard(lobbyMessage.chosenCards.get(i)).getIcon());
                 temp.setBackground(null);
-
+                temp.setToolTipText("Double click for God's description");
                 temp.setEnabled(true);
                 temp.setContentAreaFilled(true);
                 temp.setVerticalTextPosition(JButton.TOP);
@@ -194,7 +202,12 @@ public class LobbyMessagePanel extends JPanel {
             }));
 
         }
-
+        JPanel listPlayers = new JPanel();
+        JLabel infoList = new JLabel();
+        infoList.setText("Players in lobby...");
+        infoList.setFont(new java.awt.Font("Tahoma", 2, 36));
+        infoList.setForeground(Color.WHITE);
+        listPlayers.add(infoList);
         nicknameJPanel = new JPanel();
         nicknameJPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(255, 255, 255), 3));
         nicknameJPanel.setOpaque(false);
@@ -203,16 +216,13 @@ public class LobbyMessagePanel extends JPanel {
         for(int i = 0; i < lobbyMessage.players.size();i++)
         {
             JLabel tempJLabel = new JLabel();
-            tempJLabel.setFont(new java.awt.Font("Tahoma", 2, 36));
+            tempJLabel.setFont(new java.awt.Font("Tahoma", 3, 36));
             tempJLabel.setForeground(Color.WHITE);
             tempJLabel.setText(" "+lobbyMessage.players.get(i)+ " ");
             tempJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
             nicknameJPanel.add(tempJLabel);
 
         }
-
-
-
 
 
         cardSelection_JPanel.add(nicknameJPanel);
@@ -242,6 +252,8 @@ public class LobbyMessagePanel extends JPanel {
                                 .addGroup(kGradientPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(selectCardPanel_JPanel, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                                         .addComponent(cardSelection_JPanel, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addGap(20,20,20)
+                                        .addComponent(listPlayers,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(nicknameJPanel,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(18, 18, 18)
                                         .addComponent(selectPanel_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -257,7 +269,8 @@ public class LobbyMessagePanel extends JPanel {
                                 .addComponent(selectCardPanel_JPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37)
                                 .addComponent(cardSelection_JPanel, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
+                                .addGap(20,20,20)
+                                .addComponent(listPlayers,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(nicknameJPanel,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(selectPanel_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -284,15 +297,15 @@ public class LobbyMessagePanel extends JPanel {
        };
     }
 
-
+private boolean allPlayerIn(LobbyMessage lobbyMessage){
+        return (lobbyMessage.availableCards.size() + lobbyMessage.chosenCards.size()) == lobbyMessage.players.size();
+}
 
     private void jButton1MouseClicked(MouseEvent evt, String name) {
-        // TODO add your handling code here:
-        System.out.println("mouse cliccato");
 
         if(evt.getClickCount() >= 2){
             JButton temp = (JButton) evt.getSource();
-            System.out.println("get source name : "+temp.getName());
+
             JLabel playerDescription = new JLabel();
             playerDescription.setIcon(GodView.getCard(GodName.valueOf((temp.getName().replaceAll("\\s+","")))).getIconDescription());
             if(popUp == null){

@@ -3,8 +3,8 @@ SERVER BUGS:
 SISTEMARE PACKAGES SERVER-CLIENT PER UML
 
 1)Quando un giocatore muore non sene vanno gli workers
-VIEW BUGS:
-1)win error server ping , tutti i client spenti
+
+1)Dopo vittoria, inizia di nuovo un altra partita con gli stessi giocatori: IN PLACE WORKER IL SERVER FA SCEGLIERE SEMPRE IL PRIMO
 
 
 

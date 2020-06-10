@@ -59,6 +59,11 @@ public class JButtonTile extends JButton {
         setIcon(new TranslucentButtonIcon(this, transparentColor));
         workerJLabel = new JLabel();
         buildJLabel = new JLabel();
+        workerJLabel.setVerticalAlignment(SwingConstants.CENTER);
+        workerJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        buildJLabel.setVerticalAlignment(SwingConstants.CENTER);
+        buildJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
 
 
         workerJLabel.setVerticalAlignment(SwingConstants.CENTER);

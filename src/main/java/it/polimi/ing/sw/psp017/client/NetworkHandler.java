@@ -1,5 +1,6 @@
 package it.polimi.ing.sw.psp017.client;
 
+import it.polimi.ing.sw.psp017.client.view.GUI;
 import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.server.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.client.view.View;
@@ -11,7 +12,6 @@ import java.net.SocketTimeoutException;
 
 
 public class NetworkHandler implements Runnable{
-    private final static int SERVER_PORT = 7778;
     private static final int pingInterval = 1000;
     private static final int timeout = 4000;
     private View view;
@@ -24,6 +24,9 @@ public class NetworkHandler implements Runnable{
         this.view = view;
     }
 
+    /**
+     * Send Ping message to the server every 'pingInterval'
+     */
     private static class PingSender implements Runnable{
         private final NetworkHandler networkHandler;
 
@@ -37,22 +40,23 @@ public class NetworkHandler implements Runnable{
                     networkHandler.sendMessage(new ClientPing());
                     Thread.sleep(pingInterval);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+
                 }
             }
         }
     }
 
 
+    /**
+     * Try to establish a connection with the socket at the ip and serverPort specified
+     * @param ipAdress
+     * @param serverPort
+     * @throws IOException if it can't connect
+     */
+    public void startConnection(String ipAdress,int serverPort) throws IOException{
 
-    public void startConnection(String ipAdrress,int serverPort) throws IOException{
 
-        String ip = "127.0.0.1";
-        //String ip = "192.168.1.4";
-        System.out.println(ipAdrress);
-        System.out.println(serverPort);
-
-        this.server = new Socket(ipAdrress, (int) serverPort);
+        this.server = new Socket(ipAdress, serverPort);
         server.setSoTimeout(timeout);
         this.output = new ObjectOutputStream(server.getOutputStream());
         this.input = new ObjectInputStream(server.getInputStream());
@@ -66,10 +70,11 @@ public class NetworkHandler implements Runnable{
 
     }
 
-
+    /**
+     * Close socket and Stream securely
+     */
     public void closeConnection() {
         try {
-            System.out.println("server unreachable");
             isConnected = false;
             input.close();
             output.close();
@@ -78,6 +83,10 @@ public class NetworkHandler implements Runnable{
         }
     }
 
+    /**
+     * Wait for messages from the server and calls the respective View's functions
+     * catch an exception if socket time out goes off showing a message to the user
+     */
     @Override
     public void run() {
         while (isConnected()){
@@ -87,7 +96,6 @@ public class NetworkHandler implements Runnable{
                     view.updateLoginScreen((InvalidNameMessage)message);
                 }
                 else if(message instanceof GameCreationMessage){
-                    System.out.println("game creation message");
                     view.updateGameCreation();
                 }
                 else if(message instanceof LobbyMessage){
@@ -104,30 +112,45 @@ public class NetworkHandler implements Runnable{
                     view.updateDefeat((NoMovesMessage) message);
                 }
 
-            } catch (SocketTimeoutException e){
+            } /*catch (SocketTimeoutException e){
+
+                if(view instanceof GUI){
+                    ((GUI)view).showServerNotFound();
+                }
                 System.out.println("ERROR SERVER PING");
-                System.exit(0);
-            }
+            }*/
             catch (SocketException e){
-                System.exit(0);
+
+                if(view instanceof GUI){
+                    ((GUI)view).showServerNotFound();
+                }else{
+                    System.out.println("Error Ping Server! Please retry later");
+                }
+                closeConnection();
             }catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
                 closeConnection();
             }
 
         }
     }
 
+    /**
+     * Send message to the socket
+     * @param message
+     */
     public synchronized void sendMessage(Object message){
         try{
             output.writeObject(message);
             output.reset();
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
-
+    /**
+     * return true if the connection between client and server is on
+     * @return
+     */
     public boolean isConnected(){
         return isConnected;
     }

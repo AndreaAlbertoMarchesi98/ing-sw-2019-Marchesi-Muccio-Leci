@@ -20,7 +20,7 @@ public class CLI implements View {
     private  boolean isUndoPossible = false;
     private boolean timeOut = false;
     private ActionNames previousAction;
-    Boolean undooUnswer;
+
 
 
 

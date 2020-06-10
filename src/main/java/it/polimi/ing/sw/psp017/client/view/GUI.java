@@ -1,5 +1,4 @@
 package it.polimi.ing.sw.psp017.client.view;
-
 import it.polimi.ing.sw.psp017.client.Client;
 import it.polimi.ing.sw.psp017.client.PlayersInfo;
 import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
@@ -9,16 +8,17 @@ import it.polimi.ing.sw.psp017.client.view.GraphicUserInterface.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Collection;
+
 
 public class GUI implements View {
     private JFrame mainFrame;
     private Client client;
     final public Dimension dim;
-    private JLabel backgroundScreen;  //contiene l'immagine di sfondo
+    private JLabel backgroundScreen;
     private JPanel mainPanel;
+    private  Image logoIm;
 
     private BoardGUI board;
 
@@ -41,7 +41,10 @@ public class GUI implements View {
 
     }
 
-
+    /**
+     * createFrame() creates show the first frame with logo-image in background and a progress bar.
+     * During the load, this method prepares a new frame used by the loginPanel and try to establish a connection calling the ConnectionPanel
+     */
     private void createFrame() {
         mainFrame = new JFrame();
         mainFrame.setSize(dim.width/2, dim.height/2);
@@ -49,13 +52,12 @@ public class GUI implements View {
         mainFrame.setUndecorated(true);
         mainFrame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
-        final Image im = new ImageIcon(getClass().getClassLoader().getResource("logo.png")).getImage().getScaledInstance(mainFrame.getWidth(),mainFrame.getHeight(),Image.SCALE_SMOOTH);
-        mainFrame.setIconImage(im);
-        mainFrame.setLayout(new BorderLayout());
+        this.logoIm = new ImageIcon(getClass().getClassLoader().getResource("logo.png")).getImage().getScaledInstance(mainFrame.getWidth(),mainFrame.getHeight(),Image.SCALE_SMOOTH);
+        mainFrame.setIconImage(logoIm);
         mainFrame.setLocationRelativeTo(null);
         mainPanel = new JPanel(new BorderLayout());
 
-        ImageIcon i = new ImageIcon(im);
+        ImageIcon i = new ImageIcon(logoIm);
         backgroundScreen = new JLabel(i, JLabel.CENTER);
         final JProgressBar progressBar = new JProgressBar();
         progressBar.setStringPainted(true);
@@ -64,12 +66,11 @@ public class GUI implements View {
         mainPanel.add(progressBar, BorderLayout.SOUTH);
         mainFrame.setContentPane(mainPanel);
         mainFrame.setVisible(true);
-        mainFrame.repaint();
-        mainFrame.setLocationRelativeTo(null);
+
 
         new SwingWorker<Integer, String>() {
             @Override
-            protected Integer doInBackground() throws Exception {
+            protected Integer doInBackground()  {
                 setProgress(1);
                 progressBar.setIndeterminate(false);
 
@@ -79,19 +80,7 @@ public class GUI implements View {
                 } catch (InterruptedException ex) {
                 }
                 final JFrame tempFrame = new JFrame("Santorini");
-                tempFrame.setIconImage(im);
-                tempFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                tempFrame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(tempFrame, "Are you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-                        if (n == JOptionPane.YES_OPTION) {
-                            tempFrame.dispose();
-                        }
-
-                    }
-                });
+                setDefaultOptionFrame(tempFrame);
                 setProgress(55);
                 progressBar.setValue(this.getProgress());
                 try {
@@ -99,31 +88,17 @@ public class GUI implements View {
                 } catch (InterruptedException ex) {
                 }
 
-                //mainFrame.setSize(dim);
-
                 setProgress(99);
                 progressBar.setValue(this.getProgress());
 
                 mainFrame.dispose();
                 mainFrame = new ConnectionPanel(client);
+                setDefaultOptionFrame(mainFrame);
                 while(!client.getNetworkHandler().isConnected()){
 
                 }
                 mainFrame.dispose();
                 mainFrame= tempFrame;
-                mainFrame.setIconImage(im);
-                mainFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                mainFrame.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-                        if (n == JOptionPane.YES_OPTION) {
-                            System.exit(0);
-                        }
-
-                    }
-                });
                 mainFrame.setMinimumSize(new Dimension(500,700));
                 mainFrame.setContentPane(mainPanel);
                 mainFrame.pack();
@@ -137,7 +112,39 @@ public class GUI implements View {
 
     }
 
+    /**
+     * @param frame all options are added to this frame
+     */
+    public void setDefaultOptionFrame(final JFrame frame){
+        frame.setTitle("Santorini");
+        frame.setIconImage(logoIm);
+        frame.setLayout(new BorderLayout());
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                quitPanel(frame);
+            }
+        });
+    }
 
+    /**
+     * Show a JOptionPane asking the user if he really wants to quit.
+     * @param frame on which is showed the panel
+     */
+    public void quitPanel(JFrame frame){
+        Object[] option = {"Quit", "Cancel"};
+        int n = JOptionPane.showOptionDialog(frame, "Are you sure you want to quit the game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+        if (n == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+
+    /**
+     * each method sends the respective message through the sendMessage() of the NetworkHandeler
+     * As parameter the message to send in the correct type.
+     */
     @Override
     public void notifyNickname(AuthenticationMessage authenticationMessage) {
         client.getNetworkHandler().sendMessage(authenticationMessage);
@@ -155,7 +162,7 @@ public class GUI implements View {
 
     @Override
     public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
-
+        client.getNetworkHandler().sendMessage(selectedTileMessage);
     }
 
     @Override
@@ -165,15 +172,18 @@ public class GUI implements View {
 
     @Override
     public void notifyRestart(RestartMessage restartMessage) {
-
+            client.getNetworkHandler().sendMessage( restartMessage);
     }
 
 
     @Override
     public void notifyUndo(UndoMessage undoMessage) {
-
+        client.getNetworkHandler().sendMessage(undoMessage);
     }
 
+    /**
+     * Update the mainFrame with the FirstPlayerFrame.
+     */
     @Override
     public void updateGameCreation() {
         SwingUtilities.invokeLater(new Thread(new Runnable() {
@@ -182,19 +192,14 @@ public class GUI implements View {
                 mainFrame.dispose();
                 mainPanel.setVisible(false);
                 mainFrame = new FirstPlayerFrame(client);
+                setDefaultOptionFrame(mainFrame);
                 mainFrame.setLocationRelativeTo(null);
                 mainFrame.setVisible(true);
-
 
                 mainFrame.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosing(WindowEvent e) {
-                        Object[] option = {"Quit", "Cancel"};
-                        int n = JOptionPane.showOptionDialog(mainFrame, "!re you sure you want to quit the game ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-                        if (n == JOptionPane.YES_OPTION) {
-                            mainFrame.dispose();
-                        }
-
+                        quitPanel(mainFrame);
                     }
                 });
 
@@ -203,9 +208,15 @@ public class GUI implements View {
 
     }
 
+    /**
+     * Update the mainFrame with the LoginPanel.
+     * If invalidNameMessage is equals 'NULL' then the user have to insert the nickname for the first time;
+     * else the nickname sent to the server is not valid, so a JOptionPane is showed to the user to notify him, then
+     * he can reinsert a new nickname.
+     */
     @Override
     public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
-        if (invalidNameMessage != null) { //hai già creato il frame e devi solo aggiornare il testo e ricevere un nuovo nick
+        if (invalidNameMessage != null) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
@@ -233,9 +244,15 @@ public class GUI implements View {
 
     }
 
+    /**
+     *  Update the mainFrame with the LobbyMessagePanel.
+     *  Add information to the 'playersInfo' structure.
+     * @param lobbyMessage
+     */
     @Override
     public void updateLobby(final LobbyMessage lobbyMessage) {
         board = null;
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -244,79 +261,33 @@ public class GUI implements View {
                 mainPanel = new LobbyMessagePanel(lobbyMessage,client);
                 mainFrame.setContentPane(mainPanel);
                 mainFrame.setMinimumSize(new java.awt.Dimension(1200, 800));
-                //mainFrame.pack();
                 mainPanel.setVisible(true);
                 mainFrame.setLocationRelativeTo(null);
 
-
                 if (lobbyMessage.availableCards.size() == 1) {
-                    System.out.println("dentro a size == 1");
-
-                    //salvo informazioni players
-                    System.out.println("before adding last choosen cards " +lobbyMessage.availableCards);
+                    isFirstBoardStep = true;
                     lobbyMessage.chosenCards.add(lobbyMessage.availableCards.get(0));
 
-                    System.out.println("avaiable " +lobbyMessage.availableCards);
-                    System.out.println("choosen " +lobbyMessage.chosenCards);
-                    System.out.println("players " +lobbyMessage.players);
-
-                    //PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
-                   // playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0), 1, lobbyMessage.availableCards.get(0));
-                    //client.playersInfo.add(playersInfos[0]);
                     client.playersInfo = new ArrayList<>();
 
                     for(int i = 0; i < lobbyMessage.players.size();i++)
                     {
                         PlayersInfo playersInfos = new PlayersInfo(lobbyMessage.players.get(i), i+1, lobbyMessage.chosenCards.get(lobbyMessage.chosenCards.size()-1-i));
                         client.playersInfo.add(playersInfos);
-                        //client.playersInfo.add(playersInfos[i]);
-                    }
-
-
-
-                    /*
-                    for (int i = 1; i < lobbyMessage.players.size(); i++) {
-                        playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i), i + 1, lobbyMessage.chosenCards.get(i - 1));
-                        System.out.println("players get " + lobbyMessage.players.get(i));
-                        System.out.println();
-
-                        //invertire 2 players
-                        client.playersInfo.add(playersInfos[i]);
-                    }
-                     */
-
-
-
-                   /**
-                    for(int i = lobbyMessage.players.size();i>0;i--)
-                    {
-                        System.out.println(lobbyMessage.players.size());
-                        playersInfos[i-1] = new PlayersInfo(lobbyMessage.players.get(i-1), i , lobbyMessage.chosenCards.get(lobbyMessage.players.size()-i));
-                        //System.out.println("players get "+ lobbyMessage.players.get(i));
-
-                        client.playersInfo.add(playersInfos[i-1]);
-
-                    }
-                     */
-
-                }
-
-                //si puo eliminare
-                if(lobbyMessage.choosingPlayerNumber == 1)
-                {
-                    for (int i = 0; i < client.playersInfo.size(); i++) {
-                        System.out.println("nickname :" + client.playersInfo.get(i).name +
-                                "\n card name : " + client.playersInfo.get(i).card +
-                                " \n playerNumber  : " + client.playersInfo.get(i).playerNumber);
                     }
                 }
-
-
 
             }
         });
     }
 
+    /**
+     * Set not visible the mainFrame
+     * And create a new Frame BoardGui assigning it to the variable 'board' only if this variable is null.
+     * When the board is create, this method update the the frame passing the boardmessage to BoardGui.
+     *
+     * @param boardMessage
+     */
     @Override
     public void updateBoard(final BoardMessage boardMessage) {
         if (isFirstBoardStep) {
@@ -325,9 +296,19 @@ public class GUI implements View {
                 public void run() {
                     mainFrame.setVisible(false);
                     board = new BoardGUI(client);
-
                     board.updateBoard(boardMessage);
                     isFirstBoardStep = false;
+                    JLabel tutorial = new JLabel();
+                   tutorial.setIcon(new ImageIcon(GUI.class.getClassLoader().getResource("tutorial.png")));
+                    JDialog tutorialPopUp = new JDialog(board);
+                    tutorialPopUp.add(tutorial);
+                    tutorialPopUp.setTitle("Tutorial");
+                    tutorialPopUp.setMinimumSize(new Dimension(1200,800));
+                    tutorialPopUp.setMaximumSize(new Dimension(1200,800));
+                    tutorialPopUp.setVisible(true);
+                    tutorialPopUp.pack();
+                    tutorialPopUp.setLocationRelativeTo(null);
+                    tutorialPopUp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
                 }
             });
         }
@@ -338,11 +319,6 @@ public class GUI implements View {
                 board.updateBoard(boardMessage);
                 if (boardMessage.activePlayerNumber == client.getPlayerNumber()) {
                     board.showAction(boardMessage);
-                    if (boardMessage.hasChoice) //possibilita di attivare il potere
-                    {
-                        board.askPowerActive(true);
-                        // hasAskedPowerActive = true;
-                    }
                 } else {
                     board.showIsYourTurn(false);
                 }
@@ -351,6 +327,11 @@ public class GUI implements View {
 
     }
 
+    /**
+     * Notify to the user if a player has no move left.
+     * Ask to the user defeted if he wants to quit the game
+     * @param noMovesMessage
+     */
     @Override
     public void updateDefeat(final NoMovesMessage noMovesMessage) {
 
@@ -361,47 +342,78 @@ public class GUI implements View {
             }});
         if( noMovesMessage.playerNumber==client.getPlayerNumber())
         {
-            Object[] option = {"Quit", "Restart"};
-            int n = JOptionPane.showOptionDialog(mainFrame, "No move possible. Start new game ?", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
-            if (n == JOptionPane.YES_OPTION) {
-                System.out.println("CHIUS" + client.getPlayerNumber());
-                mainFrame.dispose();
-                System.exit(0);
-            }
-            else{
-                System.out.println("RESTART" + client.getPlayerNumber());
-                notifyRestart(new RestartMessage());
-                board.dispose();
-                board=null;
-            }
-
+            showRestartOption("No move possible. Do you want to start a new game?",board);
         }
-                //chiudi connessione o restart
     }
 
-    @Override
-    public void updateVictory(VictoryMessage victoryMessage) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    JOptionPane.showMessageDialog(board, "WIN", "wIN", JOptionPane.WARNING_MESSAGE);
-                }});
-    }
+    /**
+     * Ask to the player if he wants to restart or quit.
+     * @param message is the text to show
+     */
+    public void showRestartOption(String message, JFrame frame){
 
-    @Override
-    public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
         Object[] option = {"Quit", "Restart"};
-        int n = JOptionPane.showOptionDialog(mainFrame, "One player is disconected. Do you want start a new Game? ", "Quit ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
+        int n = JOptionPane.showOptionDialog(frame, message, " ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);;
         if (n == JOptionPane.YES_OPTION) {
-            System.out.println("CHIUS" + client.getPlayerNumber());
-            mainFrame.dispose();
             System.exit(0);
         }
         else{
-            System.out.println("RESTART" + client.getPlayerNumber());
-            notifyNickname(new AuthenticationMessage(client.getNickname()));
-            if(board != null) board.dispose();
+            notifyRestart(new RestartMessage());
+            if(board != null ) board.dispose();
+            mainFrame.setVisible(true);
+            client.setPlayerNumber(0);
+            board=null; //serve?
         }
+    }
+
+    /**
+     * Show at all players who is the winner and ask them if they want quit or restart
+     * @param victoryMessage
+     */
+    @Override
+    public void updateVictory( VictoryMessage victoryMessage) {
+        String message;
+        if(victoryMessage.winnerNumber == client.getPlayerNumber()){
+            message = "Congratulations! You are the Winner!";
+        }
+        else{
+            message = "Game over! The winner is " + client.playersInfo.get(victoryMessage.winnerNumber-1).card;
+        }
+
+
+        JOptionPane.showMessageDialog(board, message, "GAME OVER", JOptionPane.WARNING_MESSAGE);
+
+       showRestartOption("Do you want to start a new game?", board);
+
+    }
+
+    /**
+     * Ask restart if a player is Disconnected and the game cannot continue.
+     * @param disconnectionMessage
+     */
+    @Override
+    public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
+        JFrame tempFrame;
+        if(board!=null) tempFrame = board;
+        else tempFrame = mainFrame;
+        showRestartOption("One player is disconnected. Do you want start a new Game? ", tempFrame);
+    }
+
+    /**
+     * Show a message dialog if Server is not more reachable
+     */
+    public void showServerNotFound(){
+        final JFrame tempFrame;
+        if(board!=null) tempFrame = board;
+        else tempFrame = mainFrame;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(tempFrame, " We are sorry but something seems to have gone wrong. Try again later and show everyone your divine power!", "SERVER ERROR : SERVER NOT FOUND", JOptionPane.WARNING_MESSAGE);
+                tempFrame.dispose();
+                System.exit(0);
+            }});
+
     }
 
 }

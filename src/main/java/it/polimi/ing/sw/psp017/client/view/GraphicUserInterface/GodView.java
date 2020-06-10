@@ -2,8 +2,17 @@ package it.polimi.ing.sw.psp017.client.view.GraphicUserInterface;
 import it.polimi.ing.sw.psp017.client.view.GodName;
 import javax.swing.*;
 
+/**
+ * This class contains three abstract methods to get Gods' images and one method to call them from the God's name.
+ *
+ */
 public abstract class GodView {
 
+    /**
+     * Allows you to call a God view class from the name and invoke its functions.
+     * @param godName
+     * @return
+     */
     public static GodView getCard(GodName godName){
 
         switch(godName){
@@ -35,11 +44,9 @@ public abstract class GodView {
     public abstract Icon getIconDescription();
     public abstract Icon getIconPower();
 
-   /* public static Icon getIcon(GodName godName){
-
-       return new ImageIcon(GodView.class.getClassLoader().getResource(godName.toString() + "/" + godName.toString() + ".png"));
-    }*/
-
+    /**
+     * Each class contain the respective God's images. They extend GodView.
+     */
          static class Apollo extends GodView{
             public Icon getIcon(){
                 return new ImageIcon(GodView.class.getClassLoader().getResource("APOLLO/APOLLO.png"));
@@ -47,7 +54,7 @@ public abstract class GodView {
 
              @Override
              public String getPowerDescription() {
-                 return "You can switch your position with a enemy. Do you want turn off your power?";
+                 return "";
              }
 
              @Override
@@ -69,7 +76,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "Move an additional time";
         }
 
         @Override
@@ -89,7 +96,10 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return ": If one of your\n" +
+                    "Workers moved up on your last\n" +
+                    "turn, opponent Workers cannot\n" +
+                    "move up this turn.";
         }
 
         @Override
@@ -129,7 +139,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "";
         }
 
         @Override

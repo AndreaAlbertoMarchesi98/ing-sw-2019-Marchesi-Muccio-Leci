@@ -15,7 +15,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-//nomi delle persone aggiunte alla partita
+/**
+ * Create the panel for Login
+ */
 
 public class LoginPanel extends JPanel {
         private JPanel bottomPanel;
@@ -39,14 +41,8 @@ public class LoginPanel extends JPanel {
             kGradientPanel = new KGradientPanel();
             logoLabel = new JLabel();
             infoLabel = new JLabel();
-            inputPanel = new JPanel()
-    /*        {
-                @Override
-                protected void paintComponent(Graphics g) {
-                    super.paintComponent(g);
-                    g.drawImage(image, 3, 4, this);
-                }
-            }*/;
+            inputPanel = new JPanel();
+
             nicknameField = new JTextField();
             nickButton = new JButton();
             bottomPanel = new JPanel();
@@ -70,7 +66,7 @@ public class LoginPanel extends JPanel {
             infoLabel.setForeground(Color.white);
             infoLabel.setVerticalAlignment(SwingConstants.BOTTOM);
             infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            infoLabel.setText("Insert your nickname");
+            infoLabel.setText("Insert your nickname  ");
             JPanel infoPanel = new JPanel();
             infoPanel.setOpaque(false);
             infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER,70,10));
@@ -106,8 +102,7 @@ public class LoginPanel extends JPanel {
             nickButton.setFont(new Font("Tahoma", 2, 24));
             nickButton.setForeground(new Color(0, 102, 51));
             nickButton.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("STUFF/playButton.png")));
-            //nickButton.setText("Play");
-//            nickButton.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+
             nickButton.setOpaque(false);
             nickButton.setBorder(null);
             nickButton.setPreferredSize(new Dimension(82, 85));
@@ -155,9 +150,9 @@ public class LoginPanel extends JPanel {
             bottomPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 40,40));
             bottomPanel.add(cliButton);
             kGradientPanel.add(bottomPanel);
-          // kGradientPanel.setPreferredSize(new Dimension(2000, 1000));
+
             this.setLayout(new BorderLayout());
-           // this.setPreferredSize(new Dimension(1200, 1000));
+
             this.add(kGradientPanel, BorderLayout.CENTER);
             kGradientPanel.backgroundTransition();
             kGradientPanel.backgroundGradient(10);
@@ -165,7 +160,10 @@ public class LoginPanel extends JPanel {
 
         }
 
-        private void sendNick(){
+    /**
+     * Get nickname from nicknameField and send it to the server through the NetworkHandler.
+     */
+    private void sendNick(){
             nicknameField.setEnabled(false);
             System.out.println(nicknameField.getText());
             client.setNickname(nicknameField.getText());
@@ -181,11 +179,5 @@ public class LoginPanel extends JPanel {
                 }
             });
 
-          /*  mainPanel.revalidate();
-            mainPanel.repaint();
-            mainFrame.repaint();*/
         }
-
-
-
 }

@@ -24,7 +24,6 @@ public class Player {
 
     public enum Color {
         RED, BLUE, GREEN;
-
         public static Color getRandomColor() {
             Random random = new Random();
             return values()[random.nextInt(values().length)];

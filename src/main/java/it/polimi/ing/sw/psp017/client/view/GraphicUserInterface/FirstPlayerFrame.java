@@ -19,7 +19,6 @@ import java.util.EnumSet;
  */
 public class FirstPlayerFrame extends JFrame {
 
-    // Variables declaration - do not modify
     private JLabel SelectNumberOfPlayerLabel;
     private JCheckBox ThreePlayerButton;
     private JCheckBox TwoPlayerButton;

@@ -21,7 +21,6 @@ public class BoardGUI extends JFrame {
     public JButton[] playersButton;
     private JDialog popUp;
     private Client client;
-    private final Color trasparentColor = new Color(.1f,.1f,.1f,.1f);
     private Timer timerThread;
 
     public BoardGUI(Client client) {
@@ -36,7 +35,7 @@ public class BoardGUI extends JFrame {
 
         buttonGroup = new ButtonGroup();
         this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("logo.png")).getImage());
-
+        this.setTitle("Santorini");
         kGradientPanel1 = new KGradientPanel();
 
 
@@ -45,33 +44,32 @@ public class BoardGUI extends JFrame {
 
 
         southPanel = new KGradientPanel();
-        southPanel.setkEndColor(new Color(253, 121, 2, 164));
-        southPanel.setkStartColor(new Color(245, 24, 17));
+        southPanel.setkEndColor(new Color(124, 253, 253, 223));
+        southPanel.setkStartColor(new Color(83, 187, 214));
         southPanel.backgroundGradient(50);
-        southPanel.setBorder(new LineBorder(new java.awt.Color(0, 63, 143, 193), 5, true));
+   //     southPanel.setBorder(new LineBorder(new java.awt.Color(0, 63, 143, 193), 5, true));
 
         northPanel_JPanel = new KGradientPanel();
-        northPanel_JPanel.setkStartColor(new Color(253, 121, 2, 164));
-        northPanel_JPanel.setkEndColor(new Color(245, 24, 17));
+        northPanel_JPanel.setkStartColor(new Color(124, 253, 253, 164));
+        northPanel_JPanel.setkEndColor(new Color(83, 187, 214));
         northPanel_JPanel.backgroundGradient(50);
-        northPanel_JPanel.setBorder(new LineBorder(new Color(0, 63, 143, 193), 5, true));
-        //northPanel_JPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 0, 0)));
+    //    northPanel_JPanel.setBorder(new LineBorder(new Color(0, 63, 143, 193), 5, true));
 
 
 
         DXPanel = new KGradientPanel();
-        DXPanel.setkStartColor(new Color(136, 2, 253, 164));
-        DXPanel.setkEndColor(new Color(17, 245, 101, 180));
+        DXPanel.setkStartColor(new Color(124, 253, 253, 164));
+        DXPanel.setkEndColor(new Color(83, 187, 214, 184));
         DXPanel.backgroundGradient(50);
-        DXPanel.setBorder(new LineBorder(new Color(200, 0, 0, 255), 3, true));
+    //    DXPanel.setBorder(new LineBorder(new Color(200, 0, 0, 255), 3, true));
         //DXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 0, 0), new Color(0, 0, 0), new Color(0, 102, 102), new Color(0, 153, 153)));
 
 
         SXPanel = new KGradientPanel();
-        SXPanel.setkEndColor(new Color(136, 2, 253, 164));
-        SXPanel.setkStartColor(new Color(17, 245, 101, 180));
+        SXPanel.setkEndColor(new Color(83, 187, 214, 164));
+        SXPanel.setkStartColor(new Color(83, 187, 214, 193));
         SXPanel.backgroundGradient(50);
-        SXPanel.setBorder(new LineBorder(new Color(200, 2, 2, 255), 3, true));
+     //   SXPanel.setBorder(new LineBorder(new Color(200, 2, 2, 255), 3, true));
         //SXPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new Color(0, 153, 255), new Color(0, 255, 255), new Color(0, 102, 102), new Color(0, 153, 153)));
 
 
@@ -183,10 +181,9 @@ public class BoardGUI extends JFrame {
 
         undo.setEnabled(false);
         undo.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("STUFF/undo.png"))));
-        //  undo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/pointing-left.png")));
-        //undo.customizeDesignButton(trasparentColor, .getImage());
+
         undo.setToolTipText("Undo");
-        undo.setFont(new Font("Tahoma", 3, 24));
+        undo.setFont(new Font("Tahoma", 3, 36));
         undo.setForeground(Color.white);
         undo.setContentAreaFilled(false);
         undo.addActionListener(new ActionListener() {
@@ -194,21 +191,18 @@ public class BoardGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == undo)
                     clearUndo();
-                client.getNetworkHandler().sendMessage(new UndoMessage());
+                    client.getView().notifyUndo(new UndoMessage());
             }
         });
         upperDXPanel.add(undo);
         powerActivated.setText("");
-        //    powerActivated.setBackground(trasparentColor);
         powerActivated.setIcon(GodView.getCard(client.getCard()).getIconPower());
-        // powerActivated.setBorder(BorderFactory.createLoweredBevelBorder());
+
         powerActivated.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //powerActivated.setEnabled(false);
-                switchColor(powerActivated, Color.red, Color.green);
+                switchPowerButtonColor();
                 client.getView().notifyIsPowerActive(new PowerActiveMessage(true));
-
             }
 
             @Override
@@ -233,25 +227,17 @@ public class BoardGUI extends JFrame {
         });
 
         upperDXPanel.add(powerActivated);
-        /*
-        JLabel playerNumberLabel = new JLabel();
-        playerNumberLabel.setIcon((new ImageIcon(getClass().getClassLoader().getResource("player/player1.png"))));
-        playerNumberLabel.setVerticalAlignment(SwingConstants.CENTER);
-        playerNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
-         */
 
 
-        upperDXPanel.add(new JLabel());
+          infoPower = new JLabel();
+         infoPower.setFont(new Font("Tahoma", 3, 25));
+        upperDXPanel.add(infoPower);
         DXPanel.add(upperDXPanel);
 
         lowerDXPanel.setOpaque(false);
 
 
-        Border compound;
-        Border raisedbevel = BorderFactory.createRaisedBevelBorder();
-        Border loweredbevel = BorderFactory.createLoweredBevelBorder();
-        compound = BorderFactory.createCompoundBorder(
-                raisedbevel, loweredbevel);
+
 
         playersButton = new JButton[client.playersInfo.size()];
         for(int i = 0; i < client.playersInfo.size();i++)
@@ -262,7 +248,7 @@ public class BoardGUI extends JFrame {
 
             playersButton[i].setHorizontalTextPosition(SwingConstants.CENTER);
             playersButton[i].setOpaque(false);
-
+            setButtonMessage(playersButton[i]);
             if(client.playersInfo.get(i).playerNumber == client.getPlayerNumber())
             {
                 playersButton[i].setToolTipText("Your Player");
@@ -355,8 +341,6 @@ public class BoardGUI extends JFrame {
         setLocationRelativeTo(null);
         setLocationRelativeTo(null);
         setSize(dim.width / 2, dim.width / 2);
-        // kGradientPanel1.backgroundGradient();
-        //kGradientPanel1.backgroundTransition();
         this.revalidate();
         this.repaint();
         setVisible(true);
@@ -379,11 +363,6 @@ public class BoardGUI extends JFrame {
         Border loweredbevel = BorderFactory.createLoweredBevelBorder();
         compound = BorderFactory.createCompoundBorder(
                 raisedbevel, loweredbevel);
-
-        //JButton playersButton ;
-
-
-        //playersButton = new AbstractButton();
 
         JButtonTile playersButton = new JButtonTile();
         playersButton.setFont(new Font("Tahoma", 3, 24));
@@ -420,11 +399,6 @@ public class BoardGUI extends JFrame {
 
 
     }
-    /*
-        }
-
-     */
-
 
     public void showAction(BoardMessage boardMessage) {
 
@@ -460,38 +434,6 @@ public class BoardGUI extends JFrame {
     }
 
 
-    public void showValidTile(final BoardMessage boardMessage) {
-        boolean noValidMoves = true;
-        Color color = Color.red;
-        switch (boardMessage.action) {
-            case MOVE:
-                color = Color.BLUE;
-                break;
-            case BUILD:
-                color = Color.ORANGE;
-        }
-        for (int row = 0; row < 5; row++) {
-            for (int col = 0; col < 5; col++) {
-                if (boardMessage.validTiles[row][col]) {
-                    noValidMoves=false;
-                    buttonGrid[row][col].setColorTiles(color);
-                }
-            }
-        }
-
-        if(noValidMoves){
-            boardGamePanel.setBorder(BorderFactory.createLineBorder(Color.red,15));
-            messageLabel_NorthPanel.setText("INVALID ACTION! Select another worker.");
-            enabledBoard(false);
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                System.out.println("error");
-            }
-            enabledBoard(true);
-            boardGamePanel.setBorder(null);
-        }
-    }
 
     public void updateBoard(final BoardMessage boardMessage) {
 
@@ -508,15 +450,16 @@ public class BoardGUI extends JFrame {
                     if(boardMessage.validTiles != null) {
 
                         buttonGrid[row][col].updateValidTiles(boardMessage.validTiles[row][col],boardMessage.action);
-                        System.out.println("mio turno");
                     }
+
+                    showPowerActiveButton(boardMessage.hasChoice);
+
                 }else{
                     clearUndo();
+                    showPowerActiveButton(false);
                 }
             }
         }
-
-   askPowerActive(false);
 
     this.revalidate();
     this.repaint();
@@ -545,6 +488,7 @@ public class BoardGUI extends JFrame {
     private ButtonGroup buttonGroup;
     private JButtonTile[][] buttonGrid;
     private ActionNames actionNames;
+    private  JLabel infoPower;
 
 
 
@@ -594,14 +538,12 @@ public class BoardGUI extends JFrame {
 
             JButtonTile buttonClicked = ((JButtonTile) e.getSource());
 
-
-            //System.out.println("Selected row and column: " + row + " " + col);
-            System.out.println("actionName : "+actionNames);
             if (actionNames!= null && (actionNames.equals(ActionNames.MOVE)||actionNames.equals(ActionNames.BUILD)) && buttonClicked.isValidTile()) {
                 undo();
-            }
-            client.getNetworkHandler().sendMessage(new SelectedTileMessage(buttonClicked.getPosition()));
 
+            }
+
+            client.getView().notifySelectedTile(new SelectedTileMessage(buttonClicked.getPosition()));
 
         }
 
@@ -628,6 +570,10 @@ public class BoardGUI extends JFrame {
 
     }
 
+    private void setButtonMessage(JButton b){
+        b.setToolTipText("Click for God's description");
+    }
+
     private void enabledBoard(boolean isEnabled) {
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++) {
@@ -637,26 +583,31 @@ public class BoardGUI extends JFrame {
 
 
     }
-    public void askPowerActive(boolean on) {
-        powerActivated.setVisible(on);
-        powerActivated.setEnabled(on);
-        if (on) {
-            powerActivated.setBackground(Color.green);
-        } else {
-            powerActivated.setSelected(false);
-            powerActivated.setBackground(null);
+    public void showPowerActiveButton(boolean visible) {
+        powerActivated.setVisible(visible);
+        if(!visible){
+            powerActivated.setEnabled(false);
+            powerActivated.setContentAreaFilled(false);
+            infoPower.setText("");
         }
     }
 
-    public void switchColor(JToggleButton button, Color c1, Color c2) {
-        if (button.getBackground() == c1) {
-            // button.setColorTiles(c2);
-            button.setBackground(c2);
+    public void askPowerActive(){
+        powerActivated.setEnabled(true);
+        powerActivated.setContentAreaFilled(true);
+        powerActivated.setBackground(Color.GREEN);
+        infoPower.setText("");
+    }
+
+
+    public void switchPowerButtonColor() {
+        if (powerActivated.getBackground() == Color.GREEN) {
+            powerActivated.setBackground(Color.RED);
+            infoPower.setText("Power ON  ");
         } else {
-            // button.setColorTiles(c1);
-            button.setBackground(c1);
+            powerActivated.setBackground(Color.green);
+            infoPower.setText("");
         }
-        button.repaint();
     }
 
 
@@ -670,6 +621,7 @@ public class BoardGUI extends JFrame {
         }
     }
 
+
     public void undo() {
 
         clearUndo();
@@ -681,11 +633,11 @@ public class BoardGUI extends JFrame {
 
             @Override
             public void run() {
-                undo.setText("" + second);
-                System.out.println(second);
+                undo.setText("" + second + "  ");
+
                 second--;
                 if (second == 0) {
-
+                    askPowerActive();
                     clearUndo();
                 }
             }
