@@ -76,7 +76,8 @@ public class Game {
                 Tile currentTile = this.getBoard().getTile(new Vector2d(x,y));
 
                 newTile.setLevel(currentTile.getLevel());
-                newTile.setWorker(currentTile.getWorker());
+                if(currentTile.getWorker()!=null)
+                    newTile.setWorker(new Worker(currentTile.getWorker().getOwner()));
                 newTile.setDome(currentTile.isDome());
             }
         }
@@ -129,6 +130,9 @@ public class Game {
     }
 
     public boolean isPlayerTurn(Player player) {
+        System.out.println("player index: "+playerIndex);
+        System.out.println(players.get(playerIndex).getPlayerNumber());
+        System.out.println(player.getPlayerNumber());
         return players.get(playerIndex).equals(player);
     }
 

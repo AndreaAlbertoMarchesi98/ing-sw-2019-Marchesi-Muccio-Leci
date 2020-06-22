@@ -78,7 +78,7 @@ public class GameControllerTest {
         view2.setPlayer(new Player("player2"));
         view3.setPlayer(new Player("player3"));
 
-        gameController = new GameController(server, view1);
+        gameController = new GameController(server, view1,5000);
     }
 
     @Test

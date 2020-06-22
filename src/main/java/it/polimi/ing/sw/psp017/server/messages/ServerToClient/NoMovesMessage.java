@@ -6,7 +6,7 @@ public class NoMovesMessage implements Serializable {
     public int playerNumber;
 
     public NoMovesMessage(int playerNumber) {
-        System.out.println("\n\n\n\n\n\n"+playerNumber+"\n\n\n\n\n\n\n\n");
+        System.out.println("player number is "+playerNumber);
         this.playerNumber = playerNumber;
     }
 }

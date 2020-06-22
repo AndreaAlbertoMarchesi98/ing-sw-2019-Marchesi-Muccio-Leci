@@ -5,7 +5,7 @@ import java.util.Random;
 
 
 public class Player {
-
+    public static final int workersNumber = 2;
     private String nickname;
     private int playerNumber;
     private Color color;
@@ -24,6 +24,7 @@ public class Player {
 
     public enum Color {
         RED, BLUE, GREEN;
+
         public static Color getRandomColor() {
             Random random = new Random();
             return values()[random.nextInt(values().length)];
@@ -38,7 +39,12 @@ public class Player {
         this.playerNumber = playerNumber;
     }
 
-
+    public void reset() {
+        card = null;
+        originalCard = null;
+        previousStep = null;
+        workers.clear();
+    }
 
     public void resetCard() {
         card = originalCard;

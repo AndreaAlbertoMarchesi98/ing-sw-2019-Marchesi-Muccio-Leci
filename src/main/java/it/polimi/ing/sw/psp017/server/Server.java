@@ -13,6 +13,7 @@ public class Server {
     private static final int timeout = 4000;
     private ServerSocket socket;
     private final static int SOCKET_PORT = 7778;
+    private final static int undoWaitTime = 5000;
 
     private final ArrayList<GameController> gameControllers;
     private final ArrayList<GameController> waitingGameControllers;
@@ -87,7 +88,7 @@ public class Server {
      * @param view the view that sets up a new game
      */
     private void createGame(VirtualView view) {
-        GameController gameController = new GameController(this, view);
+        GameController gameController = new GameController(this, view,undoWaitTime);
         gameControllers.add(gameController);
     }
 

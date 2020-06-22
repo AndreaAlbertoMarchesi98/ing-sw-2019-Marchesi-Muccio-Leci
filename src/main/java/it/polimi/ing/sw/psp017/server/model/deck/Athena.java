@@ -9,7 +9,7 @@ public class Athena extends BaseCard {
 
     @Override
     public boolean hasActiveDecorator(Step currentStep, Step previousStep, Board board) {
-        if(currentStep != null) {
+        if(currentStep != null && previousStep!=null) {
             return previousStep.getTargetTile().getLevel() > previousStep.getCurrentTile().getLevel();
         } else return false;
     }

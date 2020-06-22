@@ -15,12 +15,9 @@ public class GameController {
 
     private ArrayList<VirtualView> views;
     private Game game;
-    private Board savedBoard;
     private Lobby lobby;
     private final Server server;
-    private volatile boolean isUndoPossible;
-    private volatile boolean hasUndoArrived;
-    private volatile boolean hasSkippedUndo;
+    private final UndoFunctionality undoFunctionality;
 
     private enum GameSate {
         SET_UP, LOBBY, WORKERS_PLACEMENT, MATCH, GAME_OVER
@@ -34,9 +31,10 @@ public class GameController {
      * @param server    server's reference
      * @param firstView first view of the game
      */
-    public GameController(Server server, VirtualView firstView) {
+    public GameController(Server server, VirtualView firstView, int undoWaitTime) {
         views = new ArrayList<>();
         this.server = server;
+        undoFunctionality = new UndoFunctionality(undoWaitTime);
         startGameCreation(firstView);
     }
     //VIEWS OPERATIONS
@@ -61,6 +59,8 @@ public class GameController {
         views.remove(view);
         if (game != null)
             game.removePlayer(view.getPlayer());
+        if (views.isEmpty())
+            endGame();
     }
 
     /**
@@ -132,12 +132,10 @@ public class GameController {
     }
 
     /**
-     * close completely the game and all its references, stop view threads
+     * close completely the game and all its references
      */
     private void endGame() {
         System.out.println("ending game");
-        for (VirtualView view : views)
-            view.stop();
         server.removeGameController(this);
     }
 //              VIEW INTERACTION
@@ -170,6 +168,7 @@ public class GameController {
      */
     public void notifyDefeat(Player defeatedPlayer) {
         for (VirtualView view : views) {
+            System.out.println("player " + defeatedPlayer.getPlayerNumber() + " has been defeated!");
             view.updateDefeat(new NoMovesMessage(defeatedPlayer.getPlayerNumber()));
         }
     }
@@ -246,11 +245,10 @@ public class GameController {
     /**
      * save that undo has arrived if undo is possible
      */
-    public void receiveUndo() {
+    public void receiveUndo(Player player) {
         if (gameState == GameSate.MATCH) {
-            if (isUndoPossible) {
-                System.out.println("undo has arrived");
-                hasUndoArrived = true;
+            if (game.isPlayerTurn(player)) {
+                undoFunctionality.receiveUndo();
             }
         }
     }
@@ -263,31 +261,27 @@ public class GameController {
      * @param player  is the player that is selecting
      */
     public void processSelection(SelectedTileMessage message, Player player) {
-        Vector2d targetPosition = message.tilePosition;
-        Tile selectedTile = game.getBoard().getTile(targetPosition);
-        if (Board.isInsideBounds(targetPosition)) {
+        if (game.isPlayerTurn(player)) {
+            if (undoFunctionality.isUndoPossible())
+                undoFunctionality.skipUndo();
+        }
+        synchronized (this) {
+            Vector2d targetPosition = message.tilePosition;
+            Tile selectedTile = game.getBoard().getTile(targetPosition);
+            System.out.println(game.getActivePlayer());
             if (game.isPlayerTurn(player)) {
+                System.out.println("good job");
                 if (gameState == GameSate.MATCH) {
-                    if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD) {
-                        if (isUndoPossible)
-                            hasSkippedUndo = true;
-                    }
-                }
-            }
-            synchronized (this) {
-                if (game.isPlayerTurn(player)) {
-                    if (gameState == GameSate.MATCH) {
-                        if (game.getAction() == ActionNames.SELECT_WORKER)
+                    if (game.getAction() == ActionNames.SELECT_WORKER)
+                        selectWorker(selectedTile, player);
+                    else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD) {
+                        if (game.getValidTiles()[targetPosition.x][targetPosition.y])
+                            performAction(selectedTile, player);
+                        else if (game.getStepNumber() == 0)
                             selectWorker(selectedTile, player);
-                        else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD) {
-                            if (game.getValidTiles()[targetPosition.x][targetPosition.y])
-                                performAction(selectedTile, player);
-                            else if (game.getStepNumber() == 0)
-                                selectWorker(selectedTile, player);
-                        }
-                    } else if (gameState == GameSate.WORKERS_PLACEMENT)
-                        placeWorker(selectedTile, player);
-                }
+                    }
+                } else if (gameState == GameSate.WORKERS_PLACEMENT)
+                    placeWorker(selectedTile, player);
             }
         }
     }
@@ -299,26 +293,10 @@ public class GameController {
      * @param view it is the disconnected view
      */
     public synchronized void handleDisconnection(VirtualView view) {
-        removeView(view);
-        if (gameState != GameSate.GAME_OVER) {
+        if (views.contains(view)) {
+            views.remove(view);
             notifyDisconnection(view);
-            gameState = GameSate.GAME_OVER;
-        } else if (views.isEmpty())
             endGame();
-    }
-
-    /**
-     * remove view, call server to assign it to a new game, then
-     * end this game if views is empty
-     *
-     * @param view view that requires to be restarted
-     */
-    public synchronized void restartView(VirtualView view) {
-        if (gameState == GameSate.GAME_OVER) {
-            removeView(view);
-            server.assignView(view);
-            if (views.isEmpty())
-                endGame();
         }
     }
     //                  GAME LOGIC
@@ -343,36 +321,37 @@ public class GameController {
      * @param currentStep the step that the active player has just performed
      */
     private void setUpNextTurn(Step currentStep, Step previousStep) {
-        System.out.println("next turn\n");
         addEffectOnOpponents(currentStep, previousStep);
 
-        game.getActivePlayer().resetCard();
         game.nextTurn();
+        System.out.println("next turn, activePlayerNumber: " + game.getActivePlayer().getPlayerNumber() + "\n");
+        game.getActivePlayer().resetCard();
         game.setAction(ActionNames.SELECT_WORKER);
         game.clearValidTiles();
-        savedBoard = game.getBoardCopy();
+
+        undoFunctionality.saveBoard(game.getBoardCopy());
 
         if (!hasPlayerMovesLeft()) {
-            System.out.println("\nplayer has no moves left\n\n");
-            for(Worker worker : game.getActivePlayer().getWorkers())
+            System.out.println("\n" + game.getActivePlayer().getNickname() + " has no moves left\n\n");
+            for (Worker worker : game.getActivePlayer().getWorkers())
                 worker.getTile().setWorker(null);
 
+            System.out.println(game.getPlayerIndex());
             VirtualView defeatedView = views.get(game.getPlayerIndex());
 
-            System.out.println("\n\n\n\n\n"+defeatedView.getPlayer().getPlayerNumber()+"\n\n\n\n\n\n\n");
-
-            game.nextTurn();
-            game.getActivePlayer().resetCard();
+            //game.getActivePlayer().resetCard();
 
             if (game.getPlayers().size() == 2) {
+                views.clear();
                 notifyVictory(game.getPlayers().get(0).getPlayerNumber());
                 gameState = GameSate.GAME_OVER;
-            }
-            else {
-
+            } else {
                 notifyDefeat(defeatedView.getPlayer());
                 removeView(defeatedView);
             }
+            game.getActivePlayer().resetCard();
+            undoFunctionality.saveBoard(game.getBoardCopy());
+            notifyBoard();
         }
     }
 
@@ -428,15 +407,14 @@ public class GameController {
             Worker worker = new Worker(player);
             selectedTile.setWorker(worker);
             player.addWorker(worker);
-            if (player.getWorkers().size() == 2) {
-                savedBoard = game.getBoardCopy();
-                game.nextTurn();
-
-                if (game.getPlayerIndex() == 0) {
-                    game.setAction(ActionNames.SELECT_WORKER);
+            if (player.getWorkers().size() == Player.workersNumber) {
+                if (game.getActivePlayer().getPlayerNumber() == game.getPlayers().size()) {
                     gameState = GameSate.MATCH;
-                } else
+                    setUpNextTurn(null, null);
+                } else {
                     game.setAction(ActionNames.PLACE_WORKERS);
+                    game.nextTurn();
+                }
             }
             notifyBoard();
         }
@@ -500,51 +478,22 @@ public class GameController {
                 game.clearValidTiles();
                 notifyBoard();
 
-                if (isUndoArrived())
-                    undo();
-                else {
+                if (undoFunctionality.isUndoArrived())
+                    undoFunctionality.undo(game);
+                else
                     setUpNextTurn(currentStep, previousStep);
-                    notifyBoard();
-                }
+                notifyBoard();
+
             } else {
                 updateValidTiles();
                 notifyBoard();
 
-                if (isUndoArrived())
-                    undo();
+                if (undoFunctionality.isUndoArrived()) {
+                    undoFunctionality.undo(game);
+                    notifyBoard();
+                }
             }
         }
-    }
-
-    /**
-     * sets some variables used for undo functionality
-     *
-     * @return true if a valid undo is arrived else false
-     */
-    private boolean isUndoArrived() {
-        System.out.println("checking is undo arrived");
-        hasUndoArrived = false;
-        isUndoPossible = true;
-        hasSkippedUndo = false;
-        long finishTime = System.currentTimeMillis() + 5000;
-        while (System.currentTimeMillis() < finishTime && !hasSkippedUndo) {
-            if (hasUndoArrived)
-                return true;
-        }
-        isUndoPossible = false;
-        System.out.println("undo no more possible");
-        return false;
-    }
-
-    /**
-     * perform undo by restoring the saved board and restarting the current turn
-     */
-    private void undo() {
-        System.out.println("undoing");
-        game.undo(savedBoard);
-        savedBoard = game.getBoardCopy();
-        game.clearValidTiles();
-        notifyBoard();
     }
     //                 GAME LOGIC
     //                  VALID TILES LOGIC

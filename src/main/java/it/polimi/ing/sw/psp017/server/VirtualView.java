@@ -52,6 +52,8 @@ public class VirtualView implements Runnable, View {
         public void run() {
             if (message instanceof AuthenticationMessage)
                 notifyNickname((AuthenticationMessage) message);
+            else if (message instanceof RestartMessage)
+                notifyRestart((RestartMessage) message);
 
             if (gameController != null) {
 
@@ -69,9 +71,6 @@ public class VirtualView implements Runnable, View {
 
                 else if (message instanceof UndoMessage)
                     notifyUndo((UndoMessage) message);
-
-                else if (message instanceof RestartMessage)
-                    notifyRestart((RestartMessage) message);
             }
         }
     }
@@ -159,12 +158,14 @@ public class VirtualView implements Runnable, View {
         gameController.setPowerActive();
     }
 
-    public void notifyRestart(RestartMessage restartMessage) {
-        gameController.restartView(this);
+    public void notifyUndo(UndoMessage undoMessage) {
+        gameController.receiveUndo(player);
     }
 
-    public void notifyUndo(UndoMessage undoMessage) {
-        gameController.receiveUndo();
+    public void notifyRestart(RestartMessage restartMessage) {
+        gameController = null;
+        player.reset();
+        server.assignView(this);
     }
 
     public void updateGameCreation() {
