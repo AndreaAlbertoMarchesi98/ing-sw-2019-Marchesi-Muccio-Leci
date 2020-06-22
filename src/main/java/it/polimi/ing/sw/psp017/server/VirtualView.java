@@ -18,7 +18,7 @@ public class VirtualView implements Runnable, View {
     private final PingSender pingSender;
     private final ObjectInputStream input;
     private final ObjectOutputStream output;
-    private boolean running;
+    private volatile boolean running;
 
     private static class PingSender implements Runnable {
         private static final int pingInterval = 1000;

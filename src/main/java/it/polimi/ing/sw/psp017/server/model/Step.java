@@ -5,9 +5,9 @@ package it.polimi.ing.sw.psp017.server.model;
  * in order to be used with the various divinity cards
  */
 public class Step {
-    Tile currentTile;
-    Tile targetTile;
-    boolean powerActive;
+    volatile Tile currentTile;
+    volatile Tile targetTile;
+    volatile boolean powerActive;
 
     public Step(Tile currentTile, Tile targetTile, boolean powerActive) {
         this.currentTile = currentTile;

@@ -59,8 +59,6 @@ public class GameController {
         views.remove(view);
         if (game != null)
             game.removePlayer(view.getPlayer());
-        if (views.isEmpty())
-            endGame();
     }
 
     /**
@@ -268,9 +266,7 @@ public class GameController {
         synchronized (this) {
             Vector2d targetPosition = message.tilePosition;
             Tile selectedTile = game.getBoard().getTile(targetPosition);
-            System.out.println(game.getActivePlayer());
             if (game.isPlayerTurn(player)) {
-                System.out.println("good job");
                 if (gameState == GameSate.MATCH) {
                     if (game.getAction() == ActionNames.SELECT_WORKER)
                         selectWorker(selectedTile, player);
@@ -293,10 +289,11 @@ public class GameController {
      * @param view it is the disconnected view
      */
     public synchronized void handleDisconnection(VirtualView view) {
-        if (views.contains(view)) {
+        System.out.println("gameController is handling disconnection");
+        if (views.contains(view) && gameState != GameSate.GAME_OVER) {
             views.remove(view);
-            notifyDisconnection(view);
             endGame();
+            notifyDisconnection(view);
         }
     }
     //                  GAME LOGIC
@@ -322,10 +319,10 @@ public class GameController {
      */
     private void setUpNextTurn(Step currentStep, Step previousStep) {
         addEffectOnOpponents(currentStep, previousStep);
+        game.getActivePlayer().resetCard();
 
         game.nextTurn();
-        System.out.println("next turn, activePlayerNumber: " + game.getActivePlayer().getPlayerNumber() + "\n");
-        game.getActivePlayer().resetCard();
+        System.out.println("\nnext turn, activePlayerNumber: " + game.getActivePlayer().getPlayerNumber());
         game.setAction(ActionNames.SELECT_WORKER);
         game.clearValidTiles();
 
@@ -336,20 +333,17 @@ public class GameController {
             for (Worker worker : game.getActivePlayer().getWorkers())
                 worker.getTile().setWorker(null);
 
-            System.out.println(game.getPlayerIndex());
             VirtualView defeatedView = views.get(game.getPlayerIndex());
-
-            //game.getActivePlayer().resetCard();
 
             if (game.getPlayers().size() == 2) {
                 views.clear();
+                endGame();
                 notifyVictory(game.getPlayers().get(0).getPlayerNumber());
                 gameState = GameSate.GAME_OVER;
             } else {
                 notifyDefeat(defeatedView.getPlayer());
                 removeView(defeatedView);
             }
-            game.getActivePlayer().resetCard();
             undoFunctionality.saveBoard(game.getBoardCopy());
             notifyBoard();
         }
@@ -376,6 +370,7 @@ public class GameController {
      * if the active player's effect on others is active, decorate other players cards
      * with its decorator
      *
+     * @param previousStep step that the active player performed
      * @param currentStep step that the active player has just performed
      */
     private void addEffectOnOpponents(Step currentStep, Step previousStep) {
@@ -465,6 +460,7 @@ public class GameController {
             card.build(currentStep, previousStep, game.getBoard());
 
         if (game.getAction() == ActionNames.MOVE && card.checkWin(currentStep, game.getBoard())) {
+            endGame();
             notifyVictory(player.getPlayerNumber());
             gameState = GameSate.GAME_OVER;
         } else {

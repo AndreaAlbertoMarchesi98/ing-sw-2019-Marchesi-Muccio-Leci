@@ -130,9 +130,6 @@ public class Game {
     }
 
     public boolean isPlayerTurn(Player player) {
-        System.out.println("player index: "+playerIndex);
-        System.out.println(players.get(playerIndex).getPlayerNumber());
-        System.out.println(player.getPlayerNumber());
         return players.get(playerIndex).equals(player);
     }
 

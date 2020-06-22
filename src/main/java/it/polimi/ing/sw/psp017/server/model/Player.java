@@ -6,11 +6,11 @@ import java.util.Random;
 
 public class Player {
     public static final int workersNumber = 2;
-    private String nickname;
+    private final String nickname;
     private int playerNumber;
-    private Color color;
-    private ArrayList<Worker> workers;
-    private Card card;
+    private final Color color;
+    private final ArrayList<Worker> workers;
+    private volatile Card card;
     private Card originalCard;
 
     private Step previousStep;
@@ -18,7 +18,7 @@ public class Player {
     public Player(String nickname) {
         this.nickname = nickname;
         this.color = Color.getRandomColor();
-        workers = new ArrayList<Worker>();
+        workers = new ArrayList<>();
     }
 
 

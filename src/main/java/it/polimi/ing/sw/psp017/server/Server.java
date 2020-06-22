@@ -68,7 +68,7 @@ public class Server {
      *
      * @param gameController the gameController to be removed
      */
-    public synchronized void removeGameController(GameController gameController) {
+    public void removeGameController(GameController gameController) {
         gameControllers.remove(gameController);
         waitingGameControllers.remove(gameController);
     }
