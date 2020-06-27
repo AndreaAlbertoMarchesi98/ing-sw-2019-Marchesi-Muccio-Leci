@@ -31,14 +31,14 @@ Anche per poter utilizzare la CLI, prima é necessario eseguire il client tramit
 
 # Funzionalitá
 
-## Funzionalitá sviluppate
+## Funzionalità sviluppate
 - Regole Complete
 - Cli
 - Socket
 - Gui
-- 2 Funzionalitá avanzate
+- 2 Funzionalità avanzate
 
-## Funzionalitá avanzate
+## Funzionalità avanzate
 - Multi partita
 - Undo
  <br />
