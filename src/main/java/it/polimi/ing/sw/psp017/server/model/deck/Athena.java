@@ -29,6 +29,10 @@ public class Athena extends BaseCard {
         @Override
         public boolean isValidMove(Step currentStep, Step previousStep, Board board) {
             System.out.println("using Athena decorator Effect");
+
+
+            System.out.println("current "+currentStep.getCurrentTile().getLevel());
+            System.out.println("target "+ currentStep.getTargetTile().getLevel());
             if (currentStep.getTargetTile().getLevel() > currentStep.getCurrentTile().getLevel())
                 return false;
             else

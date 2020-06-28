@@ -58,6 +58,7 @@ public class AthenaTest {
 
 
         assertFalse("error: opponent should not be able to move up", player2.getCard().isValidMove(currentStep, null, board));
+        assertFalse("error, previous step is null",cardP1.hasActiveDecorator(currentStep,null,board));
     }
 
     @Test
@@ -81,5 +82,11 @@ public class AthenaTest {
 
 
         assertTrue("error: opponent should be able to move up", cardP2.isValidMove(currentStep, null, board));
+
+        worker1P2.getTile().setLevel(2);
+        currentStep.getTargetTile().setLevel(2);
+        currentStep.getCurrentTile().setLevel(3);
+        assertTrue("error: opponent should be able to move up", cardP2.isValidMove(currentStep, null, board));
+
     }
 }

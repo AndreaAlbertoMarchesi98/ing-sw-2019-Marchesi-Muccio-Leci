@@ -52,6 +52,7 @@ public class ArtemisTest {
         assertTrue("error: artemis cannot build", card.canBuild(1,false));
         assertFalse("error: artemis cannot move", card.canMove(2,true));
         assertTrue("error: artemis should be able to build", card.canBuild(2,true));
+        assertFalse("error: artemis cannot build", card.canBuild(4,true));
 
         //artemis dovrebbe poter costruire nello step 3 sia con power che non
 
@@ -62,8 +63,22 @@ public class ArtemisTest {
         assertTrue("error: demeter should be able to move",card.isValidMove(currentStep,previousStep,board));
         card.move(currentStep, previousStep, board);    //new position [0,1]
         previousStep = currentStep; //[0,0]
+        currentStep.setPowerActive(true);
+        assertFalse("error",card.isValidMove(currentStep,previousStep,board));
+        previousStep=null;
+        assertFalse("error",card.isValidMove(currentStep,previousStep,board));
 
         assertFalse("error: demeter cannot move to it's previous position",card.isValidMove(currentStep,previousStep,board));
+
+        for(int i = 0; i < 3;i++)
+        {
+            if(i == 1) assertTrue("Artemis should be able to choose",card.hasChoice(i));
+            else{
+                assertFalse("Artemis should NOT be able to choose",card.hasChoice(i));
+            }
+
+        }
+
 
 
 

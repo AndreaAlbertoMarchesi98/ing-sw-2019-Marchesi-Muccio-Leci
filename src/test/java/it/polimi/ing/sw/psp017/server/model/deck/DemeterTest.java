@@ -55,5 +55,16 @@ public class DemeterTest  {
         targetTile = board.getTile(new Vector2d(0, 0));
         currentStep = new Step(worker1P1.getTile(), targetTile, true);
         assertFalse("error: demeter should not be able to build on the same place", card.isValidBuilding(currentStep, previousStep, board));
+
+        currentStep.setPowerActive(false);
+        assertTrue("error: demeter should  be able to build on the same place", card.isValidBuilding(currentStep, previousStep, board));
+
+        for(int i =0;i <4;i++)
+        {
+            if(i==1) assertTrue("demeter should build",card.canBuild(i,false));
+             else assertFalse("demeter should not be able to build",card.canBuild(i,false));
+             if(i==2) assertTrue("error, DEmeter has a choice",card.hasChoice(i));
+             else assertFalse("error, DEmeter has no choice",card.hasChoice(i));
+        }
     }
 }

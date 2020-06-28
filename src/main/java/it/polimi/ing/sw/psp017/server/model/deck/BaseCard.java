@@ -9,9 +9,9 @@ public class BaseCard implements Card {
 
 
 
-    public GodName getName() {
-        return name;
-    }
+    //public GodName getName() {
+    //        return name;
+    //    }
 
     public boolean hasActiveDecorator(Step currentStep, Step previousStep, Board board) {
         return false;

@@ -35,6 +35,8 @@ public class PanTest  {
         Tile targetTile = board.getTile(new Vector2d(1,0));
          Step currentStep = new Step(worker1P1.getTile(), targetTile, false);
         assertTrue( player1.getCard().checkWin(currentStep,board));
+        worker1P1.getTile().setLevel(0);
+        assertFalse( player1.getCard().checkWin(currentStep,board));
     }
 
 

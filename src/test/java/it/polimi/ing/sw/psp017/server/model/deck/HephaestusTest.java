@@ -48,6 +48,8 @@ public class HephaestusTest {
 
         assertTrue("error: hephaestus should be able to build", card.canBuild(2,true));
 
+        assertFalse("error: hephaestus should not be able to build", card.canBuild(2,false));
+
         targetTile = board.getTile(new Vector2d(0, 0));
         currentStep = new Step(worker1P1.getTile(), targetTile, true);
         assertTrue("error: hephaestus should be able to build here", card.isValidBuilding(currentStep, previousStep, board));
@@ -55,6 +57,25 @@ public class HephaestusTest {
         targetTile = board.getTile(new Vector2d(0, 1));
         currentStep = new Step(worker1P1.getTile(), targetTile, true);
         assertFalse("error: hephaestus should not be able to build on another place", card.isValidBuilding(currentStep, previousStep, board));
+
+
+
+        for(int i = 0; i < 4;i++)
+        {
+            if(i==0) {
+                assertTrue("error, should not be able to build ",card.canBuild(i,false));
+                assertTrue("error, should  not be able to build ",card.canBuild(i,true));
+
+            }
+            if(i==2) {
+                assertFalse("error, should not be able to build ",card.canBuild(i,false));
+                assertTrue("error, there should be a choice ",card.hasChoice(i));
+            }
+            else if (i > 2){
+                assertFalse("error, should not be able to build ",card.canBuild(i,false));
+            }
+
+        }
     }
 
     @Test
@@ -72,5 +93,8 @@ public class HephaestusTest {
         targetTile = board.getTile(new Vector2d(1, 1));
         currentStep = new Step(worker1P1.getTile(), targetTile, true);
         assertFalse("error: hephaestus should not be able to build a dome", card.isValidBuilding(currentStep, previousStep, board));
+
+        currentStep.setPowerActive(false);
+        assertTrue("error: hephaestus should  be able to build ", card.isValidBuilding(currentStep, previousStep, board));
     }
 }

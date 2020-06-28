@@ -100,7 +100,22 @@ public class AtlasTest {
         //build on dome
         targetTile = board.getTile(new Vector2d(3,4));
         currentstep = new Step(worker2P1.getTile(), targetTile, true);
-        assertTrue("error: cannot build on a dome with a dome", card.isValidBuilding(currentstep, null, board));
+        card.build(currentstep,null,board);
+        assertFalse("error: cannot build on a dome with a dome", card.isValidBuilding(currentstep, null, board));
+        //with no power active
+        currentstep.setPowerActive(false);
+        card.build(currentstep,null,board);
+        assertFalse("error: cannot build on a dome with a dome", card.isValidBuilding(currentstep, null, board));
+
+
+        for(int i = 0; i < 3;i++)
+        {
+            if(i == 1) assertTrue("Atlas should be able to choose",card.hasChoice(i));
+            else{
+                assertFalse("Atlas should NOT be able to choose",card.hasChoice(i));
+            }
+
+        }
 
 
     }

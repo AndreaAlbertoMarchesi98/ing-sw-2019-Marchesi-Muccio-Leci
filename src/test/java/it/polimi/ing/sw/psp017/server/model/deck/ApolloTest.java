@@ -58,7 +58,8 @@ public class ApolloTest {
             assertSame("error swap workers ",apolloTempTile, worker1P2.getTile());
             assertSame("error swap workers",enemyTemptile, worker1P1.getTile());
         }
-
+        currentstep.setTargetTile(new Tile(new Vector2d(2,0)));
+        card.move(currentstep,null,board);
 
     }
 
@@ -96,6 +97,7 @@ public class ApolloTest {
 
         targetTile.setLevel(2);
         assertFalse("error: isValidMove true but level target  tile occupied by enemy worker (level 2 up)", player1.getCard().isValidMove(currentstep, null, board));
+
 
     }
 }
