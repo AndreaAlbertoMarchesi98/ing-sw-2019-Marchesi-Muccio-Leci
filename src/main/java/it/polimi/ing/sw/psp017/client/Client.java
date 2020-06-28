@@ -22,7 +22,7 @@ public class Client {
         }
         public ArrayList<PlayersInfo> playersInfo;
 
-        Client(){
+        public Client(){
             networkHandler = new NetworkHandler();
         }
 

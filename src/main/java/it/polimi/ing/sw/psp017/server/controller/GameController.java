@@ -62,6 +62,13 @@ public class GameController {
     }
 
     /**
+     * @return the game, which contains the game's state
+     */
+    public synchronized Game getGame() {
+        return game;
+    }
+
+    /**
      * @return the views
      */
     public ArrayList<VirtualView> getViews() {
@@ -265,19 +272,21 @@ public class GameController {
         }
         synchronized (this) {
             Vector2d targetPosition = message.tilePosition;
-            Tile selectedTile = game.getBoard().getTile(targetPosition);
-            if (game.isPlayerTurn(player)) {
-                if (gameState == GameSate.MATCH) {
-                    if (game.getAction() == ActionNames.SELECT_WORKER)
-                        selectWorker(selectedTile, player);
-                    else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD) {
-                        if (game.getValidTiles()[targetPosition.x][targetPosition.y])
-                            performAction(selectedTile, player);
-                        else if (game.getStepNumber() == 0)
+            if (Board.isInsideBounds(targetPosition)) {
+                Tile selectedTile = game.getBoard().getTile(targetPosition);
+                if (game.isPlayerTurn(player)) {
+                    if (gameState == GameSate.MATCH) {
+                        if (game.getAction() == ActionNames.SELECT_WORKER)
                             selectWorker(selectedTile, player);
-                    }
-                } else if (gameState == GameSate.WORKERS_PLACEMENT)
-                    placeWorker(selectedTile, player);
+                        else if (game.getAction() == ActionNames.MOVE || game.getAction() == ActionNames.BUILD) {
+                            if (game.getValidTiles()[targetPosition.x][targetPosition.y])
+                                performAction(selectedTile, player);
+                            else if (game.getStepNumber() == 0)
+                                selectWorker(selectedTile, player);
+                        }
+                    } else if (gameState == GameSate.WORKERS_PLACEMENT)
+                        placeWorker(selectedTile, player);
+                }
             }
         }
     }
@@ -371,7 +380,7 @@ public class GameController {
      * with its decorator
      *
      * @param previousStep step that the active player performed
-     * @param currentStep step that the active player has just performed
+     * @param currentStep  step that the active player has just performed
      */
     private void addEffectOnOpponents(Step currentStep, Step previousStep) {
         Player player = game.getActivePlayer();
@@ -396,7 +405,7 @@ public class GameController {
      * @param selectedTile tile where a worker is to be placed
      * @param player       active player
      */
-    private synchronized void placeWorker(Tile selectedTile, Player player) {
+    private void placeWorker(Tile selectedTile, Player player) {
         if (selectedTile.getWorker() == null) {
             System.out.println("player: " + player.getPlayerNumber() + " is placing a worker");
             Worker worker = new Worker(player);
@@ -422,7 +431,7 @@ public class GameController {
      * @param selectedTile tile where a worker should be selected
      * @param player       active player
      */
-    private synchronized void selectWorker(Tile selectedTile, Player player) {
+    private void selectWorker(Tile selectedTile, Player player) {
         System.out.println("player: " + player.getPlayerNumber() + " is selecting a worker");
         if (selectedTile.getWorker() != null && player.equals(selectedTile.getWorker().getOwner())) {
             game.setSelectedWorkerTile(selectedTile);
@@ -445,12 +454,11 @@ public class GameController {
      * @param targetTile controlled tile where the selected worker is performing the action
      * @param player     active player
      */
-    private synchronized void performAction(Tile targetTile, Player player) {
+    private void performAction(Tile targetTile, Player player) {
         System.out.println("player: " + player.getPlayerNumber() + " is moving/building with a worker");
         Step currentStep = new Step(game.getSelectedWorkerTile(), targetTile, game.isPowerActive());
         Step previousStep = player.getPreviousStep();
         Card card = player.getCard();
-
         player.setPreviousStep(currentStep);
 
         if (game.getAction() == ActionNames.MOVE) {
@@ -460,11 +468,11 @@ public class GameController {
             card.build(currentStep, previousStep, game.getBoard());
 
         if (game.getAction() == ActionNames.MOVE && card.checkWin(currentStep, game.getBoard())) {
+            notifyBoard();
             endGame();
             notifyVictory(player.getPlayerNumber());
             gameState = GameSate.GAME_OVER;
         } else {
-
             game.nextStep();
 
             if (game.getStepNumber() == 2 && game.hasChoice())
@@ -507,12 +515,9 @@ public class GameController {
             if (player.getCard().canMove(game.getStepNumber(), isPowerActive)) {
                 game.setAction(ActionNames.MOVE);
                 game.setValidTiles(calculateValidMoves(currentStep, player));
-            } else if (player.getCard().canBuild(game.getStepNumber(), isPowerActive)) {
+            } else {
                 game.setAction(ActionNames.BUILD);
                 game.setValidTiles(calculateValidBuilds(currentStep, player));
-            } else {
-                game.setAction(ActionNames.SELECT_WORKER);
-                game.setValidTiles(new boolean[Board.size][Board.size]);
             }
         }
     }

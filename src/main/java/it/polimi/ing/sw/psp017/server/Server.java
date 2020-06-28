@@ -15,6 +15,8 @@ public class Server {
     private final static int SOCKET_PORT = 7778;
     private final static int undoWaitTime = 5000;
 
+    private boolean running = true;
+
     private final ArrayList<GameController> gameControllers;
     private final ArrayList<GameController> waitingGameControllers;
 
@@ -53,6 +55,14 @@ public class Server {
     }
 
     /**
+     * stops server's execution
+     *
+     */
+    public void stop(){
+        running = false;
+    }
+
+    /**
      * initialize server's lists, create server's socket and start AcceptConnectionsThread
      *
      * @param view the disconnected view
@@ -61,6 +71,16 @@ public class Server {
         GameController gameController = view.getGameController();
         if (gameController != null)
             gameController.handleDisconnection(view);
+    }
+
+    public ServerSocket getServerSocket(){
+        return socket;
+    }
+    /**
+     * @return the gameControllers
+     */
+    public ArrayList<GameController> getGameControllers() {
+        return gameControllers;
     }
 
     /**
@@ -130,6 +150,7 @@ public class Server {
      * @param view     the view to be authenticated
      */
     public synchronized void tryAuthenticatingView(String nickname, VirtualView view) {
+        System.out.println("authenticating view");
         if (isNicknameUnique(nickname)) {
             Player player = new Player(nickname);
             view.setPlayer(player);
@@ -160,7 +181,7 @@ public class Server {
      * if there's a new connection the virtualView thread is created so that it is handled
      */
     public void AcceptConnections() {
-        while (true) {
+        while (running) {
             try {
                 Socket client = socket.accept();
 

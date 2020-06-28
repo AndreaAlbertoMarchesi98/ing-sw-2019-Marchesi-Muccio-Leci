@@ -52,6 +52,7 @@ public class VirtualView implements Runnable, View {
         public void run() {
             if (message instanceof AuthenticationMessage)
                 notifyNickname((AuthenticationMessage) message);
+
             else if (message instanceof RestartMessage)
                 notifyRestart((RestartMessage) message);
 
@@ -73,6 +74,19 @@ public class VirtualView implements Runnable, View {
                     notifyUndo((UndoMessage) message);
             }
         }
+    }
+
+    public VirtualView(Socket client, Server server) throws IOException {
+        running = true;
+
+        this.server = server;
+
+        input = new ObjectInputStream(client.getInputStream());
+        output = new ObjectOutputStream(client.getOutputStream());
+
+        pingSender = new PingSender(this);
+        Thread pingSenderThread = new Thread(pingSender);
+        pingSenderThread.start();
     }
 
     public boolean isRunning() {
@@ -100,19 +114,6 @@ public class VirtualView implements Runnable, View {
         this.player = player;
     }
 
-    public VirtualView(Socket client, Server server) throws IOException {
-        running = true;
-
-        this.server = server;
-
-        input = new ObjectInputStream(client.getInputStream());
-        output = new ObjectOutputStream(client.getOutputStream());
-
-        pingSender = new PingSender(this);
-        Thread pingSenderThread = new Thread(pingSender);
-        pingSenderThread.start();
-    }
-
     @Override
     public void run() {
         try {
@@ -131,8 +132,7 @@ public class VirtualView implements Runnable, View {
         }
     }
 
-    private synchronized void notifyDisconnection() {
-        System.out.println("client disconnected");
+    private void notifyDisconnection() {
         stop();
         server.handleDisconnection(this);
     }
@@ -197,11 +197,13 @@ public class VirtualView implements Runnable, View {
     }
 
     private synchronized void sendMessage(Object message) {
-        try {
-            output.writeObject(message);
-            output.reset();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(isRunning()) {
+            try {
+                output.writeObject(message);
+                output.reset();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

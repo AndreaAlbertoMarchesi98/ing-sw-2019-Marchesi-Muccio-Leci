@@ -8,7 +8,6 @@ public class Player {
     public static final int workersNumber = 2;
     private final String nickname;
     private int playerNumber;
-    private final Color color;
     private final ArrayList<Worker> workers;
     private volatile Card card;
     private Card originalCard;
@@ -17,18 +16,7 @@ public class Player {
 
     public Player(String nickname) {
         this.nickname = nickname;
-        this.color = Color.getRandomColor();
         workers = new ArrayList<>();
-    }
-
-
-    public enum Color {
-        RED, BLUE, GREEN;
-
-        public static Color getRandomColor() {
-            Random random = new Random();
-            return values()[random.nextInt(values().length)];
-        }
     }
 
     public int getPlayerNumber() {
@@ -54,16 +42,20 @@ public class Player {
         this.originalCard = originalCard;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
     public Step getPreviousStep() {
         return previousStep;
     }
 
     public void setPreviousStep(Step previousStep) {
-        this.previousStep = previousStep;
+        if(previousStep!=null) {
+            Tile currentTile = new Tile(previousStep.getCurrentTile().getPosition());
+            currentTile.setLevel(previousStep.getCurrentTile().getLevel());
+            Tile targetTile = new Tile(previousStep.getTargetTile().getPosition());
+            targetTile.setLevel(previousStep.getTargetTile().getLevel());
+            this.previousStep = new Step(currentTile, targetTile, previousStep.isPowerActive());
+        }
+        else
+            this.previousStep=null;
     }
 
     public String getNickname() {

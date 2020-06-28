@@ -1,10 +1,6 @@
-SERVER BUGS:
-
-SISTEMARE PACKAGES SERVER-CLIENT PER UML
-
-1)Quando un giocatore muore non sene vanno gli workers
-
-1)Dopo vittoria, inizia di nuovo un altra partita con gli stessi giocatori: IN PLACE WORKER IL SERVER FA SCEGLIERE SEMPRE IL PRIMO
-
+CLI POSSIBLE IMPROVEMENTS:
+-prova prometeo, funziona in modo un po strano ma niente di che
+GUI BUGS:
+-attivare prometeo power active
 
 

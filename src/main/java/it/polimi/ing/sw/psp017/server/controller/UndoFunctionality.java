@@ -8,14 +8,14 @@ public class UndoFunctionality {
     private volatile boolean hasUndoArrived;
     private volatile boolean hasSkippedUndo;
     private Board savedBoard;
-    private int undoWaitTime;
+    private final int undoWaitTime;
 
     /**
      * sets undoWaitTime
      *
      * @param undoWaitTime is for how long is possible to undo
      */
-    public UndoFunctionality(int undoWaitTime){
+    public UndoFunctionality(int undoWaitTime) {
         this.undoWaitTime = undoWaitTime;
     }
 
@@ -38,27 +38,31 @@ public class UndoFunctionality {
         System.out.println("undo no more possible");
         return false;
     }
+
     /**
      * @return true if undo is possible false if not
      */
-    public boolean isUndoPossible(){
+    public synchronized boolean isUndoPossible() {
         return undoPossible;
     }
+
     /**
      * set hasSkippedUndo to true
      */
-    public void skipUndo(){
+    public synchronized void skipUndo() {
         hasSkippedUndo = true;
     }
+
     /**
      * if undo is possible set hasUndoArrived to true
      */
-    public void receiveUndo(){
+    public synchronized void receiveUndo() {
         if (undoPossible) {
             System.out.println("undo has arrived");
             hasUndoArrived = true;
         }
     }
+
     /**
      * perform undo by restoring the saved board and restarting the current turn
      */
@@ -68,12 +72,13 @@ public class UndoFunctionality {
         savedBoard = game.getBoardCopy();
         game.clearValidTiles();
     }
+
     /**
      * saves the board, so that it can be restored on undo
      *
      * @param board board to be saved
      */
-    public void saveBoard(Board board){
+    public void saveBoard(Board board) {
         savedBoard = board;
     }
 }

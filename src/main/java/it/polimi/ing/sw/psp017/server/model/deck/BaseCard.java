@@ -44,8 +44,9 @@ public class BaseCard implements Card {
     }
 
     public boolean checkWin(Step currentStep, Board board) {
-        Tile targetTile = currentStep.getTargetTile();
-        return targetTile.getLevel() == 3;
+        int currentLevel = currentStep.getCurrentTile().getLevel();
+        int targetLevel = currentStep.getTargetTile().getLevel();
+        return targetLevel == 3 && targetLevel>currentLevel;
     }
 
     public void move(Step currentStep, Step previousStep, Board board) {

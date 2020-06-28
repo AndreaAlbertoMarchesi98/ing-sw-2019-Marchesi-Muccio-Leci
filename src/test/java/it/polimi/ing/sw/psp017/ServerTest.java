@@ -1,92 +1,131 @@
 package it.polimi.ing.sw.psp017;
 
-import it.polimi.ing.sw.psp017.client.Client;
 import it.polimi.ing.sw.psp017.client.NetworkHandler;
-import it.polimi.ing.sw.psp017.server.controller.GameController;
+import it.polimi.ing.sw.psp017.client.view.GodName;
 import it.polimi.ing.sw.psp017.server.Server;
-import it.polimi.ing.sw.psp017.server.VirtualView;
-import it.polimi.ing.sw.psp017.client.view.CLI;
 import it.polimi.ing.sw.psp017.client.view.View;
-import org.junit.Before;
-import org.junit.Test;
+import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
+import it.polimi.ing.sw.psp017.server.messages.ServerToClient.*;
+import org.junit.*;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ServerTest {/*
+public class ServerTest {
     private final static int SERVER_PORT = 7778;
-    private final static String ip = "127.0.0.1";
-    private Server server;
-    private View dummyView;
-    private Client dummyClient;
+    private final static String IP = "127.0.0.1";
+    private final static int executionTime = 100;
+    private static boolean setupDone = false;
     private ArrayList<NetworkHandler> networkHandlers;
-    private Socket client1;
-    private Socket client2;
-    private Socket client3;
-    private ServerSocket serverSocket;
-    private GameController gameController;
-    private VirtualView view1;
-    private VirtualView view2;
-    private VirtualView view3;
-    private Thread t1;
-    private Thread t2;
-    private Thread t3;
-    private Thread t4;
+    private Server server;
+    ArrayList<GodName> godNames;
 
-    @Before
-    public void init() throws IOException {
-        networkHandlers = new ArrayList<>();
-        server = new Server(SERVER_PORT);
-        dummyView = new CLI(dummyClient);
-        for (int i = 0; i < 10; i++) {
-            NetworkHandler networkHandler = new NetworkHandler();
-            networkHandler.setView(dummyView);
-            networkHandlers.add(networkHandler);
+    private class DummyView implements View {
+        public void notifyNickname(AuthenticationMessage authenticationMessage) {
+
         }
 
+        public void notifyGameSetUp(GameSetUpMessage gameSetUpMessage) {
+
+        }
+
+        public void notifyCard(CardMessage cardMessage) {
+
+        }
+
+        public void notifySelectedTile(SelectedTileMessage selectedTileMessage) {
+
+        }
+
+        public void notifyIsPowerActive(PowerActiveMessage powerActiveMessage) {
+
+        }
+
+        public void notifyRestart(RestartMessage restartMessage) {
+
+        }
+
+        public void notifyUndo(UndoMessage undoMessage) {
+
+        }
+
+        public void updateGameCreation() {
+
+        }
+
+        public void updateLoginScreen(InvalidNameMessage invalidNameMessage) {
+
+        }
+
+        public void updateLobby(LobbyMessage lobbyMessage) {
+
+        }
+
+        public void updateBoard(BoardMessage boardMessage) {
+
+        }
+
+        public void updateDefeat(NoMovesMessage noMovesMessage) {
+
+        }
+
+        public void updateVictory(VictoryMessage victoryMessage) {
+
+        }
+
+        public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
+
+        }
+    }
+
+    @Before
+    public void init() {
+        server = new Server(SERVER_PORT);
+        godNames = new ArrayList<>();
+        godNames.add(GodName.APOLLO);
+        godNames.add(GodName.ARTEMIS);
+        godNames.add(GodName.ATHENA);
+        networkHandlers = new ArrayList<>();
+    }
+
+    @After
+    public void reset() throws IOException {
+        server.getServerSocket().close();
+        server.stop();
     }
 
     @Test
-    public void tonsOfConnectionsTest() throws IOException {
-        /**
-         * networkHandlers.get(0).startConnection();
-         *         networkHandlers.get(1).startConnection();
-         *         networkHandlers.get(2).startConnection();
-         *         networkHandlers.get(3).startConnection();
-         *
-         *         networkHandlers.get(0).sendMessage(new AuthenticationMessage("name1"));
-         *         networkHandlers.get(1).sendMessage(new AuthenticationMessage("name2"));
-         *         networkHandlers.get(2).sendMessage(new AuthenticationMessage("name3"));
-         *         networkHandlers.get(3).sendMessage(new AuthenticationMessage("name4"));
-         *
-         *         ArrayList<GodName> chosenCards = new ArrayList<>();
-         *         chosenCards.add(GodName.ATLAS);
-         *         chosenCards.add(GodName.ATHENA);
-         *         chosenCards.add(GodName.HEPHAESTUS);
-         *         networkHandlers.get(0).sendMessage(new GameSetUpMessage(chosenCards));
-         *
-         *         networkHandlers.get(5).startConnection();
-         *         networkHandlers.get(6).startConnection();
-         *         networkHandlers.get(7).startConnection();
-         *
-         *         networkHandlers.get(5).sendMessage(new AuthenticationMessage("name1"));
-         *         networkHandlers.get(6).sendMessage(new AuthenticationMessage("name2"));
-         *
-         *         networkHandlers.get(8).startConnection();
-         *
-         *         networkHandlers.get(7).sendMessage(new AuthenticationMessage("name3"));
-         *         networkHandlers.get(8).sendMessage(new AuthenticationMessage("name4"));
-         */
-    //}
-/*
-    @Test
-    public void sameNicknamesTest() throws IOException {
+    public void tonsOfConnectionsTest() throws IOException, InterruptedException {
+        for (int i = 0; i < 35; i++) {
+            NetworkHandler networkHandler = new NetworkHandler();
+            networkHandler.setView(new DummyView());
+            networkHandlers.add(networkHandler);
+        }
+        for (int i = 0; i < 35; i++) {
+            networkHandlers.get(i).startConnection(IP, SERVER_PORT);
+        }
+        for (int i = 30; i < 35; i++) {
+            String name = "same_name";
+            networkHandlers.get(i).sendMessage(new AuthenticationMessage(name));
+        }
+        Thread.sleep(executionTime);
+        assertEquals("error: there should only be 1 gameController", 1, server.getGameControllers().size());
 
-        assertEquals("error: there should be only 2 players", 1);
-    }*/
+        for (int i = 0; i < 10; i++) {
+            String name = "name" + i;
+            networkHandlers.get(i).sendMessage(new AuthenticationMessage(name));
+        }
+        for (int i = 0; i < 10; i++) {
+            networkHandlers.get(i).sendMessage(new GameSetUpMessage(godNames));
+        }
+        for (int i = 10; i < 30; i++) {
+            String name = "name" + i;
+            networkHandlers.get(i).sendMessage(new AuthenticationMessage(name));
+        }
+        Thread.sleep(executionTime);
+        assertTrue("error: there should be at least 10 gameControllers", server.getGameControllers().size() >= 10);
+    }
 }

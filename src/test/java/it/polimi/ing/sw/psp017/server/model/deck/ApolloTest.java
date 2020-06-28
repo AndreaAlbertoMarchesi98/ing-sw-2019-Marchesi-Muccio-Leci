@@ -76,11 +76,11 @@ public class ApolloTest {
         assertTrue("error: isValidMove false but tile free ", player1.getCard().isValidMove(currentstep, null, board));
 
         targetTile.setDome(true);
-        assertFalse("error:isValidMove true but tile occupied  by dome",player1.getCard().isValidMove(currentstep, null, board));
+        assertFalse("error: isValidMove true but tile occupied  by dome",player1.getCard().isValidMove(currentstep, null, board));
 
         targetTile.setDome(false);
         board.addWorker(worker2P1,targetTile.getPosition());
-        assertFalse("error :isValidMove true but tile occupied  by worker of mine",player1.getCard().isValidMove(currentstep, null, board));
+        assertFalse("error: isValidMove true but tile occupied  by worker of mine",player1.getCard().isValidMove(currentstep, null, board));
 
         targetTile.setWorker(null);
         targetTile.setLevel(2);

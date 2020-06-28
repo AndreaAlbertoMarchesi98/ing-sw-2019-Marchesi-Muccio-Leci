@@ -55,7 +55,7 @@ public class Demeter extends BaseCard {
      */
     public boolean isValidBuilding(Step currentStep, Step previousStep, Board board) {
         if (currentStep.isPowerActive()) {
-            if (!previousStep.getTargetTile().equals(currentStep.getTargetTile())) {
+            if (previousStep.getTargetTile().getPosition()!=currentStep.getTargetTile().getPosition()) {
                 return super.isValidBuilding(currentStep, previousStep, board);
             } else
                 return false;

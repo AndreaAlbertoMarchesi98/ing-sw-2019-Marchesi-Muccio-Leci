@@ -143,7 +143,7 @@ public class NetworkHandler implements Runnable{
             output.writeObject(message);
             output.reset();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
