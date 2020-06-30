@@ -189,7 +189,6 @@ public class VirtualView implements Runnable, View {
     }
 
     public void updateVictory(VictoryMessage victoryMessage) {
-        System.out.println("sending victoy");
         sendMessage(victoryMessage);
     }
 

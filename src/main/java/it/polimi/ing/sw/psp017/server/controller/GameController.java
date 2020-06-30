@@ -187,6 +187,7 @@ public class GameController {
         System.out.println("notify victory");
         VictoryMessage message = new VictoryMessage(winnerNumber);
         for (VirtualView view : views) {
+            System.out.println("doing it");
             view.updateVictory(message);
         }
     }
@@ -345,9 +346,11 @@ public class GameController {
             VirtualView defeatedView = views.get(game.getPlayerIndex());
 
             if (game.getPlayers().size() == 2) {
-                views.clear();
                 endGame();
-                notifyVictory(game.getPlayers().get(0).getPlayerNumber());
+                if(game.getPlayerIndex()==0)
+                    notifyVictory(game.getPlayers().get(1).getPlayerNumber());
+                else
+                    notifyVictory(game.getPlayers().get(0).getPlayerNumber());
                 gameState = GameSate.GAME_OVER;
             } else {
                 notifyDefeat(defeatedView.getPlayer());
