@@ -47,27 +47,27 @@ public abstract class GodView {
     /**
      * Each class contain the respective God's images. They extend GodView.
      */
-         static class Apollo extends GodView{
-            public Icon getIcon(){
-                return new ImageIcon(GodView.class.getClassLoader().getResource("APOLLO/APOLLO.png"));
-            }
+    static class Apollo extends GodView{
+        public Icon getIcon(){
+            return new ImageIcon(GodView.class.getClassLoader().getResource("APOLLO/APOLLO.png"));
+        }
 
-             @Override
-             public String getPowerDescription() {
-                 return "";
-             }
+        @Override
+        public String getPowerDescription() {
+            return "";
+        }
 
-             @Override
-             public Icon getIconDescription() {
-                 return new ImageIcon(GodView.class.getClassLoader().getResource("APOLLO/APOLLO-1.png"));
-             }
+        @Override
+        public Icon getIconDescription() {
+            return new ImageIcon(GodView.class.getClassLoader().getResource("APOLLO/APOLLO-1.png"));
+        }
 
-             @Override
-             public Icon getIconPower() {
-                 return new ImageIcon(GodView.class.getClassLoader().getResource("PowerButton/gp_skipswap.png"));
+        @Override
+        public Icon getIconPower() {
+            return new ImageIcon(GodView.class.getClassLoader().getResource("PowerButton/gp_skipswap.png"));
 
-             }
-         }
+        }
+    }
 
     static class Artemis extends GodView{
         public Icon getIcon(){
@@ -76,7 +76,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "Move an additional time";
+            return "Do you want to skip your God's power ? :";
         }
 
         @Override
@@ -119,7 +119,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "Do you want to activate your God's power ? :";
         }
 
         @Override
@@ -139,7 +139,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "";
+            return "Do you want to skip your God's power ? :";
         }
 
         @Override
@@ -159,7 +159,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "Do you want to skip your God's power ? :";
         }
 
         @Override
@@ -179,7 +179,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "Do you want to skip your God's power ? :";
         }
 
         @Override
@@ -199,7 +199,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "";
         }
 
         @Override
@@ -219,7 +219,7 @@ public abstract class GodView {
 
         @Override
         public String getPowerDescription() {
-            return "You can switch your position with a enemy. Do you want turn off your power?";
+            return "Do you want to activate your God's power ? :";
         }
 
         @Override

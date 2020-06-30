@@ -2,6 +2,7 @@ package it.polimi.ing.sw.psp017.client.view;
 
 import it.polimi.ing.sw.psp017.client.Client;
 import it.polimi.ing.sw.psp017.client.PlayersInfo;
+import it.polimi.ing.sw.psp017.client.view.GraphicUserInterface.GodView;
 import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.server.messages.ServerToClient.*;
 import it.polimi.ing.sw.psp017.server.model.Vector2d;
@@ -96,6 +97,8 @@ public class CLI implements View {
     @Override
     public void notifyRestart(RestartMessage restartMessage) {
 
+        client.getNetworkHandler().sendMessage( restartMessage);
+
     }
 
 
@@ -114,12 +117,14 @@ public class CLI implements View {
 
     }
 
+    /**
+     * firstPlayer,whose created the game, set his playerNumber to 1,and select number of players
+     * and cards
+     */
     @Override
     public void updateGameCreation() {
 
         client.setPlayerNumber(1);
-
-        System.out.println("dentro updateGameCreation");
 
         //scegli il numero di giocatori
         NUMBER_OF_PLAYERS = getNUMBER_OF_PLAYERS();
@@ -141,21 +146,13 @@ public class CLI implements View {
 
         notifyGameSetUp(new GameSetUpMessage(selectedCards));  //arraylist delle carte scelte));
 
-
-
     }
 
 
     @Override
     public void updateLobby( LobbyMessage lobbyMessage) {
 
-        System.out.println("choosen cards : "+lobbyMessage.chosenCards);
 
-        System.out.println("available cards : " +lobbyMessage.availableCards);
-
-        System.out.println("dentro updateLobby");
-      //  client.playersInfo = new ArrayList<>();
-        System.out.println("player number : " + client.getPlayerNumber() + " choosing player number : "+ lobbyMessage.choosingPlayerNumber);
         GodName choosenCard;
         if (client.getPlayerNumber() == 0) {
             client.setPlayerNumber(lobbyMessage.players.indexOf(client.getNickname()) + 1);
@@ -164,85 +161,77 @@ public class CLI implements View {
 
 
 
+        //store info in playerInfo when all players ,except the first one ,has selected a card
+        /**
+         * if (lobbyMessage.availableCards.size() == 1) {
+         *
+         *
+         *             PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
+         *             playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0), 1, lobbyMessage.availableCards.get(0));
+         *             client.playersInfo.add(playersInfos[0]);
+         *             for (int i = 1; i < lobbyMessage.players.size(); i++) {
+         *                 playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i), i + 1, lobbyMessage.chosenCards.get(i-1));
+         *
+         *                 client.playersInfo.add(playersInfos[i]);
+         *             }
+         *
+         *
+         *
+         *
+         *
+         *
+         *
+         *         }
+         */
+
         if (lobbyMessage.availableCards.size() == 1) {
-            System.out.println("dentro a size == 1");
+            lobbyMessage.chosenCards.add(lobbyMessage.availableCards.get(0));
 
-            //salvo informazioni players
-            PlayersInfo[] playersInfos = new PlayersInfo[lobbyMessage.players.size()];
-            playersInfos[0] = new PlayersInfo(lobbyMessage.players.get(0), 1, lobbyMessage.availableCards.get(0));
-            client.playersInfo.add(playersInfos[0]);
-            for (int i = 1; i < lobbyMessage.players.size(); i++) {
-                playersInfos[i] = new PlayersInfo(lobbyMessage.players.get(i), i + 1, lobbyMessage.chosenCards.get(i-1));
+            client.playersInfo = new ArrayList<>();
 
-                client.playersInfo.add(playersInfos[i]);
-            }
-
-
-
-
-        }
-
-        //si puo eliminare
-        if(lobbyMessage.choosingPlayerNumber == 1)
-        {
-            for (int i = 0; i < client.playersInfo.size(); i++) {
-                System.out.println("nickname :" + client.playersInfo.get(i).name +
-                        "\n card name : " + client.playersInfo.get(i).card +
-                        " \n playerNumber  : " + client.playersInfo.get(i).playerNumber);
+            for(int i = 0; i < lobbyMessage.players.size();i++)
+            {
+                PlayersInfo playersInfos = new PlayersInfo(lobbyMessage.players.get(i), i+1, lobbyMessage.chosenCards.get(lobbyMessage.chosenCards.size()-1-i));
+                client.playersInfo.add(playersInfos);
             }
         }
 
 
 
-        //turno del giocatore
+        //if it is my turn ,select my card from the available cards
         if(client.getPlayerNumber()==lobbyMessage.choosingPlayerNumber)
         {
-            System.out.println("choosen cards : "+lobbyMessage.chosenCards);
 
-            System.out.println(lobbyMessage.availableCards);
+
             choosenCard = chooseGodCard(lobbyMessage.availableCards); // versione con eliminazione lato server
+            client.setCard(choosenCard);
             notifyCard(new CardMessage(choosenCard));
         }
 
 
 
 
-    }
 
-   /*
-    @Override
-    public void updateWaitingRoom(WaitMessage waitMessage) {
 
-        System.out.println("dentro updateWaitingRoom");
-
-        //gioatore in attessa di una nuova partita
-        System.out.println("Number of players in waitingRoom : " + waitMessage.queueLength);
-
-        ansi_reset();
 
     }
-    */
+
+
 
 
     @Override
     public void updateBoard(BoardMessage boardMessage) {
-        boolean answer;
-        System.out.println("dentro a updateBoard");
-        printBoard(boardMessage.board);
-        //se e il suo turno
-        System.out.println("client playerNumber is:" + client.getPlayerNumber());
-        if (boardMessage.activePlayerNumber == client.getPlayerNumber())//identificatore intero nuova variabile)
+
+
+        boolean answer; //answer used for undo
+
+        //if it is my turn
+        if (boardMessage.activePlayerNumber == client.getPlayerNumber())
         {
 
+            //if can undo last move
             if(isUndoPossible)
             {
-                /*
-                Thread threadUndo = new Thread(new Boh());
-                threadUndo.start();
-                Thread.sleep(5000);
-                threadUndo.interrupt();
-
-                 */
 
                 final Timer timerThread = new Timer();
                 timerThread.schedule(new TimerTask() {
@@ -268,31 +257,17 @@ public class CLI implements View {
                 }
                 if(timeOut&&answer)
                 {
-                    System.out.println(ANSI_RED_BACKGROUND + "it is  too late for undo my dear....");
+                    System.out.println(ANSI_RED_BACKGROUND + ANSI_WHITE + "it is  too late for undo my dear....");
                     ansi_reset();
                 }
 
 
                 timeOut = false;
 
-
-                /*
-                System.out.println(undooUnswer);
-                if(undooUnswer)
-                {
-                    isUndoPossible =false;
-                    return;
-                }
-                 */
-                // return;
-                //  boardMessage.action = ActionNames.NONE;
             }
 
             if( boardMessage.validTiles!= null && !validTiles(boardMessage))
             {
-
-                System.out.println("dentro a checkValidTiles");
-                //no mosse disponibile se ha fatto select prima
 
 
                 if(previousAction == ActionNames.SELECT_WORKER)
@@ -329,70 +304,57 @@ public class CLI implements View {
         }
          */
 
-            System.out.println("ACTION MESSAGE : " + boardMessage.action);
+
             if(boardMessage.action == ActionNames.PLACE_WORKERS)
             {
-                Vector2d temp ;
-
-                System.out.println("workers placement");
-                //utente sceglie 2 posizioni
-                printBoard(boardMessage.board);
-
-                //temp = setWorkerPosition(boardMessage);
-                temp = setWorkerPositionFinal(boardMessage);
-                //invio
-                notifySelectedTile(new SelectedTileMessage(temp));
+                notifySelectedTile(new SelectedTileMessage(setWorkerPositionFinal(boardMessage)));
 
             }
             else if(boardMessage.action == ActionNames.SELECT_WORKER)
             {
                 hasAskedPowerActive = false;
-                //scelta del worker da utilizzare
-                //da fare : obbligo di scegliere un worker
-                //Vector2d temp = selectWorker(boardMessage);
                 notifySelectedTile(new SelectedTileMessage(selectWorker(boardMessage)));
             }
-            else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibilita di attivare il potere
+            else if(boardMessage.hasChoice&&!hasAskedPowerActive) //possibility to activate god power
             {
-                //attivare il potere
-                //activatePower = getChoice();  ?? serve
-                //si o no
-                if(getChoice()) notifyIsPowerActive(new PowerActiveMessage(true));
+                //if player has choose to activate gods power (answer == yes)
+                if(getChoice()) {
+                    notifyIsPowerActive(new PowerActiveMessage(true));
+                    return;
+                }
 
                 hasAskedPowerActive = true;
             }
             if(boardMessage.action == ActionNames.MOVE)
             {
-                System.out.println("dentro a move  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                //notifyAction(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
+
                 isUndoPossible = true;
                 notifySelectedTile(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
             }
 
-            if(boardMessage.action == ActionNames.BUILD)//condizione senza poteri muovi costruisci
+            //case with no power
+            if(boardMessage.action == ActionNames.BUILD)
             {
-                //   boardMessage.action == ActionNames.MOVE ||
 
                 isUndoPossible = true;
-                System.out.println("dentro a build >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
+                //if true meas that players has asked undo in the previous move,only red tiles
                 if(!validTiles(boardMessage)){
                     return;
                 }
                 notifySelectedTile(new SelectedTileMessage(getBuildTargetTile(boardMessage)));
 
-                //salva posizione scelta lastWorkerposition == scegli worker
-            /*
-            printValidTiles(boardMessage.validTiles);
-            notifyAction(new ActionMessage(getTargetTile(boardMessage.action, boardMessage.board)));
-             */
+                //store previous action used for undo function
                 previousAction = boardMessage.action;
             }
             else{
-                System.out.println("invalid action NONE");
+                System.out.println(ANSI_CYAN);
+                System.out.println("██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
             }
 
         }
+
+        //if is not my turn , i cannot undo anymore
         else isUndoPossible = false;
 
     }
@@ -400,25 +362,39 @@ public class CLI implements View {
     @Override
     public void updateDefeat(NoMovesMessage noMovesMessage) {
 
+        ansi_reset();
+        if(noMovesMessage.playerNumber == client.getPlayerNumber())
+        {
+            printLoser();
+            restartGame();
+        }
+        else
+        {
+            System.out.println(ANSI_BLACK + client.playersInfo.get(noMovesMessage.playerNumber).card +
+                    " has lost the game");
+        }
+
     }
 
-    public boolean validTiles(BoardMessage b){
-        for(int x = 0; x <5 ; x++)
-            for (int y = 0 ; y <5; y++){
-                if(b.validTiles[x][y])return true;
-            }
-        return false;
+    public void restartGame()
+    {
+        String answer;
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to play another match ? :");
+        do {
+
+
+            answer = in.nextLine();
+
+
+        } while (!"N".equalsIgnoreCase(answer) && !"Y".equalsIgnoreCase(answer));
+
+
+        ansi_reset();
+        if(answer.equalsIgnoreCase("y")) notifyRestart(new RestartMessage());
+
     }
-    //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
 
 
-
-
-
-
-
-
-    //CommandLineInterface.printBoard(boardMessage.board); //da cambiare in viewTile
 
 
 
@@ -428,12 +404,25 @@ public class CLI implements View {
         if(victoryMessage.winnerNumber == client.getPlayerNumber()) printWinner();
         else printLoser();
         printGameOver();
+
+       restartGame();
     }
 
     @Override
     public void updateDisconnection(ServerDisconnectionMessage disconnectionMessage) {
 
-        //NUOVA pRTITA O CHIUDO GIOCO
+        ansi_reset();
+        if(disconnectionMessage.disconnectedPlayerNumber== client.getPlayerNumber())
+        {
+            System.out.println(ANSI_RED_BACKGROUND +"you have been disconnected");
+
+        }
+        else
+        {
+            System.out.println(ANSI_BLACK + client.playersInfo.get(disconnectionMessage.disconnectedPlayerNumber-1).card +
+                    "has been disconnected");
+            restartGame();
+        }
 
     }
 
@@ -441,7 +430,7 @@ public class CLI implements View {
         if (invalidNameMessage != null) {
             System.out.println("Invalid Nickname");
         }
-        String nickname = CommandLineInterface.getNickname();
+        String nickname = getNickname();
         client.setNickname(nickname);
         AuthenticationMessage am = new AuthenticationMessage(nickname);
         notifyNickname(am);
@@ -955,7 +944,7 @@ public class CLI implements View {
 
 
         String answer;
-        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Do you want to activate your God's power ? :");
+        System.out.println(ANSI_CYAN_BACKGROUND + ANSI_BLACK + GodView.getCard(client.getCard()).getPowerDescription());
         do {
 
 
@@ -971,60 +960,13 @@ public class CLI implements View {
     }
 
 
+
+
     /**
      * this method set workers position at the beginning of the game
      * @param boardMessage game information
      * @return Vector2d of two workers position
      */
-    public  Vector2d[] setWorkerPosition(BoardMessage boardMessage)
-    {
-
-        Vector2d[] selectedWorkersPosition = new Vector2d[2];
-
-        System.out.println(ANSI_BRIGHT_BG_BLUE +ANSI_BLACK+ "███████████████████████████████████████████████████████████████\n" +"<<<<<<<<<<<<<<<<<<<<<<<<<<<<< PLACE WORKER >>>>>>>>>>>>>>>>>>>>>>>>>>>\n"+"███████████████████████████████████████████████████████████████" );
-
-        ansi_reset();
-
-        int count = 0;
-        boolean done = false;
-
-
-        while(!done)
-        {
-            do {
-                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_BLUE + "where do you want to place your " + (count + 1) + " worker ?" + ANSI_RESET);
-                printBoard(boardMessage.board);
-
-                selectedWorkersPosition[count] = getTargetTileUnified();
-
-                if(!checkFreeTargetTile(boardMessage,selectedWorkersPosition[count])) count++;
-                else{
-                    printBoard(boardMessage.board);
-                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________OCCUPIED TILE____________>>>>>>>>>> " + ANSI_RESET);
-                    System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please try again____________>>>>>>>>>> " + ANSI_RESET);
-
-                }
-
-            }while(count < MAX_NUMBER_OF_WORKERS);
-
-            if(checkSameWorkerPlacement(selectedWorkersPosition))
-            {
-                printBoard(boardMessage.board);
-                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________NOT ALLOWED PLACEMENT____________>>>>>>>>>> " + ANSI_RESET);
-                System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please try again____________>>>>>>>>>> " + ANSI_RESET);
-                count--;
-            }
-            else done = true;
-
-        }
-        return selectedWorkersPosition;
-    }
-
-
-
-
-
-
     public  Vector2d setWorkerPositionFinal(BoardMessage boardMessage)
     {
 
@@ -1035,6 +977,7 @@ public class CLI implements View {
         ansi_reset();
 
         boolean done = false;
+        printBoard(boardMessage.board);
 
 
             do {
@@ -1163,6 +1106,29 @@ public class CLI implements View {
         ansi_reset();
         return "Y".equalsIgnoreCase(answer);
 
+    }
+    public boolean validTiles(BoardMessage b){
+        for(int x = 0; x <5 ; x++)
+            for (int y = 0 ; y <5; y++){
+                if(b.validTiles[x][y])return true;
+            }
+        return false;
+    }
+    /**
+     * get a valid nickname from the user
+     * @return string name
+     */
+    public String getNickname() {
+
+        System.out.print(ANSI_CYAN_BACKGROUND + ANSI_BLACK + "Please insert your nickname :");
+
+        while (!in.hasNext()) {
+            in.nextLine();
+            System.out.print("Please insert a valid name :");
+        }
+        String nickname = in.nextLine();
+        System.out.print(ANSI_RESET);
+        return nickname;
     }
 
 

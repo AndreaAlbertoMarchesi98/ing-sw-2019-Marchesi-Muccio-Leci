@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="more bug fixes on gameController, completed tests for server and game controller, minor changes on model">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/bugsToFix" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/bugsToFix" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/client/NetworkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/client/NetworkHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/VirtualView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/VirtualView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/controller/UndoFunctionality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/controller/UndoFunctionality.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/deck/BaseCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/deck/BaseCard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/deck/Demeter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/deck/Demeter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/deck/Hephaestus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/server/model/deck/Hephaestus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/GameControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/GameControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/ServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/ServerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/server/model/deck/ApolloTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ing/sw/psp017/server/model/deck/ApolloTest.java" afterDir="false" />
+    </list>
+    <list id="a3cf9edb-428a-4e49-92c7-f90e306296d5" name="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="-1" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit3 Test Class" />
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="ProjectId" id="1ZUf3CtP3ruUo5sUbKoW6eqIcSr" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit3" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3" value="junit.framework.TestCase" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/client" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="Push.Settings">
+    <option name="SHOW_DETAILS_PANEL" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="it.polimi.ing.sw.psp017.view" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="it.polimi.ing.sw.psp017.controller" />
+      <recent name="it.polimi.ing.sw.psp017.model.deck" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="it.polimi.ing.sw.psp017.model.deck" />
+      <recent name="it.polimi.ing.sw.psp017" />
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/it/polimi/ing/sw/psp017/client" />
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\PowerButton" />
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\MINOTAUR" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\resources\PowerButton" />
+      <recent name="C:\Users\user\IdeaProjects\ing-sw-2019-Marchesi-Muccio-Leci\src\main\java\it\polimi\ing\sw\psp017\controller\Client" />
+      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\server example" />
+      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java\it\polimi\ing\sw\psp017" />
+      <recent name="C:\Users\aam63\IdeaProjects\test1\progettoIngSoftware\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Client">
+    <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.client.Client" />
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ing.sw.psp017.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ing.sw.psp017.server.Server" />
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ing.sw.psp017.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in ing-sw-2019-Marchesi-Muccio-Leci (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in ing-sw-2019-Marchesi-Muccio-Leci (2)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in ing-sw-2019-Marchesi-Muccio-Leci" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ing-sw-2019-Marchesi-Muccio-Leci" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Application.Client" />
+      <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci" />
+      <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci (1)" />
+      <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci (2)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Client" />
+        <item itemvalue="Application.Server" />
+        <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci (2)" />
+        <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci (1)" />
+        <item itemvalue="JUnit.All in ing-sw-2019-Marchesi-Muccio-Leci" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="db703a8b-4839-4dd2-9a97-1c16c8886601" name="Default Changelist" comment="" />
+      <changelist id="a3cf9edb-428a-4e49-92c7-f90e306296d5" name="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" comment="" />
+      <created>1584898391224</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584898391224</updated>
+      <workItem from="1584898393023" duration="2000" />
+      <workItem from="1585465387923" duration="8871000" />
+      <workItem from="1585490463845" duration="9932000" />
+      <workItem from="1585500562443" duration="150000" />
+      <workItem from="1585501413619" duration="698000" />
+      <workItem from="1585660719999" duration="11348000" />
+      <workItem from="1585810835712" duration="5700000" />
+      <workItem from="1585817839591" duration="2085000" />
+      <workItem from="1585823258848" duration="629000" />
+      <workItem from="1586010800367" duration="5082000" />
+      <workItem from="1586073043524" duration="11709000" />
+      <workItem from="1586091985463" duration="4971000" />
+      <workItem from="1586112441898" duration="5876000" />
+      <workItem from="1586153081010" duration="30826000" />
+      <workItem from="1586261316958" duration="377000" />
+      <workItem from="1586261907430" duration="1122000" />
+      <workItem from="1586263355663" duration="7016000" />
+      <workItem from="1586273639583" duration="211000" />
+      <workItem from="1586418139300" duration="4289000" />
+      <workItem from="1586591380064" duration="4921000" />
+      <workItem from="1586621091733" duration="12575000" />
+      <workItem from="1586684160909" duration="810000" />
+      <workItem from="1586864567269" duration="1352000" />
+      <workItem from="1587192361314" duration="10004000" />
+      <workItem from="1587279266714" duration="28408000" />
+      <workItem from="1587390372608" duration="3861000" />
+      <workItem from="1587413038651" duration="6999000" />
+      <workItem from="1587421513498" duration="1664000" />
+      <workItem from="1587452863149" duration="25292000" />
+      <workItem from="1587629703715" duration="1366000" />
+      <workItem from="1587635068203" duration="214000" />
+      <workItem from="1587884779701" duration="552000" />
+      <workItem from="1587887592550" duration="18459000" />
+      <workItem from="1587911754244" duration="887000" />
+      <workItem from="1587912666025" duration="284000" />
+      <workItem from="1587912969538" duration="3580000" />
+      <workItem from="1588177816266" duration="6943000" />
+      <workItem from="1588186015434" duration="396000" />
+      <workItem from="1588187257625" duration="1156000" />
+      <workItem from="1588230063511" duration="176000" />
+      <workItem from="1588230962581" duration="10761000" />
+      <workItem from="1588242434763" duration="2704000" />
+      <workItem from="1588280876850" duration="2000000" />
+      <workItem from="1588282899707" duration="89000" />
+      <workItem from="1588283089344" duration="347000" />
+      <workItem from="1588323680926" duration="174000" />
+      <workItem from="1588401784290" duration="9048000" />
+      <workItem from="1588411502407" duration="188000" />
+      <workItem from="1588412836549" duration="3912000" />
+      <workItem from="1588418705761" duration="875000" />
+      <workItem from="1588662947555" duration="1170000" />
+      <workItem from="1588667227228" duration="14487000" />
+      <workItem from="1588686908908" duration="859000" />
+      <workItem from="1589092853921" duration="3000" />
+      <workItem from="1589097021684" duration="1763000" />
+      <workItem from="1589100582616" duration="8046000" />
+      <workItem from="1589286677889" duration="1322000" />
+      <workItem from="1589362452708" duration="11614000" />
+      <workItem from="1589529145818" duration="8146000" />
+      <workItem from="1589575845504" duration="6909000" />
+      <workItem from="1589615978485" duration="1047000" />
+      <workItem from="1589618350277" duration="2868000" />
+      <workItem from="1589703915810" duration="68000" />
+      <workItem from="1589704951167" duration="244000" />
+      <workItem from="1589705214700" duration="1576000" />
+      <workItem from="1589706820113" duration="132000" />
+      <workItem from="1589890429700" duration="10903000" />
+      <workItem from="1590093412532" duration="6682000" />
+      <workItem from="1590133144714" duration="9339000" />
+      <workItem from="1590147260972" duration="1640000" />
+      <workItem from="1590167088864" duration="3346000" />
+      <workItem from="1590212654134" duration="4528000" />
+      <workItem from="1590317016781" duration="695000" />
+      <workItem from="1590317737192" duration="665000" />
+      <workItem from="1590341841569" duration="2986000" />
+      <workItem from="1590344859287" duration="1095000" />
+      <workItem from="1590346442643" duration="1232000" />
+      <workItem from="1590347700236" duration="1554000" />
+      <workItem from="1590383346040" duration="6650000" />
+      <workItem from="1590417477670" duration="1114000" />
+      <workItem from="1590418639322" duration="802000" />
+      <workItem from="1590420558536" duration="761000" />
+      <workItem from="1590421342675" duration="1746000" />
+      <workItem from="1590423176562" duration="543000" />
+      <workItem from="1590492697860" duration="3757000" />
+      <workItem from="1590497666871" duration="14415000" />
+      <workItem from="1590594798942" duration="7482000" />
+      <workItem from="1590649699288" duration="6508000" />
+      <workItem from="1590658094503" duration="3857000" />
+      <workItem from="1590920156355" duration="8906000" />
+      <workItem from="1590932918463" duration="1446000" />
+      <workItem from="1591001766587" duration="1589000" />
+      <workItem from="1591026677287" duration="2262000" />
+      <workItem from="1591029077377" duration="2778000" />
+      <workItem from="1591036171133" duration="1129000" />
+      <workItem from="1591086998767" duration="1318000" />
+      <workItem from="1591103019586" duration="3190000" />
+      <workItem from="1592808183755" duration="1419000" />
+      <workItem from="1592809709020" duration="3031000" />
+      <workItem from="1592813147364" duration="3071000" />
+      <workItem from="1592820560151" duration="7630000" />
+      <workItem from="1593017040711" duration="97000" />
+      <workItem from="1593017304715" duration="2231000" />
+      <workItem from="1593029711646" duration="646000" />
+      <workItem from="1593238701678" duration="3363000" />
+      <workItem from="1593251314330" duration="618000" />
+      <workItem from="1593251658185" duration="9395000" />
+      <workItem from="1593266037497" duration="2322000" />
+      <workItem from="1593269551371" duration="8066000" />
+      <workItem from="1593293335936" duration="3327000" />
+      <workItem from="1593296685167" duration="359000" />
+      <workItem from="1593297079041" duration="924000" />
+      <workItem from="1593298030199" duration="827000" />
+      <workItem from="1593298881603" duration="20000" />
+      <workItem from="1593299405581" duration="327000" />
+      <workItem from="1593299754806" duration="124000" />
+      <workItem from="1593343422298" duration="2900000" />
+      <workItem from="1593346345166" duration="664000" />
+      <workItem from="1593347044689" duration="1206000" />
+      <workItem from="1593349149166" duration="2213000" />
+      <workItem from="1593351383490" duration="2354000" />
+      <workItem from="1593353755154" duration="1928000" />
+      <workItem from="1593356557497" duration="277000" />
+      <workItem from="1593357589952" duration="183000" />
+      <workItem from="1593357813203" duration="1739000" />
+    </task>
+    <task id="LOCAL-00001" summary="base card implementation, apollo implementation">
+      <created>1585491765125</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1585491765125</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added CardDecorator abstract class">
+      <created>1585500398145</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1585500398145</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Prometheus implementation">
+      <created>1585671813594</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1585671813594</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Write test Model, fix bug, delete unused methods">
+      <created>1586199504059</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1586199504059</updated>
+    </task>
+    <task id="LOCAL-00005" summary="made progress on Server. Modified messages and Game.Turn class. Completed View interface">
+      <created>1587905526404</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1587905526404</updated>
+    </task>
+    <task id="LOCAL-00006" summary="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage">
+      <created>1588282717853</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588282717853</updated>
+    </task>
+    <task id="LOCAL-00007" summary="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage">
+      <created>1588282937296</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588282937296</updated>
+    </task>
+    <task id="LOCAL-00008" summary="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage">
+      <created>1588283243260</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1588283243260</updated>
+    </task>
+    <task id="LOCAL-00009" summary="debugged GameController. It now works completely. But there s still some bugs to fix.">
+      <created>1588411652251</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1588411652251</updated>
+    </task>
+    <task id="LOCAL-00010" summary="completed Server.waitingViews methods. Completed winning functionality">
+      <created>1588687518652</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1588687518652</updated>
+    </task>
+    <task id="LOCAL-00011" summary="added disconnection handling in server and gameController. Added ping in NetworkHandler">
+      <created>1589109353201</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1589109353201</updated>
+    </task>
+    <task id="LOCAL-00012" summary="added player elimination functionality. Improved Tile and worker classes">
+      <created>1589533480106</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1589533480106</updated>
+    </task>
+    <task id="LOCAL-00013" summary="completet tests: DemeterTest, HephaestusTest, PrometheusTest">
+      <created>1589578841327</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1589578841327</updated>
+    </task>
+    <task id="LOCAL-00014" summary="implemented multiple games advanced functionality">
+      <created>1589581132297</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1589581132297</updated>
+    </task>
+    <task id="LOCAL-00015" summary="implemented undo advanced functionality server side">
+      <created>1589582744022</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1589582744022</updated>
+    </task>
+    <task id="LOCAL-00016" summary="completed AthenaTest">
+      <created>1590098115571</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1590098115571</updated>
+    </task>
+    <task id="LOCAL-00017" summary="enhanced undo advanced function on server side">
+      <created>1590100608446</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1590100608446</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Implementing undo button.">
+      <created>1590493714218</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1590493714218</updated>
+    </task>
+    <task id="LOCAL-00019" summary="added UndoFunctionality, fixed some game controller bugs, minor changes on model">
+      <created>1592813923696</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1592813923696</updated>
+    </task>
+    <task id="LOCAL-00020" summary="more bug fixes, added gitignore">
+      <created>1592833701800</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1592833701800</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initial configuration" />
+    <MESSAGE value="starting model classes and interfaces" />
+    <MESSAGE value="base card implementation, apollo implementation" />
+    <MESSAGE value="added CardDecorator abstract class" />
+    <MESSAGE value="Prometheus implementation" />
+    <MESSAGE value="Write test Model, fix bug, delete unused methods." />
+    <MESSAGE value="Write test Model, fix bug, delete unused methods" />
+    <MESSAGE value="made progress on Server. Modified messages and Game.Turn class. Completed View interface" />
+    <MESSAGE value="continuing CLI implementation and Starting GUI" />
+    <MESSAGE value="debugged and improved GameController. It now works until moving workers. Moved ValidTiles from ValidTileMessage to BoardMessage" />
+    <MESSAGE value="debugged GameController. It now works completely. But there s still some bugs to fix." />
+    <MESSAGE value="completed Server.waitingViews methods. Completed winning functionality" />
+    <MESSAGE value="added disconnection handling in server and gameController. Added ping in NetworkHandler" />
+    <MESSAGE value="added player elimination functionality. Improved Tile and worker classes" />
+    <MESSAGE value="completet tests: DemeterTest, HephaestusTest, PrometheusTest" />
+    <MESSAGE value="implemented multiple games advanced functionality" />
+    <MESSAGE value="implemented undo advanced functionality server side" />
+    <MESSAGE value="completed AthenaTest" />
+    <MESSAGE value="enhanced undo advanced function on server side" />
+    <MESSAGE value="Implementing undo button." />
+    <MESSAGE value="added UndoFunctionality, fixed some game controller bugs, minor changes on model" />
+    <MESSAGE value="more bug fixes" />
+    <MESSAGE value="more bug fixes, added gitignore" />
+    <MESSAGE value="more bug fixes on gameController, completed tests for server and game controller, minor changes on model" />
+    <option name="LAST_COMMIT_MESSAGE" value="more bug fixes on gameController, completed tests for server and game controller, minor changes on model" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="715" y="198" key="#App" timestamp="1585467630204">
+      <screen x="76" y="0" width="1844" height="1080" />
+    </state>
+    <state x="715" y="198" key="#App/76.0.1844.1080@76.0.1844.1080" timestamp="1585467630204" />
+    <state x="0" y="0" width="600" height="1080" key="#Editor_|_Color_Scheme_|_General" timestamp="1593296661269">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="0" y="0" width="600" height="1080" key="#Editor_|_Color_Scheme_|_General/71.0.1849.1080@71.0.1849.1080" timestamp="1593296661269" />
+    <state x="361" y="71" key="#Notifications" timestamp="1586263397176">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="71" key="#Notifications/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586263397176" />
+    <state x="485" y="71" key="#Prova" timestamp="1586104841990">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="485" y="71" key="#Prova/0.0.1536.824@0.0.1536.824" timestamp="1586104841990" />
+    <state x="501" y="53" width="982" height="975" key="#ServerTest.sameNicknameTest" timestamp="1593298284137">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="501" y="53" width="982" height="975" key="#ServerTest.sameNicknameTest/71.0.1849.1080@71.0.1849.1080" timestamp="1593298284137" />
+    <state x="339" y="88" width="1092" height="699" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593348220926">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916606402" />
+    <state x="339" y="88" width="1092" height="699" key="#com.intellij.execution.impl.EditConfigurationsDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1593348220926" />
+    <state x="183" y="122" width="1626" height="837" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1593297515886">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="93" y="93" width="1350" height="638" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586165723302" />
+    <state x="183" y="122" width="1626" height="837" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1593297515886" />
+    <state x="649" y="228" width="673" height="433" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588409390627">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="400" y="144" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680@0.0.1280.680" timestamp="1586001875251" />
+    <state x="480" y="174" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586591567942" />
+    <state x="649" y="228" width="673" height="433" key="#com.intellij.fileTypes.FileTypeChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588409390627" />
+    <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1593274682311">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="446" y="49" key="#com.intellij.ide.util.MemberChooser/0.0.1280.680@0.0.1280.680" timestamp="1588149745315" />
+    <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586680329778" />
+    <state x="535" y="59" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1590422593759" />
+    <state x="669" y="74" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1590317214720" />
+    <state x="715" y="77" width="412" height="592" key="#com.intellij.ide.util.MemberChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1593274682311" />
+    <state x="718" y="77" key="#com.intellij.ide.util.MemberChooser/76.0.1844.1080@76.0.1844.1080" timestamp="1587469318388" />
+    <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1590096265087">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="566" y="272" width="433" height="287" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586172600116" />
+    <state x="566" y="272" width="403" height="287" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824@0.0.1536.824" timestamp="1586116746447" />
+    <state x="752" y="357" width="586" height="326" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/71.0.1849.1080@71.0.1849.1080" timestamp="1590096265087" />
+    <state x="755" y="357" width="554" height="288" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/76.0.1844.1080@76.0.1844.1080" timestamp="1587485906730" />
+    <state x="643" y="0" width="886" height="1036" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1592772468342">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="396" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1280.680@0.0.1280.680" timestamp="1585392933170" />
+    <state x="475" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585405698580" />
+    <state x="643" y="0" width="886" height="1036" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1592772468342" />
+    <state x="646" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/76.0.1844.1080@76.0.1844.1080" timestamp="1587456020783" />
+    <state x="416" y="131" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587917298334">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="416" y="131" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1280.680@0.0.1280.680" timestamp="1587917298334" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585405676892" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1586624148525" />
+    <state x="516" y="136" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1585403962394">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="516" y="136" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585403962394" />
+    <state x="313" y="0" key="CommitChangelistDialog2" timestamp="1590493708027">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="261" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1587925082789" />
+    <state x="313" y="0" key="CommitChangelistDialog2/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590493708027" />
+    <state x="410" y="14" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1586199498647" />
+    <state x="568" y="136" key="CommitChangelistDialog2/76.0.1844.1080@76.0.1844.1080" timestamp="1585671812341" />
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1586263466693">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586263466693" />
+    <state x="732" y="219" width="534" height="598" key="FileChooserDialogImpl" timestamp="1589099135372">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585403920958" />
+    <state x="732" y="219" width="534" height="598" key="FileChooserDialogImpl/71.0.1849.1080@71.0.1849.1080" timestamp="1589099135372" />
+    <state width="1793" height="327" key="GridCell.Tab.0.bottom" timestamp="1593359328104">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1237" height="162" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
+    <state width="1493" height="234" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590657947527" />
+    <state width="1557" height="582" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801002" />
+    <state width="1493" height="93" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
+    <state width="1557" height="148" key="GridCell.Tab.0.bottom/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
+    <state width="1877" height="588" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1793" height="327" key="GridCell.Tab.0.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1593359328104" />
+    <state width="1801" height="246" key="GridCell.Tab.0.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
+    <state width="1793" height="327" key="GridCell.Tab.0.center" timestamp="1593359328103">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1237" height="162" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
+    <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
+    <state width="1493" height="234" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590657947527" />
+    <state width="1557" height="582" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801001" />
+    <state width="1493" height="93" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
+    <state width="1557" height="148" key="GridCell.Tab.0.center/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
+    <state width="1877" height="588" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1793" height="327" key="GridCell.Tab.0.center/71.0.1849.1080@71.0.1849.1080" timestamp="1593359328103" />
+    <state width="1801" height="246" key="GridCell.Tab.0.center/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
+    <state width="1793" height="327" key="GridCell.Tab.0.left" timestamp="1593359328102">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1237" height="162" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
+    <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
+    <state width="1493" height="234" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590657947527" />
+    <state width="1557" height="582" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801001" />
+    <state width="1493" height="93" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
+    <state width="1557" height="148" key="GridCell.Tab.0.left/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
+    <state width="1877" height="588" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1793" height="327" key="GridCell.Tab.0.left/71.0.1849.1080@71.0.1849.1080" timestamp="1593359328102" />
+    <state width="1801" height="246" key="GridCell.Tab.0.left/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
+    <state width="1793" height="327" key="GridCell.Tab.0.right" timestamp="1593359328103">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1237" height="162" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1588094735762" />
+    <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916709201" />
+    <state width="1493" height="234" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590657947527" />
+    <state width="1557" height="582" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1600.860@1920.0.1600.860" timestamp="1590652801002" />
+    <state width="1493" height="93" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1590602545727" />
+    <state width="1557" height="148" key="GridCell.Tab.0.right/0.0.1600.860/1600.0.2048.1112@0.0.1600.860" timestamp="1590214975354" />
+    <state width="1877" height="588" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1590661055573" />
+    <state width="1793" height="327" key="GridCell.Tab.0.right/71.0.1849.1080@71.0.1849.1080" timestamp="1593359328103" />
+    <state width="1801" height="246" key="GridCell.Tab.0.right/76.0.1844.1080@76.0.1844.1080" timestamp="1586086634529" />
+    <state width="1793" height="337" key="GridCell.Tab.1.bottom" timestamp="1593282575163">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
+    <state width="726" height="340" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1590521089543" />
+    <state width="1793" height="337" key="GridCell.Tab.1.bottom/71.0.1849.1080@71.0.1849.1080" timestamp="1593282575163" />
+    <state width="1801" height="364" key="GridCell.Tab.1.bottom/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
+    <state width="1793" height="337" key="GridCell.Tab.1.center" timestamp="1593282575162">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.center/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
+    <state width="726" height="340" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1590521089543" />
+    <state width="1793" height="337" key="GridCell.Tab.1.center/71.0.1849.1080@71.0.1849.1080" timestamp="1593282575162" />
+    <state width="1801" height="364" key="GridCell.Tab.1.center/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
+    <state width="1793" height="337" key="GridCell.Tab.1.left" timestamp="1593282575161">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.left/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
+    <state width="726" height="340" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1590521089542" />
+    <state width="1793" height="337" key="GridCell.Tab.1.left/71.0.1849.1080@71.0.1849.1080" timestamp="1593282575161" />
+    <state width="1801" height="364" key="GridCell.Tab.1.left/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
+    <state width="1793" height="337" key="GridCell.Tab.1.right" timestamp="1593282575162">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state width="1493" height="261" key="GridCell.Tab.1.right/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587916623866" />
+    <state width="726" height="340" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1590521089543" />
+    <state width="1793" height="337" key="GridCell.Tab.1.right/71.0.1849.1080@71.0.1849.1080" timestamp="1593282575162" />
+    <state width="1801" height="364" key="GridCell.Tab.1.right/76.0.1844.1080@76.0.1844.1080" timestamp="1585474564689" />
+    <state x="251" y="94" width="1483" height="894" key="MergeDialog" timestamp="1590143457381">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="251" y="94" width="1483" height="894" key="MergeDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1590143457381" />
+    <state x="707" y="256" width="536" height="333" key="MultipleFileMergeDialog" timestamp="1589533560240">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="707" y="256" width="536" height="333" key="MultipleFileMergeDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1589533560240" />
+    <state x="710" y="256" key="MultipleFileMergeDialog/76.0.1844.1080@76.0.1844.1080" timestamp="1587486721430" />
+    <state x="404" y="0" key="SettingsEditor" timestamp="1593343489362">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="231" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1588147226138" />
+    <state x="277" y="55" key="SettingsEditor/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1585408888738" />
+    <state x="277" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1588187595226" />
+    <state x="404" y="0" key="SettingsEditor/71.0.1849.1080@71.0.1849.1080" timestamp="1593343489362" />
+    <state x="409" y="72" key="SettingsEditor/76.0.1844.1080@76.0.1844.1080" timestamp="1585492419633" />
+    <state x="843" y="456" width="299" height="169" key="VCS.ChangelistChooser" timestamp="1588283392788">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="843" y="456" width="299" height="169" key="VCS.ChangelistChooser/71.0.1849.1080@71.0.1849.1080" timestamp="1588283392788" />
+    <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2" timestamp="1592833868805">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="233" y="74" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1587925094936" />
+    <state x="280" y="89" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590493720067" />
+    <state x="280" y="90" width="1020" height="734" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1586199593888" />
+    <state x="408" y="117" width="804" height="528" key="Vcs.Push.Dialog.v2/71.0.1849.1080@71.0.1849.1080" timestamp="1592833868805" />
+    <state x="412" y="118" key="Vcs.Push.Dialog.v2/76.0.1844.1080@76.0.1844.1080" timestamp="1585672189271" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1590317343058">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1590317343058" />
+    <state x="337" y="165" key="com.intellij.ide.util.TipDialog" timestamp="1585982455202">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="337" y="165" key="com.intellij.ide.util.TipDialog/0.0.1280.680@0.0.1280.680" timestamp="1585982455202" />
+    <state x="721" y="410" width="528" height="209" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592833070835">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="450" y="258" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1588075701417" />
+    <state x="-1037" y="403" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/-1600.76.1600.860@-1600.76.1600.860" timestamp="1586273665695" />
+    <state x="540" y="313" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1587913153525" />
+    <state x="540" y="313" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590657968160" />
+    <state x="540" y="313" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1586619292820" />
+    <state x="675" y="395" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1590317743566" />
+    <state x="721" y="410" width="528" height="209" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/71.0.1849.1080@71.0.1849.1080" timestamp="1592833070835" />
+    <state x="724" y="410" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/76.0.1844.1080@76.0.1844.1080" timestamp="1587486704736" />
+    <state x="978" y="88" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1586197409434">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="978" y="88" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586174940126" />
+    <state x="978" y="88" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1536.824@0.0.1536.824" timestamp="1586197409434" />
+    <state x="728" y="302" width="528" height="478" key="extract.method.dialog" timestamp="1587889574927">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="728" y="302" width="528" height="478" key="extract.method.dialog/71.0.1849.1080@71.0.1849.1080" timestamp="1587889574927" />
+    <state x="503" y="267" key="git4idea.merge.GitPullDialog" timestamp="1590317775212">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1181" y="297" key="git4idea.merge.GitPullDialog/0.0.1536.824/-1600.76.1600.860@-1600.76.1600.860" timestamp="1586273728896" />
+    <state x="503" y="267" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1590317775212" />
+    <state x="647" y="441" width="691" height="199" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588282792322">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="647" y="441" width="691" height="199" key="git4idea.remote.GitConfigureRemotesDialog/71.0.1849.1080@71.0.1849.1080" timestamp="1588282792322" />
+    <state x="249" y="109" width="1243" height="796" key="new project wizard" timestamp="1590500304590">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="249" y="109" key="new project wizard/0.0.1536.824/1920.0.1600.860@0.0.1536.824" timestamp="1590500304590" />
+    <state x="371" y="143" width="1243" height="796" key="new project wizard/71.0.1849.1080@71.0.1849.1080" timestamp="1587632683789" />
+    <state x="348" y="98" key="refactoring.ChangeSignatureDialog" timestamp="1588165516582">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="348" y="98" key="refactoring.ChangeSignatureDialog/0.0.1280.680@0.0.1280.680" timestamp="1588165516582" />
+    <state x="582" y="245" key="run.anything.popup" timestamp="1593355465806">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1600.76.1600.860@0.0.1536.824" timestamp="1586680200250" />
+    <state x="582" y="245" key="run.anything.popup/71.0.1849.1080@71.0.1849.1080" timestamp="1593355465806" />
+    <state x="586" y="245" key="run.anything.popup/76.0.1844.1080@76.0.1844.1080" timestamp="1587292188416" />
+    <state x="590" y="190" width="840" height="889" key="search.everywhere.popup" timestamp="1592808990474">
+      <screen x="71" y="0" width="1849" height="1080" />
+    </state>
+    <state x="359" y="120" width="672" height="560" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1588165462408" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1586194334046" />
+    <state x="590" y="190" width="840" height="889" key="search.everywhere.popup/71.0.1849.1080@71.0.1849.1080" timestamp="1592808990474" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$GameControllerTest.ic" NAME="GameControllerTest Coverage Results" MODIFIED="1593346287954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci Coverage Results" MODIFIED="1593353817430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci__1_.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci (1) Coverage Results" MODIFIED="1593357664566" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidMove.ic" NAME="AppTest.testIsValidMove Coverage Results" MODIFIED="1586166605073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_TestController.ic" NAME="AppTest.TestController Coverage Results" MODIFIED="1586104865674" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ServerTest.ic" NAME="ServerTest Coverage Results" MODIFIED="1593343990451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci__3_.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci (3) Coverage Results" MODIFIED="1593351711739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$it_polimi_ing_sw_psp017_in_ing_sw_2019_Marchesi_Muccio_Leci.ic" NAME="it.polimi.ing.sw.psp017 in ing-sw-2019-Marchesi-Muccio-Leci Coverage Results" MODIFIED="1586261929553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ServerTest_tonsOfConnectionsTest.ic" NAME="ServerTest.tonsOfConnectionsTest Coverage Results" MODIFIED="1593343654230" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci__4_.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci (4) Coverage Results" MODIFIED="1593344398378" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ControllerTest_TestController.ic" NAME="ControllerTest.TestController Coverage Results" MODIFIED="1586182580943" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ApolloTest_apolloMoveTest.ic" NAME="ApolloTest.apolloMoveTest Coverage Results" MODIFIED="1586179015448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.model.deck.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest_testIsValidBuilding.ic" NAME="AppTest.testIsValidBuilding Coverage Results" MODIFIED="1586166619568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$GameControllerTest_victoryTest.ic" NAME="GameControllerTest.victoryTest Coverage Results" MODIFIED="1593294558291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ApolloTest.ic" NAME="ApolloTest Coverage Results" MODIFIED="1586179297137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.model.deck.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$Server.ic" NAME="Server Coverage Results" MODIFIED="1592822749243" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.server.controller.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$GameControllerTest_UndoTest.ic" NAME="GameControllerTest.UndoTest Coverage Results" MODIFIED="1593295347066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci__5_.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci (5) Coverage Results" MODIFIED="1593344729574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$All_in_ing_sw_2019_Marchesi_Muccio_Leci__2_.ic" NAME="All in ing-sw-2019-Marchesi-Muccio-Leci (2) Coverage Results" MODIFIED="1593357841862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$GameControllerTest_disconnectionTest.ic" NAME="GameControllerTest.disconnectionTest Coverage Results" MODIFIED="1593276878711" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ServerTest_sameNicknameTest.ic" NAME="ServerTest.sameNicknameTest Coverage Results" MODIFIED="1593296549659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$ServerTest_sameNicknamesTest.ic" NAME="ServerTest.sameNicknamesTest Coverage Results" MODIFIED="1593262950131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$GameControllerTest_fuckOffTest.ic" NAME="GameControllerTest.fuckOffTest Coverage Results" MODIFIED="1593296019241" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/ing_sw_2019_Marchesi_Muccio_Leci$AppTest.ic" NAME="AppTest Coverage Results" MODIFIED="1586173650244" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>it.polimi.ing.sw.psp017.*</FILTER>
+    </SUITE>
+  </component>
+</project>
