@@ -4,6 +4,7 @@ import it.polimi.ing.sw.psp017.client.NetworkHandler;
 import it.polimi.ing.sw.psp017.client.view.GodName;
 import it.polimi.ing.sw.psp017.server.Server;
 import it.polimi.ing.sw.psp017.client.view.View;
+import it.polimi.ing.sw.psp017.server.messages.ClientToServer.AuthenticationMessage;
 import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
 import it.polimi.ing.sw.psp017.server.messages.ServerToClient.*;
 import org.junit.*;
