@@ -79,6 +79,7 @@ public class FirstPlayerFrame extends JFrame {
         playButtonJButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("STUFF/playButton.png"))); // NOI18N
         playButtonJButton.setToolTipText("");
         playButtonJButton.setAutoscrolls(true);
+        playButtonJButton.setEnabled(false);
         playButtonJButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playButtonActionPerformed(evt);

@@ -107,6 +107,7 @@ public class NetworkHandler implements Runnable{
                 else if(message instanceof ServerDisconnectionMessage){
                     view.updateDisconnection((ServerDisconnectionMessage)message);
                 }else if(message instanceof VictoryMessage) {
+                    System.out.println("victory in network handler");
                     view.updateVictory((VictoryMessage) message);
                 } else if (message instanceof NoMovesMessage) {
                     view.updateDefeat((NoMovesMessage) message);

@@ -201,8 +201,9 @@ public class BoardGUI extends JFrame {
         powerActivated.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if(((JToggleButton)e.getSource()).isEnabled()){
                 switchPowerButtonColor();
-                client.getView().notifyIsPowerActive(new PowerActiveMessage(true));
+                client.getView().notifyIsPowerActive(new PowerActiveMessage(true));}
             }
 
             @Override
@@ -440,27 +441,24 @@ public class BoardGUI extends JFrame {
 
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 5; col++) {
-
                 buttonGrid[row][col].updateTile(boardMessage.board[row][col]);
 
-
-
                 if (client.getPlayerNumber() == boardMessage.activePlayerNumber){
-
                     if(boardMessage.validTiles != null) {
-
                         buttonGrid[row][col].updateValidTiles(boardMessage.validTiles[row][col],boardMessage.action);
                     }
-
-                    showPowerActiveButton(boardMessage.hasChoice);
-
-                }else{
-                    clearUndo();
-                    showPowerActiveButton(false);
-                }
             }
         }
 
+        if (client.getPlayerNumber() == boardMessage.activePlayerNumber) {
+            showPowerActiveButton(boardMessage.hasChoice);
+            if(boardMessage.hasChoice && boardMessage.action == ActionNames.SELECT_WORKER)
+                askPowerActive();
+        }else{
+            clearUndo();
+            showPowerActiveButton(false);
+        }
+        }
     this.revalidate();
     this.repaint();
     }
@@ -585,6 +583,7 @@ public class BoardGUI extends JFrame {
     }
     public void showPowerActiveButton(boolean visible) {
         powerActivated.setVisible(visible);
+       // powerActivated.setEnabled(false);
         if(!visible){
             powerActivated.setEnabled(false);
             powerActivated.setContentAreaFilled(false);
@@ -626,6 +625,7 @@ public class BoardGUI extends JFrame {
 
         clearUndo();
         undo.setEnabled(true);
+        powerActivated.setEnabled(false);
         undo.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("STUFF/clessidra.png")));
         timerThread = new Timer();
         timerThread.schedule(new TimerTask() {

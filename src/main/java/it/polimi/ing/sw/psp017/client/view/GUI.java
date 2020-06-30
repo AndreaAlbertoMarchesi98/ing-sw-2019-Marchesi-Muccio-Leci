@@ -303,6 +303,7 @@ public class GUI implements View {
                     JDialog tutorialPopUp = new JDialog(board);
                     tutorialPopUp.add(tutorial);
                     tutorialPopUp.setTitle("Tutorial");
+                    tutorialPopUp.setResizable(false);
                     tutorialPopUp.setMinimumSize(new Dimension(1200,800));
                     tutorialPopUp.setMaximumSize(new Dimension(1200,800));
                     tutorialPopUp.setVisible(true);
@@ -338,7 +339,7 @@ public class GUI implements View {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JOptionPane.showMessageDialog(board, "No moves left for "+client.playersInfo.get(noMovesMessage.playerNumber).card, "Defeat", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(board, "No moves left for "+client.playersInfo.get(noMovesMessage.playerNumber-1).card, "Defeat", JOptionPane.WARNING_MESSAGE);
             }});
         if( noMovesMessage.playerNumber==client.getPlayerNumber())
         {
@@ -372,6 +373,7 @@ public class GUI implements View {
      */
     @Override
     public void updateVictory( VictoryMessage victoryMessage) {
+        System.out.println("Victory");
         String message;
         if(victoryMessage.winnerNumber == client.getPlayerNumber()){
             message = "Congratulations! You are the Winner!";
