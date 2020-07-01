@@ -42,6 +42,17 @@ Anche per poter utilizzare la CLI, prima é necessario eseguire il client tramit
 - Multi partita
 - Undo
  <br />
+ 
+# Report Test Coverage 
+## Avendo optato per una versione thin client, all'interno del package server sono inclusi sia model che controler (pattern MVC).  <br />
+ Di seguito viene riportato un estratto del report covergae del server package  <br /> 
+ ![alt text](https://github.com/AndreaAlbertoMarchesi98/ing-sw-2019-Marchesi-Muccio-Leci/blob/master/imgForReadme/OverallCoverageSummary.jpg)
+ 
+
+ 
+ 
+ 
+ 
 
 
 # Componenti del gruppo
