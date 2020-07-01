@@ -1,0 +1,124 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Step</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ing.sw.psp017.server.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Step (it.polimi.ing.sw.psp017.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Step</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/ 14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ing.sw.psp017.server.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * this class is used to remember the previous choice of each player
+<i>5</i>&nbsp; * in order to be used with the various divinity cards
+<i>6</i>&nbsp; */
+<i>7</i>&nbsp;public class Step {
+<i>8</i>&nbsp;    volatile Tile currentTile;
+<i>9</i>&nbsp;    volatile Tile targetTile;
+<i>10</i>&nbsp;    volatile boolean powerActive;
+<i>11</i>&nbsp;
+<b class="fc"><i>12</i>&nbsp;    public Step(Tile currentTile, Tile targetTile, boolean powerActive) {</b>
+<b class="fc"><i>13</i>&nbsp;        this.currentTile = currentTile;</b>
+<b class="fc"><i>14</i>&nbsp;        this.targetTile = targetTile;</b>
+<b class="fc"><i>15</i>&nbsp;        this.powerActive = powerActive;</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    public Tile getCurrentTile() {
+<b class="fc"><i>19</i>&nbsp;        return currentTile;</b>
+<i>20</i>&nbsp;    }
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public void setCurrentTile(Tile currentTile) {
+<b class="fc"><i>23</i>&nbsp;        this.currentTile = currentTile;</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public Tile getTargetTile() {
+<b class="fc"><i>27</i>&nbsp;        return targetTile;</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public void setTargetTile(Tile targetTile) {
+<b class="fc"><i>31</i>&nbsp;        this.targetTile = targetTile;</b>
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public boolean isPowerActive() {
+<b class="fc"><i>35</i>&nbsp;        return powerActive;</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public void setPowerActive(boolean powerActive) {
+<b class="fc"><i>39</i>&nbsp;        this.powerActive = powerActive;</b>
+<b class="fc"><i>40</i>&nbsp;    }</b>
+<i>41</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 21:29</div>
+</div>
+</body>
+</html>

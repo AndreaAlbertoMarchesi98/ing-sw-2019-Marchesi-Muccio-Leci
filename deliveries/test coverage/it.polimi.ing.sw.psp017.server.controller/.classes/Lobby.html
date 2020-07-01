@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Lobby</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ing.sw.psp017.server.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Lobby (it.polimi.ing.sw.psp017.server.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Lobby</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/ 19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ing.sw.psp017.server.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ing.sw.psp017.server.model.Player;
+<i>4</i>&nbsp;import it.polimi.ing.sw.psp017.client.view.GodName;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import java.util.ArrayList;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class Lobby {
+<i>9</i>&nbsp;    private final ArrayList&lt;Player&gt; players;
+<i>10</i>&nbsp;    private final ArrayList&lt;GodName&gt; availableCards;
+<i>11</i>&nbsp;    private final ArrayList&lt;GodName&gt; chosenCards;
+<i>12</i>&nbsp;    private final int expectedPlayersCount;
+<i>13</i>&nbsp;
+<b class="fc"><i>14</i>&nbsp;    public Lobby(ArrayList&lt;GodName&gt; godNames){</b>
+<b class="fc"><i>15</i>&nbsp;        chosenCards = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>16</i>&nbsp;        expectedPlayersCount = godNames.size();</b>
+<b class="fc"><i>17</i>&nbsp;        availableCards = godNames;</b>
+<b class="fc"><i>18</i>&nbsp;        players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public ArrayList&lt;String&gt; getPlayersNames(){
+<b class="fc"><i>22</i>&nbsp;        ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>23</i>&nbsp;        for(Player player : players)</b>
+<b class="fc"><i>24</i>&nbsp;            names.add(player.getNickname());</b>
+<b class="fc"><i>25</i>&nbsp;        return names;</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public boolean isFull(){
+<b class="fc"><i>29</i>&nbsp;        return players.size() == expectedPlayersCount; }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public void addPlayer(Player player) {
+<b class="fc"><i>32</i>&nbsp;        players.add(player);</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public ArrayList&lt;GodName&gt; getAvailableCards() {
+<b class="fc"><i>36</i>&nbsp;        return availableCards;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    public int getChoosingPlayerNumber(){
+<b class="fc"><i>40</i>&nbsp;        return availableCards.size();</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    public ArrayList&lt;Player&gt; getPlayers() {
+<b class="fc"><i>44</i>&nbsp;        return players;</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public ArrayList&lt;GodName&gt; getChosenCards() {
+<b class="fc"><i>48</i>&nbsp;        return chosenCards;</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    public void addChosenCard(GodName chosenCard) {
+<b class="fc"><i>52</i>&nbsp;        chosenCards.add(chosenCard);</b>
+<b class="fc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 21:29</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BoardMessage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ing.sw.psp017.client.messages.ServerToClient</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BoardMessage (it.polimi.ing.sw.psp017.client.messages.ServerToClient)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BoardMessage</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">BoardMessage$PrintableTile</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 19)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ing.sw.psp017.client.messages.ServerToClient;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ing.sw.psp017.client.view.ActionNames;
+<i>4</i>&nbsp;import it.polimi.ing.sw.psp017.server.model.Board;
+<i>5</i>&nbsp;import it.polimi.ing.sw.psp017.server.model.Game;
+<i>6</i>&nbsp;import it.polimi.ing.sw.psp017.server.model.Tile;
+<i>7</i>&nbsp;import it.polimi.ing.sw.psp017.server.model.Vector2d;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.io.Serializable;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;public class BoardMessage implements Serializable {
+<i>13</i>&nbsp;    public  PrintableTile[][] board;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public boolean hasChoice;
+<i>16</i>&nbsp;    public int activePlayerNumber;
+<i>17</i>&nbsp;    public boolean[][] validTiles;
+<i>18</i>&nbsp;    public ActionNames action;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;
+<b class="nc"><i>25</i>&nbsp;    public BoardMessage(Game game){</b>
+<b class="nc"><i>26</i>&nbsp;        System.out.println(game.getAction());</b>
+<b class="nc"><i>27</i>&nbsp;        activePlayerNumber = game.getPlayerIndex() + 1;</b>
+<b class="nc"><i>28</i>&nbsp;        hasChoice = game.hasChoice();</b>
+<b class="nc"><i>29</i>&nbsp;        this.board = new PrintableTile[Board.size][Board.size];</b>
+<b class="nc"><i>30</i>&nbsp;        for(int x = 0; x &lt; Board.size; x++){</b>
+<b class="nc"><i>31</i>&nbsp;            for(int y = 0; y &lt; Board.size; y++){</b>
+<b class="nc"><i>32</i>&nbsp;                this.board[x][y] = new PrintableTile(game.getBoard().getTile(new Vector2d(x, y)));</b>
+<i>33</i>&nbsp;            }
+<i>34</i>&nbsp;        }
+<b class="nc"><i>35</i>&nbsp;        this.validTiles = game.getValidTiles();</b>
+<b class="nc"><i>36</i>&nbsp;        this.action = game.getAction();</b>
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;        for(int x = 0; x &lt; Board.size; x++){</b>
+<b class="nc"><i>39</i>&nbsp;            for(int y = 0; y &lt; Board.size; y++){</b>
+<b class="nc"><i>40</i>&nbsp;                if(this.board[x][y].dome)</b>
+<b class="nc"><i>41</i>&nbsp;                    System.out.println(this.board[x][y].dome);</b>
+<i>42</i>&nbsp;            }
+<i>43</i>&nbsp;        }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public class PrintableTile implements Serializable{
+<i>48</i>&nbsp;        public int level;
+<i>49</i>&nbsp;        public boolean dome;
+<i>50</i>&nbsp;        public int playerNumber;
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;        public PrintableTile(Tile tile) {</b>
+<b class="nc"><i>53</i>&nbsp;            this.level = tile.getLevel();</b>
+<b class="nc"><i>54</i>&nbsp;            this.dome = tile.isDome();</b>
+<b class="nc"><i>55</i>&nbsp;            if(tile.getWorker()!=null)</b>
+<b class="nc"><i>56</i>&nbsp;                this.playerNumber = tile.getWorker().getOwner().getPlayerNumber();</b>
+<i>57</i>&nbsp;        }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 21:29</div>
+</div>
+</body>
+</html>

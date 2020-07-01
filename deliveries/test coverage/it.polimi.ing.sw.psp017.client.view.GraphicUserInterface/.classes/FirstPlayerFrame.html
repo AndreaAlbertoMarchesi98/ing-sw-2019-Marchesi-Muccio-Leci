@@ -1,0 +1,596 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FirstPlayerFrame</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ing.sw.psp017.client.view.GraphicUserInterface</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FirstPlayerFrame (it.polimi.ing.sw.psp017.client.view.GraphicUserInterface)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FirstPlayerFrame</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 182)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FirstPlayerFrame$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FirstPlayerFrame$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FirstPlayerFrame$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FirstPlayerFrame$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FirstPlayerFrame$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FirstPlayerFrame$6</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 194)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ing.sw.psp017.client.view.GraphicUserInterface;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import it.polimi.ing.sw.psp017.client.Client;
+<i>5</i>&nbsp;import it.polimi.ing.sw.psp017.server.messages.ClientToServer.GameSetUpMessage;
+<i>6</i>&nbsp;import it.polimi.ing.sw.psp017.client.view.GodName;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import javax.swing.*;
+<i>9</i>&nbsp;import javax.swing.border.BevelBorder;
+<i>10</i>&nbsp;import javax.swing.border.SoftBevelBorder;
+<i>11</i>&nbsp;import javax.swing.border.TitledBorder;
+<i>12</i>&nbsp;import java.awt.event.MouseEvent;
+<i>13</i>&nbsp;import java.util.ArrayList;
+<i>14</i>&nbsp;import java.util.EnumSet;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;/**
+<i>17</i>&nbsp; *
+<i>18</i>&nbsp; * @author enci
+<i>19</i>&nbsp; */
+<b class="nc"><i>20</i>&nbsp;public class FirstPlayerFrame extends JFrame {</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    private JLabel SelectNumberOfPlayerLabel;
+<i>23</i>&nbsp;    private JCheckBox ThreePlayerButton;
+<i>24</i>&nbsp;    private JCheckBox TwoPlayerButton;
+<i>25</i>&nbsp;    private JPanel buttonsPanel;
+<i>26</i>&nbsp;    private JButton playButtonJButton;
+<i>27</i>&nbsp;    private JLabel sxCardInfoJLabel;
+<i>28</i>&nbsp;    private JLabel dxCardIconJLabel;
+<i>29</i>&nbsp;    private JScrollPane jScrollPane1;
+<i>30</i>&nbsp;    private JSeparator jSeparator1;
+<i>31</i>&nbsp;    private JToggleButton[] deckJToggleButton;
+<i>32</i>&nbsp;    private KGradientPanel kGradientPanel1;
+<i>33</i>&nbsp;    private KGradientPanel kGradientPanelPlayButton;
+<i>34</i>&nbsp;    private ButtonGroup numberOfPlayersGroup;
+<i>35</i>&nbsp;    private JButton resetNumberOfPlyer;
+<i>36</i>&nbsp;    private JPanel selectNumberOfPlayers_JPanel;
+<i>37</i>&nbsp;    private JPanel viewCardsPanel;
+<i>38</i>&nbsp;    // End of variables declaration
+<i>39</i>&nbsp;
+<b class="nc"><i>40</i>&nbsp;    ArrayList&lt;GodName&gt; selectedCards = new ArrayList();</b>
+<b class="nc"><i>41</i>&nbsp;    ArrayList&lt;GodName&gt; cards = new ArrayList&lt;&gt;(EnumSet.allOf(GodName.class));</b>
+<i>42</i>&nbsp;    int numberOfPlayer;
+<i>43</i>&nbsp;    private Client client;
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;    public FirstPlayerFrame(Client client) {</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;
+<b class="nc"><i>51</i>&nbsp;        this.client = client;</b>
+<b class="nc"><i>52</i>&nbsp;        numberOfPlayersGroup = new ButtonGroup();</b>
+<b class="nc"><i>53</i>&nbsp;        kGradientPanel1 = new KGradientPanel();</b>
+<b class="nc"><i>54</i>&nbsp;        kGradientPanelPlayButton = new KGradientPanel();</b>
+<b class="nc"><i>55</i>&nbsp;        playButtonJButton = new JButton();</b>
+<b class="nc"><i>56</i>&nbsp;        selectNumberOfPlayers_JPanel = new JPanel();</b>
+<b class="nc"><i>57</i>&nbsp;        SelectNumberOfPlayerLabel = new JLabel();</b>
+<b class="nc"><i>58</i>&nbsp;        ThreePlayerButton = new JCheckBox();</b>
+<b class="nc"><i>59</i>&nbsp;        TwoPlayerButton = new JCheckBox();</b>
+<b class="nc"><i>60</i>&nbsp;        resetNumberOfPlyer = new JButton();</b>
+<b class="nc"><i>61</i>&nbsp;        jScrollPane1 = new JScrollPane();</b>
+<b class="nc"><i>62</i>&nbsp;        buttonsPanel = new JPanel();</b>
+<b class="nc"><i>63</i>&nbsp;        viewCardsPanel = new JPanel();</b>
+<b class="nc"><i>64</i>&nbsp;        sxCardInfoJLabel = new JLabel();</b>
+<b class="nc"><i>65</i>&nbsp;        dxCardIconJLabel = new JLabel();</b>
+<b class="nc"><i>66</i>&nbsp;        jSeparator1 = new JSeparator();</b>
+<i>67</i>&nbsp;
+<b class="nc"><i>68</i>&nbsp;        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</b>
+<b class="nc"><i>69</i>&nbsp;        setTitle(&quot;firsPlayer&quot;);</b>
+<b class="nc"><i>70</i>&nbsp;        setMinimumSize(new java.awt.Dimension(1200, 800));</b>
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;        kGradientPanel1.setkEndColor(new java.awt.Color(255, 51, 153));</b>
+<b class="nc"><i>73</i>&nbsp;        kGradientPanel1.setkStartColor(new java.awt.Color(51, 204, 255));</b>
+<i>74</i>&nbsp;
+<b class="nc"><i>75</i>&nbsp;        kGradientPanelPlayButton.setkEndColor(new java.awt.Color(248, 81, 30));</b>
+<b class="nc"><i>76</i>&nbsp;        kGradientPanelPlayButton.setkStartColor(new java.awt.Color(240, 252, 58));</b>
+<i>77</i>&nbsp;
+<b class="nc"><i>78</i>&nbsp;        playButtonJButton.setBackground(new java.awt.Color(0, 153, 153));</b>
+<b class="nc"><i>79</i>&nbsp;        playButtonJButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource(&quot;STUFF/playButton.png&quot;))); // NOI18N</b>
+<b class="nc"><i>80</i>&nbsp;        playButtonJButton.setToolTipText(&quot;&quot;);</b>
+<b class="nc"><i>81</i>&nbsp;        playButtonJButton.setAutoscrolls(true);</b>
+<b class="nc"><i>82</i>&nbsp;        playButtonJButton.setEnabled(false);</b>
+<b class="nc"><i>83</i>&nbsp;        playButtonJButton.addActionListener(new java.awt.event.ActionListener() {</b>
+<i>84</i>&nbsp;            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<b class="nc"><i>85</i>&nbsp;                playButtonActionPerformed(evt);</b>
+<i>86</i>&nbsp;            }
+<i>87</i>&nbsp;        });
+<b class="nc"><i>88</i>&nbsp;        kGradientPanelPlayButton.add(playButtonJButton);</b>
+<i>89</i>&nbsp;
+<b class="nc"><i>90</i>&nbsp;        selectNumberOfPlayers_JPanel.setOpaque(false);</b>
+<i>91</i>&nbsp;
+<b class="nc"><i>92</i>&nbsp;        SelectNumberOfPlayerLabel.setFont(new java.awt.Font(&quot;Dialog&quot;, 1, 36)); // NOI18N</b>
+<b class="nc"><i>93</i>&nbsp;        SelectNumberOfPlayerLabel.setForeground(new java.awt.Color(204, 204, 204));</b>
+<b class="nc"><i>94</i>&nbsp;        SelectNumberOfPlayerLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>95</i>&nbsp;        SelectNumberOfPlayerLabel.setText(&quot;SELECT NUMBER OF PLAYERS :&quot;);</b>
+<b class="nc"><i>96</i>&nbsp;        SelectNumberOfPlayerLabel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new java.awt.Color(255, 204, 204), new java.awt.Color(204, 204, 255), new java.awt.Color(102, 102, 102), null));</b>
+<b class="nc"><i>97</i>&nbsp;        selectNumberOfPlayers_JPanel.add(SelectNumberOfPlayerLabel);</b>
+<i>98</i>&nbsp;
+<b class="nc"><i>99</i>&nbsp;        numberOfPlayersGroup.add(ThreePlayerButton);</b>
+<b class="nc"><i>100</i>&nbsp;        ThreePlayerButton.setFont(new java.awt.Font(&quot;Dialog&quot;, 1, 48)); // NOI18N</b>
+<b class="nc"><i>101</i>&nbsp;        ThreePlayerButton.setForeground(new java.awt.Color(102, 102, 102));</b>
+<b class="nc"><i>102</i>&nbsp;        ThreePlayerButton.setText(&quot;3&quot;);</b>
+<b class="nc"><i>103</i>&nbsp;        ThreePlayerButton.setToolTipText(&quot;&quot;);</b>
+<b class="nc"><i>104</i>&nbsp;        ThreePlayerButton.setBorder(BorderFactory.createTitledBorder(null, &quot;&quot;, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new java.awt.Font(&quot;Tahoma&quot;, 0, 18), new java.awt.Color(102, 0, 102))); // NOI18N</b>
+<b class="nc"><i>105</i>&nbsp;        ThreePlayerButton.setBorderPainted(true);</b>
+<b class="nc"><i>106</i>&nbsp;        ThreePlayerButton.setOpaque(false);</b>
+<b class="nc"><i>107</i>&nbsp;        ThreePlayerButton.addActionListener(new java.awt.event.ActionListener() {</b>
+<i>108</i>&nbsp;            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<b class="nc"><i>109</i>&nbsp;                ThreePlayerButtonActionPerformed(evt);</b>
+<i>110</i>&nbsp;            }
+<i>111</i>&nbsp;        });
+<b class="nc"><i>112</i>&nbsp;        selectNumberOfPlayers_JPanel.add(ThreePlayerButton);</b>
+<i>113</i>&nbsp;
+<b class="nc"><i>114</i>&nbsp;        numberOfPlayersGroup.add(TwoPlayerButton);</b>
+<b class="nc"><i>115</i>&nbsp;        TwoPlayerButton.setFont(new java.awt.Font(&quot;Dialog&quot;, 1, 48)); // NOI18N</b>
+<b class="nc"><i>116</i>&nbsp;        TwoPlayerButton.setForeground(new java.awt.Color(102, 102, 102));</b>
+<b class="nc"><i>117</i>&nbsp;        TwoPlayerButton.setText(&quot;2&quot;);</b>
+<b class="nc"><i>118</i>&nbsp;        TwoPlayerButton.setToolTipText(&quot;&quot;);</b>
+<b class="nc"><i>119</i>&nbsp;        TwoPlayerButton.setBorder(BorderFactory.createTitledBorder(null, &quot;&quot;, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new java.awt.Font(&quot;Tahoma&quot;, 0, 18), new java.awt.Color(102, 0, 102))); // NOI18N</b>
+<b class="nc"><i>120</i>&nbsp;        TwoPlayerButton.setBorderPainted(true);</b>
+<b class="nc"><i>121</i>&nbsp;        TwoPlayerButton.setOpaque(false);</b>
+<b class="nc"><i>122</i>&nbsp;        TwoPlayerButton.addActionListener(new java.awt.event.ActionListener() {</b>
+<i>123</i>&nbsp;            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<b class="nc"><i>124</i>&nbsp;                TwoPlayerButtonActionPerformed(evt);</b>
+<i>125</i>&nbsp;            }
+<i>126</i>&nbsp;        });
+<b class="nc"><i>127</i>&nbsp;        selectNumberOfPlayers_JPanel.add(TwoPlayerButton);</b>
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;        resetNumberOfPlyer.setIcon(new ImageIcon(getClass().getClassLoader().getResource(&quot;direction.png&quot;))); // NOI18N</b>
+<b class="nc"><i>130</i>&nbsp;        resetNumberOfPlyer.setDoubleBuffered(true);</b>
+<b class="nc"><i>131</i>&nbsp;        resetNumberOfPlyer.setHorizontalTextPosition(SwingConstants.CENTER);</b>
+<b class="nc"><i>132</i>&nbsp;        resetNumberOfPlyer.setOpaque(false);</b>
+<b class="nc"><i>133</i>&nbsp;        resetNumberOfPlyer.setVerticalAlignment(SwingConstants.TOP);</b>
+<b class="nc"><i>134</i>&nbsp;        resetNumberOfPlyer.setVerticalTextPosition(SwingConstants.TOP);</b>
+<b class="nc"><i>135</i>&nbsp;        resetNumberOfPlyer.setVisible(false);</b>
+<b class="nc"><i>136</i>&nbsp;        resetNumberOfPlyer.addActionListener(new java.awt.event.ActionListener() {</b>
+<i>137</i>&nbsp;            public void actionPerformed(java.awt.event.ActionEvent evt) {
+<b class="nc"><i>138</i>&nbsp;                resetNumberOfPlyerActionPerformed(evt);</b>
+<i>139</i>&nbsp;            }
+<i>140</i>&nbsp;        });
+<b class="nc"><i>141</i>&nbsp;        selectNumberOfPlayers_JPanel.add(resetNumberOfPlyer);</b>
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;        jScrollPane1.setBackground(new java.awt.Color(153, 0, 153));</b>
+<b class="nc"><i>144</i>&nbsp;        jScrollPane1.setOpaque(false);</b>
+<i>145</i>&nbsp;
+<b class="nc"><i>146</i>&nbsp;        buttonsPanel.setBackground(new java.awt.Color(204, 204, 255));</b>
+<b class="nc"><i>147</i>&nbsp;        buttonsPanel.setOpaque(false);</b>
+<b class="nc"><i>148</i>&nbsp;        buttonsPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 0));</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;        deckJToggleButton = new JToggleButton[cards.size()];</b>
+<i>153</i>&nbsp;
+<b class="nc"><i>154</i>&nbsp;        for(int i = 0; i &lt; cards.size();i++)</b>
+<i>155</i>&nbsp;        {
+<b class="nc"><i>156</i>&nbsp;            deckJToggleButton[i] = new JToggleButton();</b>
+<b class="nc"><i>157</i>&nbsp;            deckJToggleButton[i].setBackground(new java.awt.Color(0, 102, 102));</b>
+<b class="nc"><i>158</i>&nbsp;            deckJToggleButton[i].setFont(new java.awt.Font(&quot;Tahoma&quot;, 0, 24)); // NOI18N</b>
+<b class="nc"><i>159</i>&nbsp;            deckJToggleButton[i].setForeground(new java.awt.Color(204, 255, 255));</b>
+<b class="nc"><i>160</i>&nbsp;            deckJToggleButton[i].setText(cards.get(i).toString());</b>
+<b class="nc"><i>161</i>&nbsp;            deckJToggleButton[i].setOpaque(true);</b>
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;
+<b class="nc"><i>165</i>&nbsp;            deckJToggleButton[i].setEnabled(false);</b>
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;
+<b class="nc"><i>168</i>&nbsp;            deckJToggleButton[i].addActionListener(new java.awt.event.ActionListener() {</b>
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;                public void actionPerformed(java.awt.event.ActionEvent evt) {
+<i>171</i>&nbsp;
+<b class="nc"><i>172</i>&nbsp;                    jToggleButton1ActionPerformed(evt);</b>
+<i>173</i>&nbsp;                }
+<i>174</i>&nbsp;            });
+<i>175</i>&nbsp;
+<b class="nc"><i>176</i>&nbsp;            deckJToggleButton[i].addMouseListener(new java.awt.event.MouseListener() {</b>
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;                @Override
+<i>179</i>&nbsp;                public void mouseClicked(MouseEvent e) {
+<i>180</i>&nbsp;
+<i>181</i>&nbsp;                }
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;                @Override
+<i>184</i>&nbsp;                public void mousePressed(MouseEvent e) {
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;                }
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;                @Override
+<i>189</i>&nbsp;                public void mouseReleased(MouseEvent e) {
+<i>190</i>&nbsp;
+<i>191</i>&nbsp;                }
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;                public void mouseEntered(java.awt.event.MouseEvent evt) {
+<b class="nc"><i>194</i>&nbsp;                    deckJToggleButtonMouseEntered(evt);</b>
+<i>195</i>&nbsp;                }
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;                @Override
+<i>198</i>&nbsp;                public void mouseExited(MouseEvent e) {
+<i>199</i>&nbsp;
+<i>200</i>&nbsp;                }
+<i>201</i>&nbsp;            });
+<i>202</i>&nbsp;
+<b class="nc"><i>203</i>&nbsp;            buttonsPanel.add(deckJToggleButton[i]);</b>
+<i>204</i>&nbsp;        }
+<i>205</i>&nbsp;
+<b class="nc"><i>206</i>&nbsp;        kGradientPanelPlayButton.backgroundGradient();</b>
+<i>207</i>&nbsp;
+<b class="nc"><i>208</i>&nbsp;        jScrollPane1.setViewportView(buttonsPanel);</b>
+<i>209</i>&nbsp;
+<b class="nc"><i>210</i>&nbsp;        viewCardsPanel.setBorder(BorderFactory.createLineBorder(new java.awt.Color(153, 255, 255), 2));</b>
+<b class="nc"><i>211</i>&nbsp;        viewCardsPanel.setOpaque(false);</b>
+<b class="nc"><i>212</i>&nbsp;        viewCardsPanel.setLayout(new java.awt.GridLayout(1, 0, 10, 0));</b>
+<i>213</i>&nbsp;
+<b class="nc"><i>214</i>&nbsp;        sxCardInfoJLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>215</i>&nbsp;        sxCardInfoJLabel.setIcon((GodView.getCard(GodName.APOLLO).getIconDescription())); // NOI18N</b>
+<b class="nc"><i>216</i>&nbsp;        sxCardInfoJLabel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, new java.awt.Color(0, 102, 102), null, null));</b>
+<b class="nc"><i>217</i>&nbsp;        sxCardInfoJLabel.setHorizontalTextPosition(SwingConstants.CENTER);</b>
+<b class="nc"><i>218</i>&nbsp;        viewCardsPanel.add(sxCardInfoJLabel);</b>
+<i>219</i>&nbsp;
+<b class="nc"><i>220</i>&nbsp;        dxCardIconJLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>221</i>&nbsp;        dxCardIconJLabel.setIcon(GodView.getCard(GodName.APOLLO).getIcon()); // NOI18N</b>
+<b class="nc"><i>222</i>&nbsp;        dxCardIconJLabel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, new java.awt.Color(0, 204, 0), new java.awt.Color(204, 0, 204), null, null));</b>
+<b class="nc"><i>223</i>&nbsp;        dxCardIconJLabel.setHorizontalTextPosition(SwingConstants.CENTER);</b>
+<b class="nc"><i>224</i>&nbsp;        viewCardsPanel.add(dxCardIconJLabel);</b>
+<i>225</i>&nbsp;
+<b class="nc"><i>226</i>&nbsp;        jSeparator1.setBackground(new java.awt.Color(204, 0, 153));</b>
+<b class="nc"><i>227</i>&nbsp;        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));</b>
+<i>228</i>&nbsp;
+<b class="nc"><i>229</i>&nbsp;        GroupLayout kGradientPanel1Layout = new GroupLayout(kGradientPanel1);</b>
+<b class="nc"><i>230</i>&nbsp;        kGradientPanel1.setLayout(kGradientPanel1Layout);</b>
+<b class="nc"><i>231</i>&nbsp;        kGradientPanel1Layout.setHorizontalGroup(</b>
+<b class="nc"><i>232</i>&nbsp;                kGradientPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)</b>
+<b class="nc"><i>233</i>&nbsp;                        .addComponent(kGradientPanelPlayButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)</b>
+<b class="nc"><i>234</i>&nbsp;                        .addComponent(selectNumberOfPlayers_JPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)</b>
+<b class="nc"><i>235</i>&nbsp;                        .addComponent(jScrollPane1, GroupLayout.Alignment.TRAILING)</b>
+<b class="nc"><i>236</i>&nbsp;                        .addComponent(viewCardsPanel, GroupLayout.DEFAULT_SIZE, 1095, Short.MAX_VALUE)</b>
+<b class="nc"><i>237</i>&nbsp;                        .addComponent(jSeparator1)</b>
+<i>238</i>&nbsp;        );
+<b class="nc"><i>239</i>&nbsp;        kGradientPanel1Layout.setVerticalGroup(</b>
+<b class="nc"><i>240</i>&nbsp;                kGradientPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)</b>
+<b class="nc"><i>241</i>&nbsp;                        .addGroup(GroupLayout.Alignment.TRAILING, kGradientPanel1Layout.createSequentialGroup()</b>
+<b class="nc"><i>242</i>&nbsp;                                .addGap(23, 23, 23)</b>
+<b class="nc"><i>243</i>&nbsp;                                .addComponent(selectNumberOfPlayers_JPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>244</i>&nbsp;                                .addGap(7, 7, 7)</b>
+<b class="nc"><i>245</i>&nbsp;                                .addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>246</i>&nbsp;                                .addGap(1, 1, 1)</b>
+<b class="nc"><i>247</i>&nbsp;                                .addComponent(viewCardsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)</b>
+<b class="nc"><i>248</i>&nbsp;                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)</b>
+<b class="nc"><i>249</i>&nbsp;                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>250</i>&nbsp;                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)</b>
+<b class="nc"><i>251</i>&nbsp;                                .addComponent(kGradientPanelPlayButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)</b>
+<b class="nc"><i>252</i>&nbsp;                                .addGap(25, 25, 25))</b>
+<i>253</i>&nbsp;        );
+<i>254</i>&nbsp;
+<b class="nc"><i>255</i>&nbsp;        GroupLayout layout = new GroupLayout(getContentPane());</b>
+<b class="nc"><i>256</i>&nbsp;        getContentPane().setLayout(layout);</b>
+<b class="nc"><i>257</i>&nbsp;        layout.setHorizontalGroup(</b>
+<b class="nc"><i>258</i>&nbsp;                layout.createParallelGroup(GroupLayout.Alignment.LEADING)</b>
+<b class="nc"><i>259</i>&nbsp;                        .addComponent(kGradientPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)</b>
+<i>260</i>&nbsp;        );
+<b class="nc"><i>261</i>&nbsp;        layout.setVerticalGroup(</b>
+<b class="nc"><i>262</i>&nbsp;                layout.createParallelGroup(GroupLayout.Alignment.LEADING)</b>
+<b class="nc"><i>263</i>&nbsp;                        .addComponent(kGradientPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)</b>
+<i>264</i>&nbsp;        );
+<i>265</i>&nbsp;
+<b class="nc"><i>266</i>&nbsp;        pack();</b>
+<b class="nc"><i>267</i>&nbsp;        setLocationRelativeTo(null);</b>
+<i>268</i>&nbsp;
+<b class="nc"><i>269</i>&nbsp;        kGradientPanelPlayButton.backgroundGradient(10);</b>
+<b class="nc"><i>270</i>&nbsp;        kGradientPanel1.backgroundGradient(10);</b>
+<i>271</i>&nbsp;
+<i>272</i>&nbsp;
+<b class="nc"><i>273</i>&nbsp;        this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource(&quot;logo.png&quot;)).getImage());</b>
+<i>274</i>&nbsp;
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;    }//ending initialization
+<i>279</i>&nbsp;
+<i>280</i>&nbsp;
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;    private void deckJToggleButtonMouseEntered(MouseEvent evt) {
+<b class="nc"><i>286</i>&nbsp;        for(int i = 0; i &lt; deckJToggleButton.length;i++) {</b>
+<i>287</i>&nbsp;
+<b class="nc"><i>288</i>&nbsp;            if (evt.getSource() == deckJToggleButton[i]) {</b>
+<b class="nc"><i>289</i>&nbsp;                System.out.println(&quot;trovato ad indice &quot; + i);</b>
+<b class="nc"><i>290</i>&nbsp;                System.out.println(deckJToggleButton[i].getName());</b>
+<i>291</i>&nbsp;
+<i>292</i>&nbsp;
+<b class="nc"><i>293</i>&nbsp;                dxCardIconJLabel.setIcon(GodView.getCard((cards.get(i))).getIcon());</b>
+<b class="nc"><i>294</i>&nbsp;                sxCardInfoJLabel.setIcon(GodView.getCard(cards.get(i)).getIconDescription());</b>
+<i>295</i>&nbsp;
+<i>296</i>&nbsp;            }
+<i>297</i>&nbsp;        }
+<i>298</i>&nbsp;    }
+<i>299</i>&nbsp;
+<i>300</i>&nbsp;
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {
+<b class="nc"><i>303</i>&nbsp;        client.getNetworkHandler().sendMessage(new GameSetUpMessage(selectedCards));</b>
+<b class="nc"><i>304</i>&nbsp;        playButtonJButton.setVisible(false);</b>
+<b class="nc"><i>305</i>&nbsp;        resetNumberOfPlyer.setVisible(false);</b>
+<b class="nc"><i>306</i>&nbsp;        System.out.println(selectedCards);</b>
+<i>307</i>&nbsp;
+<i>308</i>&nbsp;    }
+<i>309</i>&nbsp;
+<i>310</i>&nbsp;    private void ThreePlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+<b class="nc"><i>311</i>&nbsp;        setEnableDeckJToggleButton(true);</b>
+<b class="nc"><i>312</i>&nbsp;        setEnableDeckJCheckBox(false);</b>
+<b class="nc"><i>313</i>&nbsp;        resetNumberOfPlyer.setVisible(true);</b>
+<b class="nc"><i>314</i>&nbsp;        numberOfPlayer = 3;</b>
+<i>315</i>&nbsp;    }
+<i>316</i>&nbsp;
+<i>317</i>&nbsp;    private void TwoPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+<i>318</i>&nbsp;
+<b class="nc"><i>319</i>&nbsp;        setEnableDeckJToggleButton(true);</b>
+<b class="nc"><i>320</i>&nbsp;        setEnableDeckJCheckBox(false);</b>
+<b class="nc"><i>321</i>&nbsp;        resetNumberOfPlyer.setVisible(true);</b>
+<b class="nc"><i>322</i>&nbsp;        numberOfPlayer = 2;</b>
+<i>323</i>&nbsp;
+<i>324</i>&nbsp;
+<i>325</i>&nbsp;    }
+<i>326</i>&nbsp;
+<i>327</i>&nbsp;    private void setEnableDeckJCheckBox(boolean isEnabled) {
+<b class="nc"><i>328</i>&nbsp;        TwoPlayerButton.setEnabled(isEnabled);</b>
+<b class="nc"><i>329</i>&nbsp;        ThreePlayerButton.setEnabled(isEnabled);</b>
+<i>330</i>&nbsp;    }
+<i>331</i>&nbsp;
+<i>332</i>&nbsp;    private void setEnableDeckJToggleButton(boolean isEnabled) {
+<b class="nc"><i>333</i>&nbsp;        for(JToggleButton button : deckJToggleButton)</b>
+<i>334</i>&nbsp;        {
+<b class="nc"><i>335</i>&nbsp;            button.setEnabled(isEnabled);</b>
+<i>336</i>&nbsp;        }
+<i>337</i>&nbsp;    }
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+<i>340</i>&nbsp;        // TODO add your handling code here:
+<b class="nc"><i>341</i>&nbsp;        System.out.println(&quot;size :&quot; + selectedCards.size());</b>
+<i>342</i>&nbsp;
+<i>343</i>&nbsp;
+<i>344</i>&nbsp;
+<i>345</i>&nbsp;      //  if(selectedGods.size()== numberOfPlayers) play_JButton.setEnabled(true);
+<i>346</i>&nbsp;
+<i>347</i>&nbsp;
+<b class="nc"><i>348</i>&nbsp;        for(int i = 0; i &lt; deckJToggleButton.length;i++)</b>
+<i>349</i>&nbsp;        {
+<b class="nc"><i>350</i>&nbsp;            if(evt.getSource()==deckJToggleButton[i])</b>
+<i>351</i>&nbsp;            {
+<b class="nc"><i>352</i>&nbsp;                System.out.println(&quot;trovato ad indice &quot; + i);</b>
+<b class="nc"><i>353</i>&nbsp;                System.out.println(deckJToggleButton[i].getName());</b>
+<i>354</i>&nbsp;
+<b class="nc"><i>355</i>&nbsp;                if(!deckJToggleButton[i].isSelected()) selectedCards.remove(cards.get(i)); //elemento gia presente</b>
+<i>356</i>&nbsp;
+<b class="nc"><i>357</i>&nbsp;                else selectedCards.add(cards.get(i));</b>
+<b class="nc"><i>358</i>&nbsp;                System.out.println(selectedCards);</b>
+<i>359</i>&nbsp;            }
+<i>360</i>&nbsp;        }
+<b class="nc"><i>361</i>&nbsp;        if(selectedCards.size() == numberOfPlayer)</b>
+<i>362</i>&nbsp;        {
+<b class="nc"><i>363</i>&nbsp;            System.out.println(&quot;selectedCard size &quot; + selectedCards.size());</b>
+<b class="nc"><i>364</i>&nbsp;            setEnableDeckJToggleButton(false);</b>
+<b class="nc"><i>365</i>&nbsp;            playButtonJButton.setEnabled(true);</b>
+<i>366</i>&nbsp;        }
+<i>367</i>&nbsp;       // System.out.println(cards.get(i));
+<i>368</i>&nbsp;
+<i>369</i>&nbsp;    }
+<i>370</i>&nbsp;
+<i>371</i>&nbsp;    private void resetNumberOfPlyerActionPerformed(java.awt.event.ActionEvent evt) {
+<i>372</i>&nbsp;        // TODO add your handling code here:
+<b class="nc"><i>373</i>&nbsp;        setEnableDeckJToggleButton(false);</b>
+<b class="nc"><i>374</i>&nbsp;        setEnableDeckJCheckBox(true);</b>
+<b class="nc"><i>375</i>&nbsp;        selectedCards.clear();</b>
+<b class="nc"><i>376</i>&nbsp;        TwoPlayerButton.setSelected(false);</b>
+<b class="nc"><i>377</i>&nbsp;        ThreePlayerButton.setSelected(false);</b>
+<b class="nc"><i>378</i>&nbsp;        for(JToggleButton button : deckJToggleButton)</b>
+<i>379</i>&nbsp;        {
+<b class="nc"><i>380</i>&nbsp;            button.setSelected(false);</b>
+<i>381</i>&nbsp;        }
+<b class="nc"><i>382</i>&nbsp;        playButtonJButton.setEnabled(false);</b>
+<i>383</i>&nbsp;
+<i>384</i>&nbsp;
+<i>385</i>&nbsp;
+<i>386</i>&nbsp;    }
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;
+<i>389</i>&nbsp;
+<i>390</i>&nbsp;
+<i>391</i>&nbsp;}
+<i>392</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 21:29</div>
+</div>
+</body>
+</html>

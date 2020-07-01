@@ -34,7 +34,7 @@ public class Apollo extends BaseCard {
      * @param previousStep contains information about last step
      * @param board main board used to manage the game
      * @return boolean; return false if the selected tile is a dome or occupied by an enemy
-     *          or if the high difference between target tile and current tile is < 2; otherwise return true
+     *          or if the high difference between target tile and current tile is less than 2; otherwise return true
      */
     @Override
     public boolean isValidMove(Step currentStep, Step previousStep, Board board) {

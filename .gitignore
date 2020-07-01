@@ -1,6 +1,5 @@
 # Intellij
 .idea
-/.idea/
 *.iml
 *.iws
 # Maven

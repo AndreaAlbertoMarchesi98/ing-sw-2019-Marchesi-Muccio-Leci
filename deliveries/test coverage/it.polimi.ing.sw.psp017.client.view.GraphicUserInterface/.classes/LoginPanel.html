@@ -1,0 +1,349 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: LoginPanel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ing.sw.psp017.client.view.GraphicUserInterface</a> ]
+</div>
+
+<h1>Coverage Summary for Class: LoginPanel (it.polimi.ing.sw.psp017.client.view.GraphicUserInterface)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LoginPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 71)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">LoginPanel$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">LoginPanel$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">LoginPanel$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">LoginPanel$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 90)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ing.sw.psp017.client.view.GraphicUserInterface;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ing.sw.psp017.client.Client;
+<i>4</i>&nbsp;import it.polimi.ing.sw.psp017.server.messages.ClientToServer.AuthenticationMessage;
+<i>5</i>&nbsp;import it.polimi.ing.sw.psp017.client.view.CLI;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import javax.swing.*;
+<i>10</i>&nbsp;import javax.swing.border.BevelBorder;
+<i>11</i>&nbsp;import javax.swing.border.SoftBevelBorder;
+<i>12</i>&nbsp;import java.awt.*;
+<i>13</i>&nbsp;import java.awt.event.KeyEvent;
+<i>14</i>&nbsp;import java.awt.event.KeyListener;
+<i>15</i>&nbsp;import java.awt.event.MouseAdapter;
+<i>16</i>&nbsp;import java.awt.event.MouseEvent;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;/**
+<i>19</i>&nbsp; * Create the panel for Login
+<i>20</i>&nbsp; */
+<i>21</i>&nbsp;
+<b class="nc"><i>22</i>&nbsp;public class LoginPanel extends JPanel {</b>
+<i>23</i>&nbsp;        private JPanel bottomPanel;
+<i>24</i>&nbsp;        private JButton cliButton;
+<i>25</i>&nbsp;        private JLabel infoLabel;
+<i>26</i>&nbsp;        private JPanel inputPanel;
+<i>27</i>&nbsp;        private KGradientPanel kGradientPanel;
+<i>28</i>&nbsp;        private JLabel logoLabel;
+<i>29</i>&nbsp;        private JButton nickButton;
+<i>30</i>&nbsp;        private JTextField nicknameField;
+<i>31</i>&nbsp;        private Client client;
+<i>32</i>&nbsp;
+<b class="nc"><i>33</i>&nbsp;        public LoginPanel(Client client){</b>
+<b class="nc"><i>34</i>&nbsp;            initComponents();</b>
+<b class="nc"><i>35</i>&nbsp;            this.client = client;</b>
+<i>36</i>&nbsp;        }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;        private void initComponents() {
+<b class="nc"><i>39</i>&nbsp;            this.setMinimumSize(new Dimension(800,1000));</b>
+<i>40</i>&nbsp;
+<b class="nc"><i>41</i>&nbsp;            kGradientPanel = new KGradientPanel();</b>
+<b class="nc"><i>42</i>&nbsp;            logoLabel = new JLabel();</b>
+<b class="nc"><i>43</i>&nbsp;            infoLabel = new JLabel();</b>
+<b class="nc"><i>44</i>&nbsp;            inputPanel = new JPanel();</b>
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;            nicknameField = new JTextField();</b>
+<b class="nc"><i>47</i>&nbsp;            nickButton = new JButton();</b>
+<b class="nc"><i>48</i>&nbsp;            bottomPanel = new JPanel();</b>
+<b class="nc"><i>49</i>&nbsp;            cliButton = new JButton();</b>
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;
+<b class="nc"><i>52</i>&nbsp;            kGradientPanel.setkEndColor(new Color(255, 255, 153));</b>
+<b class="nc"><i>53</i>&nbsp;            kGradientPanel.setkStartColor(new Color(0, 204, 102));</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;            kGradientPanel.setLayout(new GridLayout(4, 1,400,0));</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>59</i>&nbsp;            logoLabel.setSize(1200,200);</b>
+<b class="nc"><i>60</i>&nbsp;            logoLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource(&quot;logonome.png&quot;)));</b>
+<b class="nc"><i>61</i>&nbsp;            logoLabel.setVerticalAlignment(SwingConstants.BOTTOM);</b>
+<b class="nc"><i>62</i>&nbsp;            kGradientPanel.add(logoLabel);</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;            infoLabel.setFont(new Font(&quot;Tahoma&quot;, 1, 36));</b>
+<b class="nc"><i>66</i>&nbsp;            infoLabel.setForeground(Color.white);</b>
+<b class="nc"><i>67</i>&nbsp;            infoLabel.setVerticalAlignment(SwingConstants.BOTTOM);</b>
+<b class="nc"><i>68</i>&nbsp;            infoLabel.setHorizontalAlignment(SwingConstants.CENTER);</b>
+<b class="nc"><i>69</i>&nbsp;            infoLabel.setText(&quot;Insert your nickname  &quot;);</b>
+<b class="nc"><i>70</i>&nbsp;            JPanel infoPanel = new JPanel();</b>
+<b class="nc"><i>71</i>&nbsp;            infoPanel.setOpaque(false);</b>
+<b class="nc"><i>72</i>&nbsp;            infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER,70,10));</b>
+<b class="nc"><i>73</i>&nbsp;            infoPanel.add(infoLabel);</b>
+<b class="nc"><i>74</i>&nbsp;            kGradientPanel.add(infoPanel);</b>
+<b class="nc"><i>75</i>&nbsp;            inputPanel.setOpaque(false);</b>
+<i>76</i>&nbsp;
+<b class="nc"><i>77</i>&nbsp;            nicknameField.setFont(new Font(&quot;Tahoma&quot;, 2, 36));</b>
+<b class="nc"><i>78</i>&nbsp;            nicknameField.setForeground(Color.BLUE);</b>
+<b class="nc"><i>79</i>&nbsp;            nicknameField.setBorder(new SoftBevelBorder(BevelBorder.RAISED));</b>
+<b class="nc"><i>80</i>&nbsp;            nicknameField.setPreferredSize(new Dimension(300, 70));</b>
+<b class="nc"><i>81</i>&nbsp;            nicknameField.setText(&quot;&quot;);</b>
+<b class="nc"><i>82</i>&nbsp;            nicknameField.addKeyListener(new KeyListener() {</b>
+<i>83</i>&nbsp;                @Override
+<i>84</i>&nbsp;                public void keyTyped(KeyEvent e) {
+<i>85</i>&nbsp;                }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;                @Override
+<i>88</i>&nbsp;                public void keyPressed(KeyEvent e) {
+<b class="nc"><i>89</i>&nbsp;                    if (e.getKeyCode() == KeyEvent.VK_ENTER &amp;&amp; !nicknameField.getText().equals(&quot;&quot;)) {</b>
+<b class="nc"><i>90</i>&nbsp;                                sendNick();</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;                    }
+<i>93</i>&nbsp;                }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;                @Override
+<i>96</i>&nbsp;                public void keyReleased(KeyEvent e) {
+<i>97</i>&nbsp;                }
+<i>98</i>&nbsp;            });
+<i>99</i>&nbsp;
+<b class="nc"><i>100</i>&nbsp;            inputPanel.add(nicknameField);</b>
+<b class="nc"><i>101</i>&nbsp;            nickButton.setBackground(new Color(50, 153, 80));</b>
+<b class="nc"><i>102</i>&nbsp;            nickButton.setFont(new Font(&quot;Tahoma&quot;, 2, 24));</b>
+<b class="nc"><i>103</i>&nbsp;            nickButton.setForeground(new Color(0, 102, 51));</b>
+<b class="nc"><i>104</i>&nbsp;            nickButton.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource(&quot;STUFF/playButton.png&quot;)));</b>
+<i>105</i>&nbsp;
+<b class="nc"><i>106</i>&nbsp;            nickButton.setOpaque(false);</b>
+<b class="nc"><i>107</i>&nbsp;            nickButton.setBorder(null);</b>
+<b class="nc"><i>108</i>&nbsp;            nickButton.setPreferredSize(new Dimension(82, 85));</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;
+<b class="nc"><i>111</i>&nbsp;            nickButton.addMouseListener(new MouseAdapter() {</b>
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;                @Override
+<i>114</i>&nbsp;                public void mouseClicked(MouseEvent e) {
+<b class="nc"><i>115</i>&nbsp;                    if(!nicknameField.getText().equals(&quot;&quot;)){</b>
+<b class="nc"><i>116</i>&nbsp;                        sendNick();</b>
+<i>117</i>&nbsp;                    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;                }
+<i>120</i>&nbsp;            });
+<i>121</i>&nbsp;
+<b class="nc"><i>122</i>&nbsp;            inputPanel.add(nickButton);</b>
+<i>123</i>&nbsp;
+<b class="nc"><i>124</i>&nbsp;           kGradientPanel.add(inputPanel);</b>
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;            bottomPanel.setOpaque(false);</b>
+<b class="nc"><i>127</i>&nbsp;            bottomPanel.setLayout(new GridLayout(4,1, 200,20));</b>
+<i>128</i>&nbsp;
+<b class="nc"><i>129</i>&nbsp;            cliButton.setBackground(new Color(204, 255, 204));</b>
+<b class="nc"><i>130</i>&nbsp;            cliButton.setFont(new Font(&quot;Tahoma&quot;, 0, 14));</b>
+<b class="nc"><i>131</i>&nbsp;            cliButton.setForeground(new Color(204, 102, 0));</b>
+<b class="nc"><i>132</i>&nbsp;            cliButton.setText(&quot;Continue with CLI&quot;);</b>
+<b class="nc"><i>133</i>&nbsp;            cliButton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));</b>
+<b class="nc"><i>134</i>&nbsp;            cliButton.setOpaque(false);</b>
+<b class="nc"><i>135</i>&nbsp;            cliButton.addMouseListener(new MouseAdapter() {</b>
+<i>136</i>&nbsp;                @Override
+<i>137</i>&nbsp;                public void mouseClicked(MouseEvent e) {
+<b class="nc"><i>138</i>&nbsp;                    Object[] option = {&quot;Confirm&quot;, &quot;Cancel&quot;};</b>
+<b class="nc"><i>139</i>&nbsp;                    int n = JOptionPane.showOptionDialog(cliButton.getRootPane(), &quot;Are you sure you want to switch to the command line? Gui will be closed.&quot;, &quot;Close Graphic User Interface&quot;, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[1]);</b>
+<i>140</i>&nbsp;                    ;
+<b class="nc"><i>141</i>&nbsp;                    if (n == JOptionPane.YES_OPTION) {</b>
+<b class="nc"><i>142</i>&nbsp;                        ((JFrame)SwingUtilities.getRoot(kGradientPanel)).dispose();</b>
+<b class="nc"><i>143</i>&nbsp;                        System.out.println(&quot;Continue here...&quot;);</b>
+<b class="nc"><i>144</i>&nbsp;                        client.setView(new CLI(client));</b>
+<b class="nc"><i>145</i>&nbsp;                        client.getView().updateLoginScreen(null);</b>
+<i>146</i>&nbsp;                    }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;                }
+<i>149</i>&nbsp;            });
+<b class="nc"><i>150</i>&nbsp;            bottomPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 40,40));</b>
+<b class="nc"><i>151</i>&nbsp;            bottomPanel.add(cliButton);</b>
+<b class="nc"><i>152</i>&nbsp;            kGradientPanel.add(bottomPanel);</b>
+<i>153</i>&nbsp;
+<b class="nc"><i>154</i>&nbsp;            this.setLayout(new BorderLayout());</b>
+<i>155</i>&nbsp;
+<b class="nc"><i>156</i>&nbsp;            this.add(kGradientPanel, BorderLayout.CENTER);</b>
+<b class="nc"><i>157</i>&nbsp;            kGradientPanel.backgroundTransition();</b>
+<b class="nc"><i>158</i>&nbsp;            kGradientPanel.backgroundGradient(10);</b>
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;        }
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;    /**
+<i>164</i>&nbsp;     * Get nickname from nicknameField and send it to the server through the NetworkHandler.
+<i>165</i>&nbsp;     */
+<i>166</i>&nbsp;    private void sendNick(){
+<b class="nc"><i>167</i>&nbsp;            nicknameField.setEnabled(false);</b>
+<b class="nc"><i>168</i>&nbsp;            System.out.println(nicknameField.getText());</b>
+<b class="nc"><i>169</i>&nbsp;            client.setNickname(nicknameField.getText());</b>
+<b class="nc"><i>170</i>&nbsp;            nickButton.setEnabled(false);</b>
+<b class="nc"><i>171</i>&nbsp;            cliButton.setEnabled(false);</b>
+<b class="nc"><i>172</i>&nbsp;            SwingUtilities.invokeLater(new Runnable() {</b>
+<i>173</i>&nbsp;                @Override
+<i>174</i>&nbsp;                public void run() {
+<b class="nc"><i>175</i>&nbsp;                    nickButton.setText(&quot;&quot;);</b>
+<b class="nc"><i>176</i>&nbsp;                    infoLabel.setText(&quot;Waiting for Server response...&quot;);</b>
+<b class="nc"><i>177</i>&nbsp;                    nickButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource(&quot;ajax-loader.gif&quot;)));</b>
+<b class="nc"><i>178</i>&nbsp;                    client.getNetworkHandler().sendMessage(new AuthenticationMessage(nicknameField.getText()));</b>
+<i>179</i>&nbsp;                }
+<i>180</i>&nbsp;            });
+<i>181</i>&nbsp;
+<i>182</i>&nbsp;        }
+<i>183</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 21:29</div>
+</div>
+</body>
+</html>

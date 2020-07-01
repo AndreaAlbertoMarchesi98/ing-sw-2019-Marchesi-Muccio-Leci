@@ -1,0 +1,12 @@
+it.polimi.ing.sw.psp017
+it.polimi.ing.sw.psp017.client
+it.polimi.ing.sw.psp017.client.messages.ClientToServer
+it.polimi.ing.sw.psp017.client.messages.ServerToClient
+it.polimi.ing.sw.psp017.client.view
+it.polimi.ing.sw.psp017.client.view.GraphicUserInterface
+it.polimi.ing.sw.psp017.server
+it.polimi.ing.sw.psp017.server.controller
+it.polimi.ing.sw.psp017.server.messages.ClientToServer
+it.polimi.ing.sw.psp017.server.messages.ServerToClient
+it.polimi.ing.sw.psp017.server.model
+it.polimi.ing.sw.psp017.server.model.deck

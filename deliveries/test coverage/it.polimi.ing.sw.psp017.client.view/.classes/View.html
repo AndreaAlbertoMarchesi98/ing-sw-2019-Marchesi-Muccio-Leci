@@ -1,0 +1,76 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: View</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ing.sw.psp017.client.view</a> ]
+</div>
+
+<h1>Coverage Summary for Class: View (it.polimi.ing.sw.psp017.client.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">View</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ing.sw.psp017.client.view;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ing.sw.psp017.server.messages.ClientToServer.*;
+<i>4</i>&nbsp;import it.polimi.ing.sw.psp017.server.messages.ServerToClient.*;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public interface View {
+<i>7</i>&nbsp;    /*robe da modificare
+<i>8</i>&nbsp;    1)power active cia il suo metodo
+<i>9</i>&nbsp;    */
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    //send information to controller
+<i>12</i>&nbsp;    void notifyNickname(AuthenticationMessage authenticationMessage);
+<i>13</i>&nbsp;    void notifyGameSetUp(GameSetUpMessage gameSetUpMessage);
+<i>14</i>&nbsp;    void notifyCard(CardMessage cardMessage);
+<i>15</i>&nbsp;    void notifySelectedTile(SelectedTileMessage selectedTileMessage);  //messaggio poszionamento pedine
+<i>16</i>&nbsp;    void notifyIsPowerActive(PowerActiveMessage powerActiveMessage);
+<i>17</i>&nbsp;    void notifyRestart(RestartMessage restartMessage);
+<i>18</i>&nbsp;    void notifyUndo(UndoMessage undoMessage);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    //get information from controller
+<i>22</i>&nbsp;    void updateGameCreation();  //username valido &amp;&amp; primo giocatore
+<i>23</i>&nbsp;    void updateLoginScreen(InvalidNameMessage invalidNameMessage);
+<i>24</i>&nbsp;    void updateLobby(LobbyMessage lobbyMessage);//1&gt; tutte le carte, other il resto delle carte
+<i>25</i>&nbsp;    void updateBoard(BoardMessage boardMessage);//contiene anche isMove e le valid tiles
+<i>26</i>&nbsp;    void updateDefeat(NoMovesMessage noMovesMessage);
+<i>27</i>&nbsp;    void updateVictory(VictoryMessage victoryMessage);
+<i>28</i>&nbsp;    void updateDisconnection(ServerDisconnectionMessage disconnectionMessage);
+<i>29</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 21:29</div>
+</div>
+</body>
+</html>
