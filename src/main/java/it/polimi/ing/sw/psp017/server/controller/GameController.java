@@ -267,7 +267,7 @@ public class GameController {
      * @param player  is the player that is selecting
      */
     public void processSelection(SelectedTileMessage message, Player player) {
-        if (game.isPlayerTurn(player)) {
+        if (gameState == GameSate.MATCH&&game.isPlayerTurn(player)) {
             if (undoFunctionality.isUndoPossible())
                 undoFunctionality.skipUndo();
         }
