@@ -36,6 +36,17 @@ public class Game {
     }
 
     /**
+     * set stepNumber to 0
+     */
+    public void restartTurn(){
+        setAction(ActionNames.SELECT_WORKER);
+        powerActive=false;
+        selectedWorkerTile = null;
+        stepNumber = 0;
+        clearValidTiles();
+    }
+
+    /**
      * set parameters so that are a new turn begins, basically resets counters and
      * change playerIndex to next player's
      */

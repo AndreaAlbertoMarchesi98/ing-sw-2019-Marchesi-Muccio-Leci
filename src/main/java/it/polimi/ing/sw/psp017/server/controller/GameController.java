@@ -320,10 +320,40 @@ public class GameController {
     }
 
     /**
+     * defeat a player then notify it, clear validTiles,
+     * save board so that can be restored when undo is activated, then
+     * restart the turn and repeats that check to see
+     * if the next player cannot move as well
+     *
+     */
+    private void defeatPlayer(){
+        System.out.println("\n" + game.getActivePlayer().getNickname() + " has no moves left\n\n");
+        for (Worker worker : game.getActivePlayer().getWorkers())
+            worker.getTile().setWorker(null);
+
+        VirtualView defeatedView = views.get(game.getPlayerIndex());
+
+        if (game.getPlayers().size() == 2) {
+            endGame();
+            if (game.getPlayerIndex() == 0)
+                notifyVictory(game.getPlayers().get(1).getPlayerNumber());
+            else
+                notifyVictory(game.getPlayers().get(0).getPlayerNumber());
+            gameState = GameSate.GAME_OVER;
+        } else {
+            notifyDefeat(defeatedView.getPlayer());
+            removeView(defeatedView);
+        }
+        game.restartTurn();
+        undoFunctionality.saveBoard(game.getBoardCopy());
+        notifyBoard();
+        if(!hasPlayerMovesLeft())
+            defeatPlayer();
+    }
+
+    /**
      * do all the operations needed to set up the next turn. In specific addEffectOnOpponents,
      * resetCard so that it's not decorated anymore, set up game class parameters for next turn,
-     * defeat a player if it has no more moves left and then notify it, clear validTiles,
-     * save board so that can be restored when undo is activated
      *
      * @param currentStep the step that the active player has just performed
      */
@@ -338,27 +368,8 @@ public class GameController {
 
         undoFunctionality.saveBoard(game.getBoardCopy());
 
-        if (!hasPlayerMovesLeft()) {
-            System.out.println("\n" + game.getActivePlayer().getNickname() + " has no moves left\n\n");
-            for (Worker worker : game.getActivePlayer().getWorkers())
-                worker.getTile().setWorker(null);
-
-            VirtualView defeatedView = views.get(game.getPlayerIndex());
-
-            if (game.getPlayers().size() == 2) {
-                endGame();
-                if(game.getPlayerIndex()==0)
-                    notifyVictory(game.getPlayers().get(1).getPlayerNumber());
-                else
-                    notifyVictory(game.getPlayers().get(0).getPlayerNumber());
-                gameState = GameSate.GAME_OVER;
-            } else {
-                notifyDefeat(defeatedView.getPlayer());
-                removeView(defeatedView);
-            }
-            undoFunctionality.saveBoard(game.getBoardCopy());
-            notifyBoard();
-        }
+        if (!hasPlayerMovesLeft())
+            defeatPlayer();
     }
 
     /**
@@ -499,6 +510,8 @@ public class GameController {
                     undoFunctionality.undo(game);
                     notifyBoard();
                 }
+                else if (game.getAction() == ActionNames.MOVE && !hasPlayerMovesLeft())
+                    defeatPlayer();
             }
         }
     }
