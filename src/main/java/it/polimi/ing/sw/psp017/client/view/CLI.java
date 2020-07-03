@@ -19,7 +19,7 @@ public class CLI implements View {
     private static final int NO_PLAYER = 0;
     private int NUMBER_OF_PLAYERS = 0;
     private  boolean isUndoPossible = false;
-    private boolean timeOut = false;
+    private volatile boolean timeOut = false;
     private ActionNames previousAction;
 
 
@@ -277,32 +277,6 @@ public class CLI implements View {
 
 
             }
-        /*
-        if(isUndoPossible){
-
-            final Timer timerThread = new Timer();
-            timerThread.schedule(new TimerTask() {
-                int second = 5;
-                @Override
-                public void run() {
-                    second--;
-                    if (second == 0 ) {
-                        noMoreTime = true;
-                        timerThread.cancel();
-                    }
-
-                }
-            }, 0, 1000);
-            answer = getUndoAnswer();
-            if(!noMoreTime && answer){
-                client.getNetworkHandler().sendMessage(new UndoMessage());
-                return;
-            }
-            if(noMoreTime) return;
-            //se si undo mando messaggio  e metto isundopossible a false
-
-        }
-         */
 
 
             if(boardMessage.action == ActionNames.PLACE_WORKERS)
@@ -327,7 +301,6 @@ public class CLI implements View {
             }
             if(boardMessage.action == ActionNames.MOVE)
             {
-
                 isUndoPossible = true;
                 notifySelectedTile(new SelectedTileMessage(getMoveTargetTile(boardMessage)));
             }
@@ -849,33 +822,10 @@ public class CLI implements View {
         printValidTiles(boardMessage.validTiles);
 
         Vector2d moveTargetTile = getTargetTileUnified();
-        while(!checkValidTileSelection(boardMessage.validTiles,moveTargetTile)){
 
-            printValidTiles(boardMessage.validTiles);
-
-            System.out.println(ANSI_BLACK_BACKGROUND + ANSI_RED + "<<<<<<<<<<<____________please select a valid tile [GREEN]____________>>>>>>>>>> " + ANSI_RESET);
-            moveTargetTile = getTargetTileUnified();
-
-        }
         return moveTargetTile;
     }
 
-    /**
-     * check if the player selected a valid target tile
-     * @param validTiles allowed target tile
-     * @param moveTargetTile user target tile
-     * @return true if it is allowed
-     */
-    private boolean checkValidTileSelection(boolean[][] validTiles,Vector2d moveTargetTile) {
-
-
-        /*
-        if(validTiles[moveTargetTile.x][moveTargetTile.y]) return true;
-        else return  false;
-         */
-        return validTiles[moveTargetTile.x][moveTargetTile.y];
-
-    }
 
 
     /**
