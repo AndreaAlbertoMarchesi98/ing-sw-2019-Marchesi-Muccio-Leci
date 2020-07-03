@@ -17,7 +17,7 @@ public class CLI implements View {
 
     private static final int MAX_NUMBER_OF_WORKERS = 2 ;
     private static final int NO_PLAYER = 0;
-    private int NUMBER_OF_PLAYERS;
+    private int NUMBER_OF_PLAYERS = 0;
     private  boolean isUndoPossible = false;
     private boolean timeOut = false;
     private ActionNames previousAction;
@@ -390,7 +390,16 @@ public class CLI implements View {
 
 
         ansi_reset();
-        if(answer.equalsIgnoreCase("y")) notifyRestart(new RestartMessage());
+        if(answer.equalsIgnoreCase("y")) {
+
+
+            NUMBER_OF_PLAYERS = 0;
+            isUndoPossible = false;
+            timeOut = false;
+            previousAction = null;
+            notifyRestart(new RestartMessage());
+        }
+        else System.exit(0);
 
     }
 
